@@ -1,6 +1,6 @@
 import type { LightInfo, KeyboardState, KeyboardDefine  } from './interface'
 import { ConnectionType, ConnectionEventEnum } from "./enum"
-import { RK_L87 } from "./rk_l87"
+import { RK_L87_DEFINE } from "./rk_l87"
 
 /**
 * Initial lightInfo
@@ -29,5 +29,5 @@ export const defaultState: KeyboardState = {
 * Keyboard list
 */
 export const KeyboardDefineList: Record<string, KeyboardDefine> = {
-    "rk l87": RK_L87
+    "rk l87": RK_L87_DEFINE
 }

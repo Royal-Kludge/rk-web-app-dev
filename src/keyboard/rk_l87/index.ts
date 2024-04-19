@@ -12,12 +12,14 @@ import { SetProfilePacket } from './packets/setProfilePacket';
 import { GetLedColorsPacket } from './packets/getLedColorsPacket';
 import { SetLedColorsPacket } from './packets/setLedColorsPacket';
 
+export class RK_L87 {
+    profile?: Profile;
+    ledColors?: LedColors;
+}
 
 export class Protocol_RK_L87 extends Protocol {
 
     buffer: DataView;
-    profile?: Profile;
-    ledColors?: LedColors;
 
     constructor(state: KeyboardState, device: HIDDevice) {
         super(state, device);
@@ -37,15 +39,15 @@ export class Protocol_RK_L87 extends Protocol {
         await this.setReport(REPORT_ID, packet.setReport);
         packet.fromReportData(await this.getReport(REPORT_ID));
 
-        this.profile = packet.profile;
+        rk_l87.profile = packet.profile;
 
-        return this.profile;
+        return rk_l87.profile;
     }
 
     async setProfile(): Promise<void> {
-        if (this.profile != undefined) {
+        if (rk_l87.profile != undefined) {
             let packet = new SetProfilePacket(0x00);
-            packet.setPayload(this.profile.buffer);
+            packet.setPayload(rk_l87.profile.buffer);
             await this.setReport(REPORT_ID, packet.setReport);
         }
     }
@@ -55,21 +57,23 @@ export class Protocol_RK_L87 extends Protocol {
         await this.setReport(REPORT_ID, packet.setReport);
         packet.fromReportData(await this.getReport(REPORT_ID));
 
-        this.ledColors = packet.ledColors;
+        rk_l87.ledColors = packet.ledColors;
 
-        return this.ledColors;
+        return rk_l87.ledColors;
     }
 
     async setLedColors(): Promise<void> {
-        if (this.ledColors != undefined) {
+        if (rk_l87.ledColors != undefined) {
             let packet = new SetLedColorsPacket();
-            packet.setPayload(this.ledColors.buffer);
+            packet.setPayload(rk_l87.ledColors.buffer);
             await this.setReport(REPORT_ID, packet.setReport);
         }
     }
 }
 
-export const RK_L87: KeyboardDefine = {
+export const rk_l87: RK_L87 = new RK_L87();
+
+export const RK_L87_DEFINE: KeyboardDefine = {
     name: "rk l87",
     vendorId: 0x258A,
     productId: 0x019F,
