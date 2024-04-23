@@ -50,9 +50,9 @@
 
 <script setup lang="ts">
 import Picker from '../picker.vue'
-import { reactive, ref, onMounted } from 'vue';
+import { reactive, ref, onMounted, onBeforeUnmount } from 'vue';
 import { keyboard } from '../../keyboard/keyboard'
-import { Protocol_RK_L87 } from '../../keyboard/rk_l87';
+import { RK_L87, RK_L87_EVENT_DEFINE } from '../../keyboard/rk_l87/rk_l87';
 import { Profile, FieldEnum } from '../../keyboard/rk_l87/profile';
 import { LedColors } from '../../keyboard/rk_l87/ledColors';
 import { LightEffectEnum } from '../../keyboard/enum'
@@ -61,7 +61,7 @@ import { type LedColor } from '@/keyboard/interface';
 const rgb = ref({r:0,g:0,b:0,color:'#000000'});
 const profile = ref<Profile>();
 const ledColors = ref<LedColors>();
-const protocol = ref<Protocol_RK_L87>();
+const rk_l87 = ref<RK_L87>();
 
 const state = reactive({
     lightEffects: [
@@ -93,16 +93,34 @@ const state = reactive({
 });
 
 onMounted(async () => {
-    protocol.value = (keyboard.protocol as Protocol_RK_L87);
+    rk_l87.value = (keyboard.protocol as RK_L87);
+
+    rk_l87.value.addEventListener(RK_L87_EVENT_DEFINE.OnProfileGotten, profileGotten, false);
+    rk_l87.value.addEventListener(RK_L87_EVENT_DEFINE.OnLedColorsGotten, ledColorsGotten, false);
+
     await getLightData();
 });
 
-const getLightData = async () => {
-    if (protocol.value != undefined) {
-        profile.value = await protocol.value.getProfile();
-        ledColors.value = await protocol.value.getLedColors();
-        refresh();
+onBeforeUnmount(() => {
+    if (rk_l87.value != undefined) {
+        rk_l87.value.removeEventListener(RK_L87_EVENT_DEFINE.OnProfileGotten, profileGotten, false);
+        rk_l87.value.removeEventListener(RK_L87_EVENT_DEFINE.OnLedColorsGotten, ledColorsGotten, false);
     }
+});
+
+const getLightData = async () => {
+    await rk_l87.value?.getProfile();
+    await rk_l87.value?.getLedColors();
+}
+
+const profileGotten = (event: any) => {
+    profile.value = event.detail as Profile;
+    refresh();
+};
+
+const ledColorsGotten = (event: any) => {
+    ledColors.value = event.detail as LedColors;
+    refresh();
 };
 
 const refresh = () => {
@@ -131,10 +149,10 @@ const refresh = () => {
 };
 
 const lightClick = (light: LightEffectEnum) => {
-    if (profile.value != undefined && protocol.value != undefined) {
+    if (profile.value != undefined && rk_l87.value != undefined) {
         state.lightProps.light = light;
         profile.value.setFieldValue(FieldEnum.LedMode, light);
-        protocol.value.setProfile();
+        rk_l87.value.setProfile();
         refresh();
     }
 };
@@ -149,14 +167,14 @@ const selectd = (light: LightEffectEnum) => {
 };
 
 const ligtChanged = () => {
-    if (profile.value != undefined && protocol.value != undefined) {
+    if (profile.value != undefined && rk_l87.value != undefined) {
         profile.value.setLedParam(state.lightProps.light, {
             brightness: state.lightProps.brightness - 1,
             speed: state.lightProps.speed,
             color: state.lightProps.mixing ? 0x07 : 0x00 
         });
         profile.value.setFieldValue(FieldEnum.SleepTime, (state.lightProps.sleep * 60) / 30);
-        protocol.value.setProfile();
+        rk_l87.value.setProfile();
         refresh();
     }
 };
@@ -171,8 +189,8 @@ const onPicking = (r:any, g:any, b:any) => {
     ledColors.value?.setLedColor(state.lightProps.light, color);
 };
 const onPicked = () => {
-    if (ledColors.value != undefined && protocol.value != undefined) {
-        protocol.value.setLedColors();
+    if (ledColors.value != undefined && rk_l87.value != undefined) {
+        rk_l87.value.setLedColors();
         refresh();
     }
 };

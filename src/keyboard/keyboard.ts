@@ -9,11 +9,6 @@ export class Keyboard extends EventTarget {
     /** Internal WebHID device */
     device?: HIDDevice;
 
-    /** Raw contents of the last HID Report sent by the controller. */
-    lastReport?: ArrayBuffer;
-    /** Raw contents of the last HID Report sent to the controller. */
-    lastSentReport?: ArrayBuffer;
-
     /** Device protocol */
     protocol?: IProtocol;
 
@@ -65,50 +60,52 @@ export class Keyboard extends EventTarget {
             return;
         }
 
-        const devices = await this.hid.requestDevice(option)
+        const devices = await this.hid.requestDevice(option);
 
         if (devices.length > 0) {
             this.device = devices[0];
-            await this.device.open();
+            if (this.device != undefined) {
+                await this.device.open();
 
-            if (this.device.opened) {
-                this.state.deviceName = this.device.productName;
-                this.state.connectType = ConnectionType.USB;
-                this.state.connectionEvent = ConnectionEventEnum.Open;
-                this.state.productId = this.device.productId;
+                if (this.device.opened) {
+                    this.state.deviceName = this.device.productName;
+                    this.state.connectType = ConnectionType.USB;
+                    this.state.connectionEvent = ConnectionEventEnum.Open;
+                    this.state.productId = this.device.productId;
 
-                for (item in KeyboardDefineList) {
-                    if (this.device.vendorId == KeyboardDefineList[item].vendorId && 
-                        this.device.productId == KeyboardDefineList[item].productId) {
-                        this.keyboardDefine = KeyboardDefineList[item];
-                        break;
+                    for (item in KeyboardDefineList) {
+                        if (this.device.vendorId == KeyboardDefineList[item].vendorId && 
+                            this.device.productId == KeyboardDefineList[item].productId) {
+                            this.keyboardDefine = KeyboardDefineList[item];
+                            break;
+                        }
                     }
-                }
 
-                if (this.keyboardDefine == null || this.keyboardDefine == undefined) {
-                    await this.close();
-                    this.dispatchEvent(new KeyboardEvent("NotSupport", this));
-                    return;
-                }
+                    if (this.keyboardDefine == null || this.keyboardDefine == undefined) {
+                        await this.close();
+                        this.dispatchEvent(new KeyboardEvent("NotSupport", this));
+                        return;
+                    }
 
-                this.protocol = this.keyboardDefine.protocol(this.state, this.device);
+                    this.protocol = await this.keyboardDefine.protocol(this.state, this.device);
 
-                this.loadDefaultValue(this.state.keyTableData, this.state.lightInfo);
+                    this.loadDefaultValue(this.state.keyTableData, this.state.lightInfo);
+                    
+                    const connectionEventCallback = (event: HIDConnectionEvent) => {
+                        event.device.close();
+                        this.device = undefined;
+                        this.state.connectionEvent = ConnectionEventEnum.Disconnect;
+                        this.dispatchEvent(new KeyboardEvent("connection", this));
+                        this.hid?.removeEventListener("disconnect", connectionEventCallback, false);
+                    };
 
-                this.device.oninputreport = (e: HIDInputReportEvent) => this.processKeyboardReport(e);
-                const connectionEventCallback = (event: HIDConnectionEvent) => {
-                    event.device.close();
-                    this.device = undefined;
-                    this.state.connectionEvent = ConnectionEventEnum.Disconnect;
+                    this.hid.addEventListener("disconnect", connectionEventCallback, false);
                     this.dispatchEvent(new KeyboardEvent("connection", this));
-                    this.hid?.removeEventListener("disconnect", connectionEventCallback, false);
-                };
-
-                this.hid.addEventListener("disconnect", connectionEventCallback, false);
-                this.dispatchEvent(new KeyboardEvent("connection", this));
+                }
             }
         }
     }
+
     /**
      * Close current opened device
      */
@@ -136,7 +133,6 @@ export class Keyboard extends EventTarget {
                     key: this.keyboardDefine.keyText[code],
                     keyCode: code,
                     index: item,
-                    selected: false,
                     keyMappingData: {
                         key: this.keyboardDefine.keyText[code],
                         keyCode: code,
@@ -161,20 +157,6 @@ export class Keyboard extends EventTarget {
                 lightInfo.lightEffects.push(tmp);
             }
         }
-    }
-
-    /**
-     * Parses a report sent from the keyboard and updates the state.
-     * 
-     * This function is called internally by the library each time a report is received.
-     * 
-     * @param report - HID Report sent by the keyboard.
-     */
-    private async processKeyboardReport(report: HIDInputReportEvent) {
-        const { data } = report
-        this.lastReport = data.buffer
-
-        console.log(`Reviced [${this.lastReport?.byteLength}] bytes report data`);
     }
 }
 

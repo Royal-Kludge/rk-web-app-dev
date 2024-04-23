@@ -1,7 +1,7 @@
-import type { IPacket } from "../../interface";
-import { Packet, LED_COLOR_LENGTH, LED_EFFECT_COLOR_COUNT, LED_EFFECT_COUNT, PACKET_HEAD_LENGTH } from "../packet";
+import type { IPacket } from "@/keyboard/interface";
+import { Packet_Usb, LED_COLOR_LENGTH, LED_EFFECT_COLOR_COUNT, LED_EFFECT_COUNT, PACKET_HEAD_LENGTH } from "@/keyboard/rk_l87/packets/packet";
 
-export class SetLedColorsPacket extends Packet {
+export class SetLedColorsPacket extends Packet_Usb {
 
     setReport: Uint8Array;
 

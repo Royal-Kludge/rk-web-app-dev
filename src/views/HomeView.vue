@@ -1,6 +1,6 @@
 <template>
     <main>
-        <el-container class="p-a w-100 h-100 d-flex ai-center jc-center">
+        <el-container class="p-a w-100 h-100 d-flex ai-start jc-center">
             <WebApp v-if="isConnected" />
             <Nodevice v-else @on-connect="onConnect" />
         </el-container>

@@ -1,8 +1,7 @@
-import type { IPacket } from "../../interface";
-import { Packet, PROFILE_LENGTH, PACKET_HEAD_LENGTH } from "../packet";
-import { Profile } from "../profile";
+import type { IPacket } from "@/keyboard/interface";
+import { Packet_Usb } from "@/keyboard/rk_l87/packets/packet";
 
-export class SetProfilePacket extends Packet {
+export class SetProfilePacket extends Packet_Usb {
 
     setReport: Uint8Array;
 

@@ -1,5 +1,5 @@
 import { KeyDefineEnum } from "./keyCode"
-import { ConnectionType, ConnectionEventEnum, KeyRemappingType } from "./enum"
+import { ConnectionType, ConnectionEventEnum, ConnectionStatusEnum, KeyRemappingType } from "./enum"
 
 /**
  * Keyboard State
@@ -10,6 +10,7 @@ export interface KeyboardState {
     /** Interface used for communication (USB/Bluetooth) */
     connectType: ConnectionType,
     connectionEvent: ConnectionEventEnum,
+    ConnectionStatus: ConnectionStatusEnum,
     productId?: number,
     deviceName?: String,
     fwVersion?: String,
@@ -29,7 +30,7 @@ export interface KeyboardDefine {
     keyText: Record<number, String>,
     keyLayout: Array<KeyDefineEnum>,
     lightEffects: Array<LightEffect>,
-    protocol: (state: KeyboardState, device: HIDDevice) => IProtocol,
+    protocol: (state: KeyboardState, device: HIDDevice) => Promise<IProtocol>
 }
 
 export interface KeyMappingData {
@@ -63,7 +64,6 @@ export interface KeyTableData {
     key: String,
     keyCode: KeyDefineEnum,
     index: number,
-    selected: boolean,
     keyMappingData: KeyMappingData
 }
 
@@ -71,8 +71,6 @@ export interface IProtocol {
     state: KeyboardState;
     device?: HIDDevice
 
-    setReport: ((reportId: number, data: BufferSource) => Promise<void>) | null;
-    getReport: ((reportId: number) => Promise<DataView>) | null;
     init: () => Promise<void> | null;
 }
 

@@ -1,4 +1,4 @@
-import { PROFILE_LENGTH, PACKET_HEAD_LENGTH } from "./packet";
+import { PROFILE_LENGTH, PACKET_HEAD_LENGTH } from "./packets/packet";
 
 /**
  * Profile Field
