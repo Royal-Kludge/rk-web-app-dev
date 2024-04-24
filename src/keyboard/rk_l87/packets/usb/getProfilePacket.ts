@@ -22,7 +22,9 @@ export class GetProfilePacket extends Packet_Usb {
     fromReportData(buffer: DataView) : IPacket {
         super.fromReportData(buffer);
         this.getReport = new DataView(buffer.buffer.slice(1, this.dataLength + PACKET_HEAD_LENGTH + 1));
-        this.profile = Profile.fromReportData(this.getReport);
+        if (this.getReport.byteLength >= PROFILE_LENGTH + PACKET_HEAD_LENGTH) {
+            this.profile = Profile.fromReportData(new DataView(this.getReport.buffer.slice(PACKET_HEAD_LENGTH, PROFILE_LENGTH + PACKET_HEAD_LENGTH)));
+        }
 
         return this;
     }

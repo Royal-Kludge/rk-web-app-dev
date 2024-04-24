@@ -3,25 +3,24 @@ import { Packet_Dongle } from "@/keyboard/rk_l87/packets/packet";
 
 export class GetDongleStatusPacket extends Packet_Dongle {
 
-    setReport: Uint8Array;
-    isConnected: boolean;
+    constructor(callback: (event: any) => void) {
+        super(0x07, callback);
+    }
 
-    constructor() {
-        super(0x07);
-        this.cmdVal = 0x00;
-        this.dataLength = 0x0E;
-        this.setReport = new Uint8Array(17);
-        this.setReport[0] = this.cmdId;
+    command(): Uint8Array {
+        super.command();
         this.setReport[1] = 0x01;
-
-        this.isConnected = false;
+        this.setReport[this.setReport.length - 1] = this.crc();
+        return this.setReport;
     }
 
     fromReportData(buffer: DataView) : IPacket {
         super.fromReportData(buffer);
         
         if (buffer.byteLength >= this.dataLength) {
-            this.isConnected = buffer.getUint8(4) > 0;
+            let isConnected = buffer.getUint8(4) > 0;
+            this.getReport = buffer;
+            this.dispatchEvent(new CustomEvent('onReportDataRecvied', { detail: isConnected }));
         }
 
         return this;

@@ -1,6 +1,6 @@
 <template>
     <div class="d-flex jc-center ai-center" v-if="state.connectType == ConnectionType.Dongle && state.connectState != ConnectionStatusEnum.Connected">
-        <h1>THe Keyboard not connect to Dongle</h1>
+        <p style="font-size: 42px; margin-top: 30%;">The keyboard not connected to dongle.</p>
     </div>
     <div v-else>
         <el-container>
@@ -64,6 +64,7 @@ onBeforeUnmount(() => {
 });
 
 const dongleStatusChanged = (event: any) => {
+    keyboard.state.ConnectionStatus = event.detail as ConnectionStatusEnum;
     state.connectState =  event.detail as ConnectionStatusEnum;
 };
 

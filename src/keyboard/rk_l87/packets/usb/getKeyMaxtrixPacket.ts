@@ -24,8 +24,10 @@ export class GetKeyMaxtrixPacket extends Packet_Usb {
     fromReportData(buffer: DataView) : IPacket {
         super.fromReportData(buffer);
         this.getReport = new DataView(buffer.buffer.slice(1, this.dataLength + PACKET_HEAD_LENGTH + 1));
-        this.keyMaxtrix = KeyMaxtrix.fromReportData(this.getReport);
-
+        if (this.getReport.byteLength >= KEY_MAXTRIX_LINE * KEY_MAXTRIX_COLOUMN + PACKET_HEAD_LENGTH) {
+            this.keyMaxtrix = KeyMaxtrix.fromReportData(new DataView(this.getReport.buffer.slice(PACKET_HEAD_LENGTH, this.getReport.byteLength)));
+        }
+        
         return this;
     }
 }

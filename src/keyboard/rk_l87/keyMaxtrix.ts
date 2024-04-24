@@ -35,9 +35,9 @@ export class KeyMaxtrix {
     static fromReportData(data: DataView) : KeyMaxtrix | undefined {
         let colors = undefined;
         
-        if (data.byteLength >= KEY_MAXTRIX_LINE * KEY_MAXTRIX_COLOUMN + PACKET_HEAD_LENGTH) {
-            let buffer = new DataView(data.buffer.slice(PACKET_HEAD_LENGTH, data.byteLength));
-            colors = new KeyMaxtrix(buffer);
+        if (data.byteLength >= KEY_MAXTRIX_LINE * KEY_MAXTRIX_COLOUMN) {
+            //let buffer = new DataView(data.buffer.slice(PACKET_HEAD_LENGTH, data.byteLength));
+            colors = new KeyMaxtrix(data);
         }
 
         return colors;

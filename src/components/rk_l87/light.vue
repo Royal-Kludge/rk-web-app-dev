@@ -62,6 +62,7 @@ const rgb = ref({r:0,g:0,b:0,color:'#000000'});
 const profile = ref<Profile>();
 const ledColors = ref<LedColors>();
 const rk_l87 = ref<RK_L87>();
+const profileIndex = ref(0);
 
 const state = reactive({
     lightEffects: [
@@ -109,7 +110,7 @@ onBeforeUnmount(() => {
 });
 
 const getLightData = async () => {
-    await rk_l87.value?.getProfile();
+    await rk_l87.value?.getProfile(profileIndex.value);
     await rk_l87.value?.getLedColors();
 }
 
@@ -152,7 +153,7 @@ const lightClick = (light: LightEffectEnum) => {
     if (profile.value != undefined && rk_l87.value != undefined) {
         state.lightProps.light = light;
         profile.value.setFieldValue(FieldEnum.LedMode, light);
-        rk_l87.value.setProfile();
+        rk_l87.value.setProfile(profileIndex.value);
         refresh();
     }
 };
@@ -174,7 +175,7 @@ const ligtChanged = () => {
             color: state.lightProps.mixing ? 0x07 : 0x00 
         });
         profile.value.setFieldValue(FieldEnum.SleepTime, (state.lightProps.sleep * 60) / 30);
-        rk_l87.value.setProfile();
+        rk_l87.value.setProfile(profileIndex.value);
         refresh();
     }
 };

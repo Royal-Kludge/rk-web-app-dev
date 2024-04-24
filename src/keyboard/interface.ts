@@ -72,6 +72,7 @@ export interface IProtocol {
     device?: HIDDevice
 
     init: () => Promise<void> | null;
+    destroy: () => Promise<void> | null;
 }
 
 export interface IPacket {

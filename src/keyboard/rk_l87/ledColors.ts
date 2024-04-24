@@ -38,9 +38,9 @@ export class LedColors {
     static fromReportData(data: DataView) : LedColors | undefined {
         let colors = undefined;
         
-        if (data.byteLength >= LED_COLOR_LENGTH * LED_EFFECT_COLOR_COUNT * LED_EFFECT_COUNT + PACKET_HEAD_LENGTH) {
-            let buffer = new DataView(data.buffer.slice(PACKET_HEAD_LENGTH, data.byteLength));
-            colors = new LedColors(buffer);
+        if (data.byteLength >= LED_COLOR_LENGTH * LED_EFFECT_COLOR_COUNT * LED_EFFECT_COUNT) {
+            //let buffer = new DataView(data.buffer.slice(PACKET_HEAD_LENGTH, data.byteLength));
+            colors = new LedColors(data);
         }
 
         return colors;

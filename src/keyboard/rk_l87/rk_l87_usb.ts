@@ -15,11 +15,8 @@ import { SetKeyMaxtrixPacket } from './packets/usb/setKeyMaxtrixPacket';
 
 export class RK_L87_Usb extends RK_L87 {
 
-    buffer: DataView;
-
     constructor(state: KeyboardState, device: HIDDevice) {
         super(state, device);
-        this.buffer = new DataView(new ArrayBuffer(519));
         state.connectType = ConnectionType.USB;
     }
 
@@ -31,27 +28,29 @@ export class RK_L87_Usb extends RK_L87 {
 
     }
 
-    async getProfile(): Promise<void> {
-        let packet = new GetProfilePacket(0x00);
-        await this.device.sendFeatureReport(REPORT_ID_USB, packet.setReport);
-        packet.fromReportData(await this.device.receiveFeatureReport(REPORT_ID_USB));
+    async getProfile(index: number): Promise<void> {
+        let packet = new GetProfilePacket(index);
+
+        await this.setFeature(REPORT_ID_USB, packet.setReport);
+        packet.fromReportData(await this.getFeature(REPORT_ID_USB));
 
         this.data.profile = packet.profile;
         this.dispatchEvent(new CustomEvent(RK_L87_EVENT_DEFINE.OnProfileGotten, { detail: this.data.profile }));
     }
 
-    async setProfile(): Promise<void> {
+    async setProfile(index: number): Promise<void> {
         if (this.data.profile != undefined) {
-            let packet = new SetProfilePacket(0x00);
+            let packet = new SetProfilePacket(index);
             packet.setPayload(this.data.profile.buffer);
-            await this.device.sendFeatureReport(REPORT_ID_USB, packet.setReport);
+            await this.setFeature(REPORT_ID_USB, packet.setReport);
         }
     }
 
     async getLedColors(): Promise<void> {
         let packet = new GetLedColorsPacket();
-        await this.device.sendFeatureReport(REPORT_ID_USB, packet.setReport);
-        packet.fromReportData(await this.device.receiveFeatureReport(REPORT_ID_USB));
+
+        await this.setFeature(REPORT_ID_USB, packet.setReport);
+        packet.fromReportData(await this.getFeature(REPORT_ID_USB));
 
         this.data.ledColors = packet.ledColors;
         this.dispatchEvent(new CustomEvent(RK_L87_EVENT_DEFINE.OnLedColorsGotten, { detail: this.data.ledColors }));
@@ -61,14 +60,15 @@ export class RK_L87_Usb extends RK_L87 {
         if (this.data.ledColors != undefined) {
             let packet = new SetLedColorsPacket();
             packet.setPayload(this.data.ledColors.buffer);
-            await this.device.sendFeatureReport(REPORT_ID_USB, packet.setReport);
+            await this.setFeature(REPORT_ID_USB, packet.setReport);
         }
     }
 
     async getKeyMaxtrix(layer: MaxtrixLayer, table: MaxtrixTable, board: number): Promise<void> {
         let packet = new GetKeyMaxtrixPacket(layer, table, board);
-        await this.device.sendFeatureReport(REPORT_ID_USB, packet.setReport);
-        packet.fromReportData(await this.device.receiveFeatureReport(REPORT_ID_USB));
+
+        await this.setFeature(REPORT_ID_USB, packet.setReport);
+        packet.fromReportData(await this.getFeature(REPORT_ID_USB));
 
         this.data.keyMaxtrix = packet.keyMaxtrix;
         this.dispatchEvent(new CustomEvent(RK_L87_EVENT_DEFINE.OnKeyMaxtrixGotten, { detail: this.data.keyMaxtrix }));
@@ -78,7 +78,7 @@ export class RK_L87_Usb extends RK_L87 {
         if (this.data.keyMaxtrix != undefined) {
             let packet = new SetKeyMaxtrixPacket(layer, table, board);
             packet.setPayload(this.data.keyMaxtrix.buffer);
-            await this.device.sendFeatureReport(REPORT_ID_USB, packet.setReport);
+            await this.setFeature(REPORT_ID_USB, packet.setReport);
         }
     }
 }

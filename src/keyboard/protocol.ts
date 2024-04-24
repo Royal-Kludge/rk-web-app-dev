@@ -12,4 +12,5 @@ export abstract class Protocol extends EventTarget implements IProtocol  {
     }
 
     abstract init(): Promise<void>;
+    abstract destroy(): Promise<void>;
 }

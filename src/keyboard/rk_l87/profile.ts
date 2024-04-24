@@ -1,4 +1,4 @@
-import { PROFILE_LENGTH, PACKET_HEAD_LENGTH } from "./packets/packet";
+import { PROFILE_LENGTH } from "./packets/packet";
 
 /**
  * Profile Field
@@ -85,9 +85,9 @@ export class Profile {
     static fromReportData(data: DataView) : Profile | undefined {
         let profile = undefined;
         
-        if (data.byteLength >= PROFILE_LENGTH + PACKET_HEAD_LENGTH) {
-            let buffer = new DataView(data.buffer.slice(PACKET_HEAD_LENGTH, PROFILE_LENGTH + PACKET_HEAD_LENGTH));
-            profile = new Profile(buffer);
+        if (data.byteLength >= PROFILE_LENGTH) {
+            //let buffer = new DataView(data.buffer.slice(PACKET_HEAD_LENGTH, PROFILE_LENGTH + PACKET_HEAD_LENGTH));
+            profile = new Profile(data);
         }
 
         return profile;

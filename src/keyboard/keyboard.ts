@@ -65,7 +65,10 @@ export class Keyboard extends EventTarget {
         if (devices.length > 0) {
             this.device = devices[0];
             if (this.device != undefined) {
-                await this.device.open();
+
+                if (!this.device.opened) {
+                    await this.device.open();
+                }
 
                 if (this.device.opened) {
                     this.state.deviceName = this.device.productName;
@@ -93,10 +96,12 @@ export class Keyboard extends EventTarget {
                     
                     const connectionEventCallback = (event: HIDConnectionEvent) => {
                         event.device.close();
-                        this.device = undefined;
+                        this.protocol?.destroy();
                         this.state.connectionEvent = ConnectionEventEnum.Disconnect;
                         this.dispatchEvent(new KeyboardEvent("connection", this));
                         this.hid?.removeEventListener("disconnect", connectionEventCallback, false);
+                        this.device = undefined;
+                        this.protocol = undefined;
                     };
 
                     this.hid.addEventListener("disconnect", connectionEventCallback, false);
@@ -113,9 +118,11 @@ export class Keyboard extends EventTarget {
         if (this.device && this.device.opened) {
             await this.device.close();
             await this.device.forget();
+            this.protocol?.destroy();
             this.state.connectionEvent = ConnectionEventEnum.Close;
             this.keyboardDefine = undefined;
             this.device = undefined;
+            this.protocol = undefined;
             this.dispatchEvent(new KeyboardEvent("connection", this)); 
         }
     }
