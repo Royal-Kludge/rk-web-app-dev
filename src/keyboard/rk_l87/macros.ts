@@ -182,16 +182,31 @@ export class Macro {
         this.actions.push(new Action(0, delay, ActionType.Down, KeyType.MouseWheel));
     }
 
+    serialize(): Uint8Array {
+        let u8Name = Macro.strToUnicode(this.name);
+        let len = 1 + u8Name.length + this.actions.length * MACRO_ACTION_LENGTH;
+        let u8 = new Uint8Array(len);
+        let index = 0;
+        u8[index++] = u8Name.length;
+        u8.set(u8Name, index);
+        index += u8Name.length;
+        for (let act of this.actions) {
+            u8.set(act.serialize(), index);
+            index += MACRO_ACTION_LENGTH;
+        }
+
+        return u8;
+    }
+
     static deserialize(data: Uint8Array) : Macro | undefined {
         if (data.byteLength < 3) return undefined;
 
         const decoder = new TextDecoder('unicode');
         let nameLen = data[0];
-        let name = decoder.decode(data.subarray(1, 1 + nameLen - 1));
-        // name = '宏1';
-        // let tmp = new TextEncoder().encode(name);
+        let name = decoder.decode(data.subarray(1, 1 + nameLen));
         let macro = new Macro(name);
         let actionCount = (data.length - nameLen - 1) / MACRO_ACTION_LENGTH;
+
         let index, i: number;
         for (i = 0; i < actionCount; i++) {
             index = nameLen + 1 + i * MACRO_ACTION_LENGTH;
@@ -201,8 +216,34 @@ export class Macro {
                 macro.add(action);
             }
         }
-
+        
         return macro;
+    }
+ 
+    static uint8ArrayToChineseString(uint8Array: Uint8Array): string {
+        let result = '';
+        for (let i = 0; i < uint8Array.length / 2; i++) {
+            let code = uint8Array[(i * 2) + 1] << 8 | uint8Array[i * 2];
+            result += String.fromCharCode(code);
+        }
+        return result;
+    }
+
+    static strToUnicode(str: string): Uint8Array {
+        let tmp: number | undefined;
+        let i = 0;
+        let u8 = new Uint8Array(str.length * 2);
+
+        for (let val of str) {
+            tmp = val.codePointAt(0);
+            if (tmp != undefined) {
+                u8[i * 2] = tmp & 0x00FF;
+                u8[i * 2 + 1] = tmp >> 8;
+            }
+            i++;
+        }
+
+        return u8;
     }
 }
 
@@ -236,6 +277,36 @@ export class Macros {
 
     get(): Array<Macro> {
         return this.macroList;
+    }
+
+    serialize(): Uint8Array {
+        let offset = this.macroList.length * MACRO_HEAD_ADDRESS_LENGTH;
+        let heads = new Array<Head>();
+        let u8Macros = new Array<Uint8Array>();
+
+        for (let macro of this.macroList) {
+            let u8Macro = macro.serialize();
+            heads.push({ offset: offset, length: u8Macro.length});
+            u8Macros.push(u8Macro);
+            offset += u8Macro.length;
+        }
+
+        let u8 = new Uint8Array(offset);
+        offset = 0;
+
+        for (let head of heads) {
+            u8[offset++] = head.offset & 0x00FF;
+            u8[offset++] = head.offset >> 8;
+            u8[offset++] = head.length & 0x00FF;
+            u8[offset++] = head.length >> 8;
+        }
+
+        for (let u8Macro of u8Macros) {
+            u8.set(u8Macro, offset);
+            offset += u8Macro.length;
+        }
+
+        return u8;
     }
 
     private analysis() {
