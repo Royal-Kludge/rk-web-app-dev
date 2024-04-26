@@ -3,14 +3,16 @@ import type { IPacket } from "../../interface";
 export const PROFILE_LENGTH: number = 128;
 export const LED_COLOR_LENGTH: number = 3;
 export const LED_EFFECT_COLOR_COUNT: number = 7;
-export const LED_EFFECT_COUNT: number = 20;
+export const LED_EFFECT_COUNT: number = 23;
 export const KEY_MAXTRIX_LINE: number = 6;
 export const KEY_MAXTRIX_COLOUMN: number = 21;
 export const PACKET_HEAD_LENGTH: number = 7;
+export const MACRO_PER_BLOCK_LENGTH: number = 512;
 export const REPORT_ID_LENGTH: number = 1;
 export const REPORT_ID_USB: number = 0x06;
 export const REPORT_ID_DONGLE: number = 0x13;
-
+export const REPORT_PAYLOAD_LENGTH: number = 0x0E;
+export const REPORT_MAX_RETRY: number = 0x0A;
 
 /**
  * Abstract class of packet base
@@ -70,12 +72,6 @@ export abstract class Packet_Dongle extends EventTarget implements IPacket {
 
     command(): Uint8Array {
         this.setReport.fill(0x00, 0, this.setReport.length - 1);
-
-        this.cmdVal = 0x00;
-        this.dataLength = 0x00;
-        this.packageNum = 1;
-        this.packageIndex = 0;
-
         this.setReport[0] = this.cmdId;
 
         return this.setReport;

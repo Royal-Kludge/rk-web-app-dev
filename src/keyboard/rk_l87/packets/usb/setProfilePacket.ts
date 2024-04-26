@@ -5,9 +5,9 @@ export class SetProfilePacket extends Packet_Usb {
 
     setReport: Uint8Array;
 
-    constructor(index: number) {
+    constructor(board: number) {
         super(0x04);
-        this.cmdVal = index;
+        this.cmdVal = 0x03 & board;
         this.dataLength = 0x80;
         this.setReport = new Uint8Array(519);
         this.setReport[0] = this.cmdId;

@@ -8,9 +8,9 @@ export class GetProfilePacket extends Packet_Usb {
     getReport?: DataView;
     profile?: Profile;
 
-    constructor(index: number) {
+    constructor(board: number) {
         super(0x84);
-        this.cmdVal = index;
+        this.cmdVal = 0x03 & board;
         this.dataLength = 0x80;
         this.setReport = new Uint8Array(519);
         this.setReport[0] = this.cmdId;

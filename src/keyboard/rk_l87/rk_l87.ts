@@ -4,46 +4,65 @@ import type { MaxtrixLayer, MaxtrixTable } from '@/keyboard/rk_l87/keyMaxtrix';
 import type { KeyMaxtrix } from "./keyMaxtrix";
 import type { LedColors } from "./ledColors";
 import type { Profile } from "./profile";
-import { ConnectionType } from '../enum'
+import type { Macros } from './macros';
 
 export const RK_L87_EVENT_DEFINE: {
     OnDongleStatusChanged: string;
     OnKeyMaxtrixGotten: string;
     OnLedColorsGotten: string;
     OnProfileGotten: string;
+    OnMacrosGotten: string;
 } = {
     OnDongleStatusChanged: 'OnDongleStatusChanged',
     OnKeyMaxtrixGotten: 'OnKeyMaxtrixGotten',
     OnLedColorsGotten: 'OnLedColorsGotten',
-    OnProfileGotten: 'OnProfileGotten'
+    OnProfileGotten: 'OnProfileGotten',
+    OnMacrosGotten: 'OnMacrosGotten'
 }
 
 export const COMMAND_ID: {
     ActivelyReport: number;
     GetDongleStatus: number;
     GetProfile: number;
+    GetLedColors: number;
+    GetKeyMaxtrix: number;
+    GetMacros: number;
+    SetProfile: number;
+    SetLedColors: number;
+    SetKeyMaxtrix: number;
+    SetMacros: number;
 } = {
     ActivelyReport: 0x0A,
     GetDongleStatus: 0x07,
-    GetProfile: 0x44
+    GetProfile: 0x44,
+    GetLedColors: 0x49,
+    GetKeyMaxtrix: 0x41,
+    GetMacros: 0x43,
+    SetProfile: 0x04,
+    SetLedColors: 0x09,
+    SetKeyMaxtrix: 0x01,
+    SetMacros: 0x03
 }
 
 export class RK_L87_Data {
     profile?: Profile;
     ledColors?: LedColors;
     keyMaxtrix?: KeyMaxtrix;
+    macros?: Macros;
 }
 
 export abstract class RK_L87 extends Protocol {
 
     data: RK_L87_Data = new RK_L87_Data();
 
-    abstract getProfile(index: number): Promise<void>;
-    abstract setProfile(index: number): Promise<void>;
-    abstract getLedColors(): Promise<void>;
-    abstract setLedColors(): Promise<void>;
+    abstract getProfile(board: number): Promise<void>;
+    abstract setProfile(board: number): Promise<void>;
+    abstract getLedColors(board: number): Promise<void>;
+    abstract setLedColors(board: number): Promise<void>;
     abstract getKeyMaxtrix(layer: MaxtrixLayer, table: MaxtrixTable, board: number): Promise<void>;
     abstract setKeyMaxtrix(layer: MaxtrixLayer, table: MaxtrixTable, board: number): Promise<void>;
+    abstract getMacros(block: number): Promise<void>;
+    abstract setMacros(): Promise<void>;
     
     abstract onGetReport(reportId: number, data: DataView): Promise<void>;
 

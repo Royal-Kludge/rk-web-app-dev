@@ -1,3 +1,5 @@
+import type { KeyCodeTable } from "./interface"
+
 /**
  * Key code of keyboard
  */
@@ -1429,4 +1431,345 @@ export const KeyText: Record<number, String> = {
 //****************************************************************
     0x0d000000: 'Fn1',
     0x0d010000: 'Fn2'
+}
+
+export const KeyText_2: Record<number, String> = {
+    0x00: '',
+    0x04: 'A',
+    0x05: 'B',
+    0x06: 'C',
+    0x07: 'D',
+    0x08: 'E',
+    0x09: 'F',
+    0x0a: 'G',
+    0x0b: 'H',
+    0x0c: 'I',
+    0x0d: 'J',
+    0x0e: 'K',
+    0x0f: 'L',
+    0x10: 'M',
+    0x11: 'N',
+    0x12: 'O',
+    0x13: 'P',
+    0x14: 'Q',
+    0x15: 'R',
+    0x16: 'S',
+    0x17: 'T',
+    0x18: 'U',
+    0x19: 'V',
+    0x1a: 'W',
+    0x1b: 'X',
+    0x1c: 'Y',
+    0x1d: 'Z',
+
+    0x29: 'ESE',       
+    0x2b: 'TAB',
+    0x39: 'CAPS',
+    0x2a: 'BackSpace',
+    0x28: 'ENTER',
+    0x2c: 'Space',
+
+    0x35: '`',   //bo lang
+    0x2d: '_',   //xia hua xian
+    0x2e: '+',   //deng hao
+    0x2f: '{',   //zuo zhong kuo hao
+    0x30: '}',   //you zhong kuo hao
+    0x31: '|',   //xie gang      //shu xian
+    0x33: ':',   //fen hao
+    0x34: '"',   //yin hao
+    0x36: '<',   //dou hao
+    0x37: '>',   //ju hao
+    0x38: '?',   //dun hao
+//////////////////////////////
+    0x1e: '1',
+    0x1f: '2',
+    0x20: '3',
+    0x21: '4',
+    0x22: '5',
+    0x23: '6',
+    0x24: '7',
+    0x25: '8',
+    0x26: '9',
+    0x27: '0',
+////////////////////
+    0x3a: 'F1',
+    0x3b: 'F2',
+    0x3c: 'F3',
+    0x3d: 'F4',
+    0x3e: 'F5',
+    0x3f: 'F6',
+    0x40: 'F7',
+    0x41: 'F8',
+    0x42: 'F9',
+    0x43: 'F10',
+    0x44: 'F11',
+    0x45: 'F12',
+    0x68: 'F13',
+    0x69: 'F14',
+    0x6A: 'F15',
+            
+    0x46: 'Print',
+    0x47: 'ScrLock',
+    0x48: 'Pause',
+    0x49: 'Ins',
+    0x4a: 'Home',
+    0x4b: 'PgUp',
+    0x4c: 'Del',
+    0x4d: 'End',
+    0x4e: 'PgDn',
+
+    0x4f: '→',
+    0x50: '←',
+    0x51: '↓',
+    0x52: '↑',
+
+    0x53: 'NumLock',
+    0x54: '/',
+    0x55: '*',
+    0x56: '-',       
+    0x57: '+',
+    0x58: 'Enter',
+    0x63: '.',
+
+    0x59: '1',
+    0x5a: '2',
+    0x5b: '3',
+    0x5c: '4',           
+    0x5d: '5',
+    0x5e: '6',
+    0x5f: '7',
+    0x60: '8',
+    0x61: '9',
+    0x62: '0',
+
+    //0x31: '',
+    0x32: '',
+    0x64: '',
+    0x65: 'App',
+    0x85: '',
+    0x87: '',
+    0x88: '',
+    0x89: '',
+    0x8a: '',
+    0x8b: '',
+    0x90: '',   //key_Hangul
+    0x91: '',   //Key_Hanja
+
+//****************************************************************
+//Modify key
+    0x00010000: 'L-Ctrl',
+    0x00020000: 'L-Shift',
+    0x00040000: 'L-Alt',
+    0x00080000: 'L-Win',
+    0x00100000: 'R-Ctrl',
+    0x00200000: 'R-Shift',
+    0x00400000: 'R-Alt',
+    0x00800000: 'R-Win',
+//****************************************************************
+//macro�е�modify key����
+    0xe0: 'L-Ctrl',
+    0xe1: 'L-Shift',
+    0xe2: 'L-Alt',
+    0xe3: 'L-Win',
+    0xe4: 'R-Ctrl',
+    0xe5: 'R-Shift',
+    0xe6: 'R-Alt',
+    0xe7: 'R-Win',
+//****************************************************************
+//macro�е�mouse key����
+    0x01: 'Mouse-L',
+    0x02: 'Mouse-R',
+    //0x04: 'Mouse-M',
+    //0x08: 'Mouse-B4',
+    //0x10: 'Mouse-B5',
+    0xff: 'Mouse-LT',
+    //0x01: 'Mouse-RT',
+    //0xff: 'Mouse-UP',
+    //0x01: 'Mouse-DN',
+//****************************************************************
+//��ϼ�����? 
+    //KEY_win_shift_4	  	  : 'Win + Shift + 4',
+    //KEY_win_shift_3	  	  : 'Win + Shift + 4',
+    //KEY_win_shift_ctrl_4  : 'Win + Shift + Ctrl + 4',
+    //KEY_WIN_D	  		  : 'Win + D',
+    //KEY_WIN_SPACEBAR	  : 'Win + Space',//SIRI
+    //KEY_WIN_TAB	  		  : 'Win + Tab',//�����񴰿�
+    //KEY_WIN_E	  		  : 'Win + E',//�����б�    
+    //KEY_ALT_SPACEBAR	  : 'Alt + Space',//SIRI    
+    //KEY_CTRL_UP	  		  : 'Ctrl + UP',
+    //KEY_CTRL_DN	  		  : 'Ctrl + DN',
+    //KEY_CTRL_C	  		  : 'Ctrl + C',
+    //KEY_CTRL_V	  		  : 'Ctrl + V',
+    //KEY_ALT_TAB	  		  : 'Alt + Tab',
+//****************************************************************
+//BYTE1:1�����?2�Ҽ���3�м���4ǰ������5���˼���6��ڡ�?7�Ұڡ�8�Ϲ��֡�9�¹��֡�10X����11X���ҡ�12Y���ϡ�13Y����
+//BYTE2:0xff��������0����һ�Σ����·������룬�ͷŷ��ͷ��룩��1˫����2������
+//BYTE3:�����ظ�ʱ�䣬0Ĭ�ϼ��ʱ��?
+//Mouse key
+    0x01010100: 'L-Button',
+    0x01020100: 'R-Button',
+    0x01030100: 'M-Button',
+    0x01040100: 'RB0-Button',
+    0x01050100: 'RB1-Button',
+    0x01060100: 'TL-Button',
+    0x01070100: 'TR-Button',
+    0x01080100: 'ScrollUp-Button',
+    0x01090100: 'ScrollDn-Button',
+    0x010A0000: 'MS-X-L',
+    0x010B0000: 'MX-X-R',
+    0x010C0000: 'MS-Y-L',
+    0x010D0000: 'MS-Y-R',
+//****************************************************************
+//��ý���?
+    0x0200006f: 'SysBkBrigthInc',
+    0x02000070: 'SysBkBrigthDec',
+    0x02000040: 'IOSBack',//F7
+
+    0x020000b5: 'NextTr',//0xE8
+    0x020000b6: 'PrevTr',//0xE9
+    0x020000b7: 'Stop',//0xEA
+    0x020000b8: 'Eject',//0xEB
+    0x020000cd: 'PlayPause',//0xEC
+    0x020000E2: 'Mute',//0xED
+    0x020000e9: 'VolumI',//0xEE  //+
+    0x020000ea: 'VolumD',//0xEF  //-
+
+    0x02000183: 'Media',//F0
+    0x0200018a: 'Email',//F1
+    0x02000192: 'Calculator',//F2
+    0x02000194: 'MyComputer',//F3
+    0x02000221: 'Search',//F4
+    0x02000223: 'WWW',//F5
+    0x02000224: 'Back',//F6
+    0x02000225: 'Forward',//F7
+
+    0x02000226: 'iStop',
+    0x02000227: 'Refresh',
+    0x0200022a: 'Favorites',
+
+    0x0200029F: 'MAC-F3',
+    0x020002A0: 'MAC-F4',
+//****************************************************************
+//byte3��0x03��ʾ��macro��byte2��������ʾmacro��ѭ����ʽ��byte1��ѭ������  byte0��������ʾmacro���?
+//byte2����ʱ��������
+//0x01	ָ��ѭ��������0x02ѭ������������£�?0x03ѭ������ǰ���ɿ�
+//Macro Key
+    0x03000000: 'Macro0',
+    0x03000001: 'Macro1',
+
+//****************************************************************
+//ͨ��ð�ݶ˿ڷ����Զ���ļ�ֵ�������������⹦�ܴ�����������?�̶������ӣ�
+//�Զ����?
+    0x04000001: 'Define1',	
+    0x04000002: 'Define2',
+//****************************************************************
+    0x0d000000: 'Fn1',
+    0x0d010000: 'Fn2'
+}
+
+export const KeyCodeMap: Record<string, KeyCodeTable> = {
+
+    'Escape':           { key: 'Escape',        hid: 0X29, vk: 0x1B },
+    'F1':               { key: 'F1',            hid: 0X3a, vk: 0x70 }, 
+    'F2':               { key: 'F2',            hid: 0X3b, vk: 0x71 }, 
+    'F3':               { key: 'F3',            hid: 0X3c, vk: 0x72 }, 
+    'F4':               { key: 'F4',            hid: 0X3d, vk: 0x73 }, 
+    'F5':               { key: 'F5',            hid: 0X3e, vk: 0x74 }, 
+    'F6':               { key: 'F6',            hid: 0X3f, vk: 0x75 }, 
+    'F7':               { key: 'F7',            hid: 0X40, vk: 0x76 }, 
+    'F8':               { key: 'F8',            hid: 0X41, vk: 0x77 }, 
+    'F9':               { key: 'F9',            hid: 0X42, vk: 0x78 }, 
+    'F10':              { key: 'F10',           hid: 0X43, vk: 0x79 }, 
+    'F11':              { key: 'F11',           hid: 0X44, vk: 0x7A }, 
+    'F12':              { key: 'F12',           hid: 0X45, vk: 0x7B }, 
+	'Backspace':        { key: 'Backspace',     hid: 0X2a, vk: 0x08 }, 
+    'Tab':              { key: 'Tab',           hid: 0X2b, vk: 0x09 }, 
+	'CapsLock':         { key: 'CapsLock',      hid: 0X39, vk: 0x14 }, 
+	'Enter':            { key: 'Enter',         hid: 0X28, vk: 0x0D }, 
+	'Space':            { key: 'Space',         hid: 0X2c, vk: 0x20 }, 
+    'ScrollLock ':      { key: 'ScrollLock',    hid: 0X47, vk: 0x91 }, 
+	'Pause':            { key: 'Pause',         hid: 0X48, vk: 0x13 }, 
+	'Insert':           { key: 'Insert',        hid: 0X49, vk: 0x2D }, 
+	'PrintScreen':      { key: 'PrintScreen',   hid: 0X46, vk: 0x2C }, 
+	'Delete':           { key: 'Delete',        hid: 0X4c, vk: 0x2E }, 
+	'Home':             { key: 'Home',          hid: 0X4a, vk: 0x24 }, 
+	'End':              { key: 'End',           hid: 0X4d, vk: 0x23 }, 
+	'PageUp':           { key: 'PageUp',        hid: 0X4b, vk: 0x21 }, 
+	'PageDown':         { key: 'PageDown',      hid: 0X4e, vk: 0x22 }, 
+	'ArrowLeft':        { key: 'ArrowLeft',     hid: 0X50, vk: 0x25 }, 
+	'ArrowUp':          { key: 'ArrowUp',       hid: 0X52, vk: 0x26 }, 
+	'ArrowRight':       { key: 'ArrowRight',    hid: 0X4f, vk: 0x27 }, 
+	'ArrowDown':        { key: 'ArrowDown',     hid: 0X51, vk: 0x28 }, 
+	'Numpad0':          { key: '0',             hid: 0X62, vk: 0x60 }, 
+    'Numpad1':          { key: '1',             hid: 0X59, vk: 0x61 }, 
+    'Numpad2':          { key: '2',             hid: 0X5a, vk: 0x62 }, 
+    'Numpad3':          { key: '3',             hid: 0X5b, vk: 0x63 }, 
+    'Numpad4':          { key: '4',             hid: 0X5c, vk: 0x64 }, 
+    'Numpad5':          { key: '5',             hid: 0X5d, vk: 0x65 }, 
+    'Numpad6':          { key: '6',             hid: 0X5e, vk: 0x66 }, 
+    'Numpad7':          { key: '7',             hid: 0X5f, vk: 0x67 }, 
+    'Numpad8':          { key: '8',             hid: 0X60, vk: 0x68 }, 
+    'Numpad9':          { key: '9',             hid: 0X61, vk: 0x69 }, 
+	'NumpadAdd ':       { key: '+',             hid: 0X57, vk: 0x6B }, 
+	'NumpadSubtract':   { key: '-',             hid: 0X56, vk: 0x6D }, 
+	'NumpadMultiply':   { key: '*',             hid: 0X55, vk: 0x6A }, 
+	'NumpadDivide':     { key: '/',             hid: 0X54, vk: 0x6F }, 
+	'NumpadDecimal':    { key: '.',             hid: 0X63, vk: 0x6E }, 
+	'NumLock':          { key: 'NumLock',       hid: 0X53, vk: 0x90 }, 
+	'ControlLeft':      { key: 'ControlRight',  hid: 0XE0, vk: 0x11 }, 
+    'ControlRight':     { key: 'ControlRight',  hid: 0XE4, vk: 0x11 },
+    'ShiftLeft':        { key: 'ShiftLeft',     hid: 0XE1, vk: 0x10 }, 
+    'ShiftRight':       { key: 'ShiftRight',    hid: 0XE5, vk: 0x10 }, 
+    'AltLeft':          { key: 'AltLeft',       hid: 0XE2, vk: 0x12 }, 
+    'AltRight':         { key: 'AltRight',      hid: 0XE6, vk: 0x12 }, 
+    'ContextMenu':      { key: 'ContextMenu',   hid: 0x65, vk: 0x5D }, 
+    'LWIN':             { key: 'LWin',          hid: 0xE3, vk: 0x5B }, 
+    'RWIN':             { key: 'RWin',          hid: 0xE7, vk: 0x5C }, 
+    'KeyA':             { key: 'A',             hid: 0X04, vk: 0x41 }, 
+    'KeyB':             { key: 'B',             hid: 0X05, vk: 0x42 }, 
+    'KeyC':             { key: 'C',             hid: 0X06, vk: 0x43 }, 
+    'KeyD':             { key: 'D',             hid: 0X07, vk: 0x44 }, 
+    'KeyE':             { key: 'E',             hid: 0X08, vk: 0x45 }, 
+    'KeyF':             { key: 'F',             hid: 0X09, vk: 0x46 }, 
+    'KeyG':             { key: 'G',             hid: 0X0a, vk: 0x47 }, 
+    'KeyH':             { key: 'H',             hid: 0X0b, vk: 0x48 }, 
+    'KeyI':             { key: 'I',             hid: 0X0c, vk: 0x49 }, 
+    'KeyJ':             { key: 'J',             hid: 0X0d, vk: 0x4A }, 
+    'KeyK':             { key: 'K',             hid: 0X0e, vk: 0x4B }, 
+    'KeyL':             { key: 'L',             hid: 0X0f, vk: 0x4C }, 
+    'KeyM':             { key: 'M',             hid: 0X10, vk: 0x4D }, 
+    'KeyN':             { key: 'N',             hid: 0X11, vk: 0x4E }, 
+    'KeyO':             { key: 'O',             hid: 0X12, vk: 0x4F }, 
+    'KeyP':             { key: 'P',             hid: 0X13, vk: 0x50 }, 
+    'KeyQ':             { key: 'Q',             hid: 0X14, vk: 0x51 }, 
+    'KeyR':             { key: 'R',             hid: 0X15, vk: 0x52 }, 
+    'KeyS':             { key: 'S',             hid: 0X16, vk: 0x53 }, 
+    'KeyT':             { key: 'T',             hid: 0X17, vk: 0x54 }, 
+    'KeyU':             { key: 'U',             hid: 0X18, vk: 0x55 }, 
+    'KeyV':             { key: 'V',             hid: 0X19, vk: 0x56 }, 
+    'KeyW':             { key: 'W',             hid: 0X1a, vk: 0x57 }, 
+    'KeyX':             { key: 'X',             hid: 0X1b, vk: 0x58 }, 
+    'KeyY':             { key: 'Y',             hid: 0X1c, vk: 0x59 }, 
+    'KeyZ':             { key: 'Z',             hid: 0X1d, vk: 0x5A }, 
+    'Digit0':           { key: '0',             hid: 0X27, vk: 0x30 }, 
+    'Digit1':           { key: '1',             hid: 0X1e, vk: 0x31 }, 
+    'Digit2':           { key: '2',             hid: 0X1f, vk: 0x32 }, 
+    'Digit3':           { key: '3',             hid: 0X20, vk: 0x33 }, 
+    'Digit4':           { key: '4',             hid: 0X21, vk: 0x34 }, 
+    'Digit5':           { key: '5',             hid: 0X22, vk: 0x35 }, 
+    'Digit6':           { key: '6',             hid: 0X23, vk: 0x36 }, 
+    'Digit7':           { key: '7',             hid: 0X24, vk: 0x37 }, 
+    'Digit8':           { key: '8',             hid: 0X25, vk: 0x38 }, 
+    'Digit9':           { key: '9',             hid: 0X26, vk: 0x39 },
+    'Minus':            { key: '-',             hid: 0x2d, vk: 0xBD },
+    'Equal':            { key: '=',             hid: 0x2e, vk: 0xBB },
+    'Comma':            { key: ',',             hid: 0x36, vk: 0xBC },
+    'Period':           { key: '.',             hid: 0x37, vk: 0xBE },
+    'Semicolon':        { key: ';',             hid: 0x33, vk: 0xBA },
+    'Backquote':       { key: '`',             hid: 0x35, vk: 0xC0 },
+    'Quote':            { key: '\'',            hid: 0x34, vk: 0xDE },
+    'BracketLeft':      { key: '[',             hid: 0x2f, vk: 0xDB },
+    'BracketRight':     { key: ']',             hid: 0x30, vk: 0xDD },
+    'Backslash':        { key: '\\',            hid: 0x31, vk: 0xDC },
+    'Slash':           { key: '/',             hid: 0x38, vk: 0xBF },
 }

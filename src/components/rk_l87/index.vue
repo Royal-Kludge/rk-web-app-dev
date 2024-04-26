@@ -1,6 +1,6 @@
 <template>
     <div class="d-flex jc-center ai-center" v-if="state.connectType == ConnectionType.Dongle && state.connectState != ConnectionStatusEnum.Connected">
-        <p style="font-size: 42px; margin-top: 30%;">The keyboard not connected to dongle.</p>
+        <p style="font-size: 42px; margin-top: 30%;">No keyboard connected to dongle</p>
     </div>
     <div v-else>
         <el-container>
@@ -22,8 +22,9 @@
         </el-container>
         <el-container>
             <el-main style="--el-main-padding:10px; display: flex; justify-content: center; flex-wrap: wrap; align-items: center;">
+                <Key v-if="tabId == 0"/>
+                <Macro v-if="tabId == 1"/>
                 <Light v-if="tabId == 2"/>
-                <KeyMapping v-if="tabId == 0"/>
             </el-main>
         </el-container>
     </div>
@@ -35,14 +36,15 @@ import { keyboard } from '../../keyboard/keyboard';
 import { RK_L87, RK_L87_EVENT_DEFINE } from '../../keyboard/rk_l87/rk_l87';
 import { ConnectionStatusEnum, ConnectionType } from '../../keyboard/enum'
 import Light from './light.vue'
-import KeyMapping from './keyMapping.vue'
+import Key from './key.vue'
+import Macro from './macro.vue'
 
 const tabId = ref(0)
 const rk_l87 = ref<RK_L87>();
 
 const state = reactive({
     menus: [
-        { id: 0, label: 'KeyMapping' },
+        { id: 0, label: 'Key' },
         { id: 1, label: 'Macro' },
         { id: 2, label: 'Light' }
     ],

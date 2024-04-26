@@ -78,3 +78,9 @@ export interface IProtocol {
 export interface IPacket {
     fromReportData(buffer: DataView) : IPacket;
 }
+
+export interface KeyCodeTable {
+    key: string,
+    hid: number,
+    vk: number
+}

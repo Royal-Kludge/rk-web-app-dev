@@ -1,0 +1,277 @@
+import { KeyDefineEnum, KeyText_2 } from "../keyCode";
+
+const MACRO_HEAD_ADDRESS_LENGTH = 4;
+const MACRO_ACTION_LENGTH = 4;
+const MACRO_CAPACITY = 4096
+
+export enum ActionType {
+    Up = 1,
+    Down = 0
+}
+
+export enum KeyType {
+    NormalKey = 0,
+    ModifyKey = 1,
+    MouseKey = 2,
+    MouseCursorX = 3,
+    MouseCursorY = 4,
+    MouseWheel = 5
+}
+
+export const ModifyKeyText: Record<number, String> = {
+    0xe0: 'L-Ctrl',
+    0xe1: 'L-Shift',
+    0xe2: 'L-Alt',
+    0xe3: 'L-Win',
+    0xe4: 'R-Ctrl',
+    0xe5: 'R-Shift',
+    0xe6: 'R-Alt',
+    0xe7: 'R-Win',
+}
+
+export const MouseKeyText: Record<number, String> = {
+    0x01: 'Mouse-L',
+    0x02: 'Mouse-R',
+    0x04: 'Mouse-M',
+    0x08: 'Mouse-B4',
+    0x10: 'Mouse-B5',
+    0xff: 'Mouse-LT',
+}
+
+export class Action {
+    action = ActionType.Down;
+    type = KeyType.NormalKey;
+    delay = 1;
+    key = KeyDefineEnum.NONE;
+    index = 0;
+
+    constructor(key: KeyDefineEnum | number, delay: number = 50, action: ActionType = ActionType.Down,  type: KeyType = KeyType.NormalKey) {
+
+        switch (key) {
+            case KeyDefineEnum.CTRL_L:
+            case KeyDefineEnum.SHIFT_L:
+            case KeyDefineEnum.ALT_L:  
+            case KeyDefineEnum.WIN_L: 
+            case KeyDefineEnum.CTRL_R:
+            case KeyDefineEnum.SHIFT_R:
+            case KeyDefineEnum.ALT_R:  
+            case KeyDefineEnum.WIN_R:
+                this.type = KeyType.ModifyKey;
+                break;
+            case KeyDefineEnum.MOUSE_L:
+            case KeyDefineEnum.MOUSE_R:
+            case KeyDefineEnum.MOUSE_M:
+            case KeyDefineEnum.MOUSE_B4:
+            case KeyDefineEnum.MOUSE_B5:
+                this.type = KeyType.MouseKey;
+                break;
+        }
+
+        this.action = action;
+        this.type = type;
+        this.delay = delay;
+        this.key = key;
+    }
+
+    serialize(): Uint8Array {
+        let u8 = new Uint8Array(4);
+        u8[0] = ((this.action << 7) & 0xFF) | ((this.type << 4) & 0xFF) | ((this.delay & 0x000F0000) >> 16);
+        u8[1] = (this.delay & 0x0000FF00) >> 8;
+        u8[2] = this.delay & 0xFF;
+        u8[3] = this.key & 0xFF;
+
+        return u8;
+    }
+
+    toString(): string {
+        let text = '';
+
+        switch (this.type) {
+            case KeyType.NormalKey:
+                text = `Key: [${KeyText_2[this.key].valueOf()}]`;
+                break;
+            case KeyType.ModifyKey:
+                text = `Key: [${ModifyKeyText[this.key].valueOf()}]`;
+                break;
+            case KeyType.MouseKey:
+                text = `Key: [${MouseKeyText[this.key].valueOf()}]`;
+                break;
+            case KeyType.MouseCursorX:
+                text = `CursorX: [${this.key}]`
+                break;
+            case KeyType.MouseCursorY:
+                text = `CursorY: [${this.key}]`
+                break;
+            case KeyType.MouseWheel:
+                text = `Wheel: [${this.key}]`
+                break;
+        }
+
+        return `${this.action == ActionType.Down ? '↓' : '↑'} ${text} delay:${this.delay}`
+    }
+
+    static deserialize(data: Uint8Array) : Action | undefined {
+        if (data.byteLength != 4) return undefined;
+        
+        let action = data[0] >> 7;
+        let type = data[0] >> 4 & 0x07;
+        let delay = (data[0] << 16 & 0x000F0000) | (data[1] << 8) | (data[2]);
+        let key = data[3];
+
+        return new Action(key, delay, action, type);
+    }
+}
+
+export interface Head {
+    offset: number;
+    length: number;
+}
+
+export class Macro {
+    name: string;
+    actions: Array<Action>;
+    index = 0;
+
+    constructor(name: string) {
+        this.name = name;
+        this.actions = new Array<Action>();
+    }
+
+    add(action: Action) {
+        this.actions.push(action);
+    }
+
+    remove(action: Action) {
+        let index = this.actions.findIndex(obj => obj.index === action.index);
+        if (index !== -1) {
+            this.actions.splice(index, 1);
+        }
+        
+        index = 0;
+        this.actions.forEach((p) => {
+            p.index = index++;
+        });
+    }
+
+    addKeyPress(key: KeyDefineEnum, delay: number = 50) {
+        this.actions.push(new Action(key, delay));
+        this.actions.push(new Action(key, delay));
+    }
+
+    addKeyDown(key: KeyDefineEnum, delay: number = 50) {
+        this.actions.push(new Action(key, delay, ActionType.Down));
+    }
+
+    addKeyUp(key: KeyDefineEnum, delay: number = 50) {
+        this.actions.push(new Action(key, delay, ActionType.Up));
+    }
+
+    addMouseCursorX(move: number, delay: number = 50) {
+        this.actions.push(new Action(move, delay, ActionType.Down, KeyType.MouseCursorX));
+    }
+
+    addMouseCursorY(move: number, delay: number = 50) {
+        this.actions.push(new Action(move, delay, ActionType.Down, KeyType.MouseCursorY));
+    }
+
+    addMouseWheelUp(delay: number = 50) {
+        this.actions.push(new Action(0, delay, ActionType.Up, KeyType.MouseWheel));
+    }
+
+    addMouseWheelDown(delay: number = 50) {
+        this.actions.push(new Action(0, delay, ActionType.Down, KeyType.MouseWheel));
+    }
+
+    static deserialize(data: Uint8Array) : Macro | undefined {
+        if (data.byteLength < 3) return undefined;
+
+        const decoder = new TextDecoder('unicode');
+        let nameLen = data[0];
+        let name = decoder.decode(data.subarray(1, 1 + nameLen - 1));
+        // name = '宏1';
+        // let tmp = new TextEncoder().encode(name);
+        let macro = new Macro(name);
+        let actionCount = (data.length - nameLen - 1) / MACRO_ACTION_LENGTH;
+        let index, i: number;
+        for (i = 0; i < actionCount; i++) {
+            index = nameLen + 1 + i * MACRO_ACTION_LENGTH;
+            let action = Action.deserialize(data.subarray(index, index + MACRO_ACTION_LENGTH));
+            if (action != undefined) {
+                action.index = i;
+                macro.add(action);
+            }
+        }
+
+        return macro;
+    }
+}
+
+export class Macros {
+    buffer: DataView;
+    private macroList: Array<Macro>;
+
+    constructor(data: DataView) {
+        this.buffer = data;
+        this.macroList = new Array<Macro>();
+
+        this.analysis();
+    }
+
+    add(macro: Macro) {
+        macro.index = this.macroList.length;
+        this.macroList.push(macro);
+    }
+
+    remove(macro: Macro) {
+        let index = this.macroList.findIndex(obj => obj.index === macro.index);
+        if (index !== -1) {
+            this.macroList.splice(index, 1);
+        }
+        
+        index = 0;
+        this.macroList.forEach((p) => {
+            p.index = index++;
+        });
+    }
+
+    get(): Array<Macro> {
+        return this.macroList;
+    }
+
+    private analysis() {
+        if (this.buffer.byteLength <= 4) return;
+        
+        let headLen = this.buffer.getUint8(0) | this.buffer.getUint8(1) << 8;
+
+        if (headLen > 0) {
+            let heads = new Array<Head>();
+            let i: any, headCount = headLen / MACRO_HEAD_ADDRESS_LENGTH;
+
+            for (i = 0; i < headCount; i++) {
+                heads.push({
+                    offset: this.buffer.getUint8(i * MACRO_HEAD_ADDRESS_LENGTH) | this.buffer.getUint8(i * MACRO_HEAD_ADDRESS_LENGTH + 1) << 8,
+                    length: this.buffer.getUint8(i * MACRO_HEAD_ADDRESS_LENGTH + 2) | this.buffer.getUint8(i * MACRO_HEAD_ADDRESS_LENGTH + 3) << 8,
+                });
+            }
+
+            for (i in heads) {
+                let u8 = new Uint8Array(this.buffer.buffer.slice(heads[i].offset, heads[i].length + heads[i].offset));
+                let macro = Macro.deserialize(u8);
+                if (macro != undefined) {
+                    macro.index = i;
+                    this.add(macro);
+                }
+            }
+        }
+    }
+
+    static deserialize(data: DataView) : Macros | undefined {
+        let macros = undefined;
+        
+        if (data.byteLength <= MACRO_CAPACITY) {
+            macros = new Macros(data);
+        }
+
+        return macros;
+    }
+}

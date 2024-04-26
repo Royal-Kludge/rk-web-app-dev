@@ -1,5 +1,5 @@
 import type { IPacket } from "@/keyboard/interface";
-import { Packet_Usb, LED_COLOR_LENGTH, LED_EFFECT_COLOR_COUNT, LED_EFFECT_COUNT, PACKET_HEAD_LENGTH, PROFILE_LENGTH } from "@/keyboard/rk_l87/packets/packet";
+import { Packet_Usb, LED_COLOR_LENGTH, LED_EFFECT_COLOR_COUNT, LED_EFFECT_COUNT, PACKET_HEAD_LENGTH } from "@/keyboard/rk_l87/packets/packet";
 import { LedColors } from "@/keyboard/rk_l87/ledColors";
 
 export class GetLedColorsPacket extends Packet_Usb {
@@ -8,9 +8,9 @@ export class GetLedColorsPacket extends Packet_Usb {
     getReport?: DataView;
     ledColors?: LedColors;
 
-    constructor() {
+    constructor(board: number) {
         super(0x8a);
-        this.cmdVal = 0x00;
+        this.cmdVal = 0x03 & board;
         this.dataLength = LED_COLOR_LENGTH * LED_EFFECT_COLOR_COUNT * LED_EFFECT_COUNT;
         this.setReport = new Uint8Array(519);
         this.setReport[0] = this.cmdId;

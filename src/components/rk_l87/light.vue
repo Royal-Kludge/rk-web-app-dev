@@ -111,12 +111,11 @@ onBeforeUnmount(() => {
 
 const getLightData = async () => {
     await rk_l87.value?.getProfile(profileIndex.value);
-    await rk_l87.value?.getLedColors();
 }
 
-const profileGotten = (event: any) => {
+const profileGotten = async (event: any) => {
     profile.value = event.detail as Profile;
-    refresh();
+    await rk_l87.value?.getLedColors(profileIndex.value);
 };
 
 const ledColorsGotten = (event: any) => {
@@ -191,7 +190,7 @@ const onPicking = (r:any, g:any, b:any) => {
 };
 const onPicked = () => {
     if (ledColors.value != undefined && rk_l87.value != undefined) {
-        rk_l87.value.setLedColors();
+        rk_l87.value.setLedColors(profileIndex.value);
         refresh();
     }
 };

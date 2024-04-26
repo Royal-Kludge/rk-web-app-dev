@@ -9,6 +9,12 @@ export class GetDongleStatusPacket extends Packet_Dongle {
 
     command(): Uint8Array {
         super.command();
+        
+        this.cmdVal = 0x00;
+        this.dataLength = 0x00;
+        this.packageNum = 1;
+        this.packageIndex = 0;
+
         this.setReport[1] = 0x01;
         this.setReport[this.setReport.length - 1] = this.crc();
         return this.setReport;
