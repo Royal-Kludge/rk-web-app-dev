@@ -1,5 +1,5 @@
 import type { IProtocol, KeyTableData, LightEffect, LightInfo, KeyboardDefine } from './interface'
-import { ConnectionType, ConnectionEventEnum } from './enum'
+import { ConnectionType, ConnectionEventEnum, KeyMappingType } from './enum'
 import { defaultState, KeyboardDefineList } from './state'
 
 /**
@@ -141,8 +141,10 @@ export class Keyboard extends EventTarget {
                     keyCode: code,
                     index: item,
                     keyMappingData: {
-                        key: this.keyboardDefine.keyText[code],
+                        keyStr: this.keyboardDefine.keyText[code],
                         keyCode: code,
+                        keyMappingType: KeyMappingType.KeyBoard,
+                        keyMappingPara: 0
                     }
                 }
                 keyTableDatas.push(key);

@@ -1,5 +1,5 @@
 import { KeyDefineEnum } from "./keyCode"
-import { ConnectionType, ConnectionEventEnum, ConnectionStatusEnum, KeyRemappingType } from "./enum"
+import { ConnectionType, ConnectionEventEnum, ConnectionStatusEnum, KeyMappingType } from "./enum"
 
 /**
  * Keyboard State
@@ -34,8 +34,10 @@ export interface KeyboardDefine {
 }
 
 export interface KeyMappingData {
-    key: String,
-    keyCode: KeyDefineEnum
+    keyStr: String,
+    keyCode: KeyDefineEnum | number,
+    keyMappingType: KeyMappingType,
+    keyMappingPara: number
 }
 
 export interface LedColor {

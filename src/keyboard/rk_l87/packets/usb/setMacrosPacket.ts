@@ -5,9 +5,8 @@ export class SetMacrosPacket extends Packet_Usb {
 
     setReport: Uint8Array;
 
-    constructor(board: number) {
+    constructor() {
         super(0x05);
-        this.cmdVal = 0x03 & board;
         this.setReport = new Uint8Array(519);
         this.setReport[0] = this.cmdId;
     }

@@ -14,7 +14,7 @@ import { GetKeyMaxtrixPacket } from './packets/usb/getKeyMaxtrixPacket';
 import { SetKeyMaxtrixPacket } from './packets/usb/setKeyMaxtrixPacket';
 
 import { GetMacrosPacket } from './packets/usb/getMacrosPacket';
-//import { SetKeyMaxtrixPacket } from './packets/usb/setKeyMaxtrixPacket';
+import { SetMacrosPacket } from './packets/usb/setMacrosPacket';
 
 export class RK_L87_Usb extends RK_L87 {
 
@@ -96,6 +96,25 @@ export class RK_L87_Usb extends RK_L87 {
     }
 
     async setMacros(): Promise<void> {
-        
+        if (this.data.macros != undefined) {
+            let packet = new SetMacrosPacket();
+            let u8 = this.data.macros?.serialize();
+            
+            let pkgs = new Array<DataView>();
+            let index = 0;
+            do {
+                let end = index + 512 > u8.length ? u8.length : index + 512;
+                pkgs.push(new DataView(u8.subarray(index, end).buffer));
+                index = end + 1;
+            } while (index < u8.length)
+
+            packet.packageNum = pkgs.length;
+            index = 0;
+            for (let pkg of pkgs) {
+                packet.packageIndex = index;
+                packet.setPayload(pkg);
+                await this.setFeature(REPORT_ID_USB, packet.setReport);
+            }
+        }
     }
 }

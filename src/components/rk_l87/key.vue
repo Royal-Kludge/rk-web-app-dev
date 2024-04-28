@@ -15,6 +15,7 @@
                         <template #dropdown>
                             <el-dropdown-menu style="padding: 0px;">
                                 <el-dropdown-item @click="keySetToDefault(key.index)" style="height: min-content;">Default</el-dropdown-item>
+                                <el-dropdown-item @click="keySetMacro(key.index)" style="height: min-content;">Macro</el-dropdown-item>
                             </el-dropdown-menu>
                         </template>
                     </el-dropdown>
@@ -22,6 +23,38 @@
                          v-if="key.index >= 999"></div>
                 </div>
             </div>
+            <el-dialog v-model="state.macroDialogShow" top="20vh" width="300px" height="100%"
+                       style="--el-dialog-padding-primary:5px;background-color: black;" :lock-scroll="true">
+                <div class="d-flex ai-center" 
+                     style="border: 1px solid #ffffff3f;height: 15vh;margin: 20px;">
+                    <el-scrollbar>
+                        <div style="cursor: pointer; padding: 2px; width: 80%;width: 230px;"
+                             :class="[`d-flex ai-center m-2`, isMacroSelected(macro)]"
+                             v-for=" macro in state.macros?.get()" @click="clickMacro(macro)">
+                             <span style="color: white;">{{ macro.name }}</span>
+                        </div>
+                    </el-scrollbar>
+                </div>
+                <div class="d-flex flex-column">
+                    <div class="d-flex flex-column ml-4 mb-1">
+                        <span>Type</span>
+                        <el-select v-model="state.cycleType" class="mt-1"
+                                placeholder="Select"
+                                size="small"
+                                style="width: 220px">
+                            <el-option v-for="item in state.cycleTypes" :key="item.value" :label="item.label" :value="item.value"/>
+                        </el-select>
+                    </div>
+                    <div class="d-flex flex-column ml-4 mt-1">
+                        <span>Cycles</span>
+                        <el-input-number class="mt-1" size="small" style="width: 120px;height: 25px;" v-model="state.cycleCount" type="number"/>
+                    </div>
+                </div>
+                <div class="br-2 bg-white text-black px-4 jc-center ai-center mt-4" 
+                     style="cursor: pointer;font-size: 12px;width: 48px;height: auto; text-align: center;padding: 4px;margin-left: 20px;" @click="confirmSetMacro">
+                    Confirm
+                </div>
+            </el-dialog>
         </div>
         <div class="d-flex jc-center" style="margin-top: 5vh;">
             <div class="d-flex flex-column m-2" style="width: 150px;">
@@ -115,6 +148,11 @@
     min-width: 18px;
     margin: 1px;
     padding: 5px
+}
+
+.macro_selected {
+    border: 1px solid #ffffffaf;
+    padding: 1px;
 }
 
 .mapping:hover,
@@ -212,7 +250,9 @@ import { keyboard } from '../../keyboard/keyboard'
 import { RK_L87, RK_L87_EVENT_DEFINE } from '../../keyboard/rk_l87/rk_l87';
 import { KeyDefineEnum } from '../../keyboard/keyCode'
 import { type KeyTableData } from '../../keyboard/interface'
+import { KeyMappingType } from '../../keyboard/enum'
 import { KeyMaxtrix, MaxtrixLayer, MaxtrixTable } from '@/keyboard/rk_l87/keyMaxtrix';
+import { Macro, type Macros } from '@/keyboard/rk_l87/macros';
 import type { DropdownInstance } from 'element-plus'
 
 interface KeyState {
@@ -223,7 +263,10 @@ interface KeyState {
 
 const rk_l87 = ref<RK_L87>();
 const keyMaxtrix = ref<KeyMaxtrix>();
-const keyMapping = ref<any>(null)
+const keyMapping = ref<any>(null);
+const macros = ref<Macros>();
+const macro = ref<Macro>();
+const keyState = ref<KeyState>();
 
 const getKeyData = (index: number): KeyTableData | undefined => {
     let keyData = undefined;
@@ -321,7 +364,7 @@ const state = reactive({
             { key: KeyDefineEnum.NONE,              style: 'split4',    index: 999,                  keyData: undefined }
         ],
         [
-            { key: KeyDefineEnum.KEY_L_SHIFT,       style: 'lshift',    index: getIndex(4, 0),       keyData: getKeyData(getIndex(4, 0)) },
+            { key: KeyDefineEnum.SHIFT_L,           style: 'lshift',    index: getIndex(4, 0),       keyData: getKeyData(getIndex(4, 0)) },
             { key: KeyDefineEnum.KEY_Z,             style: '',          index: getIndex(4, 1),       keyData: getKeyData(getIndex(4, 1)) },
             { key: KeyDefineEnum.KEY_X,             style: '',          index: getIndex(4, 2),       keyData: getKeyData(getIndex(4, 2)) },
             { key: KeyDefineEnum.KEY_C,             style: '',          index: getIndex(4, 3),       keyData: getKeyData(getIndex(4, 3)) },
@@ -332,21 +375,21 @@ const state = reactive({
             { key: KeyDefineEnum.KEY_COMMA,         style: '',          index: getIndex(4, 8),       keyData: getKeyData(getIndex(4, 8)) },
             { key: KeyDefineEnum.KEY_PERIOD,        style: '',          index: getIndex(4, 9),       keyData: getKeyData(getIndex(4, 9)) },
             { key: KeyDefineEnum.KEY_Interrogation, style: '',          index: getIndex(4, 10),      keyData: getKeyData(getIndex(4, 10)) },
-            { key: KeyDefineEnum.KEY_R_SHIFT,       style: 'rshift',    index: getIndex(4, 13),      keyData: getKeyData(getIndex(4, 13)) },
+            { key: KeyDefineEnum.SHIFT_R,           style: 'rshift',    index: getIndex(4, 13),      keyData: getKeyData(getIndex(4, 13)) },
             { key: KeyDefineEnum.NONE,              style: 'split2',    index: 999,                  keyData: undefined },
             { key: KeyDefineEnum.NONE,              style: 'split3',    index: 999,                  keyData: undefined },
             { key: KeyDefineEnum.KEY_UpArrow,       style: '',          index: getIndex(4, 15),      keyData: getKeyData(getIndex(4, 15)) },
             { key: KeyDefineEnum.NONE,              style: 'split3',    index: 999,                  keyData: undefined }
         ],
         [
-            { key: KeyDefineEnum.KEY_L_CTRL,        style: 'ctr',       index: getIndex(5, 0),       keyData: getKeyData(getIndex(5, 0)) },
-            { key: KeyDefineEnum.KEY_L_WIN,         style: 'ctr',       index: getIndex(5, 1),       keyData: getKeyData(getIndex(5, 1)) },
-            { key: KeyDefineEnum.KEY_L_ALT,         style: 'ctr',       index: getIndex(5, 2),       keyData: getKeyData(getIndex(5, 2)) },
+            { key: KeyDefineEnum.CTRL_L,            style: 'ctr',       index: getIndex(5, 0),       keyData: getKeyData(getIndex(5, 0)) },
+            { key: KeyDefineEnum.WIN_L,             style: 'ctr',       index: getIndex(5, 1),       keyData: getKeyData(getIndex(5, 1)) },
+            { key: KeyDefineEnum.ALT_L,             style: 'ctr',       index: getIndex(5, 2),       keyData: getKeyData(getIndex(5, 2)) },
             { key: KeyDefineEnum.KEY_SPACEBAR,      style: 'space',     index: getIndex(5, 5),       keyData: getKeyData(getIndex(5, 5)) },
-            { key: KeyDefineEnum.KEY_R_ALT,         style: 'ctr',       index: getIndex(5, 8),       keyData: getKeyData(getIndex(5, 8)) },
+            { key: KeyDefineEnum.ALT_R,             style: 'ctr',       index: getIndex(5, 8),       keyData: getKeyData(getIndex(5, 8)) },
             { key: KeyDefineEnum.KEY_Fn1,           style: 'ctr',       index: getIndex(5, 9),       keyData: getKeyData(getIndex(5, 9)) },
             { key: KeyDefineEnum.KEY_APP,           style: 'ctr',       index: getIndex(5, 10),      keyData: getKeyData(getIndex(5, 10)) },
-            { key: KeyDefineEnum.KEY_R_CTRL,        style: 'ctr',       index: getIndex(5, 13),      keyData: getKeyData(getIndex(5, 13)) },
+            { key: KeyDefineEnum.CTRL_R,            style: 'ctr',       index: getIndex(5, 13),      keyData: getKeyData(getIndex(5, 13)) },
             { key: KeyDefineEnum.NONE,              style: 'split2',    index: 999,                  keyData: undefined },
             { key: KeyDefineEnum.KEY_LeftArrow,     style: '',          index: getIndex(5, 14),      keyData: getKeyData(getIndex(5, 14)) },
             { key: KeyDefineEnum.KEY_DownArrow,     style: '',          index: getIndex(5, 15),      keyData: getKeyData(getIndex(5, 15)) },
@@ -468,7 +511,16 @@ const state = reactive({
         { key: KeyDefineEnum.KEY_NUM_DOT, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_NUM_DOT] },
         { key: KeyDefineEnum.KEY_NUMLOCK, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_NUMLOCK] },
         { key: KeyDefineEnum.KEY_NUM_ENTER, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_NUM_ENTER] }
-    ]
+    ],
+    macroDialogShow: false,
+    macros: macros,
+    cycleTypes: [
+        { value: 1, label: 'Cycles' },
+        { value: 2, label: 'Cycle to any key pressed' },
+        { value: 4, label: 'Cycle to any key released' },
+    ],
+    cycleType: 1,
+    cycleCount: 1
 });
 
 onMounted(async () => {
@@ -482,6 +534,7 @@ onMounted(async () => {
         });
     }
 
+    rk_l87.value.addEventListener(RK_L87_EVENT_DEFINE.OnMacrosGotten, macroGotten, false);
     rk_l87.value.addEventListener(RK_L87_EVENT_DEFINE.OnKeyMaxtrixGotten, keyMaxtrixGotten, false);
     await rk_l87.value?.getKeyMaxtrix(MaxtrixLayer.NORMAL, MaxtrixTable.WIN, 0);
 });
@@ -489,13 +542,20 @@ onMounted(async () => {
 onBeforeUnmount(() => {
     if (rk_l87.value != undefined) {
         rk_l87.value.removeEventListener(RK_L87_EVENT_DEFINE.OnKeyMaxtrixGotten, keyMaxtrixGotten, false);
+        rk_l87.value.removeEventListener(RK_L87_EVENT_DEFINE.OnMacrosGotten, macroGotten, false);
     }
 });
 
 const keyMaxtrixGotten = async (event: any) => {
     keyMaxtrix.value = event.detail as KeyMaxtrix;
+    await rk_l87.value?.getMacros(0x00); 
     refresh();
 }
+
+const macroGotten = (event: any) => {
+    macros.value = event.detail as Macros;
+    macro.value = macros.value.get()[0];
+};
 
 const refresh = () => {
     let line, key: any;
@@ -503,17 +563,29 @@ const refresh = () => {
         for (key in state.keyMaxtrix[line]) {
             let keyData = state.keyMaxtrix[line][key].keyData;
             if (keyData == undefined) continue;
-            let keyCode = keyMaxtrix.value?.getKeyMapping(state.keyMaxtrix[line][key].index);
-            if (keyCode != undefined && keyboard.keyboardDefine != undefined) {
-                keyData.keyMappingData.key = keyboard.keyboardDefine.keyText[keyCode];
-                keyData.keyMappingData.keyCode = keyCode;
-            }
+            keyMaxtrix.value?.fillKeyMappingData(state.keyMaxtrix[line][key].index, keyData.keyMappingData);
+            keySetStr(keyData);
         }
     }
 };
 
-const keyText = (key: KeyTableData | undefined): String => {
-    return key == undefined ? '' : key.keyMappingData.key;
+const keySetStr = (keyData: KeyTableData) => {
+    switch (keyData.keyMappingData.keyMappingType) {
+        case KeyMappingType.KeyBoard:
+            if (keyboard.keyboardDefine != undefined) {
+                keyData.keyMappingData.keyStr = keyboard.keyboardDefine.keyText[keyData.keyMappingData.keyCode];
+            }
+            break;
+        case KeyMappingType.Macro:
+            if (macros.value != undefined) {
+                keyData.keyMappingData.keyStr = macros.value.get()[keyData.keyMappingData.keyCode & 0xFF].name;
+            }
+            break;
+    }
+};
+
+const keyText = (keyData: KeyTableData | undefined): String => {
+    return keyData == undefined ? '' : keyData.keyMappingData.keyStr;
 };
 
 const keyColor = (key: KeyTableData | undefined): string => {
@@ -523,7 +595,23 @@ const keyColor = (key: KeyTableData | undefined): string => {
 const keybgColor = (key: KeyTableData | undefined ): string => {
     let c =  '';
     if (key != undefined) {
-        c = key.keyCode == key.keyMappingData.keyCode ? '' : 'key_remapped';
+        let mapping = key.keyMappingData;
+        switch (mapping.keyMappingType) {
+            case KeyMappingType.KeyBoard:
+                c = key.keyCode == mapping.keyCode && mapping.keyMappingPara == 0 ? '' : 'key_remapped';
+                break;
+            case KeyMappingType.Macro:
+                c = 'key_remapped';
+                break;
+            default:
+                let keyCode = 0;
+                keyCode = keyCode | (mapping.keyMappingType << 24 & 0xFF000000);
+                keyCode = keyCode | (mapping.keyMappingPara << 16 & 0x00FF0000);
+                keyCode = keyCode | (mapping.keyCode & 0x0000FF00);
+                keyCode = keyCode | (mapping.keyCode & 0x000000FF);
+                c = key.keyCode == keyCode ? '' : 'key_remapped';
+                break;
+        }
     }
     return c;
 };
@@ -555,11 +643,12 @@ const mapping = (keyCode: KeyDefineEnum) => {
     }
     
     if (keyState != undefined) {
+        keyState.KeyData.keyMappingData.keyMappingType = KeyMappingType.KeyBoard;
         keyState.KeyData.keyMappingData.keyCode = keyCode;
         if (keyboard.keyboardDefine != undefined) {
-            keyState.KeyData.keyMappingData.key = keyboard.keyboardDefine.keyText[keyCode];
+            keyState.KeyData.keyMappingData.keyStr = keyboard.keyboardDefine.keyText[keyCode];
         }
-        keyMaxtrix.value?.setKeyMapping(keyState.index, keyCode);
+        keyMaxtrix.value?.setKeyMapping(keyState.index, keyState.KeyData.keyMappingData);
         rk_l87.value?.setKeyMaxtrix(MaxtrixLayer.NORMAL, MaxtrixTable.WIN, 0);
     }
 }
@@ -577,11 +666,46 @@ const handleOpen = (e: boolean, id: string) => {
 };
 
 const keySetToDefault = (index: number) => {
-    if (state.keyState.length <= 0 || index >= 999) return '';
+    if (state.keyState.length <= 0 || index >= 999) {
+        return '';
+    }
+
     let keyState = (state.keyState as Array<KeyState>)[index];
-        keyState.KeyData.keyMappingData.keyCode = keyState.KeyData.keyCode;
-        keyState.KeyData.keyMappingData.key = keyState.KeyData.key
-        keyMaxtrix.value?.setKeyMapping(keyState.index, keyState.KeyData.keyCode);
+    keyState.KeyData.keyMappingData.keyCode = keyState.KeyData.keyCode;
+    keyState.KeyData.keyMappingData.keyStr = keyState.KeyData.key;
+    keyState.KeyData.keyMappingData.keyMappingType = keyState.KeyData.keyCode >> 24;
+    keyState.KeyData.keyMappingData.keyMappingPara = 0;
+    keyMaxtrix.value?.setKeyMapping(keyState.index, keyState.KeyData.keyMappingData);
+    rk_l87.value?.setKeyMaxtrix(MaxtrixLayer.NORMAL, MaxtrixTable.WIN, 0);
+}
+
+const keySetMacro = (index: number) => {
+    if (state.keyState.length <= 0 || index >= 999) {
+        return '';
+    }
+    keyState.value = (state.keyState as Array<KeyState>)[index];
+    state.macroDialogShow = true;
+}
+
+const isMacroSelected = (obj: Macro): string => {
+    return obj.index == macro.value?.index ? 'macro_selected' : '';
+}
+
+const clickMacro = (obj: Macro) => {
+    macro.value = obj;
+}
+
+const confirmSetMacro = () => {
+    if (keyState.value != undefined && macro.value!= undefined) {
+        let mapping = keyState.value.KeyData.keyMappingData;
+        mapping.keyCode = state.cycleCount << 8 | macro.value?.index;
+        mapping.keyStr = macro.value?.name;
+        mapping.keyMappingType = KeyMappingType.Macro;
+        mapping.keyMappingPara = state.cycleType;
+        keyMaxtrix.value?.setKeyMapping(keyState.value.index, mapping);
         rk_l87.value?.setKeyMaxtrix(MaxtrixLayer.NORMAL, MaxtrixTable.WIN, 0);
+    }
+
+    state.macroDialogShow = false;
 }
 </script>

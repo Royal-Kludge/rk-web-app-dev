@@ -238,7 +238,7 @@ const handleEditClose = (done: () => void) => {
     done();
 }
 
-const saveMacro = () => {
-
+const saveMacro = async () => {
+    await rk_l87.value?.setMacros();
 }
 </script>

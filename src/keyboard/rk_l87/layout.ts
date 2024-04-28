@@ -4,11 +4,11 @@ import type { LightEffect } from '../interface'
 
 export const KeyMap_Normal: Array<KeyDefineEnum> = [
     //-------------------------------------------------------------------------------------------------------------0
-	KeyDefineEnum.KEY_ESC,          KeyDefineEnum.KEY_TILDE,        KeyDefineEnum.KEY_TAB,          KeyDefineEnum.KEY_CAPSLOCK,     KeyDefineEnum.KEY_L_SHIFT,          KeyDefineEnum.KEY_L_CTRL,     	 
+	KeyDefineEnum.KEY_ESC,          KeyDefineEnum.KEY_TILDE,        KeyDefineEnum.KEY_TAB,          KeyDefineEnum.KEY_CAPSLOCK,     KeyDefineEnum.SHIFT_L,          	KeyDefineEnum.CTRL_L,     	 
 	//-------------------------------------------------------------------------------------------------------------1
-	KeyDefineEnum.KEY_F1,           KeyDefineEnum.KEY_1,            KeyDefineEnum.KEY_Q,            KeyDefineEnum.KEY_A,            KeyDefineEnum.KEY_Z,                KeyDefineEnum.KEY_L_WIN,     
+	KeyDefineEnum.KEY_F1,           KeyDefineEnum.KEY_1,            KeyDefineEnum.KEY_Q,            KeyDefineEnum.KEY_A,            KeyDefineEnum.KEY_Z,                KeyDefineEnum.WIN_L,     
 	//-------------------------------------------------------------------------------------------------------------2
-	KeyDefineEnum.KEY_F2,           KeyDefineEnum.KEY_2,            KeyDefineEnum.KEY_W,            KeyDefineEnum.KEY_S,            KeyDefineEnum.KEY_X,                KeyDefineEnum.KEY_L_ALT	, 				 	 			
+	KeyDefineEnum.KEY_F2,           KeyDefineEnum.KEY_2,            KeyDefineEnum.KEY_W,            KeyDefineEnum.KEY_S,            KeyDefineEnum.KEY_X,                KeyDefineEnum.ALT_L	, 				 	 			
 	//-------------------------------------------------------------------------------------------------------------3
 	KeyDefineEnum.KEY_F3,           KeyDefineEnum.KEY_3,            KeyDefineEnum.KEY_E,            KeyDefineEnum.KEY_D,            KeyDefineEnum.KEY_C,                KeyDefineEnum.NONE,    					   
 	//-------------------------------------------------------------------------------------------------------------4
@@ -20,7 +20,7 @@ export const KeyMap_Normal: Array<KeyDefineEnum> = [
 	//-------------------------------------------------------------------------------------------------------------7
 	KeyDefineEnum.KEY_F7,           KeyDefineEnum.KEY_7,            KeyDefineEnum.KEY_U,            KeyDefineEnum.KEY_J,            KeyDefineEnum.KEY_M,                KeyDefineEnum.NONE,
 	//-------------------------------------------------------------------------------------------------------------8
-	KeyDefineEnum.KEY_F8,           KeyDefineEnum.KEY_8,            KeyDefineEnum.KEY_I,            KeyDefineEnum.KEY_K,            KeyDefineEnum.KEY_COMMA,            KeyDefineEnum.KEY_R_ALT,			       			        
+	KeyDefineEnum.KEY_F8,           KeyDefineEnum.KEY_8,            KeyDefineEnum.KEY_I,            KeyDefineEnum.KEY_K,            KeyDefineEnum.KEY_COMMA,            KeyDefineEnum.ALT_R,			       			        
 	//-------------------------------------------------------------------------------------------------------------9
 	KeyDefineEnum.KEY_F9,           KeyDefineEnum.KEY_9,            KeyDefineEnum.KEY_O,            KeyDefineEnum.KEY_L,            KeyDefineEnum.KEY_PERIOD,           KeyDefineEnum.KEY_Fn1,						 
 	//-------------------------------------------------------------------------------------------------------------10
@@ -30,7 +30,7 @@ export const KeyMap_Normal: Array<KeyDefineEnum> = [
 	//------- -----------------------------------------------------------------------------------------------------12
 	KeyDefineEnum.KEY_F12,          KeyDefineEnum.KEY_EqualSign,    KeyDefineEnum.KEY_R_Brackets,   KeyDefineEnum.KEY_CODE42,       KeyDefineEnum.KEY_CODE45,           KeyDefineEnum.NONE,		    
 	//-------------------------------------------------------------------------------------------------------------13
-	KeyDefineEnum.KEY_Calculator,   KeyDefineEnum.KEY_Backspace,    KeyDefineEnum.KEY_CODE29,       KeyDefineEnum.KEY_ENTER,        KeyDefineEnum.KEY_R_SHIFT,          KeyDefineEnum.KEY_R_CTRL, 	 	 	   	       
+	KeyDefineEnum.KEY_Calculator,   KeyDefineEnum.KEY_Backspace,    KeyDefineEnum.KEY_CODE29,       KeyDefineEnum.KEY_ENTER,        KeyDefineEnum.SHIFT_R,          	KeyDefineEnum.CTRL_R, 	 	 	   	       
 	//-------------------------------------------------------------------------------------------------------------14
 	
 	KeyDefineEnum.KEY_PRINT,        KeyDefineEnum.KEY_INS,          KeyDefineEnum.KEY_DEL,          KeyDefineEnum.NONE,             KeyDefineEnum.NONE,                 KeyDefineEnum.KEY_LeftArrow,     	         

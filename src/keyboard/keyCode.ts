@@ -1766,10 +1766,10 @@ export const KeyCodeMap: Record<string, KeyCodeTable> = {
     'Comma':            { key: ',',             hid: 0x36, vk: 0xBC },
     'Period':           { key: '.',             hid: 0x37, vk: 0xBE },
     'Semicolon':        { key: ';',             hid: 0x33, vk: 0xBA },
-    'Backquote':       { key: '`',             hid: 0x35, vk: 0xC0 },
+    'Backquote':        { key: '`',             hid: 0x35, vk: 0xC0 },
     'Quote':            { key: '\'',            hid: 0x34, vk: 0xDE },
     'BracketLeft':      { key: '[',             hid: 0x2f, vk: 0xDB },
     'BracketRight':     { key: ']',             hid: 0x30, vk: 0xDD },
     'Backslash':        { key: '\\',            hid: 0x31, vk: 0xDC },
-    'Slash':           { key: '/',             hid: 0x38, vk: 0xBF },
+    'Slash':            { key: '/',             hid: 0x38, vk: 0xBF },
 }
