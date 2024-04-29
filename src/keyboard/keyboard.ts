@@ -137,14 +137,15 @@ export class Keyboard extends EventTarget {
             for (item in this.keyboardDefine.keyLayout) {
                 let code = this.keyboardDefine.keyLayout[item];
                 let key: KeyTableData = {
-                    key: this.keyboardDefine.keyText[code],
+                    keyStr: this.keyboardDefine.keyText[code],
                     keyCode: code,
                     index: item,
                     keyMappingData: {
                         keyStr: this.keyboardDefine.keyText[code],
                         keyCode: code,
                         keyMappingType: KeyMappingType.KeyBoard,
-                        keyMappingPara: 0
+                        keyMappingPara: 0,
+                        keyRaw: code
                     }
                 }
                 keyTableDatas.push(key);

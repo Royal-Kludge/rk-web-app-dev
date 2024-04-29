@@ -252,8 +252,9 @@ import { KeyDefineEnum } from '../../keyboard/keyCode'
 import { type KeyTableData } from '../../keyboard/interface'
 import { KeyMappingType } from '../../keyboard/enum'
 import { KeyMaxtrix, MaxtrixLayer, MaxtrixTable } from '@/keyboard/rk_l87/keyMaxtrix';
-import { Macro, type Macros } from '@/keyboard/rk_l87/macros';
+import { Action, Macro, Macros } from '@/keyboard/rk_l87/macros';
 import type { DropdownInstance } from 'element-plus'
+import { storage } from '@/keyboard/storage';
 
 interface KeyState {
     index: number,
@@ -548,13 +549,33 @@ onBeforeUnmount(() => {
 
 const keyMaxtrixGotten = async (event: any) => {
     keyMaxtrix.value = event.detail as KeyMaxtrix;
-    await rk_l87.value?.getMacros(0x00); 
-    refresh();
+
+    if (rk_l87.value != undefined) {
+        let tmp = storage.get('macro') as Macros;
+        if (macros != undefined) {
+            let ms = new Macros();
+            for (let m of tmp.macroList) {
+                let tm = new Macro(m.name);
+                for (let a of m.actions) {
+                    let ta = new Action(a.key,a.delay,a.action,a.type);
+                    tm.add(ta);
+                }
+                ms.add(tm);
+            }
+            rk_l87.value.data.macros = ms;
+            macros.value = rk_l87.value.data.macros;
+            macro.value = macros.value.get()[0];
+            refresh();
+        } else {
+            await rk_l87.value.getMacros(); 
+        }
+    }
 }
 
 const macroGotten = (event: any) => {
     macros.value = event.detail as Macros;
     macro.value = macros.value.get()[0];
+    refresh();
 };
 
 const refresh = () => {
@@ -570,15 +591,21 @@ const refresh = () => {
 };
 
 const keySetStr = (keyData: KeyTableData) => {
-    switch (keyData.keyMappingData.keyMappingType) {
+    let mapping = keyData.keyMappingData;
+    switch (mapping.keyMappingType) {
         case KeyMappingType.KeyBoard:
             if (keyboard.keyboardDefine != undefined) {
-                keyData.keyMappingData.keyStr = keyboard.keyboardDefine.keyText[keyData.keyMappingData.keyCode];
+                mapping.keyStr = '';
+                if (mapping.keyMappingPara > 0) {
+                    let add = mapping.keyCode > 0 ? ' + ' : '';
+                    mapping.keyStr = `${keyboard.keyboardDefine.keyText[mapping.keyRaw]}${add}`;
+                }
+                mapping.keyStr = `${mapping.keyStr}${keyboard.keyboardDefine.keyText[mapping.keyCode]}`;
             }
             break;
         case KeyMappingType.Macro:
             if (macros.value != undefined) {
-                keyData.keyMappingData.keyStr = macros.value.get()[keyData.keyMappingData.keyCode & 0xFF].name;
+                mapping.keyStr = macros.value.get()[mapping.keyCode & 0xFF].name;
             }
             break;
     }
@@ -597,19 +624,11 @@ const keybgColor = (key: KeyTableData | undefined ): string => {
     if (key != undefined) {
         let mapping = key.keyMappingData;
         switch (mapping.keyMappingType) {
-            case KeyMappingType.KeyBoard:
-                c = key.keyCode == mapping.keyCode && mapping.keyMappingPara == 0 ? '' : 'key_remapped';
-                break;
             case KeyMappingType.Macro:
                 c = 'key_remapped';
                 break;
             default:
-                let keyCode = 0;
-                keyCode = keyCode | (mapping.keyMappingType << 24 & 0xFF000000);
-                keyCode = keyCode | (mapping.keyMappingPara << 16 & 0x00FF0000);
-                keyCode = keyCode | (mapping.keyCode & 0x0000FF00);
-                keyCode = keyCode | (mapping.keyCode & 0x000000FF);
-                c = key.keyCode == keyCode ? '' : 'key_remapped';
+                c = key.keyCode == mapping.keyRaw ? '' : 'key_remapped';
                 break;
         }
     }
@@ -671,11 +690,14 @@ const keySetToDefault = (index: number) => {
     }
 
     let keyState = (state.keyState as Array<KeyState>)[index];
-    keyState.KeyData.keyMappingData.keyCode = keyState.KeyData.keyCode;
-    keyState.KeyData.keyMappingData.keyStr = keyState.KeyData.key;
-    keyState.KeyData.keyMappingData.keyMappingType = keyState.KeyData.keyCode >> 24;
-    keyState.KeyData.keyMappingData.keyMappingPara = 0;
-    keyMaxtrix.value?.setKeyMapping(keyState.index, keyState.KeyData.keyMappingData);
+    let mapping = keyState.KeyData.keyMappingData;
+
+    mapping.keyCode = keyState.KeyData.keyCode;
+    mapping.keyStr = keyState.KeyData.keyStr;
+    mapping.keyMappingType = keyState.KeyData.keyCode >> 24;
+    mapping.keyMappingPara = (keyState.KeyData.keyCode & 0x00FF0000) >> 16;
+    mapping.keyRaw = keyState.KeyData.keyCode;
+    keyMaxtrix.value?.setKeyMapping(keyState.index, mapping);
     rk_l87.value?.setKeyMaxtrix(MaxtrixLayer.NORMAL, MaxtrixTable.WIN, 0);
 }
 

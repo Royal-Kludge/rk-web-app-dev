@@ -1,14 +1,17 @@
 import type { KeyboardState  } from '../interface'
 import { ConnectionStatusEnum, ConnectionType } from '../enum';
-import { Packet_Dongle, REPORT_ID_DONGLE, REPORT_MAX_RETRY } from './packets/packet';
+import { Packet_Dongle,  REPORT_ID_DONGLE, REPORT_MAX_RETRY, MACRO_PER_BLOCK_LENGTH } from './packets/packet';
+import { Packet_Dongle_Block_Set } from './packets/dongle/setPacket';
 
 import type { KeyMaxtrix, MaxtrixLayer, MaxtrixTable } from './keyMaxtrix';
 import { RK_L87, COMMAND_ID, RK_L87_EVENT_DEFINE } from './rk_l87';
 
 import type { Profile } from './profile';
 import type { LedColors } from './ledColors';
+import type { Macros } from './macros';
 
 import { GetLedColorsPacket } from './packets/dongle/getLedColorsPacket';
+import { GetPasswordPacket } from './packets/dongle/getPasswordPacket';
 import { GetProfilePacket } from './packets/dongle/getProfilePacket';
 import { GetDongleStatusPacket } from './packets/dongle/getDongleStatusPacket';
 import { GetKeyMaxtrixPacket } from './packets/dongle/getKeyMaxtrixPacket';
@@ -17,13 +20,13 @@ import { GetMacrosPacket } from './packets/dongle/getMacrosPacket';
 import { SetProfilePacket } from './packets/dongle/setProfilePacket';
 import { SetLedColorsPacket } from './packets/dongle/setLedColorsPacket';
 import { SetKeyMaxtrixPacket } from './packets/dongle/setKeyMaxtrixPacket';
-import type { Macros } from './macros';
-
+import { SetMacrosPacket } from './packets/dongle/setMacrosPacket';
 
 
 export class RK_L87_Dongle extends RK_L87 {
 
     pktGetDongleStatus: GetDongleStatusPacket;
+    pktGetPassword: GetPasswordPacket;
     pktGetProfile: GetProfilePacket;
     pktGetLedColors: GetLedColorsPacket;
     pktGetKeyMaxtrix: GetKeyMaxtrixPacket;
@@ -31,12 +34,14 @@ export class RK_L87_Dongle extends RK_L87 {
     pktSetProfile: SetProfilePacket;
     pktSetLedColors: SetLedColorsPacket;
     pktSetKeyMaxtrix: SetKeyMaxtrixPacket;
+    pktSetMacros: SetMacrosPacket;
 
     constructor(state: KeyboardState, device: HIDDevice) {
         super(state, device);
         state.connectType = ConnectionType.Dongle;
 
         this.pktGetDongleStatus = new GetDongleStatusPacket(this.dongleStatusReport.bind(this));
+        this.pktGetPassword = new GetPasswordPacket(this.passwordReport.bind(this));
         this.pktGetProfile = new GetProfilePacket(this.getProfileReport.bind(this));
         this.pktGetLedColors = new GetLedColorsPacket(this.getLedColorsReport.bind(this));
         this.pktGetKeyMaxtrix = new GetKeyMaxtrixPacket(this.getKeyMaxtrixReport.bind(this));
@@ -44,6 +49,7 @@ export class RK_L87_Dongle extends RK_L87 {
         this.pktSetProfile = new SetProfilePacket(this.nextReport.bind(this));
         this.pktSetLedColors = new SetLedColorsPacket(this.nextReport.bind(this));
         this.pktSetKeyMaxtrix = new SetKeyMaxtrixPacket(this.nextReport.bind(this));
+        this.pktSetMacros = new SetMacrosPacket(this.nextReport.bind(this), this.nextBlock.bind(this));
     }
 
     static async create(state: KeyboardState, device: HIDDevice) {
@@ -58,13 +64,16 @@ export class RK_L87_Dongle extends RK_L87 {
     async onGetReport(reportId: number, data: DataView): Promise<void> {
         if (data.byteLength == 19 && reportId == REPORT_ID_DONGLE) {
             let cmd = data.getUint8(0);
-            let packet: Packet_Dongle | null = null;
+            //let packet: Packet_Dongle | null = null;
             switch (cmd) {
                 case COMMAND_ID.ActivelyReport:
                     this.activelyReport(data);
                     break;
                 case COMMAND_ID.GetDongleStatus:
                     this.pktGetDongleStatus.fromReportData(data);
+                    break;
+                case COMMAND_ID.GetPassword:
+                    this.pktGetPassword.fromReportData(data);
                     break;
                 case COMMAND_ID.GetProfile:
                     this.pktGetProfile.fromReportData(data);
@@ -77,6 +86,9 @@ export class RK_L87_Dongle extends RK_L87 {
                     break;
                 case COMMAND_ID.GetMacros:
                     this.pktGetMacros.fromReportData(data);
+                    if (this.pktGetMacros.packageNum - 1 == this.pktGetMacros.packageIndex && this.pktGetMacros.block < this.pktGetMacros.blockCount) {
+                        await this.setReport(REPORT_ID_DONGLE, this.pktGetMacros.command());
+                    }
                     break;
                 case COMMAND_ID.SetProfile:
                     this.pktSetProfile.fromReportData(data);
@@ -86,6 +98,9 @@ export class RK_L87_Dongle extends RK_L87 {
                     break;
                 case COMMAND_ID.SetKeyMaxtrix:
                     this.pktSetKeyMaxtrix.fromReportData(data);
+                    break;
+                case COMMAND_ID.SetMacros:
+                    this.pktSetMacros.fromReportData(data);
                     break;
             }
         }
@@ -104,6 +119,10 @@ export class RK_L87_Dongle extends RK_L87 {
 
     async getDongleStatus(): Promise<void> {
         await this.setReport(REPORT_ID_DONGLE, this.pktGetDongleStatus.command());
+    }
+
+    async getPassword(): Promise<void> {
+        await this.setReport(REPORT_ID_DONGLE, this.pktGetPassword.command());
     }
 
     async getProfile(board: number): Promise<void> {
@@ -155,19 +174,35 @@ export class RK_L87_Dongle extends RK_L87 {
         }
     }
 
-    async getMacros(block: number): Promise<void> {
-        this.pktGetMacros.block = block;
+    async getMacros(): Promise<void> {
+        this.pktGetMacros.block = 0x00;
+        this.pktGetMacros.blockCount = 4096 / MACRO_PER_BLOCK_LENGTH;
         await this.setReport(REPORT_ID_DONGLE, this.pktGetMacros.command());
     }
 
-    async setMacros(): Promise<void> {
-        
+    async setMacros(block: number): Promise<void> {
+        if (this.data.macros != undefined) {
+            this.pktSetMacros.block = block;
+            this.pktSetMacros.packageIndex = 0;
+            this.pktSetMacros.retry = REPORT_MAX_RETRY;
+            this.pktSetMacros.buffer = this.data.macros.serialize();
+            this.pktSetMacros.blockCount = Math.ceil(this.pktSetMacros.buffer.length / MACRO_PER_BLOCK_LENGTH);
+            await this.setReport(REPORT_ID_DONGLE, this.pktSetMacros.command());
+        }
     }
     
     private dongleStatusReport(event: any) {
         let status = event.detail as boolean ? ConnectionStatusEnum.Connected : ConnectionStatusEnum.Disconnected;
         this.state.ConnectionStatus = status;
         this.dispatchEvent(new CustomEvent(RK_L87_EVENT_DEFINE.OnDongleStatusChanged, { detail: status }));
+        if (status == ConnectionStatusEnum.Connected) {
+            this.getPassword();
+        }
+    }
+
+    private passwordReport(event: any) {
+        let password = event.detail as number;
+        this.dispatchEvent(new CustomEvent(RK_L87_EVENT_DEFINE.OnPasswordGotten, { detail: password }));
     }
 
     private getProfileReport(event: any) {
@@ -193,6 +228,14 @@ export class RK_L87_Dongle extends RK_L87 {
     private async nextReport(event: any) {
         let pkt = event.detail as Packet_Dongle;
         await this.setReport(REPORT_ID_DONGLE, pkt.command());
+    }
+
+    private async nextBlock(event: any) {
+        let pkt = event.detail as Packet_Dongle_Block_Set;
+        pkt.block = pkt.block + 1;
+        if (pkt.block < pkt.blockCount) {
+            await this.setReport(REPORT_ID_DONGLE, pkt.command());
+        } 
     }
 
     async destroy(): Promise<void> {

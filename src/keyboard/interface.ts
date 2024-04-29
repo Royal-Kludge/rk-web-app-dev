@@ -37,7 +37,8 @@ export interface KeyMappingData {
     keyStr: String,
     keyCode: KeyDefineEnum | number,
     keyMappingType: KeyMappingType,
-    keyMappingPara: number
+    keyMappingPara: number,
+    keyRaw: number
 }
 
 export interface LedColor {
@@ -63,7 +64,7 @@ export interface LightInfo {
 }
 
 export interface KeyTableData {
-    key: String,
+    keyStr: String,
     keyCode: KeyDefineEnum,
     index: number,
     keyMappingData: KeyMappingData

@@ -1,5 +1,5 @@
 <template>
-    <div class="d-flex jc-center ai-center" v-if="state.connectType == ConnectionType.Dongle && state.connectState != ConnectionStatusEnum.Connected">
+    <div class="d-flex jc-center ai-center" v-if="!isKeyboardConnect()">
         <p style="font-size: 42px; margin-top: 30%;">No keyboard connected to dongle</p>
     </div>
     <div v-else>
@@ -50,6 +50,7 @@ const state = reactive({
     ],
     connectState: keyboard.state.ConnectionStatus,
     connectType: keyboard.state.connectType,
+    password: 0
 });
 
 onMounted(async () => {
@@ -57,17 +58,34 @@ onMounted(async () => {
     state.connectType = keyboard.state.connectType;
     rk_l87.value = (keyboard.protocol as RK_L87);
     rk_l87.value.addEventListener(RK_L87_EVENT_DEFINE.OnDongleStatusChanged, dongleStatusChanged, false);
+    rk_l87.value.addEventListener(RK_L87_EVENT_DEFINE.OnPasswordGotten, passwordGotten, false);
 });
 
 onBeforeUnmount(() => {
     if (rk_l87.value != undefined) {
         rk_l87.value.removeEventListener(RK_L87_EVENT_DEFINE.OnDongleStatusChanged, dongleStatusChanged, false);
+        rk_l87.value.removeEventListener(RK_L87_EVENT_DEFINE.OnPasswordGotten, passwordGotten, false);
     }
 });
+
+const isKeyboardConnect = (): boolean => {
+    let isConnect = false;
+    if (keyboard.state.connectType == ConnectionType.Dongle) {
+        isConnect = state.connectState == ConnectionStatusEnum.Connected && state.password == 0x03000000 + 0x0156;
+    } else {
+        isConnect = state.connectState == ConnectionStatusEnum.Connected;
+    }
+
+    return isConnect;
+};
 
 const dongleStatusChanged = (event: any) => {
     keyboard.state.ConnectionStatus = event.detail as ConnectionStatusEnum;
     state.connectState =  event.detail as ConnectionStatusEnum;
+};
+
+const passwordGotten = (event: any) => {
+    state.password =  event.detail as number;
 };
 
 const tabClick = (id: number) => {

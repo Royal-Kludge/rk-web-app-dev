@@ -1228,7 +1228,7 @@ export const KeyText: Record<number, String> = {
     0x1c: 'Y',
     0x1d: 'Z',
 
-    0x29: 'ESE',       
+    0x29: 'ESC',       
     0x2b: 'TAB',
     0x39: 'CAPS',
     0x2a: 'BackSpace',

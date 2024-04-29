@@ -36,6 +36,7 @@ export class KeyMaxtrix {
         let offset = index * 4;
         let key = this.buffer.getUint32(offset);
         return {
+            keyRaw: key,
             keyStr: '',
             keyCode: key & 0x0000FFFF,
             keyMappingType: key >> 24,
@@ -46,9 +47,10 @@ export class KeyMaxtrix {
     fillKeyMappingData(index: number, mappingData: KeyMappingData) {
         let offset = index * 4;
         let key = this.buffer.getUint32(offset);
+        mappingData.keyRaw = key;
         mappingData.keyCode = key & 0x0000FFFF;
-        mappingData.keyMappingType = key >> 24,
-        mappingData.keyMappingPara = (key >> 16) & 0xFF
+        mappingData.keyMappingType = key >> 24;
+        mappingData.keyMappingPara = (key >> 16) & 0xFF;
     }
 
     static fromReportData(data: DataView) : KeyMaxtrix | undefined {

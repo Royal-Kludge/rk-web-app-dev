@@ -27,6 +27,10 @@
                      style="cursor: pointer;font-size: 12px;width: 32px;height: auto; text-align: center;padding: 4px;" @click="saveMacro">
                     Save
                 </div>
+                <div class="ml-4 br-2 bg-white  px-4 text-black jc-center ai-center" 
+                     style="cursor: pointer;font-size: 12px;width: 112px;height: auto; text-align: center;padding: 4px;" @click="loadMacro">
+                    Load from device
+                </div>
             </div>
             <div class="d-flex">
                 <div style="border: 1px solid #ffffff3f;height: 40vh;width: 16vh;" class="m-4">
@@ -51,7 +55,7 @@
                     </el-scrollbar>
                 </div>
                 <div class="m-4" style="border: 1px solid #ffffff3f;height: 40vh;width: 30vh;">
-                    <el-scrollbar>
+                    <el-scrollbar ref="elActionScrollbar">
                         <div style="cursor: pointer;" v-for=" action in state.macro?.actions">
                             <el-dropdown :id="`action${action.index}`"
                                         trigger="contextmenu"
@@ -98,10 +102,11 @@
 import { reactive, ref, onMounted, onBeforeUnmount } from 'vue';
 import { keyboard } from '../../keyboard/keyboard'
 import { RK_L87, RK_L87_EVENT_DEFINE } from '../../keyboard/rk_l87/rk_l87';
-import { Macro, type Macros, Action, ActionType } from '@/keyboard/rk_l87/macros';
+import { Macro, Macros, Action, ActionType } from '@/keyboard/rk_l87/macros';
 import { KeyCodeMap } from '@/keyboard/keyCode'
 import type { DropdownInstance } from 'element-plus'
 import { type KeyCodeTable } from '@/keyboard/interface';
+import { storage } from '@/keyboard/storage';
 
 const rk_l87 = ref<RK_L87>();
 const macros = ref<Macros>();
@@ -111,6 +116,7 @@ const delay = ref<number>(30);
 const macro = ref<Macro>();
 const elAction = ref<any>(null);
 const elMacro = ref<any>(null);
+const elActionScrollbar = ref<any>(null);
 const keyCodeTable = ref<KeyCodeTable>();
 
 const state = reactive({
@@ -125,7 +131,23 @@ onMounted(async () => {
     rk_l87.value = (keyboard.protocol as RK_L87);
     rk_l87.value.addEventListener(RK_L87_EVENT_DEFINE.OnMacrosGotten, macroGotten, false);
 
-    await getMacroData();
+    let tmp = storage.get('macro') as Macros;
+    if (macros != undefined) {
+        let ms = new Macros();
+        for (let m of tmp.macroList) {
+            let tm = new Macro(m.name);
+            for (let a of m.actions) {
+                let ta = new Action(a.key,a.delay,a.action,a.type);
+                tm.add(ta);
+            }
+            ms.add(tm);
+        }
+        rk_l87.value.data.macros = ms;
+        macros.value = rk_l87.value.data.macros;
+        refresh();
+    } else {
+        await getMacroData();
+    }
 
     document.addEventListener('keydown', onKeyDown);
 });
@@ -148,8 +170,7 @@ const onKeyDown = (event: KeyboardEvent) => {
 
 const getMacroData = async () => {
     if (rk_l87.value != undefined) {
-        rk_l87.value.getMacros(0x00);
-        refresh();
+        rk_l87.value.getMacros();
     }
 };
 
@@ -213,10 +234,10 @@ const renameMacro = (obj: Macro) => {
 
 const newMacro = () => {
     if (macros.value != undefined) {
-        macro.value = new Macro('New Macro');
+        macro.value = new Macro(`Macro ${macros.value.get().length + 1}`);
         macros.value.add(macro.value);
-        state.name = macro.value.name;
-        state.nameEditorDisplay = true;
+        //state.name = macro.value.name;
+        //state.nameEditorDisplay = true;
     }
 };
 
@@ -224,8 +245,10 @@ const insert = () => {
     if (macro.value != undefined && keyCodeTable.value != undefined) {
         macro.value.add(new Action(keyCodeTable.value.hid, delay.value, ActionType.Down));
         macro.value.add(new Action(keyCodeTable.value.hid, delay.value, ActionType.Up));
+
+        elActionScrollbar.value.setScrollTop(2000);
     }
-};
+};1
 
 const isSelected = (obj: Macro): string => {
     return obj.index == macro.value?.index ? 'macro_selected' : '';
@@ -239,6 +262,13 @@ const handleEditClose = (done: () => void) => {
 }
 
 const saveMacro = async () => {
-    await rk_l87.value?.setMacros();
+    if (macros.value != undefined) {
+        storage.set('macro', macros.value);
+        await rk_l87.value?.setMacros(0x00);
+    }
+}
+
+const loadMacro = async () => {
+    await getMacroData();
 }
 </script>

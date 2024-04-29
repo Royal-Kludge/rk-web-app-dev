@@ -1,5 +1,5 @@
 import type { KeyboardState  } from '../interface'
-import { REPORT_ID_USB } from './packets/packet';
+import { REPORT_ID_USB, MACRO_PER_BLOCK_LENGTH } from './packets/packet';
 import type { MaxtrixLayer, MaxtrixTable } from './keyMaxtrix';
 import { ConnectionType } from '../enum';
 import { RK_L87, RK_L87_EVENT_DEFINE } from './rk_l87';
@@ -85,8 +85,8 @@ export class RK_L87_Usb extends RK_L87 {
         }
     }
 
-    async getMacros(block: number): Promise<void> {
-        let packet = new GetMacrosPacket(block);
+    async getMacros(): Promise<void> {
+        let packet = new GetMacrosPacket(0x00);
 
         await this.setFeature(REPORT_ID_USB, packet.setReport);
         packet.fromReportData(await this.getFeature(REPORT_ID_USB));
@@ -95,7 +95,7 @@ export class RK_L87_Usb extends RK_L87 {
         this.dispatchEvent(new CustomEvent(RK_L87_EVENT_DEFINE.OnMacrosGotten, { detail: this.data.macros }));
     }
 
-    async setMacros(): Promise<void> {
+    async setMacros(block: number): Promise<void> {
         if (this.data.macros != undefined) {
             let packet = new SetMacrosPacket();
             let u8 = this.data.macros?.serialize();
@@ -103,7 +103,7 @@ export class RK_L87_Usb extends RK_L87 {
             let pkgs = new Array<DataView>();
             let index = 0;
             do {
-                let end = index + 512 > u8.length ? u8.length : index + 512;
+                let end = index + MACRO_PER_BLOCK_LENGTH > u8.length ? u8.length : index + MACRO_PER_BLOCK_LENGTH;
                 pkgs.push(new DataView(u8.subarray(index, end).buffer));
                 index = end + 1;
             } while (index < u8.length)

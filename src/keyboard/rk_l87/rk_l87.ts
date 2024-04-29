@@ -8,12 +8,14 @@ import type { Macros } from './macros';
 
 export const RK_L87_EVENT_DEFINE: {
     OnDongleStatusChanged: string;
+    OnPasswordGotten: string;
     OnKeyMaxtrixGotten: string;
     OnLedColorsGotten: string;
     OnProfileGotten: string;
     OnMacrosGotten: string;
 } = {
     OnDongleStatusChanged: 'OnDongleStatusChanged',
+    OnPasswordGotten: 'OnPasswordGotten',
     OnKeyMaxtrixGotten: 'OnKeyMaxtrixGotten',
     OnLedColorsGotten: 'OnLedColorsGotten',
     OnProfileGotten: 'OnProfileGotten',
@@ -23,6 +25,7 @@ export const RK_L87_EVENT_DEFINE: {
 export const COMMAND_ID: {
     ActivelyReport: number;
     GetDongleStatus: number;
+    GetPassword: number;
     GetProfile: number;
     GetLedColors: number;
     GetKeyMaxtrix: number;
@@ -34,6 +37,7 @@ export const COMMAND_ID: {
 } = {
     ActivelyReport: 0x0A,
     GetDongleStatus: 0x07,
+    GetPassword: 0x05,
     GetProfile: 0x44,
     GetLedColors: 0x49,
     GetKeyMaxtrix: 0x41,
@@ -61,8 +65,8 @@ export abstract class RK_L87 extends Protocol {
     abstract setLedColors(board: number): Promise<void>;
     abstract getKeyMaxtrix(layer: MaxtrixLayer, table: MaxtrixTable, board: number): Promise<void>;
     abstract setKeyMaxtrix(layer: MaxtrixLayer, table: MaxtrixTable, board: number): Promise<void>;
-    abstract getMacros(block: number): Promise<void>;
-    abstract setMacros(): Promise<void>;
+    abstract getMacros(): Promise<void>;
+    abstract setMacros(block: number): Promise<void>;
     
     abstract onGetReport(reportId: number, data: DataView): Promise<void>;
 

@@ -248,14 +248,10 @@ export class Macro {
 }
 
 export class Macros {
-    buffer: DataView;
-    private macroList: Array<Macro>;
+    macroList: Array<Macro>;
 
-    constructor(data: DataView) {
-        this.buffer = data;
+    constructor() {
         this.macroList = new Array<Macro>();
-
-        this.analysis();
     }
 
     add(macro: Macro) {
@@ -309,10 +305,10 @@ export class Macros {
         return u8;
     }
 
-    private analysis() {
-        if (this.buffer.byteLength <= 4) return;
+    setData(buffer: DataView) {
+        if (buffer.byteLength <= 4) return;
         
-        let headLen = this.buffer.getUint8(0) | this.buffer.getUint8(1) << 8;
+        let headLen = buffer.getUint8(0) | buffer.getUint8(1) << 8;
 
         if (headLen > 0) {
             let heads = new Array<Head>();
@@ -320,13 +316,13 @@ export class Macros {
 
             for (i = 0; i < headCount; i++) {
                 heads.push({
-                    offset: this.buffer.getUint8(i * MACRO_HEAD_ADDRESS_LENGTH) | this.buffer.getUint8(i * MACRO_HEAD_ADDRESS_LENGTH + 1) << 8,
-                    length: this.buffer.getUint8(i * MACRO_HEAD_ADDRESS_LENGTH + 2) | this.buffer.getUint8(i * MACRO_HEAD_ADDRESS_LENGTH + 3) << 8,
+                    offset: buffer.getUint8(i * MACRO_HEAD_ADDRESS_LENGTH) | buffer.getUint8(i * MACRO_HEAD_ADDRESS_LENGTH + 1) << 8,
+                    length: buffer.getUint8(i * MACRO_HEAD_ADDRESS_LENGTH + 2) | buffer.getUint8(i * MACRO_HEAD_ADDRESS_LENGTH + 3) << 8,
                 });
             }
 
             for (i in heads) {
-                let u8 = new Uint8Array(this.buffer.buffer.slice(heads[i].offset, heads[i].length + heads[i].offset));
+                let u8 = new Uint8Array(buffer.buffer.slice(heads[i].offset, heads[i].length + heads[i].offset));
                 let macro = Macro.deserialize(u8);
                 if (macro != undefined) {
                     macro.index = i;
@@ -340,7 +336,8 @@ export class Macros {
         let macros = undefined;
         
         if (data.byteLength <= MACRO_CAPACITY) {
-            macros = new Macros(data);
+            macros = new Macros();
+            macros.setData(data);
         }
 
         return macros;

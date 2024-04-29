@@ -27,7 +27,7 @@ export class GetKeyMaxtrixPacket extends Packet_Usb {
         if (this.getReport.byteLength >= KEY_MAXTRIX_LINE * KEY_MAXTRIX_COLOUMN + PACKET_HEAD_LENGTH) {
             this.keyMaxtrix = KeyMaxtrix.fromReportData(new DataView(this.getReport.buffer.slice(PACKET_HEAD_LENGTH, this.getReport.byteLength)));
         }
-        
+
         return this;
     }
 }
