@@ -264,7 +264,7 @@ const handleEditClose = (done: () => void) => {
 const saveMacro = async () => {
     if (macros.value != undefined) {
         storage.set('macro', macros.value);
-        await rk_l87.value?.setMacros(0x00);
+        await rk_l87.value?.setMacros();
     }
 }
 

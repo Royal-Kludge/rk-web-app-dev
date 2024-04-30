@@ -8,6 +8,7 @@ export const KEY_MAXTRIX_LINE: number = 6;
 export const KEY_MAXTRIX_COLOUMN: number = 21;
 export const PACKET_HEAD_LENGTH: number = 7;
 export const MACRO_PER_BLOCK_LENGTH: number = 512;
+export const MACRO_MAX_LENGTH: number = 4096;
 export const REPORT_ID_LENGTH: number = 1;
 export const REPORT_ID_USB: number = 0x06;
 export const REPORT_ID_DONGLE: number = 0x13;

@@ -6,10 +6,11 @@ export class GetMacrosPacket extends Packet_Usb {
 
     setReport: Uint8Array;
     getReport?: DataView;
-    macros?: Macros;
+    buffer?: Uint8Array;
 
-    constructor(block: number) {
+    constructor(block: number, blockCount: number) {
         super(0x85);
+
         this.cmdVal = 0x00;
         this.dataLength = MACRO_PER_BLOCK_LENGTH;
         this.setReport = new Uint8Array(519);
@@ -25,7 +26,8 @@ export class GetMacrosPacket extends Packet_Usb {
         super.fromReportData(buffer);
         this.getReport = new DataView(buffer.buffer.slice(1, this.dataLength + PACKET_HEAD_LENGTH + 1));
         if (this.getReport.byteLength >= MACRO_PER_BLOCK_LENGTH + PACKET_HEAD_LENGTH) {
-            this.macros = Macros.deserialize(new DataView(this.getReport.buffer.slice(PACKET_HEAD_LENGTH, this.getReport.byteLength)));
+            this.buffer = new Uint8Array(this.getReport.buffer.slice(PACKET_HEAD_LENGTH, this.getReport.byteLength));
+            //this.macros = Macros.deserialize(new DataView(this.getReport.buffer.slice(PACKET_HEAD_LENGTH, this.getReport.byteLength)));
         }
 
         return this;

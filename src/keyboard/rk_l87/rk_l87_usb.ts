@@ -1,7 +1,7 @@
 import type { KeyboardState  } from '../interface'
-import { REPORT_ID_USB, MACRO_PER_BLOCK_LENGTH } from './packets/packet';
+import { REPORT_ID_USB, MACRO_PER_BLOCK_LENGTH, MACRO_MAX_LENGTH } from './packets/packet';
 import type { MaxtrixLayer, MaxtrixTable } from './keyMaxtrix';
-import { ConnectionType } from '../enum';
+import { ConnectionStatusEnum, ConnectionType } from '../enum';
 import { RK_L87, RK_L87_EVENT_DEFINE } from './rk_l87';
 
 import { GetProfilePacket } from './packets/usb/getProfilePacket';
@@ -15,6 +15,7 @@ import { SetKeyMaxtrixPacket } from './packets/usb/setKeyMaxtrixPacket';
 
 import { GetMacrosPacket } from './packets/usb/getMacrosPacket';
 import { SetMacrosPacket } from './packets/usb/setMacrosPacket';
+import { Macros } from './macros';
 
 export class RK_L87_Usb extends RK_L87 {
 
@@ -27,6 +28,11 @@ export class RK_L87_Usb extends RK_L87 {
         return new RK_L87_Usb(state, device);
     }
     
+    async init(): Promise<void> {
+        super.init();
+        this.state.ConnectionStatus = ConnectionStatusEnum.Connected;
+    }
+
     async onGetReport(reportId: number, data: DataView): Promise<void> {
 
     }
@@ -86,35 +92,54 @@ export class RK_L87_Usb extends RK_L87 {
     }
 
     async getMacros(): Promise<void> {
-        let packet = new GetMacrosPacket(0x00);
+        let block = 0;
+        let blockCount = MACRO_MAX_LENGTH / MACRO_PER_BLOCK_LENGTH;
+        let u8 = new Uint8Array(MACRO_MAX_LENGTH);
 
-        await this.setFeature(REPORT_ID_USB, packet.setReport);
-        packet.fromReportData(await this.getFeature(REPORT_ID_USB));
+        for (block = 0; block < blockCount; block++) {
+            let packet = new GetMacrosPacket(block, blockCount);
+            await this.setFeature(REPORT_ID_USB, packet.setReport);
+            packet.fromReportData(await this.getFeature(REPORT_ID_USB));
+            if (packet.buffer != undefined) {
+                u8.set(packet.buffer, block * MACRO_PER_BLOCK_LENGTH);
+            }
+        }
 
-        this.data.macros = packet.macros;
+        this.data.macros = Macros.deserialize(new DataView(u8.buffer));
         this.dispatchEvent(new CustomEvent(RK_L87_EVENT_DEFINE.OnMacrosGotten, { detail: this.data.macros }));
     }
 
-    async setMacros(block: number): Promise<void> {
+    async setMacros(): Promise<void> {
         if (this.data.macros != undefined) {
             let packet = new SetMacrosPacket();
             let u8 = this.data.macros?.serialize();
+            let block = 0;
+            packet.packageNum = Math.ceil(u8.length / MACRO_PER_BLOCK_LENGTH);
             
-            let pkgs = new Array<DataView>();
-            let index = 0;
-            do {
-                let end = index + MACRO_PER_BLOCK_LENGTH > u8.length ? u8.length : index + MACRO_PER_BLOCK_LENGTH;
-                pkgs.push(new DataView(u8.subarray(index, end).buffer));
-                index = end + 1;
-            } while (index < u8.length)
-
-            packet.packageNum = pkgs.length;
-            index = 0;
-            for (let pkg of pkgs) {
-                packet.packageIndex = index;
-                packet.setPayload(pkg);
+            for (block = 0; block < packet.packageNum; block++) {
+                packet.packageIndex = block;
+                let begin = block * MACRO_PER_BLOCK_LENGTH;
+                let end = begin + ((block + 1) * MACRO_PER_BLOCK_LENGTH > u8.length ? u8.length - (block * MACRO_PER_BLOCK_LENGTH) : MACRO_PER_BLOCK_LENGTH);
+                let tmp = u8.slice(begin, end);
+                packet.setPayload(new DataView(tmp.buffer));
                 await this.setFeature(REPORT_ID_USB, packet.setReport);
             }
+
+            // let pkgs = new Array<DataView>();
+            // let index = 0;
+            // do {
+            //     let end = index + MACRO_PER_BLOCK_LENGTH > u8.length ? u8.length : index + MACRO_PER_BLOCK_LENGTH;
+            //     pkgs.push(new DataView(u8.subarray(index, end).buffer));
+            //     index = end + 1;
+            // } while (index < u8.length)
+
+            // packet.packageNum = pkgs.length;
+            // index = 0;
+            // for (let pkg of pkgs) {
+            //     packet.packageIndex = index;
+            //     packet.setPayload(pkg);
+            //     await this.setFeature(REPORT_ID_USB, packet.setReport);
+            // }
         }
     }
 }

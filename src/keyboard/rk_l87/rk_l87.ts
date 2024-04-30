@@ -66,7 +66,7 @@ export abstract class RK_L87 extends Protocol {
     abstract getKeyMaxtrix(layer: MaxtrixLayer, table: MaxtrixTable, board: number): Promise<void>;
     abstract setKeyMaxtrix(layer: MaxtrixLayer, table: MaxtrixTable, board: number): Promise<void>;
     abstract getMacros(): Promise<void>;
-    abstract setMacros(block: number): Promise<void>;
+    abstract setMacros(): Promise<void>;
     
     abstract onGetReport(reportId: number, data: DataView): Promise<void>;
 

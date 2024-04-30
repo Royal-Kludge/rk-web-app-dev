@@ -1,6 +1,6 @@
 import type { KeyboardState  } from '../interface'
 import { ConnectionStatusEnum, ConnectionType } from '../enum';
-import { Packet_Dongle,  REPORT_ID_DONGLE, REPORT_MAX_RETRY, MACRO_PER_BLOCK_LENGTH } from './packets/packet';
+import { Packet_Dongle,  REPORT_ID_DONGLE, REPORT_MAX_RETRY, MACRO_PER_BLOCK_LENGTH, MACRO_MAX_LENGTH } from './packets/packet';
 import { Packet_Dongle_Block_Set } from './packets/dongle/setPacket';
 
 import type { KeyMaxtrix, MaxtrixLayer, MaxtrixTable } from './keyMaxtrix';
@@ -176,13 +176,13 @@ export class RK_L87_Dongle extends RK_L87 {
 
     async getMacros(): Promise<void> {
         this.pktGetMacros.block = 0x00;
-        this.pktGetMacros.blockCount = 4096 / MACRO_PER_BLOCK_LENGTH;
+        this.pktGetMacros.blockCount = MACRO_MAX_LENGTH / MACRO_PER_BLOCK_LENGTH;
         await this.setReport(REPORT_ID_DONGLE, this.pktGetMacros.command());
     }
 
-    async setMacros(block: number): Promise<void> {
+    async setMacros(): Promise<void> {
         if (this.data.macros != undefined) {
-            this.pktSetMacros.block = block;
+            this.pktSetMacros.block = 0;
             this.pktSetMacros.packageIndex = 0;
             this.pktSetMacros.retry = REPORT_MAX_RETRY;
             this.pktSetMacros.buffer = this.data.macros.serialize();
