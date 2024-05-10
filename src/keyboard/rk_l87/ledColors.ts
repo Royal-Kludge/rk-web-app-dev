@@ -1,6 +1,5 @@
-import { type LightEffectEnum } from '../enum'
 import { type LedColor } from '../interface'
-import { LED_COLOR_LENGTH, LED_EFFECT_COLOR_COUNT, LED_EFFECT_COUNT, PACKET_HEAD_LENGTH } from "./packets/packet";
+import { LED_COLOR_LENGTH, LED_COLOR_COUNT } from "./packets/packet";
 
 export class LedColors {
     buffer: DataView;
@@ -9,18 +8,18 @@ export class LedColors {
         this.buffer = data;
     }
 
-    setLedColor(effect: LightEffectEnum, color: LedColor) {
-        let offset = effect * (3 * 7);
+    setLedColor(index: number, color: LedColor) {
+        let offset = index;
         this.buffer.setUint8(offset, color.red);
-        this.buffer.setUint8(offset + 1, color.green);
-        this.buffer.setUint8(offset + 2, color.blue);
+        this.buffer.setUint8(offset + 126, color.green);
+        this.buffer.setUint8(offset + 126 * 2, color.blue);
     }
 
-    getLedColor(effect: LightEffectEnum) : LedColor {
-        let offset = effect * (3 * 7);
+    getLedColor(index: number) : LedColor {
+        let offset = index;
         let r = this.buffer.getUint8(offset);
-        let g = this.buffer.getUint8(offset + 1);
-        let b = this.buffer.getUint8(offset + 2);
+        let g = this.buffer.getUint8(offset + 126);
+        let b = this.buffer.getUint8(offset + 126 * 2);
         let color: LedColor = {
             red: r,
             green: g,
@@ -38,7 +37,7 @@ export class LedColors {
     static fromReportData(data: DataView) : LedColors | undefined {
         let colors = undefined;
         
-        if (data.byteLength >= LED_COLOR_LENGTH * LED_EFFECT_COLOR_COUNT * LED_EFFECT_COUNT) {
+        if (data.byteLength >= LED_COLOR_LENGTH * LED_COLOR_COUNT) {
             //let buffer = new DataView(data.buffer.slice(PACKET_HEAD_LENGTH, data.byteLength));
             colors = new LedColors(data);
         }

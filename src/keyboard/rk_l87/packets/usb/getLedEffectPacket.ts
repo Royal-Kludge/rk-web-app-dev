@@ -1,17 +1,17 @@
 import type { IPacket } from "@/keyboard/interface";
-import { Packet_Usb, LED_COLOR_LENGTH, LED_COLOR_COUNT, PACKET_HEAD_LENGTH } from "@/keyboard/rk_l87/packets/packet";
-import { LedColors } from "@/keyboard/rk_l87/ledColors";
+import { Packet_Usb, LED_COLOR_LENGTH, LED_EFFECT_COLOR_COUNT, LED_EFFECT_COUNT, PACKET_HEAD_LENGTH } from "@/keyboard/rk_l87/packets/packet";
+import { LedEffect } from "@/keyboard/rk_l87/ledEffect";
 
-export class GetLedColorsPacket extends Packet_Usb {
+export class GetLedEffectPacket extends Packet_Usb {
 
     setReport: Uint8Array;
     getReport?: DataView;
-    ledColors?: LedColors;
+    ledEffect?: LedEffect;
 
     constructor(board: number) {
-        super(0x86);
+        super(0x8a);
         this.cmdVal = 0x03 & board;
-        this.dataLength = LED_COLOR_LENGTH * LED_COLOR_COUNT;
+        this.dataLength = LED_COLOR_LENGTH * LED_EFFECT_COLOR_COUNT * LED_EFFECT_COUNT;
         this.setReport = new Uint8Array(519);
         this.setReport[0] = this.cmdId;
         this.setReport[2] = this.cmdVal;
@@ -23,8 +23,8 @@ export class GetLedColorsPacket extends Packet_Usb {
     fromReportData(buffer: DataView) : IPacket {
         super.fromReportData(buffer);
         this.getReport = new DataView(buffer.buffer.slice(1, this.dataLength + PACKET_HEAD_LENGTH + 1));
-        if (this.getReport.byteLength >= LED_COLOR_LENGTH * LED_COLOR_COUNT + PACKET_HEAD_LENGTH) {
-            this.ledColors = LedColors.fromReportData(new DataView(this.getReport.buffer.slice(PACKET_HEAD_LENGTH, this.getReport.byteLength)));
+        if (this.getReport.byteLength >= LED_COLOR_LENGTH * LED_EFFECT_COLOR_COUNT * LED_EFFECT_COUNT + PACKET_HEAD_LENGTH) {
+            this.ledEffect = LedEffect.fromReportData(new DataView(this.getReport.buffer.slice(PACKET_HEAD_LENGTH, this.getReport.byteLength)));
         }
 
         return this;

@@ -2,14 +2,17 @@ import { Protocol } from '@/keyboard/protocol'
 import type { MaxtrixLayer, MaxtrixTable } from '@/keyboard/rk_l87/keyMaxtrix';
 
 import type { KeyMaxtrix } from "./keyMaxtrix";
-import type { LedColors } from "./ledColors";
+import type { LedEffect } from "./ledEffect";
 import type { Profile } from "./profile";
 import type { Macros } from './macros';
+import type { LedColors } from './ledColors';
+import type { LedColor } from '../interface';
 
 export const RK_L87_EVENT_DEFINE: {
     OnDongleStatusChanged: string;
     OnPasswordGotten: string;
     OnKeyMaxtrixGotten: string;
+    OnLedEffectGotten: string;
     OnLedColorsGotten: string;
     OnProfileGotten: string;
     OnMacrosGotten: string;
@@ -17,6 +20,7 @@ export const RK_L87_EVENT_DEFINE: {
     OnDongleStatusChanged: 'OnDongleStatusChanged',
     OnPasswordGotten: 'OnPasswordGotten',
     OnKeyMaxtrixGotten: 'OnKeyMaxtrixGotten',
+    OnLedEffectGotten: 'OnLedEffectGotten',
     OnLedColorsGotten: 'OnLedColorsGotten',
     OnProfileGotten: 'OnProfileGotten',
     OnMacrosGotten: 'OnMacrosGotten'
@@ -27,10 +31,12 @@ export const COMMAND_ID: {
     GetDongleStatus: number;
     GetPassword: number;
     GetProfile: number;
+    GetLedEffect: number;
     GetLedColors: number;
     GetKeyMaxtrix: number;
     GetMacros: number;
     SetProfile: number;
+    SetLedEffect: number;
     SetLedColors: number;
     SetKeyMaxtrix: number;
     SetMacros: number;
@@ -39,19 +45,22 @@ export const COMMAND_ID: {
     GetDongleStatus: 0x07,
     GetPassword: 0x05,
     GetProfile: 0x44,
-    GetLedColors: 0x49,
+    GetLedEffect: 0x49,
+    GetLedColors: 0x42,
     GetKeyMaxtrix: 0x41,
     GetMacros: 0x43,
     SetProfile: 0x04,
-    SetLedColors: 0x09,
+    SetLedEffect: 0x09,
+    SetLedColors: 0x02,
     SetKeyMaxtrix: 0x01,
     SetMacros: 0x03
 }
 
 export class RK_L87_Data {
     profile?: Profile;
-    ledColors?: LedColors;
+    ledEffect?: LedEffect;
     keyMaxtrix?: KeyMaxtrix;
+    ledColors?: LedColors;
     macros?: Macros;
 }
 
@@ -61,12 +70,14 @@ export abstract class RK_L87 extends Protocol {
 
     abstract getProfile(board: number): Promise<void>;
     abstract setProfile(board: number): Promise<void>;
-    abstract getLedColors(board: number): Promise<void>;
-    abstract setLedColors(board: number): Promise<void>;
+    abstract getLedEffect(board: number): Promise<void>;
+    abstract setLedEffect(board: number): Promise<void>;
     abstract getKeyMaxtrix(layer: MaxtrixLayer, table: MaxtrixTable, board: number): Promise<void>;
     abstract setKeyMaxtrix(layer: MaxtrixLayer, table: MaxtrixTable, board: number): Promise<void>;
     abstract getMacros(): Promise<void>;
     abstract setMacros(): Promise<void>;
+    abstract getLedColors(board: number): Promise<void>;
+    abstract setLedColors(board: number): Promise<void>;
     
     abstract onGetReport(reportId: number, data: DataView): Promise<void>;
 
