@@ -16,6 +16,7 @@
                             <el-dropdown-menu style="padding: 0px;">
                                 <el-dropdown-item @click="keySetToDefault(key.index)" style="height: min-content;">Default</el-dropdown-item>
                                 <el-dropdown-item @click="keySetMacro(key.index)" style="height: min-content;">Macro</el-dropdown-item>
+                                <el-dropdown-item @click="CombineKey(key.index)" style="height: min-content;">CombineKey</el-dropdown-item>
                             </el-dropdown-menu>
                         </template>
                     </el-dropdown>
@@ -53,6 +54,26 @@
                 <div class="br-2 bg-white text-black px-4 jc-center ai-center mt-4" 
                      style="cursor: pointer;font-size: 12px;width: 48px;height: auto; text-align: center;padding: 4px;margin-left: 20px;" @click="confirmSetMacro">
                     Confirm
+                </div>
+            </el-dialog>
+            <el-dialog v-model="state.combineKeyDialogShow" top="20vh" width="450px" height="100%"
+                       style="--el-dialog-padding-primary:5px;background-color: black;" :lock-scroll="true"
+                       :closed="dialogClosed">
+                <div class="d-flex flex-column ml-4">
+                    <div class="mr-4" id="input">
+                        <span>Input</span>
+                        <el-input class="input" style="width: 100px;height: 25px; margin: 5px;" v-model="state.keyStr" aria-placeholder="Please input" :readonly="false" maxlength="1"/>
+                    </div>
+                    <div class="d-flex mt-4">
+                        <el-checkbox v-model="state.shiftKey" label="Shift" size="nomal" border />
+                        <el-checkbox v-model="state.ctrlKey" label="Ctrl" size="nomal" border />
+                        <el-checkbox v-model="state.winKey" label="Win" size="nomal" border />
+                        <el-checkbox v-model="state.altKey" label="Alt" size="nomal" border />
+                    </div>
+                    <div class="br-2 bg-white text-black px-4 jc-center ai-center mt-4" 
+                         style="cursor: pointer;font-size: 12px;width: 128px;height: auto; text-align: center;padding: 4px;margin-top: 30px;" @click="confirmSetCombineKey">
+                        Confirm
+                    </div>
                 </div>
             </el-dialog>
         </div>
@@ -255,6 +276,7 @@ import { KeyMaxtrix, MaxtrixLayer, MaxtrixTable } from '@/keyboard/rk_l87/keyMax
 import { Action, Macro, Macros } from '@/keyboard/rk_l87/macros';
 import type { DropdownInstance } from 'element-plus'
 import { storage } from '@/keyboard/storage';
+import { KeyCodeMap } from '@/keyboard/keyCode'
 
 interface KeyState {
     index: number,
@@ -514,6 +536,7 @@ const state = reactive({
         { key: KeyDefineEnum.KEY_NUM_ENTER, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_NUM_ENTER] }
     ],
     macroDialogShow: false,
+    combineKeyDialogShow: false,
     macros: macros,
     cycleTypes: [
         { value: 1, label: 'Cycles' },
@@ -521,7 +544,13 @@ const state = reactive({
         { value: 4, label: 'Cycle to any key released' },
     ],
     cycleType: 1,
-    cycleCount: 1
+    cycleCount: 1,
+    keyStr: "",
+    keyHid: 0x00,
+    shiftKey: false,
+    ctrlKey: false,
+    winKey: false,
+    altKey: false
 });
 
 onMounted(async () => {
@@ -627,6 +656,18 @@ const keybgColor = (key: KeyTableData | undefined ): string => {
             case KeyMappingType.Macro:
                 c = 'key_remapped';
                 break;
+            case KeyMappingType.KeyBoard:
+                if (mapping.keyMappingPara > 0) {
+                    if ((mapping.keyCode & 0x0000FFFF) > 0) {
+                        c = 'key_remapped';
+                    } else {
+                        c = key.keyCode == mapping.keyRaw ? '' : 'key_remapped';
+                    }
+                    
+                } else {
+                    c = key.keyCode == mapping.keyRaw ? '' : 'key_remapped';
+                }
+                break;
             default:
                 c = key.keyCode == mapping.keyRaw ? '' : 'key_remapped';
                 break;
@@ -709,6 +750,31 @@ const keySetMacro = (index: number) => {
     state.macroDialogShow = true;
 }
 
+const CombineKey = (index: number) => {
+    if (state.keyState.length <= 0 || index >= 999) {
+        return '';
+    }
+    keyState.value = (state.keyState as Array<KeyState>)[index];
+    state.combineKeyDialogShow = true;
+    state.keyStr = "";
+    state.keyHid = 0x00;
+    state.shiftKey = false,
+    state.ctrlKey = false,
+    state.winKey = false,
+    state.altKey = false
+    document.addEventListener('keydown', onKeyDown);
+}
+
+const onKeyDown = (event: KeyboardEvent) => {
+    console.log('Key pressed:', `${event.key} | ${event.code} | ${event.keyCode}`);
+    state.keyStr = KeyCodeMap[event.code].key;
+    state.keyHid =  KeyCodeMap[event.code].hid;
+};
+
+const dialogClosed = () => {
+    document.removeEventListener('keydown', onKeyDown);
+}
+
 const isMacroSelected = (obj: Macro): string => {
     return obj.index == macro.value?.index ? 'macro_selected' : '';
 }
@@ -729,5 +795,40 @@ const confirmSetMacro = () => {
     }
 
     state.macroDialogShow = false;
+}
+
+const confirmSetCombineKey = async () => {
+    if (keyState.value != undefined && macro.value!= undefined) {
+        let mapping = keyState.value.KeyData.keyMappingData;
+
+        mapping.keyMappingType = KeyMappingType.KeyBoard;
+        mapping.keyCode = state.keyHid;
+
+        let combine = "";
+        if (state.shiftKey) {
+            combine = combine + "Shift + ";
+            mapping.keyCode = mapping.keyCode | KeyDefineEnum.KEY_L_SHIFT;
+        }
+        if (state.ctrlKey) {
+            combine = combine + "Ctrl + ";
+            mapping.keyCode = mapping.keyCode | KeyDefineEnum.KEY_L_CTRL;
+        }
+        if (state.winKey) {
+            combine = combine + "Win + ";
+            mapping.keyCode = mapping.keyCode | KeyDefineEnum.KEY_L_WIN;
+        }
+        if (state.altKey) {
+            combine = combine + "Alt + ";
+            mapping.keyCode = mapping.keyCode | KeyDefineEnum.KEY_L_ALT;
+        }
+        combine = combine + state.keyStr;
+        mapping.keyStr = combine;
+        mapping.keyMappingPara = (mapping.keyCode & 0x00FF0000) >> 16;
+        mapping.keyRaw = 0xFFFFFFFF & (mapping.keyMappingType << 24) && (mapping.keyMappingPara << 16) && mapping.keyCode;
+        keyMaxtrix.value?.setKeyMapping(keyState.value.index, mapping);
+        await rk_l87.value?.setKeyMaxtrix(MaxtrixLayer.NORMAL, MaxtrixTable.WIN, 0);
+    }
+
+    state.combineKeyDialogShow = false;
 }
 </script>
