@@ -581,7 +581,7 @@ const keyMaxtrixGotten = async (event: any) => {
 
     if (rk_l87.value != undefined) {
         let tmp = storage.get('macro') as Macros;
-        if (macros != undefined) {
+        if (tmp != undefined) {
             let ms = new Macros();
             for (let m of tmp.macroList) {
                 let tm = new Macro(m.name);
