@@ -13,6 +13,7 @@ export default {
     layer_4: "Top层",
     menu_1: "默認",
     menu_2: "宏",
+    menu_3: "组合键",
     key_1: "数字",
     key_2: "其它",
     key_3: "字符",

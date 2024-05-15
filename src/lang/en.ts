@@ -41,6 +41,7 @@ export default {
     but_7: "Save",
     menu_1: "Keyboard",
     menu_2: "Delay",
+    menu_3: "CombineKey",
     event_1: "Insert event before this",
     event_2: "Insert event after this",
   },

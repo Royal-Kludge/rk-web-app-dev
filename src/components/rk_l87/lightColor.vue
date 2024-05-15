@@ -9,7 +9,7 @@
                     <div class="w-100" style="height: 23vh">
                         <el-scrollbar>
                             <div class="d-flex flex-column jc-between" style="padding-left: 15%;">
-                                <div class="d-flex m-3">
+                                <div class="d-flex m-3" v-if="useLight.state.lightProps.light != LightEffectEnum.SelfDefine">
                                     <div class="d-flex flex-column">
                                         <div>
                                             <el-slider style="width: 360px" :step="1" :max="20" :min="1"
@@ -20,7 +20,7 @@
                                     </div>
                                     <div class="ml-4 mt-1">{{ useLight.state.lightProps.brightness }}</div>
                                 </div>
-                                <div class="d-flex m-3">
+                                <div class="d-flex m-3" v-if="useLight.state.lightProps.light != LightEffectEnum.SelfDefine">
                                     <div class="d-flex flex-column">
                                         <div>
                                             <el-slider style="width: 360px" :step="1" :max="4" :min="1"
@@ -53,7 +53,7 @@
                     <div class="w-100" style="height: 23vh">
                         <el-scrollbar>
                             <div class="d-flex flex-column ml-5">
-                                <div>
+                                <div v-if="useLight.state.lightProps.light != LightEffectEnum.SelfDefine">
                                     <el-checkbox v-model="useLight.state.lightProps.mixing" :label="$t('light.title_7')"
                                         size="large" @change="useLight.ligtChanged" />
                                 </div>
@@ -72,6 +72,7 @@
 <script setup lang="ts">
 import Picker from '../picker.vue'
 import { uselightStore } from "@/stores/lightStore";
+import { LightEffectEnum } from '@/keyboard/enum'
 
 const useLight = uselightStore();
 </script>

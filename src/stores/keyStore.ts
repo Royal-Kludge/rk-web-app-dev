@@ -8,6 +8,7 @@ import { KeyMappingType } from '../keyboard/enum'
 import { KeyMaxtrix, MaxtrixLayer, MaxtrixTable } from '@/keyboard/rk_l87/keyMaxtrix';
 import { Action, Macro, Macros } from '@/keyboard/rk_l87/macros';
 import { Layer, Profile, Profiles } from '@/keyboard/rk_l87/profiles';
+import { KeyCodeMap } from '@/keyboard/keyCode'
 
 import { storage } from '@/keyboard/storage';
 export const useKeyStore = defineStore('keyinfo', () => {
@@ -420,6 +421,7 @@ export const useKeyStore = defineStore('keyinfo', () => {
       { key: KeyDefineEnum.KEY_NUM_ENTER, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_NUM_ENTER] }
     ],
     macroDialogShow: false,
+    combineKeyDialogShow: false,
     macros: macros,
     cycleTypes: [
       { value: 1, label: 'Cycles' },
@@ -427,7 +429,13 @@ export const useKeyStore = defineStore('keyinfo', () => {
       { value: 4, label: 'Cycle to any key released' },
     ],
     cycleType: 1,
-    cycleCount: 1
+    cycleCount: 1,
+    keyStr: "",
+    keyHid: 0x00,
+    shiftKey: false,
+    ctrlKey: false,
+    winKey: false,
+    altKey: false
   });
 
   onMounted(async () => {
@@ -708,5 +716,60 @@ export const useKeyStore = defineStore('keyinfo', () => {
 
     state.macroDialogShow = false;
   }
-  return { profile, state, isMin, keyClick, keyColor, isSelected, keybgColor, keyText, keySetToDefault, keySetMacro, mapping, isFunSelected, isMacroSelected, clickMacro, confirmSetMacro, getKeyMaxtrix, clickProfile, deleteProfile }
+
+  const setCombineKey = (index: number) => {
+    if (state.keyState.length <= 0 || index >= 999) {
+        return '';
+    }
+    keyState.value = (state.keyState as Array<KeyState>)[index];
+    state.combineKeyDialogShow = true;
+    state.keyStr = "";
+    state.keyHid = 0x00;
+    state.shiftKey = false;
+    state.ctrlKey = false;
+    state.winKey = false;
+    state.altKey = false;
+  }
+
+  const onKeyDown = (event: KeyboardEvent) => {
+    console.log('Key pressed:', `${event.key} | ${event.code} | ${event.keyCode}`);
+    state.keyStr = KeyCodeMap[event.code].key;
+    state.keyHid =  KeyCodeMap[event.code].hid;
+  }
+
+  const confirmSetCombineKey = async () => {
+    if (keyState.value != undefined && macro.value!= undefined) {
+        let mapping = keyState.value.KeyData.keyMappingData;
+
+        mapping.keyMappingType = KeyMappingType.KeyBoard;
+        mapping.keyCode = state.keyHid;
+
+        let combine = "";
+        if (state.shiftKey) {
+            combine = combine + "Shift + ";
+            mapping.keyCode = mapping.keyCode | KeyDefineEnum.KEY_L_SHIFT;
+        }
+        if (state.ctrlKey) {
+            combine = combine + "Ctrl + ";
+            mapping.keyCode = mapping.keyCode | KeyDefineEnum.KEY_L_CTRL;
+        }
+        if (state.winKey) {
+            combine = combine + "Win + ";
+            mapping.keyCode = mapping.keyCode | KeyDefineEnum.KEY_L_WIN;
+        }
+        if (state.altKey) {
+            combine = combine + "Alt + ";
+            mapping.keyCode = mapping.keyCode | KeyDefineEnum.KEY_L_ALT;
+        }
+        combine = combine + state.keyStr;
+        mapping.keyStr = combine;
+        mapping.keyMappingPara = (mapping.keyCode & 0x00FF0000) >> 16;
+        mapping.keyRaw = 0xFFFFFFFF & (mapping.keyMappingType << 24) && (mapping.keyMappingPara << 16) && mapping.keyCode;
+        keyMaxtrix.value?.setKeyMapping(keyState.value.index, mapping);
+        await rk_l87.value?.setKeyMaxtrix(MaxtrixLayer.NORMAL, MaxtrixTable.WIN, 0);
+    }
+
+    state.combineKeyDialogShow = false;
+  }
+  return { profile, state, isMin, keyClick, keyColor, isSelected, keybgColor, keyText, keySetToDefault, keySetMacro, mapping, isFunSelected, isMacroSelected, clickMacro, confirmSetMacro, setCombineKey, confirmSetCombineKey, getKeyMaxtrix, clickProfile, deleteProfile, onKeyDown }
 })

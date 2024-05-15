@@ -41,6 +41,7 @@ export default {
     but_7: "保存",
     menu_1: "鍵盤",
     menu_2: "延遲",
+    menu_3: "複合鍵",
     event_1: "在這之前插入事件",
     event_2: "在這之后插入事件",
   },
