@@ -22,6 +22,9 @@ export default {
     but_1: "新鍵",
     but_2: "導入",
     but_3: "確認",
+    but_4: "編輯",
+    but_5: "刪除",
+    but_6: "導出",
   },
   macro: {
     title: "宏列表",

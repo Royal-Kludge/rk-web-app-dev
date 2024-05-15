@@ -22,6 +22,9 @@ export default {
     but_1: "新键",
     but_2: "导入",
     but_3: "确认",
+    but_4: "编辑",
+    but_5: "删除",
+    but_6: "导出",
   },
   macro: {
     title: "宏列表",
