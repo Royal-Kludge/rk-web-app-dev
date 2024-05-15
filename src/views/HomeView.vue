@@ -1,10 +1,6 @@
 <template>
-    <main>
-        <el-container class="p-a w-100 h-100 d-flex ai-start jc-center">
-            <WebApp v-if="isConnected" />
-            <Nodevice v-else @on-connect="onConnect" />
-        </el-container>
-    </main>
+    <WebApp v-if="isConnected" />
+    <Nodevice v-else @on-connect="onConnect" />
 </template>
 
 <script setup lang="ts">
@@ -34,11 +30,11 @@ const onConnect = async () => {
     }
 
     const connectionEventCallback = async (event: Event) => {
-        let keyboard = event.currentTarget as Keyboard      
+        let keyboard = event.currentTarget as Keyboard
         console.log(`Keyboard [${keyboard.state.deviceName}] is ${keyboard.state.connectionEvent}`)
         switch (keyboard.state.connectionEvent) {
             case ConnectionEventEnum.Open:
-                await keyboard.protocol?.init(); 
+                await keyboard.protocol?.init();
                 isConnected.value = true;
                 if (keyboard.state.fwVersion != undefined) data.value.fwVersion = keyboard.state.fwVersion.valueOf();
                 if (keyboard.state.deviceName != undefined) data.value.deviceName = keyboard.state.deviceName.valueOf();

@@ -4,7 +4,7 @@
             <div class="d-flex flex-column flex-1">
                 <div class="d-flex flex-column h-100">
                     <div class="p-3 bg-white-1 fw-b fs-xxl">{{ $t('light.title') }}</div>
-                    <div style="height: 78vh">
+                    <div style="height: 40vh">
                         <el-scrollbar>
                             <div style="padding-left: 16%" v-for="item in state.lightEffects"
                                 class="module_box d-flex p-3 my-2 text-grey-1 jc-between" :class="[selectd(item.light)]"
@@ -19,6 +19,26 @@
                                 </div>
                             </div>
                         </el-scrollbar>
+                    </div>
+                    <div class="flex-1">
+                        <div class="d-flex flex-column h-100">
+                            <div class="bg-white-1 p-2" style="height: 24px; border-radius: 5px 5px 0px 0px">
+                                {{ $t('light.title_1') }}
+                            </div>
+                            <div class="bg-white flex-1" style="border-radius: 0px 0px 5px 5px">
+                                <div style="height: 40vh">
+                                    <el-scrollbar>
+                                        <div class="d-flex flex-wrap bg-white p-1 jc-between">
+                                            <div :class="[`c-p d-flex jc-center p-1 m-1 bg-grey br-1 b-grey`, selectdCustom(item.light)]"
+                                                v-for="item in state.lightEffects" @click="lightClick(item.light)"
+                                                style="width: 95px;overflow: hidden;">
+                                                {{ item.label }}
+                                            </div>
+                                        </div>
+                                    </el-scrollbar>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -35,6 +55,12 @@
         </div>
     </div>
 </template>
+<style scoped lang="scss">
+.active {
+    color: #4743A7 !important;
+    background-color: #F0F0FC !important;
+}
+</style>
 
 <script setup lang="ts">
 import Key from "./key.vue";
@@ -154,4 +180,14 @@ const selectd = (light: LightEffectEnum) => {
 
     return style;
 };
+
+const selectdCustom = (light: LightEffectEnum) => {
+    let style = '';
+    if (profile.value != undefined && light == state.lightProps.light) {
+        style = 'active';
+    }
+
+    return style;
+};
+
 </script>

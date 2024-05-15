@@ -1,0 +1,29 @@
+<template>
+  <div class="m-4">
+    <div class="fw-b fs-xxl">{{ useKey.profile?.name }}</div>
+    <div>
+      <el-radio-group v-model="useKey.state.MaxtrixLayer" text-color="#00ffff" fill="#ffff00"
+        @change="useKey.getKeyMaxtrix">
+        <el-radio v-for="item in useKey.state.MaxtrixLayers" :value="item.value" :label="item.value">
+          {{ $t(item.label) }}
+        </el-radio>
+      </el-radio-group>
+    </div>
+  </div>
+</template>
+<script setup lang="ts">
+
+import { useKeyStore } from "@/stores/keyStore";
+const useKey = useKeyStore();
+</script>
+<style scoped lang="scss">
+:deep {
+  .el-radio__input.is-checked .el-radio__inner {
+    --el-color-primary: #3235b4;
+  }
+
+  .el-radio__input.is-checked+.el-radio__label {
+    --el-color-primary: #3235b4;
+  }
+}
+</style>

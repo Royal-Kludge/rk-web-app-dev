@@ -1,5 +1,103 @@
 @import "./_variables.scss";
 
+/* 滑块 */
+.el-slider__bar {
+    background-color: #4743A7 !important;
+}
+
+.el-slider {
+    --el-slider-height: 10px !important;
+}
+
+.el-slider__button {
+    background-color: #4743A7 !important;
+    border: 4px solid #F0F0FC !important;
+    height: 30px !important;
+    border-radius: 3px !important;
+}
+
+.el-slider__runway {
+    background-color: #DCDCDE !important;
+}
+
+.el-slider__stop {
+    background-color: transparent !important;
+}
+/* 滑块 */
+
+.el-scrollbar__thumb {
+    background-color: #292c37 !important;
+    /* 设置滚动条颜色 */
+}
+
+.el-tooltip__trigger:focus-visible {
+    outline: unset;
+}
+
+.module_box {
+    cursor: pointer;
+    border-left: 8px solid #e9ebf3;
+
+    img {
+        height: 18px;
+    }
+}
+.img-but{
+    height: 24px;
+}
+.img-title{
+    height: 18px;
+}
+
+.bg-box {
+    background: linear-gradient(45deg, #FFFFFF 0%, #F5F5FF 100%);
+}
+
+.module_active {
+    color: #4743a7 !important;
+    border-left: 8px solid #4743a7;
+    background: radial-gradient(0% 0% at 0% 0%, #ffffff 0%, #c8c8fd 100%), #cacafd;
+    border-radius: 0px 10px 10px 0px;
+}
+
+.but-green {
+    background: radial-gradient(0% 0% at 0% 0%, #88faee 0%, #11f9d2 100%), #42bc79;
+    border-radius: 5px;
+}
+
+.but-blue {
+    background: radial-gradient(0% 0% at 0% 0%, #1675f2 0%, #2998ff 100%), #3db2ef;
+    border-radius: 5px;
+}
+
+.but-grey {
+    background: radial-gradient(0% 0% at 0% 0%, #CFD9DF 0%, #E2EBF0 100%), #3DB2EF;
+    border-radius: 5px;
+}
+
+.but-red {
+    background: radial-gradient(0% 0% at 0% 0%, #992747 0%, #CE3F6B 100%);
+    border-radius: 5px;
+}
+
+.c-p {
+    cursor: pointer;
+}
+
+.hv-100 {
+    height: 100vh;
+}
+
+.active {
+    color: #FC5D41 !important;
+
+    img {
+        position: relative;
+        left: -99999px;
+        filter: drop-shadow(#FC5D41 99999px 0);
+    }
+}
+
 //文章一行显示，多余省略号显示
 .title {
     overflow: hidden;

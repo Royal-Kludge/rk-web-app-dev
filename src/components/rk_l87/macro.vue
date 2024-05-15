@@ -1,91 +1,165 @@
 <template>
-    <div class="d-flex flex-column">
-        <div class="d-flex jc-center ai-center">
-            <div class="mr-4" id="input">
-                <span>Input</span>
-                <el-input class="input" style="width: 100px;height: 25px; margin: 5px;" v-model="state.key" aria-placeholder="Please input" :readonly="false" maxlength="1"/>
-            </div>
-            <div class="ml-4">
-                <span>Delay</span>
-                <el-input-number style="width: 120px;height: 25px;margin: 5px;" v-model="delay" aria-placeholder="Please input delay" type="number"/>
-                <span>ms</span>
-            </div>
-            <div class="ml-4">
-                <div class="ml-4 br-2 bg-white  px-4 text-black jc-center ai-center" 
-                     style="cursor: pointer;font-size: 12px;width: 48px;height: auto; text-align: center;padding: 4px;" @click="insert">
-                    Insert
-                </div>
-            </div>
-        </div>
-        <div class="d-flex mt-4 flex-column">
-            <div class="d-flex">
-                <div class="ml-4 br-2 bg-white  px-4 text-black jc-center ai-center" 
-                     style="cursor: pointer;font-size: 12px;width: 32px;height: auto; text-align: center;padding: 4px;" @click="newMacro">
-                    New
-                </div>
-                <div class="ml-4 br-2 bg-white  px-4 text-black jc-center ai-center" 
-                     style="cursor: pointer;font-size: 12px;width: 32px;height: auto; text-align: center;padding: 4px;" @click="saveMacro">
-                    Save
-                </div>
-                <div class="ml-4 br-2 bg-white  px-4 text-black jc-center ai-center" 
-                     style="cursor: pointer;font-size: 12px;width: 112px;height: auto; text-align: center;padding: 4px;" @click="loadMacro">
-                    Load from device
-                </div>
-            </div>
-            <div class="d-flex">
-                <div style="border: 1px solid #ffffff3f;height: 40vh;width: 16vh;" class="m-4">
-                    <el-scrollbar>
-                        <div style="cursor: pointer; padding: 2px; width: 80%;"
-                             :class="[`d-flex ai-center m-2`, isSelected(macro)]"
-                             v-for=" macro in state.macros?.get()" @click="clickMacro(macro)">
-                            <el-dropdown :id="`macro${macro.index}`"
-                                        trigger="contextmenu"
-                                        ref="elMacro" 
-                                        :class="[`d-flex ai-center m-2`]"
-                                        @visible-change="handleOpen($event, `macro${macro.index}`)">
-                                <span style="color: white;">{{ macro.name }}</span>
-                                <template #dropdown>
-                                    <el-dropdown-menu style="padding: 0px;">
-                                        <el-dropdown-item @click="renameMacro(macro)" style="height: min-content;">Rename</el-dropdown-item>
-                                        <el-dropdown-item @click="deleteMacro(macro)" style="height: min-content;">Delete</el-dropdown-item>
-                                    </el-dropdown-menu>
-                                </template>
-                            </el-dropdown>
-                        </div>
-                    </el-scrollbar>
-                </div>
-                <div class="m-4" style="border: 1px solid #ffffff3f;height: 40vh;width: 30vh;">
-                    <el-scrollbar ref="elActionScrollbar">
-                        <div style="cursor: pointer;" v-for=" action in state.macro?.actions">
-                            <el-dropdown :id="`action${action.index}`"
-                                        trigger="contextmenu"
-                                        ref="elAction" 
-                                        :class="[`d-flex ai-center m-3`]"
-                                        @visible-change="handleOpen($event, `action${action.index}`)">
-                                <span style="color: white;">{{ action.toString() }}</span>
-                                <template #dropdown>
-                                    <el-dropdown-menu style="padding: 0px;">
-                                        <el-dropdown-item @click="deleteAction(action)" style="height: min-content;">Delete</el-dropdown-item>
-                                    </el-dropdown-menu>
-                                </template>
-                            </el-dropdown>
-                        </div>
-                    </el-scrollbar>
-                </div>
-            </div>
-            <el-dialog v-model="state.nameEditorDisplay" top="30vh" width="200px" height="100%"
-                       style="--el-dialog-padding-primary:5px;" :lock-scroll="true" :before-close="handleEditClose">
-                <div class="d-flex ai-center mb-4" style="margin-top: -13px;">
-                    <div class="ml-4 mr-4">
-                        <el-input v-model="state.name" placeholder="Please input" maxlength="10" />
+    <div style="min-width: 210px;width: 240px;">
+        <div class="bg-grey d-flex flex-column jc-between h-100">
+            <div class="d-flex flex-column flex-1">
+                <div class="d-flex flex-column h-100">
+                    <div class="p-3 bg-white-1 fw-b fs-xxl">{{ $t('macro.title') }}</div>
+                    <div style="height: 75vh">
+                        <el-scrollbar>
+                            <div style="padding-left: 16%"
+                                :class="[`module_box d-flex p-3 my-2 text-grey-1 jc-between`, isSelected(macro)]"
+                                v-for=" macro in state.macros?.get()" @click="clickMacro(macro)">
+                                <div class="d-flex">
+                                    <span class="pr-4 d-flex ai-center">
+                                        <img src="../../assets/images/dot.png" />
+                                    </span>
+                                    <span>
+                                        {{ macro.name }}
+                                    </span>
+                                </div>
+                                <div>
+                                    <el-dropdown>
+                                        <el-icon :size="18" color="#ffffff">
+                                            <MoreFilled />
+                                        </el-icon>
+                                        <template #dropdown>
+                                            <el-dropdown-menu style="padding: 0px;">
+                                                <el-dropdown-item @click="renameMacro(macro)">
+                                                    <img src="../../assets/images/title/edit.png" class="img-title" />
+                                                    编辑
+                                                </el-dropdown-item>
+                                                <el-dropdown-item @click="deleteMacro(macro)">
+                                                    <img src="../../assets/images/title/del.png" class="img-title" />
+                                                    删除
+                                                </el-dropdown-item>
+                                            </el-dropdown-menu>
+                                        </template>
+                                    </el-dropdown>
+                                </div>
+                            </div>
+                        </el-scrollbar>
                     </div>
+                </div>
+            </div>
+            <div class="bg-white" style="height: 46px;">
+                <div class="d-flex jc-center text-white">
+                    <div class="d-flex py-1 m-2 px-3 but-blue c-p" @click="newMacro">
+                        <img src="../../assets/images/title/new.png" class="img-but" />{{ $t('macro.but_1') }}
+                    </div>
+                    <div class="d-flex py-1 m-2 px-3 but-green c-p" @click="loadMacro">
+                        <img src="../../../../src/assets/images/title/import.png" class="img-but" /> {{
+                            $t('macro.but_2') }}
+                    </div>
+                </div>
+            </div>
+            <el-dialog v-model="state.nameEditorDisplay" top="30vh" width="680px" :lock-scroll="true"
+                :before-close="handleEditClose">
+                <div class="d-flex ai-center">
+                    <el-input v-model="state.name" placeholder="Please input" maxlength="10" />
                 </div>
             </el-dialog>
         </div>
     </div>
+    <div class="d-flex flex-1">
+        <div class="d-flex flex-column flex-1 ml-4 my-4">
+            <div class="bg-white p-2" style="border-radius: 10px 10px 0px 0px;line-height: 30px;">
+                {{ $t('macro.title_1') }}
+            </div>
+            <div class="flex-1 bg-white-1" style="border-radius: 0px 0px 10px 10px">
+                <div class="m-5" style="border-bottom: 1px solid #E7EAF2;">
+                    <div class="m-4">{{ $t('macro.title_3') }}</div>
+                    <div class="m-4">
+                        <el-select v-model="eventVal" placeholder="Select" style="width: 100%;">
+                            <el-option v-for="item in eventList" :key="$t(item.value)" :label="$t(item.label)"
+                                :value="item.value" />
+                        </el-select>
+                    </div>
+                    <div class="m-4">
+                        <el-radio-group v-model="actVal" text-color="#00ffff" fill="#ffff00">
+                            <el-radio v-for="item in actList" :value="$t(item.value)" :label="$t(item.label)">
+                                {{ $t(item.label) }}
+                            </el-radio>
+                        </el-radio-group>
+                    </div>
+                    <div class="m-4">
+                        <span v-if="actVal === $t('macro.menu_1')"><el-input style="width: 100%" v-model="state.key"
+                                aria-placeholder="Please input" :readonly="false" maxlength="1" /></span>
+                        <span v-else><el-input-number style="width: 150px" v-model="delay"
+                                aria-placeholder="Please input delay" type="number" />ms</span>
+                    </div>
+                    <div class="m-4 d-flex">
+                        <div class="py-1 px-4 but-green text-white c-p" @click="insert">
+                            {{ $t('macro.but_3') }}
+                        </div>
+                    </div>
+                </div>
+                <div class="m-5"></div>
+                <div class="m-5">
+                    <div class="m-4 d-flex ai-center">
+                        <div>{{ $t('macro.title_4') }}</div>
+                        <div><el-input class="mx-4" style="width: 50px;" /></div>
+                    </div>
+                    <div class="m-4 d-flex ai-center">
+                        <el-radio-group v-model="actVal" text-color="#00ffff" fill="#ffff00">
+                            <el-radio v-for="item in actList" :value="$t(item.value)" :label="$t(item.label)"
+                                style="width: 100%;">
+                                {{ $t(item.label) }}
+                            </el-radio>
+                        </el-radio-group>
+                    </div>
+                    <div class="m-4 d-flex">
+                        <div class="py-1 px-5 but-blue text-white c-p">
+                            {{ $t('macro.but_4') }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex flex-column flex-1 mx-4 my-4" style="box-shadow: 0px 0px 24px 0px #E9EBF3;">
+            <div class="bg-white p-2" style="border-radius: 10px 10px 0px 0px;line-height: 30px;">
+                {{ $t('macro.title_2') }}
+            </div>
+            <div class="d-flex flex-column flex-1 bg-white-1" style="border-radius: 0px 0px 10px 10px;height: 100%;">
+                <div class="list flex-1 bg-warn-1">
+                    <div style="height: 73vh">
+                        <el-scrollbar ref="elActionScrollbar">
+                            <div :class="['p-1 c-p', selectedAction(action)]" v-for=" action in state.macro?.actions"
+                                @click="clickAction(action)">
+                                {{ action.toString() }}
+                            </div>
+                        </el-scrollbar>
+                    </div>
+                </div>
+                <div class="d-flex bg-white p-4 jc-center" style="border-radius: 0px 0px 10px 10px">
+                    <div class="py-1 px-5 but-grey text-white mx-3 c-p" @click="clearAction()">
+                        {{ $t('macro.but_5') }}
+                    </div>
+                    <div class="py-1 px-5 but-red text-white mx-3 c-p" @click="deleteAction(actionVal as Action)">
+                        {{ $t('macro.but_6') }}
+                    </div>
+                    <div class="py-1 px-5 but-green text-white mx-3 c-p" @click="saveMacro()">
+                        {{ $t('macro.but_7') }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
+.action_selected {
+    background-color: #4743A7 !important;
+}
+
+.list :nth-child(2n+1) {
+    background-color: #F0F0FC;
+}
+
+.list :nth-child(2n) {
+    background-color: #E7E7F6;
+    border-top: 1px solid #ffffff;
+}
+
 .macro_selected {
     border: 1px solid #ffffffaf;
     padding: 1px;
@@ -99,7 +173,7 @@
 </style>
 
 <script setup lang="ts">
-import { reactive, ref, onMounted, onBeforeUnmount } from 'vue';
+import { reactive, ref, onMounted, onBeforeUnmount, computed } from 'vue';
 import { keyboard } from '../../keyboard/keyboard'
 import { RK_L87, RK_L87_EVENT_DEFINE } from '../../keyboard/rk_l87/rk_l87';
 import { Macro, Macros, Action, ActionType } from '@/keyboard/rk_l87/macros';
@@ -107,7 +181,16 @@ import { KeyCodeMap } from '@/keyboard/keyCode'
 import type { DropdownInstance } from 'element-plus'
 import { type KeyCodeTable } from '@/keyboard/interface';
 import { storage } from '@/keyboard/storage';
+import { useMacroStore } from "../../stores/macroStore";
+import { storeToRefs } from "pinia";
+import { useI18n } from 'vue-i18n';
 
+// 解构出t方法
+const { t } = useI18n();
+const useMacro = useMacroStore();
+const { eventVal, eventList, actList } = storeToRefs(useMacro);
+
+const actVal = ref(t('macro.menu_1'));
 const rk_l87 = ref<RK_L87>();
 const macros = ref<Macros>();
 
@@ -118,6 +201,7 @@ const elAction = ref<any>(null);
 const elMacro = ref<any>(null);
 const elActionScrollbar = ref<any>(null);
 const keyCodeTable = ref<KeyCodeTable>();
+const actionVal = ref<Action>();
 
 const state = reactive({
     macros: macros,
@@ -127,17 +211,28 @@ const state = reactive({
     key: key,
 });
 
+const clearAction = () => {
+    if (macro.value != undefined) macro.value.actions = [];
+};
+
+const selectedAction = (obj: Action): string => {
+    return obj.index == actionVal.value?.index ? 'action_selected' : '';
+}
+const clickAction = (obj: Action) => {
+    actionVal.value = obj;
+}
+
 onMounted(async () => {
     rk_l87.value = (keyboard.protocol as RK_L87);
     rk_l87.value.addEventListener(RK_L87_EVENT_DEFINE.OnMacrosGotten, macroGotten, false);
 
     let tmp = storage.get('macro') as Macros;
-    if (macros != undefined) {
+    if (macros != undefined && tmp != null) {
         let ms = new Macros();
         for (let m of tmp.macroList) {
             let tm = new Macro(m.name);
             for (let a of m.actions) {
-                let ta = new Action(a.key,a.delay,a.action,a.type);
+                let ta = new Action(a.key, a.delay, a.action, a.type);
                 tm.add(ta);
             }
             ms.add(tm);
@@ -248,10 +343,10 @@ const insert = () => {
 
         elActionScrollbar.value.setScrollTop(2000);
     }
-};1
+}; 1
 
 const isSelected = (obj: Macro): string => {
-    return obj.index == macro.value?.index ? 'macro_selected' : '';
+    return obj.index == macro.value?.index ? 'module_active' : '';
 }
 
 const handleEditClose = (done: () => void) => {

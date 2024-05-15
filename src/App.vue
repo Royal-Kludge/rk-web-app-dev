@@ -3,26 +3,50 @@ import { RouterLink, RouterView } from 'vue-router'
 </script>
 
 <template>
-    <RouterView />
+  <el-container class="p-a w-100 h-100">
+    <el-header class="header">
+      <div class="d-flex ai-center h-100 ml-4">
+        <img src="./assets/images/logo@2x.png" style="width: 130px" />
+      </div>
+    </el-header>
+    <el-main>
+      <RouterView />
+    </el-main>
+  </el-container>
 </template>
 <style>
+.el-header {
+  --el-header-padding: 0px !important;
+}
+
+.el-main {
+  --el-main-padding: 0px !important;
+}
+
+.header {
+  z-index: 999;
+  height: 120px !important;
+  background: #fdfdfe;
+  box-shadow: 0px 0px 24px 0px #e9ebf3;
+}
+
 body {
-    margin: 0;
-    padding: 0;
-    background-color: #1C1F24;
-    color: #ffffff;
-    font-size: 12px;
-    font-family: "思源黑体";
+  margin: 0;
+  padding: 0;
+  background-color: #eff1f7;
+  color: #6a6a77;
+  font-size: 14px;
+  font-family: "思源黑体";
 }
 
 @font-face {
-    font-family: "思源黑体";
-    src: url("assets/css/SourceHanSansCN-Normal.otf");
-    font-style: normal;
+  font-family: "思源黑体";
+  src: url("assets/css/SourceHanSansCN-Normal.otf");
+  font-style: normal;
 }
 
 #app {
-    margin: 0 auto;
-    width: 100%;
+  margin: 0 auto;
+  width: 100%;
 }
 </style>
