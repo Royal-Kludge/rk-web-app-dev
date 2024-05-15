@@ -11,7 +11,7 @@ export default {
     layer_2: "FN1层",
     layer_3: "FN2层",
     layer_4: "Top层",
-    menu_1: "默認",
+    menu_1: "默认",
     menu_2: "宏",
     menu_3: "组合键",
     key_1: "数字",

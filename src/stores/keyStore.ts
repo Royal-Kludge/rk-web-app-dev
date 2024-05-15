@@ -523,6 +523,7 @@ export const useKeyStore = defineStore('keyinfo', () => {
       else state.keyFunState[i].selected = false;
     }
   }
+  
   const isFunSelected = (keyCode: KeyDefineEnum): string => {
     let style: string = ''
     for (var i = 0; i < state.keyFunState.length; i++) {
