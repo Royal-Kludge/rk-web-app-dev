@@ -7,14 +7,18 @@ import { RK_L87, RK_L87_EVENT_DEFINE } from './rk_l87';
 import { GetProfilePacket } from './packets/usb/getProfilePacket';
 import { SetProfilePacket } from './packets/usb/setProfilePacket';
 
-import { GetLedColorsPacket } from './packets/usb/getLedColorsPacket';
-import { SetLedColorsPacket } from './packets/usb/setLedColorsPacket';
+import { GetLedEffectPacket } from './packets/usb/getLedEffectPacket';
+import { SetLedEffectPacket } from './packets/usb/setLedEffectPacket';
 
 import { GetKeyMaxtrixPacket } from './packets/usb/getKeyMaxtrixPacket';
 import { SetKeyMaxtrixPacket } from './packets/usb/setKeyMaxtrixPacket';
 
 import { GetMacrosPacket } from './packets/usb/getMacrosPacket';
 import { SetMacrosPacket } from './packets/usb/setMacrosPacket';
+
+import { GetLedColorsPacket } from './packets/usb/getLedColorsPacket';
+import { SetLedColorsPacket } from './packets/usb/setLedColorsPacket';
+
 import { Macros } from './macros';
 
 export class RK_L87_Usb extends RK_L87 {
@@ -55,20 +59,20 @@ export class RK_L87_Usb extends RK_L87 {
         }
     }
 
-    async getLedColors(board: number): Promise<void> {
-        let packet = new GetLedColorsPacket(board);
+    async getLedEffect(board: number): Promise<void> {
+        let packet = new GetLedEffectPacket(board);
 
         await this.setFeature(REPORT_ID_USB, packet.setReport);
         packet.fromReportData(await this.getFeature(REPORT_ID_USB));
 
-        this.data.ledColors = packet.ledColors;
-        this.dispatchEvent(new CustomEvent(RK_L87_EVENT_DEFINE.OnLedColorsGotten, { detail: this.data.ledColors }));
+        this.data.ledEffect = packet.ledEffect;
+        this.dispatchEvent(new CustomEvent(RK_L87_EVENT_DEFINE.OnLedEffectGotten, { detail: this.data.ledEffect }));
     }
 
-    async setLedColors(board: number): Promise<void> {
-        if (this.data.ledColors != undefined) {
-            let packet = new SetLedColorsPacket(board);
-            packet.setPayload(this.data.ledColors.buffer);
+    async setLedEffect(board: number): Promise<void> {
+        if (this.data.ledEffect != undefined) {
+            let packet = new SetLedEffectPacket(board);
+            packet.setPayload(this.data.ledEffect.buffer);
             await this.setFeature(REPORT_ID_USB, packet.setReport);
         }
     }
@@ -140,6 +144,25 @@ export class RK_L87_Usb extends RK_L87 {
             //     packet.setPayload(pkg);
             //     await this.setFeature(REPORT_ID_USB, packet.setReport);
             // }
+        }
+    }
+
+    async getLedColors(board: number): Promise<void> {
+        let packet = new GetLedColorsPacket(board);
+
+        await this.setFeature(REPORT_ID_USB, packet.setReport);
+        packet.fromReportData(await this.getFeature(REPORT_ID_USB));
+
+        this.data.ledColors = packet.ledColors;
+        this.dispatchEvent(new CustomEvent(RK_L87_EVENT_DEFINE.OnLedColorsGotten, { detail: this.data.ledColors }));
+    }
+
+    
+    async setLedColors(board: number): Promise<void> {
+        if (this.data.ledColors != undefined) {
+            let packet = new SetLedColorsPacket(board);
+            packet.setPayload(this.data.ledColors.buffer);
+            await this.setFeature(REPORT_ID_USB, packet.setReport);
         }
     }
 }

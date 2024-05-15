@@ -1,9 +1,10 @@
 import type { IPacket } from "../../interface";
 
 export const PROFILE_LENGTH: number = 128;
+export const LED_COLOR_COUNT: number = 126;
 export const LED_COLOR_LENGTH: number = 3;
 export const LED_EFFECT_COLOR_COUNT: number = 7;
-export const LED_EFFECT_COUNT: number = 23;
+export const LED_EFFECT_COUNT: number = 20;
 export const KEY_MAXTRIX_LINE: number = 6;
 export const KEY_MAXTRIX_COLOUMN: number = 21;
 export const PACKET_HEAD_LENGTH: number = 7;

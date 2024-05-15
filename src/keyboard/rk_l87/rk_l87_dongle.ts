@@ -7,9 +7,11 @@ import type { KeyMaxtrix, MaxtrixLayer, MaxtrixTable } from './keyMaxtrix';
 import { RK_L87, COMMAND_ID, RK_L87_EVENT_DEFINE } from './rk_l87';
 
 import type { Profile } from './profile';
-import type { LedColors } from './ledColors';
+import type { LedEffect } from './ledEffect';
 import type { Macros } from './macros';
+import type { LedColors } from './ledColors'
 
+import { GetLedEffectPacket } from './packets/dongle/getLedEffectPacket';
 import { GetLedColorsPacket } from './packets/dongle/getLedColorsPacket';
 import { GetPasswordPacket } from './packets/dongle/getPasswordPacket';
 import { GetProfilePacket } from './packets/dongle/getProfilePacket';
@@ -18,6 +20,7 @@ import { GetKeyMaxtrixPacket } from './packets/dongle/getKeyMaxtrixPacket';
 import { GetMacrosPacket } from './packets/dongle/getMacrosPacket';
 
 import { SetProfilePacket } from './packets/dongle/setProfilePacket';
+import { SetLedEffectPacket } from './packets/dongle/setLedEffectPacket';
 import { SetLedColorsPacket } from './packets/dongle/setLedColorsPacket';
 import { SetKeyMaxtrixPacket } from './packets/dongle/setKeyMaxtrixPacket';
 import { SetMacrosPacket } from './packets/dongle/setMacrosPacket';
@@ -28,10 +31,12 @@ export class RK_L87_Dongle extends RK_L87 {
     pktGetDongleStatus: GetDongleStatusPacket;
     pktGetPassword: GetPasswordPacket;
     pktGetProfile: GetProfilePacket;
+    pktGetLedEffect: GetLedEffectPacket;
     pktGetLedColors: GetLedColorsPacket;
     pktGetKeyMaxtrix: GetKeyMaxtrixPacket;
     pktGetMacros: GetMacrosPacket;
     pktSetProfile: SetProfilePacket;
+    pktSetLedEffect: SetLedEffectPacket;
     pktSetLedColors: SetLedColorsPacket;
     pktSetKeyMaxtrix: SetKeyMaxtrixPacket;
     pktSetMacros: SetMacrosPacket;
@@ -43,10 +48,12 @@ export class RK_L87_Dongle extends RK_L87 {
         this.pktGetDongleStatus = new GetDongleStatusPacket(this.dongleStatusReport.bind(this));
         this.pktGetPassword = new GetPasswordPacket(this.passwordReport.bind(this));
         this.pktGetProfile = new GetProfilePacket(this.getProfileReport.bind(this));
+        this.pktGetLedEffect = new GetLedEffectPacket(this.getLedEffectReport.bind(this));
         this.pktGetLedColors = new GetLedColorsPacket(this.getLedColorsReport.bind(this));
         this.pktGetKeyMaxtrix = new GetKeyMaxtrixPacket(this.getKeyMaxtrixReport.bind(this));
         this.pktGetMacros = new GetMacrosPacket(this.getMacrosReport.bind(this));
         this.pktSetProfile = new SetProfilePacket(this.nextReport.bind(this));
+        this.pktSetLedEffect = new SetLedEffectPacket(this.nextReport.bind(this));
         this.pktSetLedColors = new SetLedColorsPacket(this.nextReport.bind(this));
         this.pktSetKeyMaxtrix = new SetKeyMaxtrixPacket(this.nextReport.bind(this));
         this.pktSetMacros = new SetMacrosPacket(this.nextReport.bind(this), this.nextBlock.bind(this));
@@ -78,9 +85,12 @@ export class RK_L87_Dongle extends RK_L87 {
                 case COMMAND_ID.GetProfile:
                     this.pktGetProfile.fromReportData(data);
                     break;
-                case COMMAND_ID.GetLedColors:
-                    this.pktGetLedColors.fromReportData(data);
+                case COMMAND_ID.GetLedEffect:
+                    this.pktGetLedEffect.fromReportData(data);
                     break;
+                case COMMAND_ID.GetLedColors:
+                        this.pktGetLedColors.fromReportData(data);
+                        break;
                 case COMMAND_ID.GetKeyMaxtrix:
                     this.pktGetKeyMaxtrix.fromReportData(data);
                     break;
@@ -92,6 +102,9 @@ export class RK_L87_Dongle extends RK_L87 {
                     break;
                 case COMMAND_ID.SetProfile:
                     this.pktSetProfile.fromReportData(data);
+                    break;
+                case COMMAND_ID.SetLedEffect:
+                    this.pktSetLedEffect.fromReportData(data);
                     break;
                 case COMMAND_ID.SetLedColors:
                     this.pktSetLedColors.fromReportData(data);
@@ -140,18 +153,18 @@ export class RK_L87_Dongle extends RK_L87 {
         }
     }
 
-    async getLedColors(board: number): Promise<void> {
-        this.pktGetLedColors.board = board;
-        await this.setReport(REPORT_ID_DONGLE, this.pktGetLedColors.command());
+    async getLedEffect(board: number): Promise<void> {
+        this.pktGetLedEffect.board = board;
+        await this.setReport(REPORT_ID_DONGLE, this.pktGetLedEffect.command());
     }
 
-    async setLedColors(board: number): Promise<void> {
-        if (this.data.ledColors != undefined) {
-            this.pktSetLedColors.board = board;
-            this.pktSetLedColors.packageIndex = 0;
-            this.pktSetLedColors.retry = REPORT_MAX_RETRY;
-            this.pktSetLedColors.buffer = new Uint8Array(this.data.ledColors?.buffer.buffer.slice(0, this.data.ledColors?.buffer.byteLength));
-            await this.setReport(REPORT_ID_DONGLE, this.pktSetLedColors.command());
+    async setLedEffect(board: number): Promise<void> {
+        if (this.data.ledEffect != undefined) {
+            this.pktSetLedEffect.board = board;
+            this.pktSetLedEffect.packageIndex = 0;
+            this.pktSetLedEffect.retry = REPORT_MAX_RETRY;
+            this.pktSetLedEffect.buffer = new Uint8Array(this.data.ledEffect?.buffer.buffer.slice(0, this.data.ledEffect?.buffer.byteLength));
+            await this.setReport(REPORT_ID_DONGLE, this.pktSetLedEffect.command());
         }
     }
 
@@ -190,6 +203,21 @@ export class RK_L87_Dongle extends RK_L87 {
             await this.setReport(REPORT_ID_DONGLE, this.pktSetMacros.command());
         }
     }
+
+    async getLedColors(board: number): Promise<void> {
+        this.pktGetLedColors.board = board;
+        await this.setReport(REPORT_ID_DONGLE, this.pktGetLedColors.command());
+    }
+
+    async setLedColors(board: number): Promise<void> {
+        if (this.data.ledColors != undefined) {
+            this.pktSetLedColors.board = board;
+            this.pktSetLedColors.packageIndex = 0;
+            this.pktSetLedColors.retry = REPORT_MAX_RETRY;
+            this.pktSetLedColors.buffer = new Uint8Array(this.data.ledColors?.buffer.buffer.slice(0, this.data.ledColors?.buffer.byteLength));
+            await this.setReport(REPORT_ID_DONGLE, this.pktSetLedColors.command());
+        }
+    }
     
     private dongleStatusReport(event: any) {
         let status = event.detail as boolean ? ConnectionStatusEnum.Connected : ConnectionStatusEnum.Disconnected;
@@ -210,9 +238,9 @@ export class RK_L87_Dongle extends RK_L87 {
         this.dispatchEvent(new CustomEvent(RK_L87_EVENT_DEFINE.OnProfileGotten, { detail: this.data.profile }));
     }
 
-    private getLedColorsReport(event: any) {
-        this.data.ledColors = event.detail as LedColors;
-        this.dispatchEvent(new CustomEvent(RK_L87_EVENT_DEFINE.OnLedColorsGotten, { detail: this.data.ledColors }));
+    private getLedEffectReport(event: any) {
+        this.data.ledEffect = event.detail as LedEffect;
+        this.dispatchEvent(new CustomEvent(RK_L87_EVENT_DEFINE.OnLedEffectGotten, { detail: this.data.ledEffect }));
     }
 
     private getKeyMaxtrixReport(event: any) {
@@ -224,6 +252,12 @@ export class RK_L87_Dongle extends RK_L87 {
         this.data.macros = event.detail as Macros;
         this.dispatchEvent(new CustomEvent(RK_L87_EVENT_DEFINE.OnMacrosGotten, { detail: this.data.macros }));
     }
+
+    private getLedColorsReport(event: any) {
+        this.data.ledColors = event.detail as LedColors;
+        this.dispatchEvent(new CustomEvent(RK_L87_EVENT_DEFINE.OnLedColorsGotten, { detail: this.data.ledColors }));
+    }
+
 
     private async nextReport(event: any) {
         let pkt = event.detail as Packet_Dongle;

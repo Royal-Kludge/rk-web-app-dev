@@ -65,5 +65,5 @@ export enum LightEffectEnum {
     Blossoming = 17,
     SelfDefine = 18,
     OFF = 0,
-    //Music = 17
+    Music = 19
 }
