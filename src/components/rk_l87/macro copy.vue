@@ -132,7 +132,7 @@ onMounted(async () => {
     rk_l87.value.addEventListener(RK_L87_EVENT_DEFINE.OnMacrosGotten, macroGotten, false);
 
     let tmp = storage.get('macro') as Macros;
-    if (macros != undefined) {
+    if (tmp != undefined) {
         let ms = new Macros();
         for (let m of tmp.macroList) {
             let tm = new Macro(m.name);
