@@ -1,6 +1,6 @@
 import type { KeyboardState  } from '../interface'
 import { REPORT_ID_USB, MACRO_PER_BLOCK_LENGTH, MACRO_MAX_LENGTH } from './packets/packet';
-import type { MaxtrixLayer, MaxtrixTable } from './keyMaxtrix';
+import type { MatrixLayer, MatrixTable } from './keyMatrix';
 import { ConnectionStatusEnum, ConnectionType } from '../enum';
 import { RK_L87, RK_L87_EVENT_DEFINE } from './rk_l87';
 
@@ -10,8 +10,8 @@ import { SetProfilePacket } from './packets/usb/setProfilePacket';
 import { GetLedEffectPacket } from './packets/usb/getLedEffectPacket';
 import { SetLedEffectPacket } from './packets/usb/setLedEffectPacket';
 
-import { GetKeyMaxtrixPacket } from './packets/usb/getKeyMaxtrixPacket';
-import { SetKeyMaxtrixPacket } from './packets/usb/setKeyMaxtrixPacket';
+import { GetKeyMatrixPacket } from './packets/usb/getKeyMatrixPacket';
+import { SetKeyMatrixPacket } from './packets/usb/setKeyMatrixPacket';
 
 import { GetMacrosPacket } from './packets/usb/getMacrosPacket';
 import { SetMacrosPacket } from './packets/usb/setMacrosPacket';
@@ -77,20 +77,20 @@ export class RK_L87_Usb extends RK_L87 {
         }
     }
 
-    async getKeyMaxtrix(layer: MaxtrixLayer, table: MaxtrixTable, board: number): Promise<void> {
-        let packet = new GetKeyMaxtrixPacket(layer, table, board);
+    async getKeyMatrix(layer: MatrixLayer, table: MatrixTable, board: number): Promise<void> {
+        let packet = new GetKeyMatrixPacket(layer, table, board);
 
         await this.setFeature(REPORT_ID_USB, packet.setReport);
         packet.fromReportData(await this.getFeature(REPORT_ID_USB));
 
-        this.data.keyMaxtrix = packet.keyMaxtrix;
-        this.dispatchEvent(new CustomEvent(RK_L87_EVENT_DEFINE.OnKeyMaxtrixGotten, { detail: this.data.keyMaxtrix }));
+        this.data.keyMatrix = packet.keyMatrix;
+        this.dispatchEvent(new CustomEvent(RK_L87_EVENT_DEFINE.OnKeyMatrixGotten, { detail: this.data.keyMatrix }));
     }
 
-    async setKeyMaxtrix(layer: MaxtrixLayer, table: MaxtrixTable, board: number): Promise<void> {
-        if (this.data.keyMaxtrix != undefined) {
-            let packet = new SetKeyMaxtrixPacket(layer, table, board);
-            packet.setPayload(this.data.keyMaxtrix.buffer);
+    async setKeyMatrix(layer: MatrixLayer, table: MatrixTable, board: number): Promise<void> {
+        if (this.data.keyMatrix != undefined) {
+            let packet = new SetKeyMatrixPacket(layer, table, board);
+            packet.setPayload(this.data.keyMatrix.buffer);
             await this.setFeature(REPORT_ID_USB, packet.setReport);
         }
     }

@@ -40,7 +40,7 @@
             </div>
             <div class="mt-3" v-if="state.lightProps.light == LightEffectEnum.SelfDefine">
                 <el-select v-model="state.keyColor.keyStr" @change="keyChanged" placeholder="Select" size="small" style="width: 128px">
-                    <el-option v-for="item in state.keyMaxtrix" :key="item" :label="getKeyData(item.index)?.keyStr" :value="item.index">
+                    <el-option v-for="item in state.keyMatrix" :key="item" :label="getKeyData(item.index)?.keyStr" :value="item.index">
                         <div class="flex items-center">
                             <el-tag :color="state.keyColors[item.index]" style="margin-right: 8px; margin-left: -4px;" size="small"/>
                             <span>{{ getKeyData(item.index)?.keyStr }}</span>
@@ -113,7 +113,7 @@ const state = reactive({
         { light: LightEffectEnum.OFF, label: 'OFF'},
         //{ light: LightEffectEnum.Music, label: 'Music' },
     ],
-    keyMaxtrix: [
+    keyMatrix: [
             { key: KeyDefineEnum.KEY_ESC,           index: getIndex(0, 0),  },
             { key: KeyDefineEnum.KEY_F1,            index: getIndex(0, 1),  },
             { key: KeyDefineEnum.KEY_F2,            index: getIndex(0, 2),  },

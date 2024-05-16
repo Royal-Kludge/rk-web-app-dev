@@ -1,9 +1,9 @@
 import type { KeyboardState  } from '../interface'
-import { ConnectionStatusEnum, ConnectionType } from '../enum';
+import { ConnectionStatusEnum, ConnectionType, KeyMatrixLayer } from '../enum';
 import { Packet_Dongle,  REPORT_ID_DONGLE, REPORT_MAX_RETRY, MACRO_PER_BLOCK_LENGTH, MACRO_MAX_LENGTH } from './packets/packet';
 import { Packet_Dongle_Block_Set } from './packets/dongle/setPacket';
 
-import type { KeyMaxtrix, MaxtrixLayer, MaxtrixTable } from './keyMaxtrix';
+import type { KeyMatrix, MatrixTable } from './keyMatrix';
 import { RK_L87, COMMAND_ID, RK_L87_EVENT_DEFINE } from './rk_l87';
 
 import type { Profile } from './profile';
@@ -16,13 +16,13 @@ import { GetLedColorsPacket } from './packets/dongle/getLedColorsPacket';
 import { GetPasswordPacket } from './packets/dongle/getPasswordPacket';
 import { GetProfilePacket } from './packets/dongle/getProfilePacket';
 import { GetDongleStatusPacket } from './packets/dongle/getDongleStatusPacket';
-import { GetKeyMaxtrixPacket } from './packets/dongle/getKeyMaxtrixPacket';
+import { GetKeyMatrixPacket } from './packets/dongle/getKeyMatrixPacket';
 import { GetMacrosPacket } from './packets/dongle/getMacrosPacket';
 
 import { SetProfilePacket } from './packets/dongle/setProfilePacket';
 import { SetLedEffectPacket } from './packets/dongle/setLedEffectPacket';
 import { SetLedColorsPacket } from './packets/dongle/setLedColorsPacket';
-import { SetKeyMaxtrixPacket } from './packets/dongle/setKeyMaxtrixPacket';
+import { SetKeyMatrixPacket } from './packets/dongle/setKeyMatrixPacket';
 import { SetMacrosPacket } from './packets/dongle/setMacrosPacket';
 
 
@@ -33,12 +33,12 @@ export class RK_L87_Dongle extends RK_L87 {
     pktGetProfile: GetProfilePacket;
     pktGetLedEffect: GetLedEffectPacket;
     pktGetLedColors: GetLedColorsPacket;
-    pktGetKeyMaxtrix: GetKeyMaxtrixPacket;
+    pktGetKeyMatrix: GetKeyMatrixPacket;
     pktGetMacros: GetMacrosPacket;
     pktSetProfile: SetProfilePacket;
     pktSetLedEffect: SetLedEffectPacket;
     pktSetLedColors: SetLedColorsPacket;
-    pktSetKeyMaxtrix: SetKeyMaxtrixPacket;
+    pktSetKeyMatrix: SetKeyMatrixPacket;
     pktSetMacros: SetMacrosPacket;
 
     constructor(state: KeyboardState, device: HIDDevice) {
@@ -50,12 +50,12 @@ export class RK_L87_Dongle extends RK_L87 {
         this.pktGetProfile = new GetProfilePacket(this.getProfileReport.bind(this));
         this.pktGetLedEffect = new GetLedEffectPacket(this.getLedEffectReport.bind(this));
         this.pktGetLedColors = new GetLedColorsPacket(this.getLedColorsReport.bind(this));
-        this.pktGetKeyMaxtrix = new GetKeyMaxtrixPacket(this.getKeyMaxtrixReport.bind(this));
+        this.pktGetKeyMatrix = new GetKeyMatrixPacket(this.getKeyMatrixReport.bind(this));
         this.pktGetMacros = new GetMacrosPacket(this.getMacrosReport.bind(this));
         this.pktSetProfile = new SetProfilePacket(this.nextReport.bind(this));
         this.pktSetLedEffect = new SetLedEffectPacket(this.nextReport.bind(this));
         this.pktSetLedColors = new SetLedColorsPacket(this.nextReport.bind(this));
-        this.pktSetKeyMaxtrix = new SetKeyMaxtrixPacket(this.nextReport.bind(this));
+        this.pktSetKeyMatrix = new SetKeyMatrixPacket(this.nextReport.bind(this));
         this.pktSetMacros = new SetMacrosPacket(this.nextReport.bind(this), this.nextBlock.bind(this));
     }
 
@@ -91,8 +91,8 @@ export class RK_L87_Dongle extends RK_L87 {
                 case COMMAND_ID.GetLedColors:
                         this.pktGetLedColors.fromReportData(data);
                         break;
-                case COMMAND_ID.GetKeyMaxtrix:
-                    this.pktGetKeyMaxtrix.fromReportData(data);
+                case COMMAND_ID.GetKeyMatrix:
+                    this.pktGetKeyMatrix.fromReportData(data);
                     break;
                 case COMMAND_ID.GetMacros:
                     this.pktGetMacros.fromReportData(data);
@@ -109,8 +109,8 @@ export class RK_L87_Dongle extends RK_L87 {
                 case COMMAND_ID.SetLedColors:
                     this.pktSetLedColors.fromReportData(data);
                     break;
-                case COMMAND_ID.SetKeyMaxtrix:
-                    this.pktSetKeyMaxtrix.fromReportData(data);
+                case COMMAND_ID.SetKeyMatrix:
+                    this.pktSetKeyMatrix.fromReportData(data);
                     break;
                 case COMMAND_ID.SetMacros:
                     this.pktSetMacros.fromReportData(data);
@@ -168,22 +168,22 @@ export class RK_L87_Dongle extends RK_L87 {
         }
     }
 
-    async getKeyMaxtrix(layer: MaxtrixLayer, table: MaxtrixTable, board: number): Promise<void> {
-        this.pktGetKeyMaxtrix.board = board;
-        this.pktGetKeyMaxtrix.layer = layer;
-        this.pktGetKeyMaxtrix.table = table;
-        await this.setReport(REPORT_ID_DONGLE, this.pktGetKeyMaxtrix.command());
+    async getKeyMatrix(layer: KeyMatrixLayer, table: MatrixTable, board: number): Promise<void> {
+        this.pktGetKeyMatrix.board = board;
+        this.pktGetKeyMatrix.layer = layer;
+        this.pktGetKeyMatrix.table = table;
+        await this.setReport(REPORT_ID_DONGLE, this.pktGetKeyMatrix.command());
     }
 
-    async setKeyMaxtrix(layer: MaxtrixLayer, table: MaxtrixTable, board: number): Promise<void> {
-        if (this.data.keyMaxtrix != undefined) {
-            this.pktSetKeyMaxtrix.board = board;
-            this.pktSetKeyMaxtrix.layer = layer;
-            this.pktSetKeyMaxtrix.table = table;
-            this.pktSetKeyMaxtrix.packageIndex = 0;
-            this.pktSetKeyMaxtrix.retry = REPORT_MAX_RETRY;
-            this.pktSetKeyMaxtrix.buffer = new Uint8Array(this.data.keyMaxtrix?.buffer.buffer.slice(0, this.data.keyMaxtrix?.buffer.byteLength));
-            await this.setReport(REPORT_ID_DONGLE, this.pktSetKeyMaxtrix.command());
+    async setKeyMatrix(layer: KeyMatrixLayer, table: MatrixTable, board: number): Promise<void> {
+        if (this.data.keyMatrix != undefined) {
+            this.pktSetKeyMatrix.board = board;
+            this.pktSetKeyMatrix.layer = layer;
+            this.pktSetKeyMatrix.table = table;
+            this.pktSetKeyMatrix.packageIndex = 0;
+            this.pktSetKeyMatrix.retry = REPORT_MAX_RETRY;
+            this.pktSetKeyMatrix.buffer = new Uint8Array(this.data.keyMatrix?.buffer.buffer.slice(0, this.data.keyMatrix?.buffer.byteLength));
+            await this.setReport(REPORT_ID_DONGLE, this.pktSetKeyMatrix.command());
         }
     }
 
@@ -243,9 +243,9 @@ export class RK_L87_Dongle extends RK_L87 {
         this.dispatchEvent(new CustomEvent(RK_L87_EVENT_DEFINE.OnLedEffectGotten, { detail: this.data.ledEffect }));
     }
 
-    private getKeyMaxtrixReport(event: any) {
-        this.data.keyMaxtrix = event.detail as KeyMaxtrix;
-        this.dispatchEvent(new CustomEvent(RK_L87_EVENT_DEFINE.OnKeyMaxtrixGotten, { detail: this.data.keyMaxtrix }));
+    private getKeyMatrixReport(event: any) {
+        this.data.keyMatrix = event.detail as KeyMatrix;
+        this.dispatchEvent(new CustomEvent(RK_L87_EVENT_DEFINE.OnKeyMatrixGotten, { detail: this.data.keyMatrix }));
     }
 
     private getMacrosReport(event: any) {

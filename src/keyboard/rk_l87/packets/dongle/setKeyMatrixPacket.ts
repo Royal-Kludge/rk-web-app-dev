@@ -1,10 +1,11 @@
 import { Packet_Dongle_Set } from "@/keyboard/rk_l87/packets/dongle/setPacket";
-import { MaxtrixLayer, MaxtrixTable } from "../../keyMaxtrix";
+import { MatrixTable } from "../../keyMatrix";
+import { KeyMatrixLayer } from "@/keyboard/enum"
 
-export class SetKeyMaxtrixPacket extends Packet_Dongle_Set {
+export class SetKeyMatrixPacket extends Packet_Dongle_Set {
 
-    layer: MaxtrixLayer = MaxtrixLayer.NORMAL;
-    table: MaxtrixTable = MaxtrixTable.WIN;
+    layer: KeyMatrixLayer = KeyMatrixLayer.Nomal;
+    table: MatrixTable = MatrixTable.WIN;
 
     constructor(callback: (event: any) => void) {
         super(0x01, callback);

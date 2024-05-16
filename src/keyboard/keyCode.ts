@@ -1174,6 +1174,13 @@ export enum KeyDefineEnum {
     KEY_Define1           = 0x04000001,	
     KEY_Define2           = 0x04000002,
 //****************************************************************
+    DPI_SWITCH_I          = 0x05010000,
+    DPI_SWITCH_D          = 0x05020000,
+    DPI_SWITCH_L          = 0x05040000,
+    PRFILE_SWITCH_I       = 0x06010000,
+    PRFILE_SWITCH_D       = 0x06020000,
+    PRFILE_SWITCH_L       = 0x06040000,
+//****************************************************************
 //���⹦�ܼ�
     SP_SWAP_ASDW          = 0x07000000,      //ȡ��ASWD�뷽��
     SP_Winlock            = 0x07000001,      //WIN Lock
@@ -1195,8 +1202,96 @@ export enum KeyDefineEnum {
     SP_KB_Mode            = 0x07000010,    
     SP_O_Mode             = 0x07000022,      //����Mac
     SP_L_Mode             = 0x07000023,      //����Mac
-    KEY_Fn1               =	0x0d000000,
-    KEY_Fn2               = 0x0d010000
+
+//****************************************************************
+//byte0���̶�0x08
+//byte1��0��Ч�л���1��Ч����2��ɫ�л���3�����л���4�ٶ��л���5������Ϸ����¼�ƣ�6��Ϸ���ֱ��棬7¼��/���棬8��λ��9��Чģʽָ��
+//byte2��0ѭ����1+/��2-/�ң����byte1Ϊ9����������ֵ������ǰģʽ
+//byte3��0��������1����1��2����2
+//�ƹ�ģʽ�趨
+    KEY_LED_MODE0         = 0x08090000, //ֱ���趨Ϊģʽ0
+    KEY_LED_MODE1         = 0x08090100, //ֱ���趨Ϊģʽ1
+    KEY_LED_MODE2         = 0x08090200, //ֱ���趨Ϊģʽ2
+    KEY_LED_MODE3         = 0x08090300, //ֱ���趨Ϊģʽ3
+
+    KEY_LED_MODE20        = 0x08092000, //ֱ���趨Ϊģʽ20
+    KEY_LED_MODE21        = 0x08092100, //ֱ���趨Ϊģʽ21
+    KEY_LED_MODE22        = 0x08092200, //ֱ���趨Ϊģʽ22
+//��Ч�л�
+    KEY_LED_MODEL         = 0x08000000, //ֱ���趨Ϊģʽ+
+    KEY_LED_MODEI         = 0x08000100, //ֱ���趨Ϊģʽ-
+    KEY_LED_MODED         = 0x08000200, //ֱ���趨ΪģʽLOOP
+
+    KEY_Define_LED_MODEL  = 0x08000300, //ֱ���趨Ϊģʽ+
+    KEY_Define_LED_MODEI  = 0x08000400, //ֱ���趨Ϊģʽ-
+    KEY_Define_LED_MODED  = 0x08000500, //ֱ���趨ΪģʽLOOP
+
+
+//��Ч����
+    KEY_LED_DirectionL    = 0x08010000, //��Ч����LOOP
+    KEY_LED_DirectionI    = 0x08010100, //��Ч������
+    KEY_LED_DirectionD    = 0x08010200, //��Ч������
+
+//��ɫ�л�
+    KEY_LED_COLOR_MODEI   = 0x08020100, //ֱ���趨Ϊ��ɫ+
+    KEY_LED_COLOR_MODED   = 0x08020200, //ֱ���趨Ϊ��ɫ-
+    KEY_LED_COLOR_MODEL   = 0x08020000, //ֱ���趨Ϊ��ɫLOOP
+
+//����
+    KEY_LED_LUMINI        = 0x08030100, //ֱ���趨Ϊģʽ+
+    KEY_LED_LUMIND        = 0x08030200, //ֱ���趨Ϊģʽ-
+    KEY_LED_LUMINL        = 0x08030000, //ֱ���趨ΪģʽLOOP
+
+//�ٶ�
+    KEY_LED_BREATHI       = 0x08040100, //  +
+    KEY_LED_BREATHD       = 0x08040200, //  -
+    KEY_LED_BREATHL       = 0x08040000, //  
+
+//¼��
+    SP_LED_REC_Start      = 0x08050000, //LED¼�Ƽ�����
+    SP_LED_REC_Save       = 0x08060000, //LED¼�Ƽ�����
+    SP_LED_REC            = 0x08070000, //LED¼�Ƽ�����/����
+    SP_LED_REC_Reset      = 0x08080000, //LED�ָ���������
+
+//logo
+    KEY_LOG_MODEL         = 0x08000001, //ֱ���趨Ϊģʽ+
+    KEY_LOG_MODEI         = 0x08000101, //ֱ���趨Ϊģʽ-
+    KEY_LOG_MODED         = 0x08000201, //ֱ���趨ΪģʽLOOP
+
+    KEY_LOG_DirectionL    = 0x08010001, //��Ч����LOOP
+    KEY_LOG_DirectionI    = 0x08010101, //��Ч������
+    KEY_LOG_DirectionD    = 0x08010201, //��Ч������
+
+    KEY_LOG_COLOR_MODEI   = 0x08020101, //ֱ���趨Ϊ��ɫ+
+    KEY_LOG_COLOR_MODED   = 0x08020201, //ֱ���趨Ϊ��ɫ-
+    KEY_LOG_COLOR_MODEL   = 0x08020001, //ֱ���趨Ϊ��ɫLOOP
+
+    KEY_LOG_LUMINI        = 0x08030101, //ֱ���趨Ϊģʽ+
+    KEY_LOG_LUMIND        = 0x08030201, //ֱ���趨Ϊģʽ-
+    KEY_LOG_LUMINL        = 0x08030001, //ֱ���趨ΪģʽLOOP
+
+    KEY_LOG_BREATHI       = 0x08040101, //ֱ���趨Ϊ�����ٶ�+
+    KEY_LOG_BREATHD       = 0x08040201, //ֱ���趨Ϊ�����ٶ�-
+    KEY_LOG_BREATHL       = 0x08040001, //ֱ���趨Ϊ�����ٶ�LOOP
+
+//ReportRate�趨
+    KEY_REPORT_RATE0      = 0x09000000, //ֱ���趨Ϊ125
+    KEY_REPORT_RATE1      = 0x09000001, //ֱ���趨Ϊ250
+    KEY_REPORT_RATE2      = 0x09000002, //ֱ���趨Ϊ500
+    KEY_REPORT_RATE3      = 0x09000003, //ֱ���趨Ϊ1000
+    KEY_REPORT_RATEI      = 0x09010000, //�ر��ʵ�λ��
+    KEY_REPORT_RATED      = 0x09020000, //�ر��ʵ�λ��
+    KEY_REPORT_RATEL      = 0x09030000, //�ر��ʵ�λѭ��
+
+//****************************************************************
+//FN��
+    KEY_Fn1               = 0x0d000000,
+    KEY_Fn2               = 0x0d010000,
+//****************************************************************
+//��Դ��
+    KEY_Power             = 0x10000001,
+    KEY_Sleep             = 0x10000002,
+    KEY_WakeUp            = 0x10000004
 }
 
 export const KeyText: Record<number, String> = {
@@ -1428,9 +1523,117 @@ export const KeyText: Record<number, String> = {
 //�Զ����?
     0x04000001: 'Define1',	
     0x04000002: 'Define2',
+    0x05010000: 'DpiSwitch+',
+    0x05020000: 'DpiSwitch-',
+    0x05040000: 'DpiSwitchLoop',
+    0x06010000: 'ProfileSwitch+',
+    0x06020000: 'ProfileSwitch-',
+    0x06040000: 'ProfileSwitchLoop',
 //****************************************************************
-    0x0d000000: 'Fn1',
-    0x0d010000: 'Fn2'
+    0x07000000: 'InvertASWD',      //ȡ��ASWD�뷽��
+    0x07000001: 'WinLock',      //WIN Lock
+    0x07000002: 'AllLock',      //���м���ס
+    0x07000003: 'Macro',      //MACRO¼�Ƽ�
+    0x07000004: 'AllReset',      //���в����ָ�Ĭ�� 
+    0x07000005: 'BT0',      //����ģʽ0
+    0x07000006: 'BT1',      //����ģʽ1
+    0x07000007: 'BT2',      //����ģʽ2
+    0x07000008: '2.4G',      //2.4Gģʽ
+    0x07000009: 'USB',      //USBģʽ
+    0x0700000a: 'WirelessTest',      //���߽������?    
+    0x0700000b: 'Unknow',    
+    0x0700000c: 'Battery',      //电量显示 
+    0x0700000d: 'Unknow',
+    0x0700000e: 'Windows',      //����Windows
+    0x0700000f: 'Mac',      //����Mac   
+    0x07000010: 'Unknow',    
+    0x07000022: 'Mac',      //����Mac
+    0x07000023: 'Mac',      //����Mac
+//****************************************************************
+//byte0���̶�0x08
+//byte1��0��Ч�л���1��Ч����2��ɫ�л���3�����л���4�ٶ��л���5������Ϸ����¼�ƣ�6��Ϸ���ֱ��棬7¼��/���棬8��λ��9��Чģʽָ��
+//byte2��0ѭ����1+/��2-/�ң����byte1Ϊ9����������ֵ������ǰģʽ
+//byte3��0��������1����1��2����2
+//�ƹ�ģʽ�趨
+    0x08090000:  'LedMode0', //ֱ���趨Ϊģʽ0
+    0x08090100:  'LedMode1', //ֱ���趨Ϊģʽ1
+    0x08090200:  'LedMode2', //ֱ���趨Ϊģʽ2
+    0x08090300:  'LedMode3', //ֱ���趨Ϊģʽ3
+
+    0x08092000:  'LedMode20', //ֱ���趨Ϊģʽ20
+    0x08092100:  'LedMode21', //ֱ���趨Ϊģʽ21
+    0x08092200:  'LedMode22', //ֱ���趨Ϊģʽ22
+//��Ч�л�
+    0x08000000:  'LedMode+', //ֱ���趨Ϊģʽ+
+    0x08000100:  'LedMode-', //ֱ���趨Ϊģʽ-
+    0x08000200:  'LedModeLoop', //ֱ���趨ΪģʽLOOP
+
+    0x08000300:  'DefineLedModel+', //ֱ���趨Ϊģʽ+
+    0x08000400:  'DefineLedModel-', //ֱ���趨Ϊģʽ-
+    0x08000500:  'DefineLedModelLoop', //ֱ���趨ΪģʽLOOP
+
+//��Ч����
+    0x08010000:  'LedDirctionLoop', //��Ч����LOOP
+    0x08010100:  'LedDirction+', //��Ч������
+    0x08010200:  'LedDirction-', //��Ч������
+
+//��ɫ�л�
+    0x08020100:  'LedColorMode+', //ֱ���趨Ϊ��ɫ+
+    0x08020200:  'LedColorMode-', //ֱ���趨Ϊ��ɫ-
+    0x08020000:  'LedColorModeLoop', //ֱ���趨Ϊ��ɫLOOP
+
+//����
+    0x08030100:  'LedLumin+', //ֱ���趨Ϊģʽ+
+    0x08030200:  'LedLumin-', //ֱ���趨Ϊģʽ-
+    0x08030000:  'LedLuminLoop', //ֱ���趨ΪģʽLOOP
+
+//�ٶ�
+    0x08040100:  'LedBreath+', //  +
+    0x08040200:  'LedBreath-', //  -
+    0x08040000:  'LedBreathLoop', //  
+
+//¼��
+    0x08050000:  'LedRecStart', //LED¼�Ƽ�����
+    0x08060000:  'LedRecSave', //LED¼�Ƽ�����
+    0x08070000:  'LedRec', //LED¼�Ƽ�����/����
+    0x08080000:  'LedRecReset', //LED�ָ���������
+
+//logo
+    0x08000001:  'LogoModelLoop', //ֱ���趨Ϊģʽ+
+    0x08000101:  'LogoModel+', //ֱ���趨Ϊģʽ-
+    0x08000201:  'LogoModel-', //ֱ���趨ΪģʽLOOP
+
+    0x08010001:  'LogoDirectionLoop', //��Ч����LOOP
+    0x08010101:  'LogoDirection+', //��Ч������
+    0x08010201:  'LogoDirection-', //��Ч������
+
+    0x08020101:  'LogoColorMode+', //ֱ���趨Ϊ��ɫ+
+    0x08020201:  'LogoColorMode-', //ֱ���趨Ϊ��ɫ-
+    0x08020001:  'LogoColorModeLoop', //ֱ���趨Ϊ��ɫLOOP
+
+    0x08030101:  'LogoLumin+', //ֱ���趨Ϊģʽ+
+    0x08030201:  'LogoLumin-', //ֱ���趨Ϊģʽ-
+    0x08030001:  'LogoLuminLoop', //ֱ���趨ΪģʽLOOP
+
+    0x08040101:  'LogoBreath+', //ֱ���趨Ϊ�����ٶ�+
+    0x08040201:  'LogoBreath-', //ֱ���趨Ϊ�����ٶ�-
+    0x08040001:  'LogoBreathLoop', //ֱ���趨Ϊ�����ٶ�LOOP
+
+//ReportRate�趨
+    0x09000000:  'ReportRate125', //ֱ���趨Ϊ125
+    0x09000001:  'ReportRate250', //ֱ���趨Ϊ250
+    0x09000002:  'ReportRate500', //ֱ���趨Ϊ500
+    0x09000003:  'ReportRate1000', //ֱ���趨Ϊ1000
+    0x09010000:  'ReportRate+', //�ر��ʵ�λ��
+    0x09020000:  'ReportRate-', //�ر��ʵ�λ��
+    0x09030000:  'ReportRateLoop', //�ر��ʵ�λѭ��
+
+    0x0d000000:  'Fn1',
+    0x0d010000:  'Fn2',
+//��Դ��
+    0x10000001:  'Power',
+    0x10000002:  'Sleep',
+    0x10000004:  'WakeUp'
 }
 
 export const KeyText_2: Record<number, String> = {

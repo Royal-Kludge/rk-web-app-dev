@@ -48,6 +48,13 @@ export enum KeyMappingType {
     LodKey = 0x0F
 }
 
+export enum KeyMatrixLayer {
+    Nomal = 0x00,
+    FN1 = 0x01,
+    FN2 = 0x02,
+    Tap = 0x03
+}
+
 export enum LightEffectEnum {
     FixedOn = 1,
     Respire = 2,

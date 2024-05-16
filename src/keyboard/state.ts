@@ -22,7 +22,7 @@ export const defaultState: KeyboardState = {
     fwVersion: undefined,
     commandId: 0x00,
     dataChangeFlag: 0,
-    keyTableData: [],
+    keyTableData: {},
     lightInfo: lightInfo
 }
 

@@ -3,19 +3,12 @@ import type { KeyMappingData } from '../interface';
 import type { KeyDefineEnum } from '../keyCode';
 import { KEY_MAXTRIX_LINE, KEY_MAXTRIX_COLOUMN, PACKET_HEAD_LENGTH } from "./packets/packet";
 
-export enum MaxtrixLayer {
-    NORMAL = 0x00,
-    FN1 = 0x01,
-    FN2 = 0x02,
-    TOP = 0x03
-}
-
-export enum MaxtrixTable {
+export enum MatrixTable {
     WIN = 0x00,
     MAC = 0x04
 }
 
-export class KeyMaxtrix {
+export class KeyMatrix {
     buffer: DataView;
 
     constructor(data: DataView) {
@@ -53,12 +46,12 @@ export class KeyMaxtrix {
         mappingData.keyMappingPara = (key >> 16) & 0xFF;
     }
 
-    static fromReportData(data: DataView) : KeyMaxtrix | undefined {
+    static fromReportData(data: DataView) : KeyMatrix | undefined {
         let colors = undefined;
         
         if (data.byteLength >= KEY_MAXTRIX_LINE * KEY_MAXTRIX_COLOUMN) {
             //let buffer = new DataView(data.buffer.slice(PACKET_HEAD_LENGTH, data.byteLength));
-            colors = new KeyMaxtrix(data);
+            colors = new KeyMatrix(data);
         }
 
         return colors;

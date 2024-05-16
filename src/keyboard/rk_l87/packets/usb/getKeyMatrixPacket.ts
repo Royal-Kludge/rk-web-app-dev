@@ -1,14 +1,15 @@
 import type { IPacket } from "@/keyboard/interface";
 import { Packet_Usb, KEY_MAXTRIX_LINE, KEY_MAXTRIX_COLOUMN, PACKET_HEAD_LENGTH } from "@/keyboard/rk_l87/packets/packet";
-import { KeyMaxtrix, MaxtrixLayer, MaxtrixTable } from "@/keyboard/rk_l87/keyMaxtrix";
+import { KeyMatrix, MatrixTable } from "@/keyboard/rk_l87/keyMatrix";
+import { KeyMatrixLayer } from "@/keyboard/enum"
 
-export class GetKeyMaxtrixPacket extends Packet_Usb {
+export class GetKeyMatrixPacket extends Packet_Usb {
 
     setReport: Uint8Array;
     getReport?: DataView;
-    keyMaxtrix?: KeyMaxtrix;
+    keyMatrix?: KeyMatrix;
 
-    constructor(layer: MaxtrixLayer,  table: MaxtrixTable, board: number) {
+    constructor(layer: KeyMatrixLayer,  table: MatrixTable, board: number) {
         super(0x83);
         this.cmdVal = 0x00;
         this.dataLength = KEY_MAXTRIX_LINE * KEY_MAXTRIX_COLOUMN * 4;
@@ -25,7 +26,7 @@ export class GetKeyMaxtrixPacket extends Packet_Usb {
         super.fromReportData(buffer);
         this.getReport = new DataView(buffer.buffer.slice(1, this.dataLength + PACKET_HEAD_LENGTH + 1));
         if (this.getReport.byteLength >= KEY_MAXTRIX_LINE * KEY_MAXTRIX_COLOUMN + PACKET_HEAD_LENGTH) {
-            this.keyMaxtrix = KeyMaxtrix.fromReportData(new DataView(this.getReport.buffer.slice(PACKET_HEAD_LENGTH, this.getReport.byteLength)));
+            this.keyMatrix = KeyMatrix.fromReportData(new DataView(this.getReport.buffer.slice(PACKET_HEAD_LENGTH, this.getReport.byteLength)));
         }
 
         return this;

@@ -1,7 +1,7 @@
 <template>
     <div class="d-flex flex-column">
         <div class="d-flex jc-center ai-center flex-column" @contextmenu.prevent>
-            <div class="d-flex jc-start mr-3" v-for="line in state.keyMaxtrix">
+            <div class="d-flex jc-start mr-3" v-for="line in state.keyMatrix">
                 <div v-for="key in line"
                      @click="keyClick(key.index)">
                     <el-dropdown :id="`key${key.index}`"
@@ -271,8 +271,8 @@ import { keyboard } from '../../keyboard/keyboard'
 import { RK_L87, RK_L87_EVENT_DEFINE } from '../../keyboard/rk_l87/rk_l87';
 import { KeyDefineEnum } from '../../keyboard/keyCode'
 import { type KeyTableData } from '../../keyboard/interface'
-import { KeyMappingType } from '../../keyboard/enum'
-import { KeyMaxtrix, MaxtrixLayer, MaxtrixTable } from '@/keyboard/rk_l87/keyMaxtrix';
+import { KeyMappingType, KeyMatrixLayer } from '../../keyboard/enum'
+import { KeyMatrix, MatrixTable } from '@/keyboard/rk_l87/keyMatrix';
 import { Action, Macro, Macros } from '@/keyboard/rk_l87/macros';
 import type { DropdownInstance } from 'element-plus'
 import { storage } from '@/keyboard/storage';
@@ -285,7 +285,7 @@ interface KeyState {
 }
 
 const rk_l87 = ref<RK_L87>();
-const keyMaxtrix = ref<KeyMaxtrix>();
+const keyMatrix = ref<KeyMatrix>();
 const keyMapping = ref<any>(null);
 const macros = ref<Macros>();
 const macro = ref<Macro>();
@@ -293,8 +293,8 @@ const keyState = ref<KeyState>();
 
 const getKeyData = (index: number): KeyTableData | undefined => {
     let keyData = undefined;
-    if (index < keyboard.state.keyTableData.length) {
-        keyData = keyboard.state.keyTableData[index];
+    if (index < keyboard.state.keyTableData[0].length) {
+        keyData = keyboard.state.keyTableData[0][index];
     }
     return keyData;
 }
@@ -305,7 +305,7 @@ const getIndex = (l: number, c: number) => {
 
 const state = reactive({
     keyState: [],
-    keyMaxtrix: [
+    keyMatrix: [
         [
             { key: KeyDefineEnum.KEY_ESC,           style: 'line1',     index: getIndex(0, 0),       keyData: getKeyData(getIndex(0, 0)) },
             { key: KeyDefineEnum.NONE,              style: 'split1',    index: 999,                  keyData: undefined },
@@ -560,24 +560,24 @@ onMounted(async () => {
         (state.keyState as Array<KeyState>).push({
             selected: false,
             index: index,
-            KeyData: keyboard.state.keyTableData[index]
+            KeyData: keyboard.state.keyTableData[0][index]
         });
     }
 
     rk_l87.value.addEventListener(RK_L87_EVENT_DEFINE.OnMacrosGotten, macroGotten, false);
-    rk_l87.value.addEventListener(RK_L87_EVENT_DEFINE.OnKeyMaxtrixGotten, keyMaxtrixGotten, false);
-    await rk_l87.value?.getKeyMaxtrix(MaxtrixLayer.NORMAL, MaxtrixTable.WIN, 0);
+    rk_l87.value.addEventListener(RK_L87_EVENT_DEFINE.OnKeyMatrixGotten, keyMatrixGotten, false);
+    await rk_l87.value?.getKeyMatrix(KeyMatrixLayer.Nomal, MatrixTable.WIN, 0);
 });
 
 onBeforeUnmount(() => {
     if (rk_l87.value != undefined) {
-        rk_l87.value.removeEventListener(RK_L87_EVENT_DEFINE.OnKeyMaxtrixGotten, keyMaxtrixGotten, false);
+        rk_l87.value.removeEventListener(RK_L87_EVENT_DEFINE.OnKeyMatrixGotten, keyMatrixGotten, false);
         rk_l87.value.removeEventListener(RK_L87_EVENT_DEFINE.OnMacrosGotten, macroGotten, false);
     }
 });
 
-const keyMaxtrixGotten = async (event: any) => {
-    keyMaxtrix.value = event.detail as KeyMaxtrix;
+const keyMatrixGotten = async (event: any) => {
+    keyMatrix.value = event.detail as KeyMatrix;
 
     if (rk_l87.value != undefined) {
         let tmp = storage.get('macro') as Macros;
@@ -609,11 +609,11 @@ const macroGotten = (event: any) => {
 
 const refresh = () => {
     let line, key: any;
-    for (line in state.keyMaxtrix) {
-        for (key in state.keyMaxtrix[line]) {
-            let keyData = state.keyMaxtrix[line][key].keyData;
+    for (line in state.keyMatrix) {
+        for (key in state.keyMatrix[line]) {
+            let keyData = state.keyMatrix[line][key].keyData;
             if (keyData == undefined) continue;
-            keyMaxtrix.value?.fillKeyMappingData(state.keyMaxtrix[line][key].index, keyData.keyMappingData);
+            keyMatrix.value?.fillKeyMappingData(state.keyMatrix[line][key].index, keyData.keyMappingData);
             keySetStr(keyData);
         }
     }
@@ -708,8 +708,8 @@ const mapping = (keyCode: KeyDefineEnum) => {
         if (keyboard.keyboardDefine != undefined) {
             keyState.KeyData.keyMappingData.keyStr = keyboard.keyboardDefine.keyText[keyCode];
         }
-        keyMaxtrix.value?.setKeyMapping(keyState.index, keyState.KeyData.keyMappingData);
-        rk_l87.value?.setKeyMaxtrix(MaxtrixLayer.NORMAL, MaxtrixTable.WIN, 0);
+        keyMatrix.value?.setKeyMapping(keyState.index, keyState.KeyData.keyMappingData);
+        rk_l87.value?.setKeyMatrix(KeyMatrixLayer.Nomal, MatrixTable.WIN, 0);
     }
 }
 
@@ -738,8 +738,8 @@ const keySetToDefault = (index: number) => {
     mapping.keyMappingType = keyState.KeyData.keyCode >> 24;
     mapping.keyMappingPara = (keyState.KeyData.keyCode & 0x00FF0000) >> 16;
     mapping.keyRaw = keyState.KeyData.keyCode;
-    keyMaxtrix.value?.setKeyMapping(keyState.index, mapping);
-    rk_l87.value?.setKeyMaxtrix(MaxtrixLayer.NORMAL, MaxtrixTable.WIN, 0);
+    keyMatrix.value?.setKeyMapping(keyState.index, mapping);
+    rk_l87.value?.setKeyMatrix(KeyMatrixLayer.Nomal, MatrixTable.WIN, 0);
 }
 
 const keySetMacro = (index: number) => {
@@ -790,8 +790,8 @@ const confirmSetMacro = () => {
         mapping.keyStr = macro.value?.name;
         mapping.keyMappingType = KeyMappingType.Macro;
         mapping.keyMappingPara = state.cycleType;
-        keyMaxtrix.value?.setKeyMapping(keyState.value.index, mapping);
-        rk_l87.value?.setKeyMaxtrix(MaxtrixLayer.NORMAL, MaxtrixTable.WIN, 0);
+        keyMatrix.value?.setKeyMapping(keyState.value.index, mapping);
+        rk_l87.value?.setKeyMatrix(KeyMatrixLayer.Nomal, MatrixTable.WIN, 0);
     }
 
     state.macroDialogShow = false;
@@ -825,8 +825,8 @@ const confirmSetCombineKey = async () => {
         mapping.keyStr = combine;
         mapping.keyMappingPara = (mapping.keyCode & 0x00FF0000) >> 16;
         mapping.keyRaw = 0xFFFFFFFF & (mapping.keyMappingType << 24) && (mapping.keyMappingPara << 16) && mapping.keyCode;
-        keyMaxtrix.value?.setKeyMapping(keyState.value.index, mapping);
-        await rk_l87.value?.setKeyMaxtrix(MaxtrixLayer.NORMAL, MaxtrixTable.WIN, 0);
+        keyMatrix.value?.setKeyMapping(keyState.value.index, mapping);
+        await rk_l87.value?.setKeyMatrix(KeyMatrixLayer.Nomal, MatrixTable.WIN, 0);
     }
 
     state.combineKeyDialogShow = false;

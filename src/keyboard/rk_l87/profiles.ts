@@ -1,8 +1,9 @@
-import { MaxtrixLayer } from '@/keyboard/rk_l87/keyMaxtrix';
+import { KeyMatrixLayer } from '@/keyboard/enum';
+
 export class Layer {
-    index: MaxtrixLayer.NORMAL;
+    index: KeyMatrixLayer.Nomal;
     data: null;
-    constructor(layer: MaxtrixLayer | number, data: any) {
+    constructor(layer: KeyMatrixLayer | number, data: any) {
         this.index = layer
         this.data = data
     }
@@ -32,16 +33,16 @@ export class Profile {
     }
 
     addLayerNORMAL(data: any) {
-        this.layers.push(new Layer(MaxtrixLayer.NORMAL, data));
+        this.layers.push(new Layer(KeyMatrixLayer.Nomal, data));
     }
     addLayerFN1(data: any) {
-        this.layers.push(new Layer(MaxtrixLayer.FN1, data));
+        this.layers.push(new Layer(KeyMatrixLayer.FN1, data));
     }
     addLayerFN2(data: any) {
-        this.layers.push(new Layer(MaxtrixLayer.FN2, data));
+        this.layers.push(new Layer(KeyMatrixLayer.FN2, data));
     }
     addLayerTOP(data: any) {
-        this.layers.push(new Layer(MaxtrixLayer.TOP, data));
+        this.layers.push(new Layer(KeyMatrixLayer.Tap, data));
     }
 }
 

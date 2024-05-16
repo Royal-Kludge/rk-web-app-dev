@@ -4,8 +4,8 @@ import { keyboard } from '../keyboard/keyboard'
 import { RK_L87, RK_L87_EVENT_DEFINE } from '../keyboard/rk_l87/rk_l87';
 import { KeyDefineEnum } from '../keyboard/keyCode'
 import { type KeyTableData } from '../keyboard/interface'
-import { KeyMappingType } from '../keyboard/enum'
-import { KeyMaxtrix, MaxtrixLayer, MaxtrixTable } from '@/keyboard/rk_l87/keyMaxtrix';
+import { KeyMappingType, KeyMatrixLayer } from '../keyboard/enum'
+import { KeyMatrix, MatrixTable } from '@/keyboard/rk_l87/keyMatrix';
 import { Action, Macro, Macros } from '@/keyboard/rk_l87/macros';
 import { Layer, Profile, Profiles } from '@/keyboard/rk_l87/profiles';
 import { KeyCodeMap } from '@/keyboard/keyCode'
@@ -21,13 +21,14 @@ export const useKeyStore = defineStore('keyinfo', () => {
   const screenWidth = ref(0);
   const isMin = ref(false);
   const rk_l87 = ref<RK_L87>();
-  const keyMaxtrix = ref<KeyMaxtrix>();
+  const keyMatrix = ref<KeyMatrix>();
 
   const macros = ref<Macros>();
   const macro = ref<Macro>();
   const keyState = ref<KeyState>();
   const profiles = ref<Profiles>();
   const profile = ref<Profile>();
+  const keyMatrixLayer = ref<KeyMatrixLayer>(KeyMatrixLayer.Nomal);
 
   watch(
     () => screenWidth,
@@ -42,8 +43,13 @@ export const useKeyStore = defineStore('keyinfo', () => {
 
   const getKeyData = (index: number): KeyTableData | undefined => {
     let keyData = undefined;
-    if (index < keyboard.state.keyTableData.length) {
-      keyData = keyboard.state.keyTableData[index];
+    let layer = KeyMatrixLayer.Nomal
+    if (keyMatrixLayer.value != undefined) {
+      layer = keyMatrixLayer.value;
+    }
+    if (layer in keyboard.state.keyTableData && 
+        index < keyboard.state.keyTableData[layer].length) {
+        keyData = keyboard.state.keyTableData[layer][index];
     }
     return keyData;
   }
@@ -55,12 +61,12 @@ export const useKeyStore = defineStore('keyinfo', () => {
   const state = reactive({
     profiles: profiles,
     profile: profile,
-    MaxtrixLayer: MaxtrixLayer.NORMAL,
-    MaxtrixLayers: [
-      { value: MaxtrixLayer.NORMAL, label: 'key.layer_1' },
-      { value: MaxtrixLayer.FN1, label: 'key.layer_2' },
-      { value: MaxtrixLayer.FN2, label: 'key.layer_3' },
-      { value: MaxtrixLayer.TOP, label: 'key.layer_4' },
+    //MatrixLayer: keyMatrixLayer.value,
+    MatrixLayers: [
+      { value: KeyMatrixLayer.Nomal, label: 'key.layer_1' },
+      { value: KeyMatrixLayer.FN1, label: 'key.layer_2' },
+      { value: KeyMatrixLayer.FN2, label: 'key.layer_3' },
+      { value: KeyMatrixLayer.Tap, label: 'key.layer_4' },
     ],
     keyFunState: [] as any,
     keyState: [],
@@ -196,7 +202,7 @@ export const useKeyStore = defineStore('keyinfo', () => {
         { key: KeyDefineEnum.KEY_R_WIN, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_R_WIN], style: "key key1", selected: false }]
       }]
     }],
-    keyMaxtrix: [
+    keyMatrix: [
       {
         line: 1,
         style: "space-t",
@@ -441,16 +447,18 @@ export const useKeyStore = defineStore('keyinfo', () => {
   onMounted(async () => {
     rk_l87.value = (keyboard.protocol as RK_L87);
     let index: any;
-    for (index in keyboard.state.keyTableData) {
-      (state.keyState as Array<KeyState>).push({
-        selected: false,
-        index: index,
-        KeyData: keyboard.state.keyTableData[index]
-      });
+    if (keyMatrixLayer.value in keyboard.state.keyTableData) {
+      for (index in keyboard.state.keyTableData[keyMatrixLayer.value]) {
+        (state.keyState as Array<KeyState>).push({
+          selected: false,
+          index: index,
+          KeyData: keyboard.state.keyTableData[keyMatrixLayer.value][index]
+        });
+      }
     }
     rk_l87.value.addEventListener(RK_L87_EVENT_DEFINE.OnMacrosGotten, macroGotten, false);
-    rk_l87.value.addEventListener(RK_L87_EVENT_DEFINE.OnKeyMaxtrixGotten, keyMaxtrixGotten, false);
-    await getKeyMaxtrix()
+    rk_l87.value.addEventListener(RK_L87_EVENT_DEFINE.OnKeyMatrixGotten, keyMatrixGotten, false);
+    await getKeyMatrix()
     initFunState()
     getProfiles()
     screenWidth.value = document.body.clientWidth;
@@ -464,8 +472,8 @@ export const useKeyStore = defineStore('keyinfo', () => {
 
   onBeforeUnmount(() => {
     if (rk_l87.value != undefined) {
-      rk_l87.value.removeEventListener(RK_L87_EVENT_DEFINE.OnKeyMaxtrixGotten, keyMaxtrixGotten, false);
-      rk_l87.value.removeEventListener(RK_L87_EVENT_DEFINE.OnMacrosGotten, macroGotten, false);
+      //rk_l87.value.removeEventListener(RK_L87_EVENT_DEFINE.OnKeyMatrixGotten, keyMatrixGotten, false);
+      //rk_l87.value.removeEventListener(RK_L87_EVENT_DEFINE.OnMacrosGotten, macroGotten, false);
     }
   });
 
@@ -511,8 +519,8 @@ export const useKeyStore = defineStore('keyinfo', () => {
     }
   };
 
-  const getKeyMaxtrix = async () => {
-    await rk_l87.value?.getKeyMaxtrix(state.MaxtrixLayer, MaxtrixTable.WIN, 0);
+  const getKeyMatrix = async () => {
+    await rk_l87.value?.getKeyMatrix(keyMatrixLayer.value, MatrixTable.WIN, 0);
   }
 
   const setSelected = (keyCode: KeyDefineEnum) => {
@@ -545,8 +553,10 @@ export const useKeyStore = defineStore('keyinfo', () => {
     }
   }
 
-  const keyMaxtrixGotten = async (event: any) => {
-    keyMaxtrix.value = event.detail as KeyMaxtrix;
+  const keyMatrixGotten = async (event: any) => {
+    keyMatrix.value = event.detail as KeyMatrix;
+
+    console.log(`Layer ${keyMatrixLayer.value}`);
 
     if (rk_l87.value != undefined) {
       let tmp = storage.get('macro') as Macros;
@@ -578,11 +588,11 @@ export const useKeyStore = defineStore('keyinfo', () => {
 
   const refresh = () => {
     let line, key: any;
-    for (line in state.keyMaxtrix) {
-      for (key in state.keyMaxtrix[line].keys) {
-        let keyData = state.keyMaxtrix[line].keys[key].keyData;
+    for (line in state.keyMatrix) {
+      for (key in state.keyMatrix[line].keys) {
+        let keyData = state.keyMatrix[line].keys[key].keyData;
         if (keyData == undefined) continue;
-        keyMaxtrix.value?.fillKeyMappingData(state.keyMaxtrix[line].keys[key].index, keyData.keyMappingData);
+        keyMatrix.value?.fillKeyMappingData(state.keyMatrix[line].keys[key].index, keyData.keyMappingData);
         keySetStr(keyData);
       }
     }
@@ -601,10 +611,30 @@ export const useKeyStore = defineStore('keyinfo', () => {
           mapping.keyStr = `${mapping.keyStr}${keyboard.keyboardDefine.keyText[mapping.keyCode]}`;
         }
         break;
+      case KeyMappingType.Mousue:
+      case KeyMappingType.Media:
+      case KeyMappingType.DPIKey:
+      case KeyMappingType.ProfileSwitch:
+      case KeyMappingType.SpecialFun:
+      case KeyMappingType.LightSwitch:
+      case KeyMappingType.ReportRate:
+      case KeyMappingType.FnKey:
+      case KeyMappingType.LodKey:
+        if (keyboard.keyboardDefine != undefined && keyboard.keyboardDefine.keyText[mapping.keyRaw] != undefined) {
+          mapping.keyStr = `${keyboard.keyboardDefine.keyText[mapping.keyRaw]}`;
+        } else {
+          mapping.keyStr = 'Unknow';
+        }
+        break;
+      case KeyMappingType.Custom:
+          mapping.keyStr = `Define ${mapping.keyCode}`;
+          break;
       case KeyMappingType.Macro:
         if (macros.value != undefined) {
           mapping.keyStr = macros.value.get()[mapping.keyCode & 0xFF].name;
         }
+      default:
+        mapping.keyStr = `Unknow`;
         break;
     }
   };
@@ -665,8 +695,8 @@ export const useKeyStore = defineStore('keyinfo', () => {
       if (keyboard.keyboardDefine != undefined) {
         keyState.KeyData.keyMappingData.keyStr = keyboard.keyboardDefine.keyText[keyCode];
       }
-      keyMaxtrix.value?.setKeyMapping(keyState.index, keyState.KeyData.keyMappingData);
-      rk_l87.value?.setKeyMaxtrix(state.MaxtrixLayer, MaxtrixTable.WIN, 0);
+      keyMatrix.value?.setKeyMapping(keyState.index, keyState.KeyData.keyMappingData);
+      rk_l87.value?.setKeyMatrix(keyMatrixLayer.value, MatrixTable.WIN, 0);
     }
     setSelected(keyCode);
   }
@@ -684,8 +714,8 @@ export const useKeyStore = defineStore('keyinfo', () => {
     mapping.keyMappingType = keyState.KeyData.keyCode >> 24;
     mapping.keyMappingPara = (keyState.KeyData.keyCode & 0x00FF0000) >> 16;
     mapping.keyRaw = keyState.KeyData.keyCode;
-    keyMaxtrix.value?.setKeyMapping(keyState.index, mapping);
-    rk_l87.value?.setKeyMaxtrix(state.MaxtrixLayer, MaxtrixTable.WIN, 0);
+    keyMatrix.value?.setKeyMapping(keyState.index, mapping);
+    rk_l87.value?.setKeyMatrix(keyMatrixLayer.value, MatrixTable.WIN, 0);
   }
 
   const keySetMacro = (index: number) => {
@@ -711,8 +741,8 @@ export const useKeyStore = defineStore('keyinfo', () => {
       mapping.keyStr = macro.value?.name;
       mapping.keyMappingType = KeyMappingType.Macro;
       mapping.keyMappingPara = state.cycleType;
-      keyMaxtrix.value?.setKeyMapping(keyState.value.index, mapping);
-      rk_l87.value?.setKeyMaxtrix(state.MaxtrixLayer, MaxtrixTable.WIN, 0);
+      keyMatrix.value?.setKeyMapping(keyState.value.index, mapping);
+      rk_l87.value?.setKeyMatrix(keyMatrixLayer.value, MatrixTable.WIN, 0);
     }
 
     state.macroDialogShow = false;
@@ -766,11 +796,11 @@ export const useKeyStore = defineStore('keyinfo', () => {
         mapping.keyStr = combine;
         mapping.keyMappingPara = (mapping.keyCode & 0x00FF0000) >> 16;
         mapping.keyRaw = 0xFFFFFFFF & (mapping.keyMappingType << 24) && (mapping.keyMappingPara << 16) && mapping.keyCode;
-        keyMaxtrix.value?.setKeyMapping(keyState.value.index, mapping);
-        await rk_l87.value?.setKeyMaxtrix(MaxtrixLayer.NORMAL, MaxtrixTable.WIN, 0);
+        keyMatrix.value?.setKeyMapping(keyState.value.index, mapping);
+        await rk_l87.value?.setKeyMatrix(KeyMatrixLayer.Nomal, MatrixTable.WIN, 0);
     }
 
     state.combineKeyDialogShow = false;
   }
-  return { profile, state, isMin, keyClick, keyColor, isSelected, keybgColor, keyText, keySetToDefault, keySetMacro, mapping, isFunSelected, isMacroSelected, clickMacro, confirmSetMacro, setCombineKey, confirmSetCombineKey, getKeyMaxtrix, clickProfile, deleteProfile, onKeyDown }
+  return { profile, state, keyMatrixLayer, isMin, keyClick, keyColor, isSelected, keybgColor, keyText, keySetToDefault, keySetMacro, mapping, isFunSelected, isMacroSelected, clickMacro, confirmSetMacro, setCombineKey, confirmSetCombineKey, getKeyMatrix, clickProfile, deleteProfile, onKeyDown }
 })

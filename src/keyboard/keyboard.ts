@@ -127,29 +127,38 @@ export class Keyboard extends EventTarget {
         }
     }
 
-    loadDefaultValue(keyTableDatas: Array<KeyTableData>, lightInfo: LightInfo) {
+    loadDefaultValue(keyTableDatas: Record<number, Array<KeyTableData>>, lightInfo: LightInfo) {
+        var layer: any;
         var item: any;
         if (this.device != undefined && this.keyboardDefine != undefined) {
-            if (keyTableDatas.length > 0) {
-                keyTableDatas.splice(0, this.state.keyTableData.length);
-            }
+            for (layer in this.keyboardDefine.keyMatrixLayer) {
+                if (!keyTableDatas.hasOwnProperty(layer)) {
+                    keyTableDatas[layer] = [];
+                }
 
-            for (item in this.keyboardDefine.keyLayout) {
-                let code = this.keyboardDefine.keyLayout[item];
-                let key: KeyTableData = {
-                    keyStr: this.keyboardDefine.keyText[code],
-                    keyCode: code,
-                    index: item,
-                    keyMappingData: {
+                let table = keyTableDatas[layer];
+                if (table.length > 0) {
+                    table.splice(0, table.length);
+                }
+
+                for (item in this.keyboardDefine.keyLayout[layer]) {
+                    let code = this.keyboardDefine.keyLayout[layer][item];
+                    let key: KeyTableData = {
                         keyStr: this.keyboardDefine.keyText[code],
                         keyCode: code,
-                        keyMappingType: KeyMappingType.KeyBoard,
-                        keyMappingPara: 0,
-                        keyRaw: code
+                        index: item,
+                        keyMappingData: {
+                            keyStr: this.keyboardDefine.keyText[code],
+                            keyCode: code,
+                            keyMappingType: KeyMappingType.KeyBoard,
+                            keyMappingPara: 0,
+                            keyRaw: code
+                        }
                     }
+                    table.push(key);
                 }
-                keyTableDatas.push(key);
             }
+
 
             if (lightInfo.lightEffects.length > 0) {
                 lightInfo.lightEffects.splice(0, this.state.lightInfo.lightEffects.length);

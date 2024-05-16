@@ -1,5 +1,5 @@
 import { KeyDefineEnum } from "./keyCode"
-import { ConnectionType, ConnectionEventEnum, ConnectionStatusEnum, KeyMappingType } from "./enum"
+import { ConnectionType, ConnectionEventEnum, ConnectionStatusEnum, KeyMappingType, KeyMatrixLayer } from "./enum"
 
 /**
  * Keyboard State
@@ -17,7 +17,7 @@ export interface KeyboardState {
     serialNo?: String,
     commandId: number,
     dataChangeFlag: number,
-    keyTableData: Array<KeyTableData>,
+    keyTableData: Record<number, Array<KeyTableData>>,
     lightInfo: LightInfo
 }
 
@@ -28,7 +28,8 @@ export interface KeyboardDefine {
     usagePage: number,
     usage: number,
     keyText: Record<number, String>,
-    keyLayout: Array<KeyDefineEnum>,
+    keyMatrixLayer: Array<KeyMatrixLayer>,
+    keyLayout: Record<number, Array<KeyDefineEnum>>,
     lightEffects: Array<LightEffect>,
     protocol: (state: KeyboardState, device: HIDDevice) => Promise<IProtocol>
 }

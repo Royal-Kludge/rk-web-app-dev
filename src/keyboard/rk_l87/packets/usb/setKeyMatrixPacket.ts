@@ -1,12 +1,13 @@
 import type { IPacket } from "@/keyboard/interface";
 import { Packet_Usb, KEY_MAXTRIX_LINE, KEY_MAXTRIX_COLOUMN, PACKET_HEAD_LENGTH } from "@/keyboard/rk_l87/packets/packet";
-import { MaxtrixLayer, MaxtrixTable } from "@/keyboard/rk_l87/keyMaxtrix";
+import { KeyMatrixLayer } from "@/keyboard/enum"
+import { MatrixTable } from "@/keyboard/rk_l87/keyMatrix";
 
-export class SetKeyMaxtrixPacket extends Packet_Usb {
+export class SetKeyMatrixPacket extends Packet_Usb {
 
     setReport: Uint8Array;
 
-    constructor(layer: MaxtrixLayer,  table: MaxtrixTable, board: number) {
+    constructor(layer: KeyMatrixLayer,  table: MatrixTable, board: number) {
         super(0x03);
         this.dataLength = KEY_MAXTRIX_LINE * KEY_MAXTRIX_COLOUMN * 4;
         this.setReport = new Uint8Array(519);

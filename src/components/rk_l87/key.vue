@@ -2,7 +2,7 @@
     <div class="d-flex jc-center ai-center">
         <div v-if="useKey.isMin" class="fs-big">Not enough space to display keyboard</div>
         <div v-else class="d-flex flex-column bg-white p-4" style="border-radius: 15px" @contextmenu.prevent>
-            <div class="d-flex" v-for="line in useKey.state.keyMaxtrix" :class="[`${line.style}`]">
+            <div class="d-flex" v-for="line in useKey.state.keyMatrix" :class="[`${line.style}`]">
                 <div v-for="key in line.keys" @click="keyClick(key.index)">
                     <el-dropdown :id="`key${key.index}`" trigger="contextmenu" ref="keyMapping"
                         class="d-flex ai-center jc-center c-p"

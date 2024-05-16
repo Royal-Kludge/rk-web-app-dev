@@ -5,7 +5,7 @@ import { RK_L87, RK_L87_EVENT_DEFINE } from '../keyboard/rk_l87/rk_l87';
 import { Profile, FieldEnum } from '../keyboard/rk_l87/profile';
 import { LedEffect } from '../keyboard/rk_l87/ledEffect';
 import { LedColors } from '../keyboard/rk_l87/ledColors';
-import { LightEffectEnum } from '../keyboard/enum'
+import { LightEffectEnum, KeyMatrixLayer } from '../keyboard/enum'
 import { type LedColor } from '@/keyboard/interface';
 import { KeyDefineEnum } from '@/keyboard/keyCode';
 import { type KeyTableData } from '@/keyboard/interface'
@@ -18,13 +18,14 @@ export const uselightStore = defineStore('lightinfo', () => {
     const rk_l87 = ref<RK_L87>();
     const profileIndex = ref(0);
 
-    const getKeyData = (index: number): KeyTableData | undefined => {
+    const getKeyData = (index: number, layer: KeyMatrixLayer = KeyMatrixLayer.Nomal): KeyTableData | undefined => {
         let keyData = undefined;
-        if (index < keyboard.state.keyTableData.length) {
-            keyData = keyboard.state.keyTableData[index];
+        if (layer in keyboard.state.keyTableData && 
+            index < keyboard.state.keyTableData[layer].length) {
+          keyData = keyboard.state.keyTableData[layer][index];
         }
         return keyData;
-    }
+      }
     
     const getIndex = (l: number, c: number) => {
         return l + 6 * c;
@@ -50,7 +51,7 @@ export const uselightStore = defineStore('lightinfo', () => {
             { light: LightEffectEnum.OFF, label: 'OFF' },
             //{ light: LightEffectEnum.Music, label: 'Music' },
         ],
-        keyMaxtrix: [
+        keyMatrix: [
             { key: KeyDefineEnum.KEY_ESC,           index: getIndex(0, 0),  },
             { key: KeyDefineEnum.KEY_F1,            index: getIndex(0, 1),  },
             { key: KeyDefineEnum.KEY_F2,            index: getIndex(0, 2),  },
