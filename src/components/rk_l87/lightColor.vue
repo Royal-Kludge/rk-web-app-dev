@@ -9,7 +9,8 @@
                     <div class="w-100" style="height: 23vh">
                         <el-scrollbar>
                             <div class="d-flex flex-column jc-between" style="padding-left: 15%;">
-                                <div class="d-flex m-3" v-if="useLight.state.lightProps.light != LightEffectEnum.SelfDefine">
+                                <div class="d-flex m-3"
+                                    v-if="useLight.state.lightProps.light != LightEffectEnum.SelfDefine">
                                     <div class="d-flex flex-column">
                                         <div>
                                             <el-slider style="width: 360px" :step="1" :max="20" :min="1"
@@ -20,7 +21,8 @@
                                     </div>
                                     <div class="ml-4 mt-1">{{ useLight.state.lightProps.brightness }}</div>
                                 </div>
-                                <div class="d-flex m-3" v-if="useLight.state.lightProps.light != LightEffectEnum.SelfDefine">
+                                <div class="d-flex m-3"
+                                    v-if="useLight.state.lightProps.light != LightEffectEnum.SelfDefine">
                                     <div class="d-flex flex-column">
                                         <div>
                                             <el-slider style="width: 360px" :step="1" :max="4" :min="1"
@@ -74,6 +76,16 @@ import Picker from '../picker.vue'
 import { uselightStore } from "@/stores/lightStore";
 import { LightEffectEnum } from '@/keyboard/enum'
 
+import { onMounted, onBeforeUnmount } from "vue";
+
 const useLight = uselightStore();
+
+onMounted(async () => {
+    await useLight.init();
+});
+
+onBeforeUnmount(() => {
+    useLight.destroy();
+});
 </script>
 <style scoped lang="scss"></style>

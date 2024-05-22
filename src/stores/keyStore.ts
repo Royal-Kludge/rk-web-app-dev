@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { reactive, ref, onMounted, onBeforeUnmount, watch } from 'vue';
+import { reactive, ref } from 'vue';
 import { keyboard } from '../keyboard/keyboard'
 import { RK_L87, RK_L87_EVENT_DEFINE } from '../keyboard/rk_l87/rk_l87';
 import { KeyDefineEnum } from '../keyboard/keyCode'
@@ -7,8 +7,10 @@ import { type KeyTableData } from '../keyboard/interface'
 import { KeyMappingType, KeyMatrixLayer } from '../keyboard/enum'
 import { KeyMatrix, MatrixTable } from '@/keyboard/rk_l87/keyMatrix';
 import { Action, Macro, Macros } from '@/keyboard/rk_l87/macros';
-import { Layer, Profile, Profiles } from '@/keyboard/rk_l87/profiles';
+import { Profile, Profiles } from '@/keyboard/rk_l87/profiles';
 import { KeyCodeMap } from '@/keyboard/keyCode'
+import fileSaver from "file-saver";
+import { ElMessage } from 'element-plus'
 
 import { storage } from '@/keyboard/storage';
 export const useKeyStore = defineStore('keyinfo', () => {
@@ -18,10 +20,8 @@ export const useKeyStore = defineStore('keyinfo', () => {
     KeyData: KeyTableData
   }
 
-  const screenWidth = ref(0);
-  const isMin = ref(false);
   const rk_l87 = ref<RK_L87>();
-  const keyMatrix = ref<KeyMatrix>();
+  //const keyMatrix = ref<KeyMatrix>();
 
   const macros = ref<Macros>();
   const macro = ref<Macro>();
@@ -30,16 +30,7 @@ export const useKeyStore = defineStore('keyinfo', () => {
   const profile = ref<Profile>();
   const keyMatrixLayer = ref<KeyMatrixLayer>(KeyMatrixLayer.Nomal);
 
-  watch(
-    () => screenWidth,
-    (to) => {
-      if (to.value <= 1024) isMin.value = true;
-      else isMin.value = false;
-    },
-    {
-      deep: true,
-    }
-  );
+  const KeyMatrixData = ref<Record<number, KeyMatrix>>({});
 
   const getKeyData = (index: number): KeyTableData | undefined => {
     let keyData = undefined;
@@ -47,9 +38,9 @@ export const useKeyStore = defineStore('keyinfo', () => {
     if (keyMatrixLayer.value != undefined) {
       layer = keyMatrixLayer.value;
     }
-    if (layer in keyboard.state.keyTableData && 
-        index < keyboard.state.keyTableData[layer].length) {
-        keyData = keyboard.state.keyTableData[layer][index];
+    if (layer in keyboard.state.keyTableData &&
+      index < keyboard.state.keyTableData[layer].length) {
+      keyData = keyboard.state.keyTableData[layer][index];
     }
     return keyData;
   }
@@ -59,6 +50,8 @@ export const useKeyStore = defineStore('keyinfo', () => {
   }
 
   const state = reactive({
+    name: '',
+    nameEditorDisplay: false,
     profiles: profiles,
     profile: profile,
     //MatrixLayer: keyMatrixLayer.value,
@@ -444,69 +437,126 @@ export const useKeyStore = defineStore('keyinfo', () => {
     altKey: false
   });
 
-  onMounted(async () => {
-    rk_l87.value = (keyboard.protocol as RK_L87);
-    let index: any;
-    if (keyMatrixLayer.value in keyboard.state.keyTableData) {
-      for (index in keyboard.state.keyTableData[keyMatrixLayer.value]) {
-        (state.keyState as Array<KeyState>).push({
-          selected: false,
-          index: index,
-          KeyData: keyboard.state.keyTableData[keyMatrixLayer.value][index]
-        });
+  const init = async () => {
+    if (rk_l87.value == undefined) {
+      rk_l87.value = (keyboard.protocol as RK_L87);
+      let index: any;
+      if (keyMatrixLayer.value in keyboard.state.keyTableData) {
+        for (index in keyboard.state.keyTableData[keyMatrixLayer.value]) {
+          (state.keyState as Array<KeyState>).push({
+            selected: false,
+            index: index,
+            KeyData: keyboard.state.keyTableData[keyMatrixLayer.value][index]
+          });
+        }
       }
+      initFunState();
+      getProfiles();
     }
-    rk_l87.value.addEventListener(RK_L87_EVENT_DEFINE.OnMacrosGotten, macroGotten, false);
-    rk_l87.value.addEventListener(RK_L87_EVENT_DEFINE.OnKeyMatrixGotten, keyMatrixGotten, false);
-    await getKeyMatrix()
-    initFunState()
-    getProfiles()
-    screenWidth.value = document.body.clientWidth;
-    window.onresize = () => {
-      //屏幕尺寸变化
-      return (() => {
-        screenWidth.value = document.body.clientWidth;
-      })();
-    };
-  });
 
-  onBeforeUnmount(() => {
     if (rk_l87.value != undefined) {
-      //rk_l87.value.removeEventListener(RK_L87_EVENT_DEFINE.OnKeyMatrixGotten, keyMatrixGotten, false);
-      //rk_l87.value.removeEventListener(RK_L87_EVENT_DEFINE.OnMacrosGotten, macroGotten, false);
+      rk_l87.value.addEventListener(RK_L87_EVENT_DEFINE.OnMacrosGotten, macroGotten, false);
+      rk_l87.value.addEventListener(RK_L87_EVENT_DEFINE.OnKeyMatrixGotten, keyMatrixGotten, false);
     }
-  });
 
+    if (KeyMatrixData.value[keyMatrixLayer.value] == undefined) {
+      await getKeyMatrix();
+    }
+  };
+
+  const destroy = () => {
+    if (rk_l87.value != undefined) {
+      rk_l87.value.removeEventListener(RK_L87_EVENT_DEFINE.OnKeyMatrixGotten, keyMatrixGotten, false);
+      rk_l87.value.removeEventListener(RK_L87_EVENT_DEFINE.OnMacrosGotten, macroGotten, false);
+    }
+  };
+
+  const importProfile = (str: any) => {
+    try {
+      var p: Profile = JSON.parse(str);
+      if (p.name == undefined) {
+        ElMessage.error('Error parsing JSON data')
+      }
+      else {
+        if (profiles.value != undefined) {
+          let tm = new Profile(p.name)
+          tm.layers = p.layers
+          profile.value = tm;
+          profiles.value.add(profile.value);
+          saveProfile()
+        }
+      }
+      // 成功解析后的代码
+    } catch (e) {
+      // 解析出错时的代码
+      ElMessage.error('Error parsing JSON data')
+    }
+  };
+
+  const exportProfile = (obj: Profile) => {
+    let blob = new Blob([JSON.stringify(obj)], { type: "application/json" });
+    fileSaver.saveAs(blob, `${obj.name}.rk`);
+  };
+
+  const renameProfile = (obj: Profile) => {
+    if (profiles.value != undefined) {
+      profile.value = obj;
+      state.name = obj.name;
+      state.nameEditorDisplay = true;
+    }
+  };
+
+  const handleEditClose = (done: () => void) => {
+    if (profile.value != undefined) {
+      profile.value.name = state.name;
+    }
+    done();
+    saveProfile();
+  };
   const getProfiles = () => {
     if (rk_l87.value != undefined) {
       let tmp = storage.get('profile') as Profiles;
-      if (profiles != undefined && tmp != null) {
+      if (profiles != undefined && tmp != null && tmp.list.length > 0) {
         let ps = new Profiles();
         for (let m of tmp.list) {
-          let tm = new Profile(m.name);
-          for (let a of m.layers) {
-            let ta = new Layer(a.index, a.data);
-            tm.add(ta);
+          let tm = new Profile(m.name)
+          tm.layers = m.layers
+          ps.add(tm);
+        }
+        profiles.value = ps;
+        profile.value = profiles.value.get()[0];
+        KeyMatrixData.value[keyMatrixLayer.value] = new KeyMatrix(new DataView(new Uint8Array(Object.values(profile.value.get(keyMatrixLayer.value))).buffer));
+      } else {
+        let ps = new Profiles();
+        for (let i = 0; i < 3; i++) {
+          let tm = new Profile('profile' + (i + 1));
+          let layer: any;
+          for (layer in keyboard.keyboardDefine?.keyLayout) {
+            tm.add(layer, new Uint8Array(512))
+            KeyMatrixData.value[layer] = new KeyMatrix(new DataView(tm.layers[layer].buffer));
+            let layout = keyboard.keyboardDefine?.keyLayout[layer];
+            if (layout != undefined) {
+              for (let j = 0; j < layout.length; j++) {
+                KeyMatrixData.value[layer].setKeyMappingRaw(j, layout[j]);
+              }
+            }
           }
           ps.add(tm);
         }
         profiles.value = ps;
         profile.value = profiles.value.get()[0];
-      } else {
-        let ps = new Profiles();
-        for (let i = 0; i < 3; i++) {
-          let tm = new Profile('配置文件' + (i + 1));
-          tm.addLayerNORMAL(null)
-          ps.add(tm);
-        }
-        profiles.value = ps;
-        profile.value = profiles.value.get()[0];
+        saveProfile();
       }
     }
+    refresh();
   }
 
-  const clickProfile = (obj: any) => {
+  const clickProfile = (obj: Profile) => {
     profile.value = obj;
+    if (profile.value != undefined) {
+      KeyMatrixData.value[keyMatrixLayer.value] = new KeyMatrix(new DataView(new Uint8Array(Object.values(profile.value.get(keyMatrixLayer.value))).buffer));
+      refresh()
+    }
   }
   const deleteProfile = (obj: Profile) => {
     if (profiles.value != undefined) {
@@ -516,9 +566,43 @@ export const useKeyStore = defineStore('keyinfo', () => {
       } else {
         profile.value = undefined;
       }
+      saveProfile();
+    }
+  };
+  const saveProfile = () => {
+    if (profile.value != undefined) {
+      const dataView = new DataView(KeyMatrixData.value[keyMatrixLayer.value].buffer.buffer)
+      profile.value.add(keyMatrixLayer.value, new Uint8Array(dataView.buffer, dataView.byteOffset, dataView.byteLength));
+      refresh()
+    }
+    if (profiles.value != undefined) {
+      storage.set('profile', profiles.value);
+    }
+  }
+  const newProfile = () => {
+    if (profiles.value != undefined) {
+      let tm = new Profile(`profile ${profiles.value.get().length + 1}`);
+      let layer: any;
+      for (layer in keyboard.keyboardDefine?.keyLayout) {
+        tm.add(layer, new Uint8Array(512))
+        KeyMatrixData.value[layer] = new KeyMatrix(new DataView(tm.layers[layer].buffer));
+        let layout = keyboard.keyboardDefine?.keyLayout[layer];
+        if (layout != undefined) {
+          for (let j = 0; j < layout.length; j++) {
+            KeyMatrixData.value[layer].setKeyMappingRaw(j, layout[j]);
+          }
+        }
+      }
+      profile.value = tm;
+      profiles.value.add(profile.value);
+      saveProfile()
     }
   };
 
+  const getKeyMatrixNomal = () => {
+    keyMatrixLayer.value = KeyMatrixLayer.Nomal
+    refresh();
+  }
   const getKeyMatrix = async () => {
     await rk_l87.value?.getKeyMatrix(keyMatrixLayer.value, MatrixTable.WIN, 0);
   }
@@ -531,7 +615,7 @@ export const useKeyStore = defineStore('keyinfo', () => {
       else state.keyFunState[i].selected = false;
     }
   }
-  
+
   const isFunSelected = (keyCode: KeyDefineEnum): string => {
     let style: string = ''
     for (var i = 0; i < state.keyFunState.length; i++) {
@@ -554,7 +638,7 @@ export const useKeyStore = defineStore('keyinfo', () => {
   }
 
   const keyMatrixGotten = async (event: any) => {
-    keyMatrix.value = event.detail as KeyMatrix;
+    KeyMatrixData.value[keyMatrixLayer.value] = event.detail as KeyMatrix;
 
     console.log(`Layer ${keyMatrixLayer.value}`);
 
@@ -582,7 +666,7 @@ export const useKeyStore = defineStore('keyinfo', () => {
 
   const macroGotten = (event: any) => {
     macros.value = event.detail as Macros;
-    macro.value = macros.value.get()[0];
+    macro.value = macros.value?.get()[0];
     refresh();
   };
 
@@ -592,7 +676,7 @@ export const useKeyStore = defineStore('keyinfo', () => {
       for (key in state.keyMatrix[line].keys) {
         let keyData = state.keyMatrix[line].keys[key].keyData;
         if (keyData == undefined) continue;
-        keyMatrix.value?.fillKeyMappingData(state.keyMatrix[line].keys[key].index, keyData.keyMappingData);
+        KeyMatrixData.value[keyMatrixLayer.value]?.fillKeyMappingData(state.keyMatrix[line].keys[key].index, keyData.keyMappingData);
         keySetStr(keyData);
       }
     }
@@ -627,8 +711,8 @@ export const useKeyStore = defineStore('keyinfo', () => {
         }
         break;
       case KeyMappingType.Custom:
-          mapping.keyStr = `Define ${mapping.keyCode}`;
-          break;
+        mapping.keyStr = `Define ${mapping.keyCode}`;
+        break;
       case KeyMappingType.Macro:
         if (macros.value != undefined) {
           mapping.keyStr = macros.value.get()[mapping.keyCode & 0xFF].name;
@@ -695,10 +779,11 @@ export const useKeyStore = defineStore('keyinfo', () => {
       if (keyboard.keyboardDefine != undefined) {
         keyState.KeyData.keyMappingData.keyStr = keyboard.keyboardDefine.keyText[keyCode];
       }
-      keyMatrix.value?.setKeyMapping(keyState.index, keyState.KeyData.keyMappingData);
+      KeyMatrixData.value[keyMatrixLayer.value]?.setKeyMapping(keyState.index, keyState.KeyData.keyMappingData);
       rk_l87.value?.setKeyMatrix(keyMatrixLayer.value, MatrixTable.WIN, 0);
     }
     setSelected(keyCode);
+    saveProfile()
   }
 
   const keySetToDefault = (index: number) => {
@@ -714,8 +799,9 @@ export const useKeyStore = defineStore('keyinfo', () => {
     mapping.keyMappingType = keyState.KeyData.keyCode >> 24;
     mapping.keyMappingPara = (keyState.KeyData.keyCode & 0x00FF0000) >> 16;
     mapping.keyRaw = keyState.KeyData.keyCode;
-    keyMatrix.value?.setKeyMapping(keyState.index, mapping);
+    KeyMatrixData.value[keyMatrixLayer.value]?.setKeyMapping(keyState.index, mapping);
     rk_l87.value?.setKeyMatrix(keyMatrixLayer.value, MatrixTable.WIN, 0);
+    saveProfile()
   }
 
   const keySetMacro = (index: number) => {
@@ -741,8 +827,9 @@ export const useKeyStore = defineStore('keyinfo', () => {
       mapping.keyStr = macro.value?.name;
       mapping.keyMappingType = KeyMappingType.Macro;
       mapping.keyMappingPara = state.cycleType;
-      keyMatrix.value?.setKeyMapping(keyState.value.index, mapping);
+      KeyMatrixData.value[keyMatrixLayer.value]?.setKeyMapping(keyState.value.index, mapping);
       rk_l87.value?.setKeyMatrix(keyMatrixLayer.value, MatrixTable.WIN, 0);
+      saveProfile()
     }
 
     state.macroDialogShow = false;
@@ -750,7 +837,7 @@ export const useKeyStore = defineStore('keyinfo', () => {
 
   const setCombineKey = (index: number) => {
     if (state.keyState.length <= 0 || index >= 999) {
-        return '';
+      return '';
     }
     keyState.value = (state.keyState as Array<KeyState>)[index];
     state.combineKeyDialogShow = true;
@@ -765,42 +852,43 @@ export const useKeyStore = defineStore('keyinfo', () => {
   const onKeyDown = (event: KeyboardEvent) => {
     console.log('Key pressed:', `${event.key} | ${event.code} | ${event.keyCode}`);
     state.keyStr = KeyCodeMap[event.code].key;
-    state.keyHid =  KeyCodeMap[event.code].hid;
+    state.keyHid = KeyCodeMap[event.code].hid;
   }
 
   const confirmSetCombineKey = async () => {
-    if (keyState.value != undefined && macro.value!= undefined) {
-        let mapping = keyState.value.KeyData.keyMappingData;
+    if (keyState.value != undefined && macro.value != undefined) {
+      let mapping = keyState.value.KeyData.keyMappingData;
 
-        mapping.keyMappingType = KeyMappingType.KeyBoard;
-        mapping.keyCode = state.keyHid;
+      mapping.keyMappingType = KeyMappingType.KeyBoard;
+      mapping.keyCode = state.keyHid;
 
-        let combine = "";
-        if (state.shiftKey) {
-            combine = combine + "Shift + ";
-            mapping.keyCode = mapping.keyCode | KeyDefineEnum.KEY_L_SHIFT;
-        }
-        if (state.ctrlKey) {
-            combine = combine + "Ctrl + ";
-            mapping.keyCode = mapping.keyCode | KeyDefineEnum.KEY_L_CTRL;
-        }
-        if (state.winKey) {
-            combine = combine + "Win + ";
-            mapping.keyCode = mapping.keyCode | KeyDefineEnum.KEY_L_WIN;
-        }
-        if (state.altKey) {
-            combine = combine + "Alt + ";
-            mapping.keyCode = mapping.keyCode | KeyDefineEnum.KEY_L_ALT;
-        }
-        combine = combine + state.keyStr;
-        mapping.keyStr = combine;
-        mapping.keyMappingPara = (mapping.keyCode & 0x00FF0000) >> 16;
-        mapping.keyRaw = 0xFFFFFFFF & (mapping.keyMappingType << 24) && (mapping.keyMappingPara << 16) && mapping.keyCode;
-        keyMatrix.value?.setKeyMapping(keyState.value.index, mapping);
-        await rk_l87.value?.setKeyMatrix(KeyMatrixLayer.Nomal, MatrixTable.WIN, 0);
+      let combine = "";
+      if (state.shiftKey) {
+        combine = combine + "Shift + ";
+        mapping.keyCode = mapping.keyCode | KeyDefineEnum.KEY_L_SHIFT;
+      }
+      if (state.ctrlKey) {
+        combine = combine + "Ctrl + ";
+        mapping.keyCode = mapping.keyCode | KeyDefineEnum.KEY_L_CTRL;
+      }
+      if (state.winKey) {
+        combine = combine + "Win + ";
+        mapping.keyCode = mapping.keyCode | KeyDefineEnum.KEY_L_WIN;
+      }
+      if (state.altKey) {
+        combine = combine + "Alt + ";
+        mapping.keyCode = mapping.keyCode | KeyDefineEnum.KEY_L_ALT;
+      }
+      combine = combine + state.keyStr;
+      mapping.keyStr = combine;
+      mapping.keyMappingPara = (mapping.keyCode & 0x00FF0000) >> 16;
+      mapping.keyRaw = 0xFFFFFFFF & (mapping.keyMappingType << 24) && (mapping.keyMappingPara << 16) && mapping.keyCode;
+      KeyMatrixData.value[keyMatrixLayer.value]?.setKeyMapping(keyState.value.index, mapping);
+      await rk_l87.value?.setKeyMatrix(KeyMatrixLayer.Nomal, MatrixTable.WIN, 0);
+      saveProfile()
     }
 
     state.combineKeyDialogShow = false;
   }
-  return { profile, state, keyMatrixLayer, isMin, keyClick, keyColor, isSelected, keybgColor, keyText, keySetToDefault, keySetMacro, mapping, isFunSelected, isMacroSelected, clickMacro, confirmSetMacro, setCombineKey, confirmSetCombineKey, getKeyMatrix, clickProfile, deleteProfile, onKeyDown }
+  return { profile, state, keyMatrixLayer, keyClick, keyColor, isSelected, keybgColor, keyText, keySetToDefault, keySetMacro, mapping, isFunSelected, isMacroSelected, clickMacro, confirmSetMacro, setCombineKey, confirmSetCombineKey, getKeyMatrix, clickProfile, deleteProfile, onKeyDown, newProfile, handleEditClose, renameProfile, exportProfile, importProfile, init, destroy, getKeyMatrixNomal }
 })

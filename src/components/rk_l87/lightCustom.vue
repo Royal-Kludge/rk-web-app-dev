@@ -4,7 +4,7 @@
             <div class="d-flex flex-column flex-1">
                 <div class="d-flex flex-column h-100">
                     <div class="p-3 bg-white-1 fw-b fs-xxl">{{ $t('light.title') }}</div>
-                    <div style="height: 40vh">
+                    <div style="height: 78vh">
                         <el-scrollbar>
                             <div style="padding-left: 16%" v-for="item in useLight.state.lightEffects"
                                 class="module_box d-flex p-3 my-2 text-grey-1 jc-between"
@@ -20,7 +20,7 @@
                             </div>
                         </el-scrollbar>
                     </div>
-                    <div class="flex-1">
+                    <!-- <div class="flex-1">
                         <div class="d-flex flex-column h-100">
                             <div class="bg-white-1 p-2" style="height: 24px; border-radius: 5px 5px 0px 0px">
                                 {{ $t('light.title_1') }}
@@ -40,7 +40,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
@@ -67,7 +67,21 @@
 import Key from "./key.vue";
 import LightColor from "./lightColor.vue";
 import { uselightStore } from "@/stores/lightStore";
+import { useKeyStore } from "@/stores/keyStore";
+import { onMounted, onBeforeUnmount } from "vue";
 
+const useKey = useKeyStore();
 const useLight = uselightStore();
+
+onMounted(async () => {
+    await useKey.init();
+    await useKey.getKeyMatrixNomal()
+    await useLight.init();
+});
+
+onBeforeUnmount(() => {
+    useKey.destroy();
+    useLight.destroy();
+});
 
 </script>

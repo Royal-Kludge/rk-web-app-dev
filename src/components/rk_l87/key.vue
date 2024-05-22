@@ -1,6 +1,6 @@
 <template>
     <div class="d-flex jc-center ai-center">
-        <div v-if="useKey.isMin" class="fs-big">Not enough space to display keyboard</div>
+        <div v-if="isMin" class="fs-big">Not enough space to display keyboard</div>
         <div v-else class="d-flex flex-column bg-white p-4" style="border-radius: 15px" @contextmenu.prevent>
             <div class="d-flex" v-for="line in useKey.state.keyMatrix" :class="[`${line.style}`]">
                 <div v-for="key in line.keys" @click="keyClick(key.index)">
@@ -8,7 +8,8 @@
                         class="d-flex ai-center jc-center c-p"
                         :class="[`d-flex p-2 pl-3 ${key.style}`, useKey.keyColor(key.keyData), useKey.isSelected(key.index)]"
                         @visible-change="handleOpen($event, `key${key.index}`)">
-                        <div :class="[`text-white-1`, keyTextColorClass(key.keyData)]" :style="keyTextColorStyle(key.keyData)">
+                        <div :class="[`text-white-1`, keyTextColorClass(key.keyData)]"
+                            :style="`word-wrap: break-word;overflow: hidden;text-align: center;${keyTextColorStyle(key.keyData)}`">
                             {{ useKey.keyText(key.keyData) }}
                         </div>
                         <template #dropdown>
@@ -63,24 +64,24 @@
                     </div>
                 </div>
             </el-dialog>
-            <el-dialog v-model="useKey.state.combineKeyDialogShow" top="20vh" width="450px" height="100%"
-                       style="--el-dialog-padding-primary:5px;background-color: black;" :lock-scroll="true"
-                       @opened="dialogOpened"
-                       @closed="dialogClosed">
+            <el-dialog v-model="useKey.state.combineKeyDialogShow" top="10vh" width="680px"
+                style="--el-dialog-padding-primary:3px;" @opened="dialogOpened" @closed="dialogClosed">
                 <div class="d-flex flex-column ml-4">
-                    <div class="mr-4" id="input">
-                        <span>Input</span>
-                        <el-input class="input" style="width: 100px;height: 25px; margin: 5px;" v-model="useKey.state.keyStr" aria-placeholder="Please input" :readonly="true" maxlength="1"/>
+                    <div class="m-3" id="input">
+                        <span class="mr-3">Input</span>
+                        <el-input style="width: 150px" v-model="useKey.state.keyStr" aria-placeholder="Please input"
+                            :readonly="true" maxlength="1" />
                     </div>
-                    <div class="d-flex mt-4">
+                    <div class="d-flex m-3">
                         <el-checkbox v-model="useKey.state.shiftKey" label="Shift" size="nomal" />
                         <el-checkbox v-model="useKey.state.ctrlKey" label="Ctrl" size="nomal" />
                         <el-checkbox v-model="useKey.state.winKey" label="Win" size="nomal" />
                         <el-checkbox v-model="useKey.state.altKey" label="Alt" size="nomal" />
                     </div>
-                    <div class="br-2 bg-white text-black px-4 jc-center ai-center mt-4" 
-                         style="cursor: pointer;font-size: 12px;width: 128px;height: auto; text-align: center;padding: 4px;margin-top: 30px;" @click="useKey.confirmSetCombineKey">
-                        Confirm
+                    <div class="d-flex p-4 jc-center" style="border-radius: 0px 0px 10px 10px">
+                        <div class="py-1 px-5 but-green text-white mx-3 c-p" @click="useKey.confirmSetCombineKey">
+                            {{ $t('key.but_3') }}
+                        </div>
                     </div>
                 </div>
             </el-dialog>
@@ -91,7 +92,7 @@
 import { useKeyStore } from "@/stores/keyStore";
 import { useMenuStore } from "../../stores/menuStore";
 import { uselightStore } from "@/stores/lightStore";
-import { ref } from 'vue';
+import { ref, onMounted, onBeforeUnmount, watch } from 'vue';
 import type { DropdownInstance } from 'element-plus'
 import { storeToRefs } from "pinia";
 import type { KeyTableData } from "@/keyboard/interface";
@@ -101,9 +102,37 @@ const { meunid } = storeToRefs(useMenu);
 
 const useKey = useKeyStore();
 const useLight = uselightStore();
+const screenWidth = ref(0);
+const isMin = ref(false);
 
 const keyMapping = ref<any>(null);
 
+onMounted(async () => {
+    await useKey.init();
+    await useLight.init();
+    screenWidth.value = document.body.clientWidth;
+    window.onresize = () => {
+        //屏幕尺寸变化
+        return (() => {
+            screenWidth.value = document.body.clientWidth;
+        })();
+    };
+});
+
+onBeforeUnmount(() => {
+    useKey.destroy();
+    useLight.destroy()
+});
+watch(
+    () => screenWidth,
+    (to) => {
+        if (to.value <= 1024) isMin.value = true;
+        else isMin.value = false;
+    },
+    {
+        deep: true,
+    }
+);
 const handleOpen = (e: boolean, id: string) => {
     if (e) {
         let els = keyMapping.value as Array<DropdownInstance>;
@@ -160,12 +189,14 @@ const dialogClosed = () => {
     .el-dialog__body {
         padding: 0px !important;
     }
+
+    .el-dropdown {
+        line-height: 1.3 !important;
+    }
 }
 
 .key_remapped {
-    font-weight: bold;
-    font-size: 12px;
-    color: #ff0000;
+    color: #07072A;
 }
 
 .selected {
@@ -173,7 +204,7 @@ const dialogClosed = () => {
 }
 
 .key {
-    font-size: 16px;
+    font-size: 14px;
     width: 51px;
     height: 51px;
     margin: 2px;
@@ -259,7 +290,7 @@ const dialogClosed = () => {
     }
 
     .key {
-        font-size: 12px;
+        font-size: 11px;
         width: 36px;
         height: 36px;
         margin: 1.2px;
@@ -341,7 +372,7 @@ const dialogClosed = () => {
     }
 
     .key {
-        font-size: 10px;
+        font-size: 9px;
         width: 26px;
         height: 26px;
         margin: 0.8px;

@@ -97,18 +97,24 @@
                 <div class="m-5">
                     <div class="m-4 d-flex ai-center">
                         <div>{{ $t('macro.title_4') }}</div>
-                        <div><el-input class="mx-4" style="width: 50px;" /></div>
+                        <div class="ml-3">
+                            <el-input-number v-model="repeat" :min="1" :max="10" />
+                        </div>
                     </div>
                     <div class="m-4 d-flex ai-center">
-                        <el-radio-group v-model="actVal" text-color="#00ffff" fill="#ffff00">
-                            <el-radio v-for="item in actList" :value="$t(item.value)" :label="$t(item.label)"
+                        <el-radio-group v-model="delayVal" text-color="#00ffff" fill="#ffff00">
+                            <el-radio v-for="item in delayList" :value="$t(item.value)" :label="$t(item.label)"
                                 style="width: 100%;">
                                 {{ $t(item.label) }}
+                                <span class="ml-3"
+                                    v-if="delayVal === $t('macro.menu_6') && $t(item.value) === $t('macro.menu_6')"><el-input-number
+                                        style="width: 150px" v-model="delayFix" aria-placeholder="Please input delay"
+                                        type="number" />ms</span>
                             </el-radio>
                         </el-radio-group>
                     </div>
                     <div class="m-4 d-flex">
-                        <div class="py-1 px-5 but-blue text-white c-p">
+                        <div class="py-1 px-5 but-blue text-white c-p" @click="record">
                             {{ $t('macro.but_4') }}
                         </div>
                     </div>
@@ -188,7 +194,7 @@ import { useI18n } from 'vue-i18n';
 // 解构出t方法
 const { t } = useI18n();
 const useMacro = useMacroStore();
-const { eventVal, eventList, actList } = storeToRefs(useMacro);
+const { eventVal, eventList, actList, delayList } = storeToRefs(useMacro);
 
 const actVal = ref(t('macro.menu_1'));
 const rk_l87 = ref<RK_L87>();
@@ -202,6 +208,11 @@ const elMacro = ref<any>(null);
 const elActionScrollbar = ref<any>(null);
 const keyCodeTable = ref<KeyCodeTable>();
 const actionVal = ref<Action>();
+const delayVal = ref(t('macro.menu_4'));
+const delayFix = ref<number>(30);
+const keyDate = ref<any>();
+const keyDelay = ref<number>(0);
+const repeat = ref<number>(0)
 
 const state = reactive({
     macros: macros,
@@ -245,6 +256,7 @@ onMounted(async () => {
     }
 
     document.addEventListener('keydown', onKeyDown);
+    document.addEventListener('keyup', onKeyUp);
 });
 
 onBeforeUnmount(() => {
@@ -253,15 +265,47 @@ onBeforeUnmount(() => {
     }
 
     document.removeEventListener('keydown', onKeyDown);
+    document.removeEventListener('keyup', onKeyUp);
 });
+
+const record = () => {
+    if (delayVal.value == t('macro.menu_4')) {
+        delay.value = keyDelay.value;
+    } else if (delayVal.value == t('macro.menu_6')) {
+        delay.value = delayFix.value;
+    }
+    if (macro.value != undefined && keyCodeTable.value != undefined) {
+        for (let i = 0; i < repeat.value; i++) {
+            macro.value.add(new Action(keyCodeTable.value.hid, delay.value, ActionType.Down));
+            macro.value.add(new Action(keyCodeTable.value.hid, delay.value, ActionType.Up));
+        }
+        elActionScrollbar.value.setScrollTop(2000);
+    }
+};
+
+//计算剩余时间差
+const ComputeTimeDiff = (date: any): number => {
+    var strDate = new Date(date);
+    var endDate = new Date(); // 结束时间
+    var diffDate = endDate.getTime() - strDate.getTime() // 时间差的毫秒数
+    return diffDate
+}
+const onKeyUp = (event: KeyboardEvent) => {
+    console.log('Key pressed:', `${event.key} | ${event.code} | ${event.keyCode}`);
+    if (keyCodeTable.value != undefined) {
+        keyDelay.value = ComputeTimeDiff(keyDate.value);
+    }
+};
 
 const onKeyDown = (event: KeyboardEvent) => {
     console.log('Key pressed:', `${event.key} | ${event.code} | ${event.keyCode}`);
     keyCodeTable.value = KeyCodeMap[event.code];
     if (keyCodeTable.value != undefined) {
         key.value = keyCodeTable.value.key;
+        keyDate.value = new Date()
     }
 };
+
 
 const getMacroData = async () => {
     if (rk_l87.value != undefined) {
@@ -343,7 +387,7 @@ const insert = () => {
 
         elActionScrollbar.value.setScrollTop(2000);
     }
-}; 1
+};
 
 const isSelected = (obj: Macro): string => {
     return obj.index == macro.value?.index ? 'module_active' : '';

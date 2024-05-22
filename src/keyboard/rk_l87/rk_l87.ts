@@ -1,5 +1,6 @@
 import { Protocol } from '@/keyboard/protocol'
-import type { MatrixLayer, MatrixTable } from '@/keyboard/rk_l87/keyMatrix';
+import type { MatrixTable } from '@/keyboard/rk_l87/keyMatrix';
+import { KeyMatrixLayer } from '@/keyboard/enum'
 
 import type { KeyMatrix } from "./keyMatrix";
 import type { LedEffect } from "./ledEffect";
@@ -72,8 +73,8 @@ export abstract class RK_L87 extends Protocol {
     abstract setProfile(board: number): Promise<void>;
     abstract getLedEffect(board: number): Promise<void>;
     abstract setLedEffect(board: number): Promise<void>;
-    abstract getKeyMatrix(layer: MatrixLayer, table: MatrixTable, board: number): Promise<void>;
-    abstract setKeyMatrix(layer: MatrixLayer, table: MatrixTable, board: number): Promise<void>;
+    abstract getKeyMatrix(layer: KeyMatrixLayer, table: MatrixTable, board: number): Promise<void>;
+    abstract setKeyMatrix(layer: KeyMatrixLayer, table: MatrixTable, board: number): Promise<void>;
     abstract getMacros(): Promise<void>;
     abstract setMacros(): Promise<void>;
     abstract getLedColors(board: number): Promise<void>;

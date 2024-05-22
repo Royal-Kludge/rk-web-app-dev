@@ -24,7 +24,7 @@
                                     </el-icon>
                                     <template #dropdown>
                                         <el-dropdown-menu style="padding: 0px;">
-                                            <el-dropdown-item>
+                                            <el-dropdown-item @click="useKey.renameProfile(item)">
                                                 <img src="../../assets/images/title/edit.png" class="img-title" />
                                                 {{ $t("key.but_4") }}
                                             </el-dropdown-item>
@@ -32,7 +32,7 @@
                                                 <img src="../../assets/images/title/del.png" class="img-title" />
                                                 {{ $t("key.but_5") }}
                                             </el-dropdown-item>
-                                            <el-dropdown-item>
+                                            <el-dropdown-item @click="useKey.exportProfile(item)">
                                                 <img src="../../assets/images/title/export.png" class="img-title" />
                                                 {{ $t("key.but_6") }}
                                             </el-dropdown-item>
@@ -44,14 +44,23 @@
                     </el-scrollbar>
                 </div>
             </div>
+            <el-dialog v-model="useKey.state.nameEditorDisplay" top="30vh" width="680px" :lock-scroll="true"
+                :before-close="useKey.handleEditClose">
+                <div class="d-flex ai-center">
+                    <el-input v-model="useKey.state.name" placeholder="Please input" maxlength="10" />
+                </div>
+            </el-dialog>
         </div>
         <div class="bg-white" style="height: 46px;">
             <div class="d-flex jc-center text-white">
-                <div class="d-flex py-1 m-2 px-3 but-blue">
+                <div class="d-flex py-1 m-2 px-3 but-blue c-p" @click="useKey.newProfile()">
                     <img src="../../assets/images/title/new.png" class="img-but" />{{ $t("key.but_1") }}
                 </div>
-                <div class="d-flex py-1 m-2 px-3 but-green">
-                    <img src="../../../../src/assets/images/title/import.png" class="img-but" /> {{ $t("key.but_2") }}
+                <div class="d-flex py-1 m-2 px-3 but-green c-p">
+                    <el-upload :before-upload="beforeAvatarUpload" :show-file-list="false">
+                        <img src="../../../../src/assets/images/title/import.png" class="img-but" />
+                        {{ $t("key.but_2") }}
+                    </el-upload>
                 </div>
             </div>
         </div>
@@ -59,6 +68,24 @@
 </template>
 <script setup lang="ts">
 import { useKeyStore } from "@/stores/keyStore";
+import type { UploadProps } from 'element-plus'
+import { ElMessage } from 'element-plus'
+
 const useKey = useKeyStore();
+
+const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
+    console.log(rawFile)
+    // if (rawFile.type !== 'application/json') {
+    //     ElMessage.error('File format error')
+    //     return false
+    // }
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        // 在这里可以处理文件内容，例如验证或转换
+        useKey.importProfile(e.target?.result)
+    };
+    reader.readAsText(rawFile); // 读取文件内容为文本
+    return false
+}
 </script>
 <style scoped lang="scss"></style>

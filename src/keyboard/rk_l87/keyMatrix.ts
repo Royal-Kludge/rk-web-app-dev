@@ -25,6 +25,11 @@ export class KeyMatrix {
         this.buffer.setUint32(offset, key);
     }
 
+    setKeyMappingRaw(index: number, key: number) {
+        let offset = index * 4;
+        this.buffer.setUint32(offset, key);
+    }
+
     getKeyMapping(index: number) : KeyMappingData {
         let offset = index * 4;
         let key = this.buffer.getUint32(offset);

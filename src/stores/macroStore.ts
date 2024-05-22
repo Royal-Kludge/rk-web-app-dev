@@ -16,6 +16,11 @@ export const useMacroStore = defineStore("macrostore", {
     actList: [
       { value: "macro.menu_1", label: "macro.menu_1" },
       { value: "macro.menu_2", label: "macro.menu_2" }
+    ] as any,
+    delayList: [
+      { value: "macro.menu_4", label: "macro.menu_4" },
+      { value: "macro.menu_5", label: "macro.menu_5" },
+      { value: "macro.menu_6", label: "macro.menu_6" }
     ] as any
   }),
   actions: {},

@@ -40,6 +40,21 @@
 import Key from "./key.vue";
 import LightColor from "./lightColor.vue";
 import { uselightStore } from "@/stores/lightStore";
+import { useKeyStore } from "@/stores/keyStore";
+import { onMounted, onBeforeUnmount } from "vue";
 
+const useKey = useKeyStore();
 const useLight = uselightStore();
+
+onMounted(async () => {
+    await useKey.init();
+    await useKey.getKeyMatrixNomal()
+    await useLight.init();
+});
+
+onBeforeUnmount(() => {
+    useKey.destroy();
+    useLight.destroy();
+});
+
 </script>

@@ -22,7 +22,16 @@
 </template>
 <script setup lang="ts">
 import { useKeyStore } from "@/stores/keyStore";
+import { onMounted, onBeforeUnmount } from 'vue';
 const useKey = useKeyStore();
+onMounted(async () => {
+  await useKey.init();
+});
+
+onBeforeUnmount(() => {
+  useKey.destroy();
+});
+
 </script>
 <style scoped lang="scss">
 .selected {
