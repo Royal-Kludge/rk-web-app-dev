@@ -47,7 +47,7 @@
                         <img src="../../assets/images/title/new.png" class="img-but" />{{ $t('macro.but_1') }}
                     </div>
                     <div class="d-flex py-1 m-2 px-3 but-green c-p" @click="loadMacro">
-                        <img src="../../../../src/assets/images/title/import.png" class="img-but" /> {{
+                        <img src="../../assets/images/title/import.png" class="img-but" /> {{
                             $t('macro.but_2') }}
                     </div>
                 </div>

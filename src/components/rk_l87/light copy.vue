@@ -2,11 +2,8 @@
     <div class="d-flex">
         <div class="flex-column">
             <div class="p-2 mr-3 br-2" v-for="item in state.lightEffects">
-                <div class="ai-center" 
-                     :class="[selectd(item.light)]"
-                     style="cursor: pointer;height: 20px;padding: 2px;"
-                     @click="lightClick(item.light)"
-                     >{{ item.label }}</div>
+                <div class="ai-center" :class="[selectd(item.light)]" style="cursor: pointer;height: 20px;padding: 2px;"
+                    @click="lightClick(item.light)">{{ item.label }}</div>
             </div>
         </div>
         <div class="ml-3">
@@ -14,7 +11,7 @@
                 <span>Brightness</span>
                 <div class="d-flex ai-center">
                     <el-slider style="width: 240px;" :step="1" :max="20" :min="1" v-model="state.lightProps.brightness"
-                               @change="ligtChanged"/>
+                        @change="ligtChanged" />
                     <span class="ml-4">{{ state.lightProps.brightness }}</span>
                 </div>
             </div>
@@ -22,7 +19,7 @@
                 <span>Speed</span>
                 <div class="d-flex ai-center">
                     <el-slider style="width: 240px;" :step="1" :max="4" :min="1" v-model="state.lightProps.speed"
-                    @change="ligtChanged"/>
+                        @change="ligtChanged" />
                     <span class="ml-4">{{ state.lightProps.speed }}</span>
                 </div>
             </div>
@@ -30,19 +27,23 @@
                 <span>Sleep time</span>
                 <div class="d-flex ai-center">
                     <el-slider style="width: 240px;" :step="1" :max="30" :min="0" v-model="state.lightProps.sleep"
-                               @change="ligtChanged"/>
+                        @change="ligtChanged" />
                     <span class="ml-4" v-if="state.lightProps.sleep > 0">{{ state.lightProps.sleep }} min</span>
                     <span class="ml-4" v-else>No sleep</span>
                 </div>
             </div>
             <div class="mb-3" v-if="state.lightProps.light != LightEffectEnum.SelfDefine">
-                <el-checkbox v-model="state.lightProps.mixing" label="Color Mixing" size="large" border @change="ligtChanged"/>
+                <el-checkbox v-model="state.lightProps.mixing" label="Color Mixing" size="large" border
+                    @change="ligtChanged" />
             </div>
             <div class="mt-3" v-if="state.lightProps.light == LightEffectEnum.SelfDefine">
-                <el-select v-model="state.keyColor.keyStr" @change="keyChanged" placeholder="Select" size="small" style="width: 128px">
-                    <el-option v-for="item in state.keyMatrix" :key="item" :label="getKeyData(item.index)?.keyStr" :value="item.index">
+                <el-select v-model="state.keyColor.keyStr" @change="keyChanged" placeholder="Select" size="small"
+                    style="width: 128px">
+                    <el-option v-for="item in state.keyMatrix" :key="item" :label="getKeyData(item.index)?.keyStr"
+                        :value="item.index">
                         <div class="flex items-center">
-                            <el-tag :color="state.keyColors[item.index]" style="margin-right: 8px; margin-left: -4px;" size="small"/>
+                            <el-tag :color="state.keyColors[item.index]" style="margin-right: 8px; margin-left: -4px;"
+                                size="small" />
                             <span>{{ getKeyData(item.index)?.keyStr }}</span>
                         </div>
                     </el-option>
@@ -52,9 +53,10 @@
                 </el-select>
             </div>
             <div class="mt-4">
-                <Picker @onpick="onPicking" @picked="onPicked" :rgb="rgb"/>
+                <Picker @onpick="onPicking" @picked="onPicked" :rgb="rgb" />
             </div>
-            <div class="mt-4 br-2 bg-white py-2 px-4 text-black" style="cursor: pointer;font-size: 14px;width: 72px;text-align: center;" @click="getLightData()">
+            <div class="mt-4 br-2 bg-white py-2 px-4 text-black"
+                style="cursor: pointer;font-size: 14px;width: 72px;text-align: center;" @click="getLightData()">
                 Reload
             </div>
         </div>
@@ -74,7 +76,7 @@ import { type LedColor } from '@/keyboard/interface';
 import { KeyDefineEnum } from '@/keyboard/keyCode';
 import { type KeyTableData } from '../../keyboard/interface'
 
-const rgb = ref({r:0,g:0,b:0,color:'#000000'});
+const rgb = ref({ r: 0, g: 0, b: 0, color: '#000000' });
 const profile = ref<Profile>();
 const ledEffect = ref<LedEffect>();
 const ledColors = ref<LedColors>();
@@ -83,9 +85,9 @@ const profileIndex = ref(0);
 
 const getKeyData = (index: number): KeyTableData | undefined => {
     let keyData = undefined;
-    if (index < keyboard.state.keyTableData.length) {
-        keyData = keyboard.state.keyTableData[index];
-    }
+    // if (index < keyboard.state.keyTableData.length) {
+    //     keyData = keyboard.state.keyTableData[index];
+    // }
     return keyData;
 }
 
@@ -95,113 +97,113 @@ const getIndex = (l: number, c: number) => {
 
 const state = reactive({
     lightEffects: [
-        { light: LightEffectEnum.FixedOn,label: 'FixedOn'},
-        { light: LightEffectEnum.Respire,label: 'Respire'},
-        { light: LightEffectEnum.Rainbow, label: 'Rainbow'},
-        { light: LightEffectEnum.FlashAway, label: 'FlashAway'},
-        { light: LightEffectEnum.Raindrops, label: 'Raindrops'},
-        { light: LightEffectEnum.RainbowWheel, label: 'RainbowWheel'},
-        { light: LightEffectEnum.RippleShining, label: 'RippleShining'},
-        { light: LightEffectEnum.StarsTwinkle, label: 'StarsTwinkle'},
-        { light: LightEffectEnum.ShadowDisappear, label: 'ShadowDisappear'},
-        { light: LightEffectEnum.RetroSnake, label: 'RetroSnake'},
-        { light: LightEffectEnum.NeonStream, label: 'NeonStream'},
-        { light: LightEffectEnum.Reaction, label: 'Reaction'},
-        { light: LightEffectEnum.SineWave, label: 'SineWave'},
-        { light: LightEffectEnum.Blossoming, label: 'Blossoming'},
-        { light: LightEffectEnum.SelfDefine, label: 'SelfDefine'},
-        { light: LightEffectEnum.OFF, label: 'OFF'},
+        { light: LightEffectEnum.FixedOn, label: 'FixedOn' },
+        { light: LightEffectEnum.Respire, label: 'Respire' },
+        { light: LightEffectEnum.Rainbow, label: 'Rainbow' },
+        { light: LightEffectEnum.FlashAway, label: 'FlashAway' },
+        { light: LightEffectEnum.Raindrops, label: 'Raindrops' },
+        { light: LightEffectEnum.RainbowWheel, label: 'RainbowWheel' },
+        { light: LightEffectEnum.RippleShining, label: 'RippleShining' },
+        { light: LightEffectEnum.StarsTwinkle, label: 'StarsTwinkle' },
+        { light: LightEffectEnum.ShadowDisappear, label: 'ShadowDisappear' },
+        { light: LightEffectEnum.RetroSnake, label: 'RetroSnake' },
+        { light: LightEffectEnum.NeonStream, label: 'NeonStream' },
+        { light: LightEffectEnum.Reaction, label: 'Reaction' },
+        { light: LightEffectEnum.SineWave, label: 'SineWave' },
+        { light: LightEffectEnum.Blossoming, label: 'Blossoming' },
+        { light: LightEffectEnum.SelfDefine, label: 'SelfDefine' },
+        { light: LightEffectEnum.OFF, label: 'OFF' },
         //{ light: LightEffectEnum.Music, label: 'Music' },
     ],
     keyMatrix: [
-            { key: KeyDefineEnum.KEY_ESC,           index: getIndex(0, 0),  },
-            { key: KeyDefineEnum.KEY_F1,            index: getIndex(0, 1),  },
-            { key: KeyDefineEnum.KEY_F2,            index: getIndex(0, 2),  },
-            { key: KeyDefineEnum.KEY_F3,            index: getIndex(0, 3),  },
-            { key: KeyDefineEnum.KEY_F4,            index: getIndex(0, 4),  },
-            { key: KeyDefineEnum.KEY_F5,            index: getIndex(0, 5),  },
-            { key: KeyDefineEnum.KEY_F6,            index: getIndex(0, 6),  },
-            { key: KeyDefineEnum.KEY_F7,            index: getIndex(0, 7),  },
-            { key: KeyDefineEnum.KEY_F8,            index: getIndex(0, 8),  },
-            { key: KeyDefineEnum.KEY_F9,            index: getIndex(0, 9),  },
-            { key: KeyDefineEnum.KEY_F10,           index: getIndex(0, 10), },
-            { key: KeyDefineEnum.KEY_F11,           index: getIndex(0, 11), },
-            { key: KeyDefineEnum.KEY_F12,           index: getIndex(0, 12), },
-            { key: KeyDefineEnum.KEY_Calculator,    index: getIndex(0, 13), },
-            { key: KeyDefineEnum.KEY_PRINT,         index: getIndex(0, 14), },
-            { key: KeyDefineEnum.KEY_SCRLOCK,       index: getIndex(0, 15), },
-            { key: KeyDefineEnum.KEY_PAUSE,         index: getIndex(0, 16), },
-            { key: KeyDefineEnum.KEY_TILDE,         index: getIndex(1, 0),  },
-            { key: KeyDefineEnum.KEY_1,             index: getIndex(1, 1),  },
-            { key: KeyDefineEnum.KEY_2,             index: getIndex(1, 2),  },
-            { key: KeyDefineEnum.KEY_3,             index: getIndex(1, 3),  },
-            { key: KeyDefineEnum.KEY_4,             index: getIndex(1, 4),  },
-            { key: KeyDefineEnum.KEY_5,             index: getIndex(1, 5),  },
-            { key: KeyDefineEnum.KEY_6,             index: getIndex(1, 6),  },
-            { key: KeyDefineEnum.KEY_7,             index: getIndex(1, 7),  },
-            { key: KeyDefineEnum.KEY_8,             index: getIndex(1, 8),  },
-            { key: KeyDefineEnum.KEY_9,             index: getIndex(1, 9),  },
-            { key: KeyDefineEnum.KEY_0,             index: getIndex(1, 10), },
-            { key: KeyDefineEnum.KEY_Underscore,    index: getIndex(1, 11), },
-            { key: KeyDefineEnum.KEY_EqualSign,     index: getIndex(1, 12), },
-            { key: KeyDefineEnum.KEY_Backspace,     index: getIndex(1, 13), },
-            { key: KeyDefineEnum.KEY_INS,           index: getIndex(1, 14), },
-            { key: KeyDefineEnum.KEY_HOME,          index: getIndex(1, 15), },
-            { key: KeyDefineEnum.KEY_PGUP,          index: getIndex(1, 16), },
-            { key: KeyDefineEnum.KEY_TAB,           index: getIndex(2, 0),  },
-            { key: KeyDefineEnum.KEY_Q,             index: getIndex(2, 1),  },
-            { key: KeyDefineEnum.KEY_W,             index: getIndex(2, 2),  },
-            { key: KeyDefineEnum.KEY_E,             index: getIndex(2, 3),  },
-            { key: KeyDefineEnum.KEY_R,             index: getIndex(2, 4),  },
-            { key: KeyDefineEnum.KEY_T,             index: getIndex(2, 5),  },
-            { key: KeyDefineEnum.KEY_Y,             index: getIndex(2, 6),  },
-            { key: KeyDefineEnum.KEY_U,             index: getIndex(2, 7),  },
-            { key: KeyDefineEnum.KEY_I,             index: getIndex(2, 8),  },
-            { key: KeyDefineEnum.KEY_O,             index: getIndex(2, 9),  },
-            { key: KeyDefineEnum.KEY_P,             index: getIndex(2, 10), },
-            { key: KeyDefineEnum.KEY_L_Brackets,    index: getIndex(2, 11), },
-            { key: KeyDefineEnum.KEY_R_Brackets,    index: getIndex(2, 12), },
-            { key: KeyDefineEnum.KEY_CODE29,        index: getIndex(2, 13), },
-            { key: KeyDefineEnum.KEY_DEL,           index: getIndex(2, 14), },
-            { key: KeyDefineEnum.KEY_END,           index: getIndex(2, 15), },
-            { key: KeyDefineEnum.KEY_PGDN,          index: getIndex(2, 16), },
-            { key: KeyDefineEnum.KEY_CAPSLOCK,      index: getIndex(3, 0),  },
-            { key: KeyDefineEnum.KEY_A,             index: getIndex(3, 1),  },
-            { key: KeyDefineEnum.KEY_S,             index: getIndex(3, 2),  },
-            { key: KeyDefineEnum.KEY_D,             index: getIndex(3, 3),  },
-            { key: KeyDefineEnum.KEY_F,             index: getIndex(3, 4),  },
-            { key: KeyDefineEnum.KEY_G,             index: getIndex(3, 5),  },
-            { key: KeyDefineEnum.KEY_H,             index: getIndex(3, 6),  },
-            { key: KeyDefineEnum.KEY_J,             index: getIndex(3, 7),  },
-            { key: KeyDefineEnum.KEY_K,             index: getIndex(3, 8),  },
-            { key: KeyDefineEnum.KEY_L,             index: getIndex(3, 9),  },
-            { key: KeyDefineEnum.KEY_Semicolon,     index: getIndex(3, 10), },
-            { key: KeyDefineEnum.KEY_Quotation,     index: getIndex(3, 11), },
-            { key: KeyDefineEnum.KEY_ENTER,         index: getIndex(3, 13), },
-            { key: KeyDefineEnum.SHIFT_L,           index: getIndex(4, 0),  },
-            { key: KeyDefineEnum.KEY_Z,             index: getIndex(4, 1),  },
-            { key: KeyDefineEnum.KEY_X,             index: getIndex(4, 2),  },
-            { key: KeyDefineEnum.KEY_C,             index: getIndex(4, 3),  },
-            { key: KeyDefineEnum.KEY_V,             index: getIndex(4, 4),  },
-            { key: KeyDefineEnum.KEY_B,             index: getIndex(4, 5),  },
-            { key: KeyDefineEnum.KEY_N,             index: getIndex(4, 6),  },
-            { key: KeyDefineEnum.KEY_M,             index: getIndex(4, 7),  },
-            { key: KeyDefineEnum.KEY_COMMA,         index: getIndex(4, 8),  },
-            { key: KeyDefineEnum.KEY_PERIOD,        index: getIndex(4, 9),  },
-            { key: KeyDefineEnum.KEY_Interrogation, index: getIndex(4, 10), },
-            { key: KeyDefineEnum.SHIFT_R,           index: getIndex(4, 13), },
-            { key: KeyDefineEnum.KEY_UpArrow,       index: getIndex(4, 15), },
-            { key: KeyDefineEnum.CTRL_L,            index: getIndex(5, 0),  },
-            { key: KeyDefineEnum.WIN_L,             index: getIndex(5, 1),  },
-            { key: KeyDefineEnum.ALT_L,             index: getIndex(5, 2),  },
-            { key: KeyDefineEnum.KEY_SPACEBAR,      index: getIndex(5, 5),  },
-            { key: KeyDefineEnum.ALT_R,             index: getIndex(5, 8),  },
-            { key: KeyDefineEnum.KEY_Fn1,           index: getIndex(5, 9),  },
-            { key: KeyDefineEnum.KEY_APP,           index: getIndex(5, 10), },
-            { key: KeyDefineEnum.CTRL_R,            index: getIndex(5, 13), },
-            { key: KeyDefineEnum.KEY_LeftArrow,     index: getIndex(5, 14), },
-            { key: KeyDefineEnum.KEY_DownArrow,     index: getIndex(5, 15), },
-            { key: KeyDefineEnum.KEY_RightArrow,    index: getIndex(5, 16), }
+        { key: KeyDefineEnum.KEY_ESC, index: getIndex(0, 0), },
+        { key: KeyDefineEnum.KEY_F1, index: getIndex(0, 1), },
+        { key: KeyDefineEnum.KEY_F2, index: getIndex(0, 2), },
+        { key: KeyDefineEnum.KEY_F3, index: getIndex(0, 3), },
+        { key: KeyDefineEnum.KEY_F4, index: getIndex(0, 4), },
+        { key: KeyDefineEnum.KEY_F5, index: getIndex(0, 5), },
+        { key: KeyDefineEnum.KEY_F6, index: getIndex(0, 6), },
+        { key: KeyDefineEnum.KEY_F7, index: getIndex(0, 7), },
+        { key: KeyDefineEnum.KEY_F8, index: getIndex(0, 8), },
+        { key: KeyDefineEnum.KEY_F9, index: getIndex(0, 9), },
+        { key: KeyDefineEnum.KEY_F10, index: getIndex(0, 10), },
+        { key: KeyDefineEnum.KEY_F11, index: getIndex(0, 11), },
+        { key: KeyDefineEnum.KEY_F12, index: getIndex(0, 12), },
+        { key: KeyDefineEnum.KEY_Calculator, index: getIndex(0, 13), },
+        { key: KeyDefineEnum.KEY_PRINT, index: getIndex(0, 14), },
+        { key: KeyDefineEnum.KEY_SCRLOCK, index: getIndex(0, 15), },
+        { key: KeyDefineEnum.KEY_PAUSE, index: getIndex(0, 16), },
+        { key: KeyDefineEnum.KEY_TILDE, index: getIndex(1, 0), },
+        { key: KeyDefineEnum.KEY_1, index: getIndex(1, 1), },
+        { key: KeyDefineEnum.KEY_2, index: getIndex(1, 2), },
+        { key: KeyDefineEnum.KEY_3, index: getIndex(1, 3), },
+        { key: KeyDefineEnum.KEY_4, index: getIndex(1, 4), },
+        { key: KeyDefineEnum.KEY_5, index: getIndex(1, 5), },
+        { key: KeyDefineEnum.KEY_6, index: getIndex(1, 6), },
+        { key: KeyDefineEnum.KEY_7, index: getIndex(1, 7), },
+        { key: KeyDefineEnum.KEY_8, index: getIndex(1, 8), },
+        { key: KeyDefineEnum.KEY_9, index: getIndex(1, 9), },
+        { key: KeyDefineEnum.KEY_0, index: getIndex(1, 10), },
+        { key: KeyDefineEnum.KEY_Underscore, index: getIndex(1, 11), },
+        { key: KeyDefineEnum.KEY_EqualSign, index: getIndex(1, 12), },
+        { key: KeyDefineEnum.KEY_Backspace, index: getIndex(1, 13), },
+        { key: KeyDefineEnum.KEY_INS, index: getIndex(1, 14), },
+        { key: KeyDefineEnum.KEY_HOME, index: getIndex(1, 15), },
+        { key: KeyDefineEnum.KEY_PGUP, index: getIndex(1, 16), },
+        { key: KeyDefineEnum.KEY_TAB, index: getIndex(2, 0), },
+        { key: KeyDefineEnum.KEY_Q, index: getIndex(2, 1), },
+        { key: KeyDefineEnum.KEY_W, index: getIndex(2, 2), },
+        { key: KeyDefineEnum.KEY_E, index: getIndex(2, 3), },
+        { key: KeyDefineEnum.KEY_R, index: getIndex(2, 4), },
+        { key: KeyDefineEnum.KEY_T, index: getIndex(2, 5), },
+        { key: KeyDefineEnum.KEY_Y, index: getIndex(2, 6), },
+        { key: KeyDefineEnum.KEY_U, index: getIndex(2, 7), },
+        { key: KeyDefineEnum.KEY_I, index: getIndex(2, 8), },
+        { key: KeyDefineEnum.KEY_O, index: getIndex(2, 9), },
+        { key: KeyDefineEnum.KEY_P, index: getIndex(2, 10), },
+        { key: KeyDefineEnum.KEY_L_Brackets, index: getIndex(2, 11), },
+        { key: KeyDefineEnum.KEY_R_Brackets, index: getIndex(2, 12), },
+        { key: KeyDefineEnum.KEY_CODE29, index: getIndex(2, 13), },
+        { key: KeyDefineEnum.KEY_DEL, index: getIndex(2, 14), },
+        { key: KeyDefineEnum.KEY_END, index: getIndex(2, 15), },
+        { key: KeyDefineEnum.KEY_PGDN, index: getIndex(2, 16), },
+        { key: KeyDefineEnum.KEY_CAPSLOCK, index: getIndex(3, 0), },
+        { key: KeyDefineEnum.KEY_A, index: getIndex(3, 1), },
+        { key: KeyDefineEnum.KEY_S, index: getIndex(3, 2), },
+        { key: KeyDefineEnum.KEY_D, index: getIndex(3, 3), },
+        { key: KeyDefineEnum.KEY_F, index: getIndex(3, 4), },
+        { key: KeyDefineEnum.KEY_G, index: getIndex(3, 5), },
+        { key: KeyDefineEnum.KEY_H, index: getIndex(3, 6), },
+        { key: KeyDefineEnum.KEY_J, index: getIndex(3, 7), },
+        { key: KeyDefineEnum.KEY_K, index: getIndex(3, 8), },
+        { key: KeyDefineEnum.KEY_L, index: getIndex(3, 9), },
+        { key: KeyDefineEnum.KEY_Semicolon, index: getIndex(3, 10), },
+        { key: KeyDefineEnum.KEY_Quotation, index: getIndex(3, 11), },
+        { key: KeyDefineEnum.KEY_ENTER, index: getIndex(3, 13), },
+        { key: KeyDefineEnum.SHIFT_L, index: getIndex(4, 0), },
+        { key: KeyDefineEnum.KEY_Z, index: getIndex(4, 1), },
+        { key: KeyDefineEnum.KEY_X, index: getIndex(4, 2), },
+        { key: KeyDefineEnum.KEY_C, index: getIndex(4, 3), },
+        { key: KeyDefineEnum.KEY_V, index: getIndex(4, 4), },
+        { key: KeyDefineEnum.KEY_B, index: getIndex(4, 5), },
+        { key: KeyDefineEnum.KEY_N, index: getIndex(4, 6), },
+        { key: KeyDefineEnum.KEY_M, index: getIndex(4, 7), },
+        { key: KeyDefineEnum.KEY_COMMA, index: getIndex(4, 8), },
+        { key: KeyDefineEnum.KEY_PERIOD, index: getIndex(4, 9), },
+        { key: KeyDefineEnum.KEY_Interrogation, index: getIndex(4, 10), },
+        { key: KeyDefineEnum.SHIFT_R, index: getIndex(4, 13), },
+        { key: KeyDefineEnum.KEY_UpArrow, index: getIndex(4, 15), },
+        { key: KeyDefineEnum.CTRL_L, index: getIndex(5, 0), },
+        { key: KeyDefineEnum.WIN_L, index: getIndex(5, 1), },
+        { key: KeyDefineEnum.ALT_L, index: getIndex(5, 2), },
+        { key: KeyDefineEnum.KEY_SPACEBAR, index: getIndex(5, 5), },
+        { key: KeyDefineEnum.ALT_R, index: getIndex(5, 8), },
+        { key: KeyDefineEnum.KEY_Fn1, index: getIndex(5, 9), },
+        { key: KeyDefineEnum.KEY_APP, index: getIndex(5, 10), },
+        { key: KeyDefineEnum.CTRL_R, index: getIndex(5, 13), },
+        { key: KeyDefineEnum.KEY_LeftArrow, index: getIndex(5, 14), },
+        { key: KeyDefineEnum.KEY_DownArrow, index: getIndex(5, 15), },
+        { key: KeyDefineEnum.KEY_RightArrow, index: getIndex(5, 16), }
     ],
     keyColors: [
         '#FFFFFF',
@@ -430,7 +432,7 @@ const ligtChanged = () => {
         profile.value.setLedParam(state.lightProps.light, {
             brightness: state.lightProps.brightness - 1,
             speed: state.lightProps.speed,
-            color: state.lightProps.mixing ? 0x07 : 0x00 
+            color: state.lightProps.mixing ? 0x07 : 0x00
         });
         profile.value.setFieldValue(FieldEnum.SleepTime, (state.lightProps.sleep * 60) / 30);
         rk_l87.value.setProfile(profileIndex.value);
@@ -438,7 +440,7 @@ const ligtChanged = () => {
     }
 };
 
-const onPicking = (r:any, g:any, b:any) => {
+const onPicking = (r: any, g: any, b: any) => {
     let color: LedColor = {
         red: r,
         green: g,
@@ -446,8 +448,7 @@ const onPicking = (r:any, g:any, b:any) => {
         color: LedEffect.getColorString(r, g, b)
     }
 
-    if (state.lightProps.light == LightEffectEnum.SelfDefine)
-    {
+    if (state.lightProps.light == LightEffectEnum.SelfDefine) {
         state.keyColor.color = color.color;
         state.keyColors[state.keyColor.index] = color.color;
         ledColors.value?.setLedColor(state.keyColor.index, color);

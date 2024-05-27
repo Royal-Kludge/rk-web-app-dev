@@ -1,7 +1,7 @@
-import type { KeyboardState  } from '../interface'
+import type { KeyboardState } from '../interface'
 import { REPORT_ID_USB, MACRO_PER_BLOCK_LENGTH, MACRO_MAX_LENGTH } from './packets/packet';
-import type { MatrixLayer, MatrixTable } from './keyMatrix';
-import { ConnectionStatusEnum, ConnectionType } from '../enum';
+import type { MatrixTable } from './keyMatrix';
+import { ConnectionStatusEnum, ConnectionType, KeyMatrixLayer } from '../enum';
 import { RK_L87, RK_L87_EVENT_DEFINE } from './rk_l87';
 
 import { GetProfilePacket } from './packets/usb/getProfilePacket';
@@ -31,7 +31,7 @@ export class RK_L87_Usb extends RK_L87 {
     static async create(state: KeyboardState, device: HIDDevice) {
         return new RK_L87_Usb(state, device);
     }
-    
+
     async init(): Promise<void> {
         super.init();
         this.state.ConnectionStatus = ConnectionStatusEnum.Connected;
@@ -77,7 +77,7 @@ export class RK_L87_Usb extends RK_L87 {
         }
     }
 
-    async getKeyMatrix(layer: MatrixLayer, table: MatrixTable, board: number): Promise<void> {
+    async getKeyMatrix(layer: KeyMatrixLayer, table: MatrixTable, board: number): Promise<void> {
         let packet = new GetKeyMatrixPacket(layer, table, board);
 
         await this.setFeature(REPORT_ID_USB, packet.setReport);
@@ -87,7 +87,7 @@ export class RK_L87_Usb extends RK_L87 {
         this.dispatchEvent(new CustomEvent(RK_L87_EVENT_DEFINE.OnKeyMatrixGotten, { detail: this.data.keyMatrix }));
     }
 
-    async setKeyMatrix(layer: MatrixLayer, table: MatrixTable, board: number): Promise<void> {
+    async setKeyMatrix(layer: KeyMatrixLayer, table: MatrixTable, board: number): Promise<void> {
         if (this.data.keyMatrix != undefined) {
             let packet = new SetKeyMatrixPacket(layer, table, board);
             packet.setPayload(this.data.keyMatrix.buffer);
@@ -119,7 +119,7 @@ export class RK_L87_Usb extends RK_L87 {
             let u8 = this.data.macros?.serialize();
             let block = 0;
             packet.packageNum = Math.ceil(u8.length / MACRO_PER_BLOCK_LENGTH);
-            
+
             for (block = 0; block < packet.packageNum; block++) {
                 packet.packageIndex = block;
                 let begin = block * MACRO_PER_BLOCK_LENGTH;
@@ -157,7 +157,7 @@ export class RK_L87_Usb extends RK_L87 {
         this.dispatchEvent(new CustomEvent(RK_L87_EVENT_DEFINE.OnLedColorsGotten, { detail: this.data.ledColors }));
     }
 
-    
+
     async setLedColors(board: number): Promise<void> {
         if (this.data.ledColors != undefined) {
             let packet = new SetLedColorsPacket(board);

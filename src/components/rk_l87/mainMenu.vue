@@ -58,7 +58,7 @@
                 </div>
                 <div class="d-flex py-1 m-2 px-3 but-green c-p">
                     <el-upload :before-upload="beforeAvatarUpload" :show-file-list="false">
-                        <img src="../../../../src/assets/images/title/import.png" class="img-but" />
+                        <img src="../../assets/images/title/import.png" class="img-but" />
                         {{ $t("key.but_2") }}
                     </el-upload>
                 </div>
