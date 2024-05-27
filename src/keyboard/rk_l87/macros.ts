@@ -6,7 +6,8 @@ const MACRO_CAPACITY = 4096
 
 export enum ActionType {
     Up = 1,
-    Down = 0
+    Down = 0,
+    Delay = -1,
 }
 
 export enum KeyType {
@@ -45,16 +46,16 @@ export class Action {
     key = KeyDefineEnum.NONE;
     index = 0;
 
-    constructor(key: KeyDefineEnum | number, delay: number = 50, action: ActionType = ActionType.Down,  type: KeyType = KeyType.NormalKey) {
+    constructor(key: KeyDefineEnum | number, delay: number = 50, action: ActionType = ActionType.Down, type: KeyType = KeyType.NormalKey) {
 
         switch (key) {
             case KeyDefineEnum.CTRL_L:
             case KeyDefineEnum.SHIFT_L:
-            case KeyDefineEnum.ALT_L:  
-            case KeyDefineEnum.WIN_L: 
+            case KeyDefineEnum.ALT_L:
+            case KeyDefineEnum.WIN_L:
             case KeyDefineEnum.CTRL_R:
             case KeyDefineEnum.SHIFT_R:
-            case KeyDefineEnum.ALT_R:  
+            case KeyDefineEnum.ALT_R:
             case KeyDefineEnum.WIN_R:
                 this.type = KeyType.ModifyKey;
                 break;
@@ -107,12 +108,12 @@ export class Action {
                 break;
         }
 
-        return `${this.action == ActionType.Down ? '↓' : '↑'} ${text} delay:${this.delay}`
+        return `${this.action == ActionType.Down ? '↓' : (this.action == ActionType.Delay ? '==' : '↑')} ${text} delay:${this.delay}`
     }
 
-    static deserialize(data: Uint8Array) : Action | undefined {
+    static deserialize(data: Uint8Array): Action | undefined {
         if (data.byteLength != 4) return undefined;
-        
+
         let action = data[0] >> 7;
         let type = data[0] >> 4 & 0x07;
         let delay = (data[0] << 16 & 0x000F0000) | (data[1] << 8) | (data[2]);
@@ -141,13 +142,34 @@ export class Macro {
         this.actions.push(action);
     }
 
-    remove(action: Action) {
-        let index = this.actions.findIndex(obj => obj.index === action.index);
-        if (index !== -1) {
-            this.actions.splice(index, 1);
-        }
-        
-        index = 0;
+    insert(index: number, action: Action) {
+        this.actions.splice(index, 0, action);
+    }
+
+    remove(action: Action): number {
+        let index = this.actions.findIndex(obj => obj.index === action?.index);
+        if (index == -1)
+            return -1
+        this.actions.splice(index, 1);
+        this.refresh()
+        return index;
+    }
+    removeUp(action: Action) {
+        let index = this.remove(action)
+        if (index == -1)
+            return
+        this.insert(index <= 0 ? 0 : index - 1, action)
+        this.refresh()
+    }
+    removeDown(action: Action) {
+        let index = this.remove(action)
+        if (index == -1)
+            return
+        this.insert(index + 1, action)
+        this.refresh()
+    }
+    refresh() {
+        let index = 0;
         this.actions.forEach((p) => {
             p.index = index++;
         });
@@ -198,7 +220,7 @@ export class Macro {
         return u8;
     }
 
-    static deserialize(data: Uint8Array) : Macro | undefined {
+    static deserialize(data: Uint8Array): Macro | undefined {
         if (data.byteLength < 3) return undefined;
 
         const decoder = new TextDecoder('unicode');
@@ -216,10 +238,10 @@ export class Macro {
                 macro.add(action);
             }
         }
-        
+
         return macro;
     }
- 
+
     static uint8ArrayToChineseString(uint8Array: Uint8Array): string {
         let result = '';
         for (let i = 0; i < uint8Array.length / 2; i++) {
@@ -264,7 +286,7 @@ export class Macros {
         if (index !== -1) {
             this.macroList.splice(index, 1);
         }
-        
+
         index = 0;
         this.macroList.forEach((p) => {
             p.index = index++;
@@ -282,7 +304,7 @@ export class Macros {
 
         for (let macro of this.macroList) {
             let u8Macro = macro.serialize();
-            heads.push({ offset: offset, length: u8Macro.length});
+            heads.push({ offset: offset, length: u8Macro.length });
             u8Macros.push(u8Macro);
             offset += u8Macro.length;
         }
@@ -307,7 +329,7 @@ export class Macros {
 
     setData(buffer: DataView) {
         if (buffer.byteLength <= 4) return;
-        
+
         let headLen = buffer.getUint8(0) | buffer.getUint8(1) << 8;
 
         if (headLen > 0) {
@@ -332,9 +354,9 @@ export class Macros {
         }
     }
 
-    static deserialize(data: DataView) : Macros | undefined {
+    static deserialize(data: DataView): Macros | undefined {
         let macros = undefined;
-        
+
         if (data.byteLength <= MACRO_CAPACITY) {
             macros = new Macros();
             macros.setData(data);

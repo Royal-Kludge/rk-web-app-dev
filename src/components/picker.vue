@@ -39,12 +39,9 @@
               :controls="false" @change="colorChanged()" /></div>
         </div>
         <div>
-          <el-tag :color="`rgb(${cursorPosition.rgb.r}, ${cursorPosition.rgb.g}, ${cursorPosition.rgb.b})`"
-            style="border-width: 0px; border-radius: 5px;width: 42px;height: 42px;" class="m-1" />
-
           <el-tag :color="`rgb(${item.r}, ${item.g}, ${item.b})`" v-for="item in colors"
             @click="colorFore(item.index, item.r, item.g, item.b)" :class="{ 'color_active': item.index === index }"
-            style="border-width: 0px; border-radius: 5px;width: 42px;height: 42px;" class="m-1 c-p" />
+            style="border-width: 0px; border-radius: 3px;width: 32px;height: 32px;" class="m-1 c-p" />
         </div>
       </div>
     </div>
@@ -67,7 +64,7 @@ export default {
       mousePageY: 0,
       sliderTop: 0,
       index: 0,
-      colors: [{ index: 1, r: 255, g: 0, b: 0 }, { index: 2, r: 255, g: 128, b: 0 }, { index: 3, r: 100, g: 100, b: 0 }, { index: 4, r: 0, g: 255, b: 0 }, { index: 5, r: 0, g: 0, b: 255 }]
+      colors: [{ index: 1, r: 255, g: 0, b: 0 }, { index: 2, r: 255, g: 128, b: 0 }, { index: 3, r: 255, g: 255, b: 0 }, { index: 4, r: 0, g: 255, b: 0 }, { index: 5, r: 0, g: 0, b: 255 }, { index: 6, r: 0, g: 255, b: 255 }, { index: 7, r: 255, g: 0, b: 255 }, { index: 8, r: 255, g: 255, b: 255 }]
     };
   },
   mounted() {

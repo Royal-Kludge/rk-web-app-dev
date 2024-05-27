@@ -55,9 +55,15 @@
                     <div class="w-100" style="height: 23vh">
                         <el-scrollbar>
                             <div class="d-flex flex-column ml-5">
-                                <div v-if="useLight.state.lightProps.light != LightEffectEnum.SelfDefine">
-                                    <el-checkbox v-model="useLight.state.lightProps.mixing" :label="$t('light.title_7')"
-                                        size="large" @change="useLight.ligtChanged" />
+                                <div class="d-flex ai-center">
+                                    <div class="mr-4 mt-1 p-1 b-grey" style="border-radius: 5px;">
+                                        <el-tag :color="`rgb(${useLight.rgb.r}, ${useLight.rgb.g}, ${useLight.rgb.b})`"
+                                            style="border-width: 0px; border-radius: 5px;width: 42px;height: 42px;" />
+                                    </div>
+                                    <div v-if="useLight.state.lightProps.light != LightEffectEnum.SelfDefine">
+                                        <el-checkbox v-model="useLight.state.lightProps.mixing"
+                                            :label="$t('light.title_7')" size="large" @change="useLight.ligtChanged" />
+                                    </div>
                                 </div>
                                 <div>
                                     <Picker @onpick="useLight.onPicking" @picked="useLight.onPicked"
