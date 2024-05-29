@@ -285,6 +285,7 @@ onMounted(async () => {
         await getMacroData();
     }
     document.addEventListener('keydown', onKeyDown);
+    document.addEventListener('keyup', onKeyUp);
 });
 
 onBeforeUnmount(() => {
@@ -293,29 +294,12 @@ onBeforeUnmount(() => {
     }
 
     document.removeEventListener('keydown', onKeyDown);
+    document.removeEventListener('keyup', onKeyUp);
 });
 
-const record = () => {
-    playing.value = !playing.value
-    playTitle.value = playing.value ? t('macro.but_8') : t('macro.but_4')
-    if (playing.value)
-        keyDate.value = new Date()
-
-};
-
-//计算剩余时间差
-const ComputeTimeDiff = (date: any): number => {
-    var strDate = new Date(date);
-    var endDate = new Date(); // 结束时间
-    var diffDate = endDate.getTime() - strDate.getTime() // 时间差的毫秒数
-    return diffDate
-}
-
-const onKeyDown = (event: KeyboardEvent) => {
+const onKeyUp = (event: KeyboardEvent) => {
     console.log('Key pressed:', `${event.key} | ${event.code} | ${event.keyCode}`);
-    keyCodeTable.value = KeyCodeMap[event.code];
     if (keyCodeTable.value != undefined) {
-        key.value = keyCodeTable.value.key;
         keyDelay.value = ComputeTimeDiff(keyDate.value);
     }
     //录制中
@@ -346,6 +330,27 @@ const onKeyDown = (event: KeyboardEvent) => {
     }
 };
 
+const record = () => {
+    playing.value = !playing.value
+    playTitle.value = playing.value ? t('macro.but_8') : t('macro.but_4')
+};
+
+//计算剩余时间差
+const ComputeTimeDiff = (date: any): number => {
+    var strDate = new Date(date);
+    var endDate = new Date(); // 结束时间
+    var diffDate = endDate.getTime() - strDate.getTime() // 时间差的毫秒数
+    return diffDate
+}
+
+const onKeyDown = (event: KeyboardEvent) => {
+    console.log('Key pressed:', `${event.key} | ${event.code} | ${event.keyCode}`);
+    keyCodeTable.value = KeyCodeMap[event.code];
+    if (keyCodeTable.value != undefined) {
+        key.value = keyCodeTable.value.key;
+        keyDate.value = new Date()
+    }
+};
 
 const getMacroData = async () => {
     if (rk_l87.value != undefined) {

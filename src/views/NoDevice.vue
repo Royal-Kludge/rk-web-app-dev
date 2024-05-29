@@ -1,7 +1,7 @@
 <template>
   <div class="d-flex flex-column ai-center">
     <div class="text-black my-4" style="font-size: 120px; font-weight: bold">
-      RK-LK87
+      RK-R87PRO
     </div>
     <div class="my-4"><img src="../assets/images/keyboard.png" /></div>
     <div class="bg-white text-blue py-3 px-5 my-4 c-p" style="border-radius: 10px" @click="connect"

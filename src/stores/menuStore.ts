@@ -15,7 +15,7 @@ export const useMenuStore = defineStore("menustore", {
     },
     { id: 2, title: "宏管理器", src: "/src/assets/images/menu/macro.png" },
     { id: 3, title: "灯光模式", src: "/src/assets/images/menu/light.png" },
-    { id: 4, title: "自定义灯光", src: "/src/assets/images/menu/ligh-custom.png" }
+      // { id: 4, title: "自定义灯光", src: "/src/assets/images/menu/ligh-custom.png" }
     ] as any,
   }),
   actions: {

@@ -1,5 +1,5 @@
 <template>
-  <div style="height: 30vh;">
+  <div style="height: 26vh;">
     <el-scrollbar>
       <div class="d-flex text-black jc-center">
         <div :class="[`d-flex flex-column ${line.style}`]" v-for="line in useKey.state.keyFunList">
