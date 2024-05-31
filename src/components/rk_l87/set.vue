@@ -27,21 +27,22 @@
                     <div class="m-4 px-3" v-if="isLayer">
                         <el-slider style="width: 360px" v-model="layer" :min="5" :max="127" @change="setLayer(layer)" />
                     </div>
-                    <!-- <div class="m-4 d-flex flex-column">
-                        <div class="py-3 my-3 w-100 bg-warn-1 text-grey-1 text-center br-2 b-grey c-p but"
+                    <div class="m-4 d-flex flex-column">
+                        <!-- <div class="py-3 my-3 w-100 bg-warn-1 text-grey-1 text-center br-2 b-grey c-p but"
                             @click="reSet = true">
                             {{ $t("set.but_1") }}
                         </div>
                         <div class="py-3 my-3 w-100 bg-warn-1 text-grey-1 text-center br-2 b-grey c-p but">
                             {{ $t("set.but_2") }}
                         </div>
-                        <div class="py-3 my-3 w-100 bg-warn-1 text-grey-1 text-center br-2 b-grey c-p">
+                        <div class="py-3 my-3 w-100 bg-warn-1 text-grey-1 text-center br-2 b-grey c-p but">
                             {{ $t("set.but_3") }}
-                        </div>
-                        <div class="py-3 my-3 w-100 bg-warn-1 text-grey-1 text-center br-2 b-grey c-p">
+                        </div> -->
+                        <div class="py-3 my-3 w-100 bg-warn-1 text-grey-1 text-center br-2 b-grey c-p but"
+                            @click="updateVer">
                             {{ $t("set.but_4") }}
                         </div>
-                    </div> -->
+                    </div>
                     <div class="mb-5"></div>
                     <el-dialog v-model="reSet" title="重置键盘">
                         <span>重置键盘将清除所有数据，是否继续？</span>
@@ -77,6 +78,7 @@ import { useI18n } from 'vue-i18n';
 import { keyboard } from '../../keyboard/keyboard'
 import { RK_L87, RK_L87_EVENT_DEFINE } from '../../keyboard/rk_l87/rk_l87';
 import { Profile, FieldEnum } from '../../keyboard/rk_l87/profile';
+import axios from 'axios'
 // 解构出t方法
 const { t } = useI18n();
 
@@ -95,6 +97,16 @@ const isLayer = computed(() => (layerVal.value.find(value => value == t('set.lay
 const rk_l87 = ref<RK_L87>();
 const profile = ref<Profile>();
 const profileIndex = ref(0);
+
+const updateVer = () => {
+    axios.get('/down/work/RKWEB/firmware/R87PRO/firmware.json').then(response => {
+        // 请求成功处理
+        window.open(response.data.url, '_blank')// 新窗口打开外连接        
+    }).catch(error => {
+        // 请求失败处理   
+        console.error(error);
+    });
+}
 
 const formatModeValue = (val: number) => {
     if (val >= 2)

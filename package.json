@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@types/w3c-web-hid": "^1.0.6",
+    "axios": "^1.7.2",
     "color-convert": "^2.0.1",
     "element-plus": "^2.4.3",
     "file-saver": "^2.0.5",

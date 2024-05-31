@@ -10,6 +10,15 @@ export default defineConfig({
     vue(),
     vueJsx(),
   ],
+  server: {
+    proxy: {
+      '/down': {
+        target: 'http://www.rkgaming.com',  //你要跨域访问的网址
+        changeOrigin: true,// 允许跨域
+        rewrite: path => path.replace(/^\/down/, '')
+      }
+    }
+  },
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
