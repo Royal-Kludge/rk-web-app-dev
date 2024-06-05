@@ -59,6 +59,7 @@ export default {
     title_5: "Sleep time",
     title_6: "No sleep",
     title_7: "Color Mixing",
+    title_8: "Default",
   },
   set: {
     title: "Settings",

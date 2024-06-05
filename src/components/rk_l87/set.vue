@@ -25,7 +25,7 @@
                         </el-checkbox-group>
                     </div>
                     <div class="m-4 px-3" v-if="isLayer">
-                        <el-slider style="width: 360px" v-model="layer" :min="5" :max="127" @change="setLayer(layer)" />
+                        <el-slider style="width: 360px" v-model="layer" :min="1" :max="127" @change="setLayer(layer)" />
                     </div>
                     <div class="m-4 d-flex flex-column">
                         <!-- <div class="py-3 my-3 w-100 bg-warn-1 text-grey-1 text-center br-2 b-grey c-p but"
@@ -39,7 +39,7 @@
                             {{ $t("set.but_3") }}
                         </div> -->
                         <div class="py-3 my-3 w-100 bg-warn-1 text-grey-1 text-center br-2 b-grey c-p but"
-                            @click="updateVer">
+                            @click="updateVer" v-if="isDown">
                             {{ $t("set.but_4") }}
                         </div>
                     </div>
@@ -79,6 +79,7 @@ import { keyboard } from '../../keyboard/keyboard'
 import { RK_L87, RK_L87_EVENT_DEFINE } from '../../keyboard/rk_l87/rk_l87';
 import { Profile, FieldEnum } from '../../keyboard/rk_l87/profile';
 import axios from 'axios'
+import { ConnectionType } from '@/keyboard/enum'
 // 解构出t方法
 const { t } = useI18n();
 
@@ -91,12 +92,15 @@ const reSet = ref(false)
 const mode = ref(100);
 const layer = ref(0);
 const layerVal = ref([]);
-const modeStr = computed(() => (mode.value >= 2 ? "set.mode_work" : "set.mode_game"))
-const isLayer = computed(() => (layerVal.value.find(value => value == t('set.layer_1'))))
 
 const rk_l87 = ref<RK_L87>();
 const profile = ref<Profile>();
 const profileIndex = ref(0);
+const connectType = ref<ConnectionType>()
+
+const modeStr = computed(() => (mode.value >= 2 ? "set.mode_work" : "set.mode_game"))
+const isLayer = computed(() => (layerVal.value.find(value => value == t('set.layer_1'))))
+const isDown = computed(() => (connectType.value == ConnectionType.USB))
 
 const updateVer = () => {
     axios.get('/down/work/RKWEB/firmware/R87PRO/firmware.json').then(response => {
@@ -115,6 +119,7 @@ const formatModeValue = (val: number) => {
         return t("set.mode_game");
 }
 onMounted(async () => {
+    connectType.value = keyboard.state.connectType;
     rk_l87.value = (keyboard.protocol as RK_L87);
     rk_l87.value.addEventListener(RK_L87_EVENT_DEFINE.OnProfileGotten, profileGotten, false);
     if (profile.value == undefined) {

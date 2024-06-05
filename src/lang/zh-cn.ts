@@ -60,6 +60,7 @@ export default {
     title_5: "睡眠时间",
     title_6: "无睡眠",
     title_7: "混色",
+    title_8: "默认",
   },
   set: {
     title: "设置",

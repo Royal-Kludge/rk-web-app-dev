@@ -64,6 +64,12 @@
                                         <el-checkbox v-model="useLight.state.lightProps.mixing"
                                             :label="$t('light.title_7')" size="large" @change="useLight.ligtChanged" />
                                     </div>
+                                    <div v-else>
+                                        <div class="py-1 px-3 but-grey text-white c-p"
+                                            @click="useLight.SelfDefineDefault">
+                                            {{ $t('light.title_8') }}
+                                        </div>
+                                    </div>
                                 </div>
                                 <div>
                                     <Picker @onpick="useLight.onPicking" @picked="useLight.onPicked"

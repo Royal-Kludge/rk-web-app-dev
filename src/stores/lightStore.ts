@@ -263,7 +263,7 @@ export const uselightStore = defineStore('lightinfo', () => {
         if (rk_l87.value == undefined) {
             rk_l87.value = (keyboard.protocol as RK_L87);
         }
-        
+
         if (rk_l87.value != undefined) {
             rk_l87.value.addEventListener(RK_L87_EVENT_DEFINE.OnProfileGotten, profileGotten, false);
             rk_l87.value.addEventListener(RK_L87_EVENT_DEFINE.OnLedEffectGotten, ledEffectGotten, false);
@@ -360,6 +360,11 @@ export const uselightStore = defineStore('lightinfo', () => {
         }
     };
 
+    const SelfDefineDefault = () => {
+        onPicking(0, 0, 0);
+        onPicked();
+    }
+
     const onPicking = (r: any, g: any, b: any) => {
         let color: LedColor = {
             red: r,
@@ -425,5 +430,5 @@ export const uselightStore = defineStore('lightinfo', () => {
     const keyTextColor = (index: number): string => {
         return state.keyColors[index];
     };
-    return { state, rgb, ligtChanged, onPicking, onPicked, selectd, lightClick, selectdCustom, keyChanged, keyTextColor, init, destroy }
+    return { state, rgb, ligtChanged, onPicking, onPicked, selectd, lightClick, selectdCustom, keyChanged, keyTextColor, init, destroy, SelfDefineDefault }
 })
