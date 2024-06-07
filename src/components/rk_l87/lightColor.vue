@@ -65,8 +65,8 @@
                                             :label="$t('light.title_7')" size="large" @change="useLight.ligtChanged" />
                                     </div>
                                     <div v-else>
-                                        <div class="py-1 px-3 but-grey text-white c-p"
-                                            @click="useLight.SelfDefineDefault">
+                                        <div class="py-1 px-3 but-red text-white c-p"
+                                            @click="useLight.SelfDefineDefaultAll">
                                             {{ $t('light.title_8') }}
                                         </div>
                                     </div>

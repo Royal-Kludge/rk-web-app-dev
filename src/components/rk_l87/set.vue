@@ -25,7 +25,8 @@
                         </el-checkbox-group>
                     </div>
                     <div class="m-4 px-3" v-if="isLayer">
-                        <el-slider style="width: 360px" v-model="layer" :min="1" :max="127" @change="setLayer(layer)" />
+                        <el-slider style="width: 360px" v-model="layer" :min="1" :max="127"
+                            @change="useLight.setLayer(layer)" />
                     </div>
                     <div class="m-4 d-flex flex-column">
                         <!-- <div class="py-3 my-3 w-100 bg-warn-1 text-grey-1 text-center br-2 b-grey c-p but"
@@ -58,7 +59,7 @@
                     <div class="m-4">{{ $t("set.mode_title") }}</div>
                     <div>
                         <el-slider style="width: 360px" v-model="mode" :min="0" :max="3"
-                            :format-tooltip="formatModeValue" @change="DebounceChanged" />
+                            :format-tooltip="formatModeValue" @change="useLight.DebounceChanged(mode)" />
                     </div>
                     <div class="m-4">{{ $t(modeStr) }}</div>
                 </div>
@@ -68,21 +69,18 @@
 </template>
 <script setup lang="ts">
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
-
+import { uselightStore } from "@/stores/lightStore";
 import { useSetStore } from "../../stores/setStore";
 import { useLocaleStore } from "../../stores/locale";
 import { storeToRefs } from "pinia";
 
 import { useI18n } from 'vue-i18n';
-
-import { keyboard } from '../../keyboard/keyboard'
-import { RK_L87, RK_L87_EVENT_DEFINE } from '../../keyboard/rk_l87/rk_l87';
-import { Profile, FieldEnum } from '../../keyboard/rk_l87/profile';
 import axios from 'axios'
 import { ConnectionType } from '@/keyboard/enum'
 // 解构出t方法
 const { t } = useI18n();
 
+const useLight = uselightStore();
 const useLocale = useLocaleStore();
 const { locale } = storeToRefs(useLocale);
 const setStore = useSetStore();
@@ -93,19 +91,14 @@ const mode = ref(100);
 const layer = ref(0);
 const layerVal = ref([]);
 
-const rk_l87 = ref<RK_L87>();
-const profile = ref<Profile>();
-const profileIndex = ref(0);
-const connectType = ref<ConnectionType>()
-
 const modeStr = computed(() => (mode.value >= 2 ? "set.mode_work" : "set.mode_game"))
 const isLayer = computed(() => (layerVal.value.find(value => value == t('set.layer_1'))))
-const isDown = computed(() => (connectType.value == ConnectionType.USB))
+const isDown = computed(() => (useLight.connectType == ConnectionType.USB))
 
 const updateVer = () => {
     axios.get('/down/work/RKWEB/firmware/R87PRO/firmware.json').then(response => {
         // 请求成功处理
-        window.open(response.data.url, '_blank')// 新窗口打开外连接        
+        window.open(response.data.url, '_blank')// 新窗口打开外连接
     }).catch(error => {
         // 请求失败处理   
         console.error(error);
@@ -119,47 +112,18 @@ const formatModeValue = (val: number) => {
         return t("set.mode_game");
 }
 onMounted(async () => {
-    connectType.value = keyboard.state.connectType;
-    rk_l87.value = (keyboard.protocol as RK_L87);
-    rk_l87.value.addEventListener(RK_L87_EVENT_DEFINE.OnProfileGotten, profileGotten, false);
-    if (profile.value == undefined) {
-        await getLightData();
-    }
+    await useLight.init();
 });
+
 onBeforeUnmount(() => {
-    if (rk_l87.value != undefined) {
-        rk_l87.value.removeEventListener(RK_L87_EVENT_DEFINE.OnProfileGotten, profileGotten, false);
-    }
+    useLight.destroy();
 });
 
-const getLightData = async () => {
-    await rk_l87.value?.getProfile(profileIndex.value);
-}
-
-const profileGotten = async (event: any) => {
-    profile.value = event.detail as Profile;
-};
-
-const DebounceChanged = () => {
-    if (profile.value != undefined && rk_l87.value != undefined) {
-        profile.value.setFieldValue(FieldEnum.Debounce, mode.value);
-        rk_l87.value.setProfile(profileIndex.value);
-    }
-};
 const LayerChanged = () => {
     if (!isLayer) {
-        setLayer(0)
+        useLight.setLayer(0)
     }
 }
-
-const setLayer = (layer: number) => {
-    if (profile.value != undefined && rk_l87.value != undefined) {
-        profile.value.setFieldValue(FieldEnum.TapDelay, layer);
-        rk_l87.value.setProfile(profileIndex.value);
-    }
-};
-
-
 </script>
 <style lang="scss" scoped>
 :deep {

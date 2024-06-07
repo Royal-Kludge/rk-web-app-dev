@@ -5,7 +5,7 @@ import { RK_L87, RK_L87_EVENT_DEFINE } from '../keyboard/rk_l87/rk_l87';
 import { Profile, FieldEnum } from '../keyboard/rk_l87/profile';
 import { LedEffect } from '../keyboard/rk_l87/ledEffect';
 import { LedColors } from '../keyboard/rk_l87/ledColors';
-import { LightEffectEnum, KeyMatrixLayer } from '../keyboard/enum'
+import { LightEffectEnum, KeyMatrixLayer, ConnectionType } from '../keyboard/enum'
 import { type LedColor } from '@/keyboard/interface';
 import { KeyDefineEnum } from '@/keyboard/keyCode';
 import { type KeyTableData } from '@/keyboard/interface'
@@ -17,6 +17,7 @@ export const uselightStore = defineStore('lightinfo', () => {
     const ledColors = ref<LedColors>();
     const rk_l87 = ref<RK_L87>();
     const profileIndex = ref(0);
+    const connectType = ref<ConnectionType>()
 
     const getKeyData = (index: number, layer: KeyMatrixLayer = KeyMatrixLayer.Nomal): KeyTableData | undefined => {
         let keyData = undefined;
@@ -33,22 +34,22 @@ export const uselightStore = defineStore('lightinfo', () => {
 
     const state = reactive({
         lightEffects: [
-            { light: LightEffectEnum.FixedOn, label: 'FixedOn' },
-            { light: LightEffectEnum.Respire, label: 'Respire' },
-            { light: LightEffectEnum.Rainbow, label: 'Rainbow' },
-            { light: LightEffectEnum.FlashAway, label: 'FlashAway' },
-            { light: LightEffectEnum.Raindrops, label: 'Raindrops' },
-            { light: LightEffectEnum.RainbowWheel, label: 'RainbowWheel' },
-            { light: LightEffectEnum.RippleShining, label: 'RippleShining' },
-            { light: LightEffectEnum.StarsTwinkle, label: 'StarsTwinkle' },
-            { light: LightEffectEnum.ShadowDisappear, label: 'ShadowDisappear' },
-            { light: LightEffectEnum.RetroSnake, label: 'RetroSnake' },
-            { light: LightEffectEnum.NeonStream, label: 'NeonStream' },
-            { light: LightEffectEnum.Reaction, label: 'Reaction' },
-            { light: LightEffectEnum.SineWave, label: 'SineWave' },
-            { light: LightEffectEnum.Blossoming, label: 'Blossoming' },
-            { light: LightEffectEnum.SelfDefine, label: 'SelfDefine' },
-            { light: LightEffectEnum.OFF, label: 'OFF' },
+            { light: LightEffectEnum.FixedOn, label: 'light.menu_1' },
+            { light: LightEffectEnum.Respire, label: 'light.menu_2' },
+            { light: LightEffectEnum.Rainbow, label: 'light.menu_3' },
+            { light: LightEffectEnum.FlashAway, label: 'light.menu_4' },
+            { light: LightEffectEnum.Raindrops, label: 'light.menu_5' },
+            { light: LightEffectEnum.RainbowWheel, label: 'light.menu_6' },
+            { light: LightEffectEnum.RippleShining, label: 'light.menu_7' },
+            { light: LightEffectEnum.StarsTwinkle, label: 'light.menu_8' },
+            { light: LightEffectEnum.ShadowDisappear, label: 'light.menu_9' },
+            { light: LightEffectEnum.RetroSnake, label: 'light.menu_10' },
+            { light: LightEffectEnum.NeonStream, label: 'light.menu_11' },
+            { light: LightEffectEnum.Reaction, label: 'light.menu_12' },
+            { light: LightEffectEnum.SineWave, label: 'light.menu_13' },
+            { light: LightEffectEnum.Blossoming, label: 'light.menu_14' },
+            { light: LightEffectEnum.SelfDefine, label: 'light.menu_15' },
+            { light: LightEffectEnum.OFF, label: 'light.menu_16' },
             //{ light: LightEffectEnum.Music, label: 'Music' },
         ],
         keyMatrix: [
@@ -260,6 +261,7 @@ export const uselightStore = defineStore('lightinfo', () => {
     });
 
     const init = async () => {
+        connectType.value = keyboard.state.connectType;
         if (rk_l87.value == undefined) {
             rk_l87.value = (keyboard.protocol as RK_L87);
         }
@@ -280,6 +282,20 @@ export const uselightStore = defineStore('lightinfo', () => {
             rk_l87.value.removeEventListener(RK_L87_EVENT_DEFINE.OnProfileGotten, profileGotten, false);
             rk_l87.value.removeEventListener(RK_L87_EVENT_DEFINE.OnLedEffectGotten, ledEffectGotten, false);
             rk_l87.value.removeEventListener(RK_L87_EVENT_DEFINE.OnLedColorsGotten, ledColorsGotten, false);
+        }
+    };
+
+    const DebounceChanged = (mode: number) => {
+        if (profile.value != undefined && rk_l87.value != undefined) {
+            profile.value.setFieldValue(FieldEnum.Debounce, mode);
+            rk_l87.value.setProfile(profileIndex.value);
+        }
+    };
+
+    const setLayer = (layer: number) => {
+        if (profile.value != undefined && rk_l87.value != undefined) {
+            profile.value.setFieldValue(FieldEnum.TapDelay, layer);
+            rk_l87.value.setProfile(profileIndex.value);
         }
     };
 
@@ -359,13 +375,26 @@ export const uselightStore = defineStore('lightinfo', () => {
             refresh();
         }
     };
+    const SelfDefineDefaultAll = () => {
+        if (ledColors.value != undefined) {
+            let index: number;
+            for (index = 0; index < state.keyColors.length; index++) {
+                onPicking(0, 0, 0, index);
+            }
+        }
+        onPicked();
+    }
+
 
     const SelfDefineDefault = () => {
+        if (state.lightProps.light != LightEffectEnum.SelfDefine) {
+            return
+        }
         onPicking(0, 0, 0);
         onPicked();
     }
 
-    const onPicking = (r: any, g: any, b: any) => {
+    const onPicking = (r: any, g: any, b: any, index: number = state.keyColor.index) => {
         let color: LedColor = {
             red: r,
             green: g,
@@ -374,8 +403,8 @@ export const uselightStore = defineStore('lightinfo', () => {
         }
         if (state.lightProps.light == LightEffectEnum.SelfDefine) {
             state.keyColor.color = color.color;
-            state.keyColors[state.keyColor.index] = color.color;
-            ledColors.value?.setLedColor(state.keyColor.index, color);
+            state.keyColors[index] = color.color;
+            ledColors.value?.setLedColor(index, color);
         } else if (state.lightProps.light != LightEffectEnum.OFF && state.lightProps.light != LightEffectEnum.Music) {
             ledEffect.value?.setLedColor(state.lightProps.light, color);
         }
@@ -430,5 +459,5 @@ export const uselightStore = defineStore('lightinfo', () => {
     const keyTextColor = (index: number): string => {
         return state.keyColors[index];
     };
-    return { state, rgb, ligtChanged, onPicking, onPicked, selectd, lightClick, selectdCustom, keyChanged, keyTextColor, init, destroy, SelfDefineDefault }
+    return { connectType, state, rgb, ligtChanged, onPicking, onPicked, selectd, lightClick, selectdCustom, keyChanged, keyTextColor, init, destroy, SelfDefineDefault, setLayer, DebounceChanged, SelfDefineDefaultAll }
 })

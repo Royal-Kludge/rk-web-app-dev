@@ -14,7 +14,7 @@
                                         <img src="../../assets/images/dot.png" />
                                     </span>
                                     <span>
-                                        {{ item.label }}
+                                        {{ $t(item.label) }}
                                     </span>
                                 </div>
                             </div>

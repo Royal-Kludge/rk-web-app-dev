@@ -784,6 +784,13 @@ export const useKeyStore = defineStore('keyinfo', () => {
     setSelected(keyCode);
     saveProfile()
   }
+  const keySetToDefaultAll = () => {
+    let i: any;
+    for (i in state.keyState) {
+      keySetToDefault(i)
+    }
+    saveProfile()
+  }
 
   const keySetToDefault = (index: number) => {
     if (state.keyState.length <= 0 || index >= 999) {
@@ -800,7 +807,6 @@ export const useKeyStore = defineStore('keyinfo', () => {
     mapping.keyRaw = keyState.KeyData.keyCode;
     KeyMatrixData.value[keyMatrixLayer.value]?.setKeyMapping(keyState.index, mapping);
     rk_l87.value?.setKeyMatrix(keyMatrixLayer.value, MatrixTable.WIN, 0);
-    saveProfile()
   }
 
   const keySetMacro = (index: number) => {
@@ -889,5 +895,5 @@ export const useKeyStore = defineStore('keyinfo', () => {
 
     state.combineKeyDialogShow = false;
   }
-  return { profile, state, keyMatrixLayer, keyClick, keyColor, isSelected, keybgColor, keyText, keySetToDefault, keySetMacro, mapping, isFunSelected, isMacroSelected, clickMacro, confirmSetMacro, setCombineKey, confirmSetCombineKey, getKeyMatrix, clickProfile, deleteProfile, onKeyDown, newProfile, handleEditClose, renameProfile, exportProfile, importProfile, init, destroy, getKeyMatrixNomal }
+  return { profile, state, keyMatrixLayer, keyClick, keyColor, isSelected, keybgColor, keyText, keySetToDefault, keySetMacro, mapping, isFunSelected, isMacroSelected, clickMacro, confirmSetMacro, setCombineKey, confirmSetCombineKey, getKeyMatrix, clickProfile, deleteProfile, onKeyDown, newProfile, handleEditClose, renameProfile, exportProfile, importProfile, init, destroy, getKeyMatrixNomal, saveProfile, keySetToDefaultAll }
 })
