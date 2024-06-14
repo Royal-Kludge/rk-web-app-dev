@@ -1,6 +1,6 @@
 import type { KeyboardState } from '../interface'
 import { REPORT_ID_USB, MACRO_PER_BLOCK_LENGTH, MACRO_MAX_LENGTH } from './packets/packet';
-import type { MatrixTable } from './keyMatrix';
+import { MatrixTable } from './keyMatrix';
 import { ConnectionStatusEnum, ConnectionType, KeyMatrixLayer } from '../enum';
 import { RK_L87, RK_L87_EVENT_DEFINE } from './rk_l87';
 
@@ -19,7 +19,11 @@ import { SetMacrosPacket } from './packets/usb/setMacrosPacket';
 import { GetLedColorsPacket } from './packets/usb/getLedColorsPacket';
 import { SetLedColorsPacket } from './packets/usb/setLedColorsPacket';
 
+import { GetPasswordPacket } from './packets/usb/getPasswordPacket';
+
+
 import { Macros } from './macros';
+import { RK_L87_USB_DEFINE } from '.';
 
 export class RK_L87_Usb extends RK_L87 {
 
@@ -35,6 +39,7 @@ export class RK_L87_Usb extends RK_L87 {
     async init(): Promise<void> {
         super.init();
         this.state.ConnectionStatus = ConnectionStatusEnum.Connected;
+        await this.getPassword();
     }
 
     async onGetReport(reportId: number, data: DataView): Promise<void> {
@@ -49,6 +54,16 @@ export class RK_L87_Usb extends RK_L87 {
 
         this.data.profile = packet.profile;
         this.dispatchEvent(new CustomEvent(RK_L87_EVENT_DEFINE.OnProfileGotten, { detail: this.data.profile }));
+    }
+
+    async getPassword(): Promise<void> {
+        let packet = new GetPasswordPacket();
+
+        await this.setFeature(REPORT_ID_USB, packet.setReport);
+        packet.fromReportData(await this.getFeature(REPORT_ID_USB));
+
+        this.state.fwVersion = packet.fwVersion;
+        //this.dispatchEvent(new CustomEvent(RK_L87_EVENT_DEFINE.OnProfileGotten, { detail: this.data.profile }));
     }
 
     async setProfile(board: number): Promise<void> {
@@ -165,6 +180,14 @@ export class RK_L87_Usb extends RK_L87 {
             let packet = new SetLedColorsPacket(board);
             packet.setPayload(this.data.ledColors.buffer);
             await this.setFeature(REPORT_ID_USB, packet.setReport);
+        }
+    }
+
+    async setFactory(): Promise<void> {
+        let index: any;
+        for (index in RK_L87_USB_DEFINE.keyMatrixLayer) {
+            let layer = RK_L87_USB_DEFINE.keyMatrixLayer[index];
+            await this.setKeyMatrix(layer, MatrixTable.WIN, 0);
         }
     }
 }

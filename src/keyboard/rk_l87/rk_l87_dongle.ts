@@ -24,6 +24,7 @@ import { SetLedEffectPacket } from './packets/dongle/setLedEffectPacket';
 import { SetLedColorsPacket } from './packets/dongle/setLedColorsPacket';
 import { SetKeyMatrixPacket } from './packets/dongle/setKeyMatrixPacket';
 import { SetMacrosPacket } from './packets/dongle/setMacrosPacket';
+import { SetFactoryPacket } from './packets/dongle/setFactoryPacket';
 
 
 export class RK_L87_Dongle extends RK_L87 {
@@ -40,6 +41,7 @@ export class RK_L87_Dongle extends RK_L87 {
     pktSetLedColors: SetLedColorsPacket;
     pktSetKeyMatrix: SetKeyMatrixPacket;
     pktSetMacros: SetMacrosPacket;
+    pktSetFactory: SetFactoryPacket;
 
     constructor(state: KeyboardState, device: HIDDevice) {
         super(state, device);
@@ -57,6 +59,7 @@ export class RK_L87_Dongle extends RK_L87 {
         this.pktSetLedColors = new SetLedColorsPacket(this.nextReport.bind(this));
         this.pktSetKeyMatrix = new SetKeyMatrixPacket(this.nextReport.bind(this));
         this.pktSetMacros = new SetMacrosPacket(this.nextReport.bind(this), this.nextBlock.bind(this));
+        this.pktSetFactory = new SetFactoryPacket(this.setFactoryReport.bind(this));
     }
 
     static async create(state: KeyboardState, device: HIDDevice) {
@@ -219,6 +222,10 @@ export class RK_L87_Dongle extends RK_L87 {
         }
     }
 
+    async setFactory(): Promise<void> {
+        await this.setReport(REPORT_ID_DONGLE, this.pktSetFactory.command());
+    }
+
     private dongleStatusReport(event: any) {
         let status = event.detail as boolean ? ConnectionStatusEnum.Connected : ConnectionStatusEnum.Disconnected;
         this.state.ConnectionStatus = status;
@@ -229,7 +236,9 @@ export class RK_L87_Dongle extends RK_L87 {
     }
 
     private passwordReport(event: any) {
-        let password = event.detail as number;
+        let password = event.detail.pwd as number;
+        let version = event.detail.version as string;
+        this.state.fwVersion = version;
         this.dispatchEvent(new CustomEvent(RK_L87_EVENT_DEFINE.OnPasswordGotten, { detail: password }));
     }
 
@@ -260,6 +269,10 @@ export class RK_L87_Dongle extends RK_L87 {
     private getLedColorsReport(event: any) {
         this.data.ledColors = event.detail as LedColors;
         this.dispatchEvent(new CustomEvent(RK_L87_EVENT_DEFINE.OnLedColorsGotten, { detail: this.data.ledColors }));
+    }
+
+    private setFactoryReport(event: any) {
+        this.dispatchEvent(new CustomEvent(RK_L87_EVENT_DEFINE.OnSetFactorySuccess, { detail: true }));
     }
 
 

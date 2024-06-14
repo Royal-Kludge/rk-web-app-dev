@@ -17,6 +17,7 @@ export const RK_L87_EVENT_DEFINE: {
     OnLedColorsGotten: string;
     OnProfileGotten: string;
     OnMacrosGotten: string;
+    OnSetFactorySuccess: string;
 } = {
     OnDongleStatusChanged: 'OnDongleStatusChanged',
     OnPasswordGotten: 'OnPasswordGotten',
@@ -24,7 +25,8 @@ export const RK_L87_EVENT_DEFINE: {
     OnLedEffectGotten: 'OnLedEffectGotten',
     OnLedColorsGotten: 'OnLedColorsGotten',
     OnProfileGotten: 'OnProfileGotten',
-    OnMacrosGotten: 'OnMacrosGotten'
+    OnMacrosGotten: 'OnMacrosGotten',
+    OnSetFactorySuccess: 'OnSetFactorySuccess'
 }
 
 export const COMMAND_ID: {
@@ -79,6 +81,7 @@ export abstract class RK_L87 extends Protocol {
     abstract setMacros(): Promise<void>;
     abstract getLedColors(board: number): Promise<void>;
     abstract setLedColors(board: number): Promise<void>;
+    abstract setFactory(): Promise<void>;
     
     abstract onGetReport(reportId: number, data: DataView): Promise<void>;
 

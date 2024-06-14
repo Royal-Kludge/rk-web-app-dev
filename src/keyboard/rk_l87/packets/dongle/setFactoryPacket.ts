@@ -1,10 +1,10 @@
 import type { IPacket } from "@/keyboard/interface";
 import { Packet_Dongle } from "@/keyboard/rk_l87/packets/packet";
 
-export class GetPasswordPacket extends Packet_Dongle {
+export class SetFactoryPacket extends Packet_Dongle {
 
     constructor(callback: (event: any) => void) {
-        super(0x05, callback);
+        super(0x06, callback);
     }
 
     command(): Uint8Array {
@@ -23,10 +23,8 @@ export class GetPasswordPacket extends Packet_Dongle {
         super.fromReportData(buffer);
         
         if (buffer.byteLength >= this.dataLength) {
-            let pwd = buffer.getUint32(4)  + buffer.getUint16(8);
-            let version = `${buffer.getUint8(12).toString(16).padStart(2, '0')}${buffer.getUint8(13).toString(16).padStart(2, '0')}`
             this.getReport = buffer;
-            this.dispatchEvent(new CustomEvent('onReportDataRecvied', { detail: { pwd: pwd, version: version }}));
+            this.dispatchEvent(new CustomEvent('onReportDataRecvied', { detail: true }));
         }
 
         return this;

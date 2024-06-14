@@ -29,27 +29,26 @@
                             @change="useLight.setLayer(layer)" />
                     </div>
                     <div class="m-4 d-flex flex-column">
-                        <!-- <div class="py-3 my-3 w-100 bg-warn-1 text-grey-1 text-center br-2 b-grey c-p but"
-                            @click="reSet = true">
+                        <!-- <div class="py-3 my-3 w-100 bg-warn-1 text-grey-1 text-center br-2 b-grey c-p but">
                             {{ $t("set.but_1") }}
-                        </div>
-                        <div class="py-3 my-3 w-100 bg-warn-1 text-grey-1 text-center br-2 b-grey c-p but">
+                        </div>-->
+                        <div class="py-3 my-3 w-100 bg-warn-1 text-grey-1 text-center br-2 b-grey c-p but" @click="reSet = true">
                             {{ $t("set.but_2") }}
                         </div>
-                        <div class="py-3 my-3 w-100 bg-warn-1 text-grey-1 text-center br-2 b-grey c-p but">
+                        <!-- <div class="py-3 my-3 w-100 bg-warn-1 text-grey-1 text-center br-2 b-grey c-p but">
                             {{ $t("set.but_3") }}
                         </div> -->
                         <div class="py-3 my-3 w-100 bg-warn-1 text-grey-1 text-center br-2 b-grey c-p but"
                             @click="updateVer" v-if="isDown">
-                            {{ $t("set.but_4") }}
+                            {{ $t("set.but_4") }}  cur:{{ ver }}
                         </div>
                     </div>
                     <div class="mb-5"></div>
                     <el-dialog v-model="reSet" title="重置键盘">
-                        <span>重置键盘将清除所有数据，是否继续？</span>
+                        <span>恢复出厂设置将清除所有数据，是否继续？</span>
                         <template #footer>
                             <div class="d-flex jc-center">
-                                <el-button @click="reSet = false">是</el-button>
+                                <el-button @click="setToFactory()">是</el-button>
                                 <el-button type="primary" @click="reSet = false">否</el-button>
                             </div>
                         </template>
@@ -71,25 +70,31 @@
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
 import { uselightStore } from "@/stores/lightStore";
 import { useSetStore } from "../../stores/setStore";
+import { useKeyStore } from "../../stores/keyStore";
 import { useLocaleStore } from "../../stores/locale";
 import { storeToRefs } from "pinia";
 
 import { useI18n } from 'vue-i18n';
 import axios from 'axios'
 import { ConnectionType } from '@/keyboard/enum'
+import { keyboard } from '@/keyboard/keyboard'
 // 解构出t方法
 const { t } = useI18n();
+
+const rk_l87 = ref<RK_L87>();
 
 const useLight = uselightStore();
 const useLocale = useLocaleStore();
 const { locale } = storeToRefs(useLocale);
 const setStore = useSetStore();
 const { langList } = storeToRefs(setStore);
+const useKey = useKeyStore();
 
-const reSet = ref(false)
+const reSet = ref(false);
 const mode = ref(100);
 const layer = ref(0);
 const layerVal = ref([]);
+const ver = ref(keyboard.state.fwVersion);
 
 const modeStr = computed(() => (mode.value >= 2 ? "set.mode_work" : "set.mode_game"))
 const isLayer = computed(() => (layerVal.value.find(value => value == t('set.layer_1'))))
@@ -113,6 +118,9 @@ const formatModeValue = (val: number) => {
 }
 onMounted(async () => {
     await useLight.init();
+    if (rk_l87.value == undefined) {
+        rk_l87.value = (keyboard.protocol as RK_L87);
+    }
 });
 
 onBeforeUnmount(() => {
@@ -123,6 +131,16 @@ const LayerChanged = () => {
     if (!isLayer) {
         useLight.setLayer(0)
     }
+}
+
+const setToFactory = () => {
+    if (rk_l87.value != undefined) {
+        keyboard.loadDefaultValue(keyboard.state.keyTableData, keyboard.state.lightInfo);
+        useKey.refreshKeyMatrixData();
+        rk_l87.value.setFactory();
+    }
+
+    reSet.value = false;
 }
 </script>
 <style lang="scss" scoped>

@@ -700,6 +700,20 @@ export const useKeyStore = defineStore('keyinfo', () => {
     }
   }
 
+  const refreshKeyMatrixData = () => {
+    let key: any;
+    let index: any;
+    if (keyboard.keyboardDefine != undefined) {
+      for (index in keyboard.keyboardDefine.keyMatrixLayer) {
+        let layer = keyboard.keyboardDefine.keyMatrixLayer[index];
+        for (key in keyboard.state.keyTableData[layer]) {
+          let keyData = keyboard.state.keyTableData[layer][key];
+          KeyMatrixData.value[layer].setKeyMapping(keyData.index, keyData.keyMappingData);
+        }
+      }
+    }
+  }
+
   const keySetStr = (keyData: KeyTableData) => {
     let mapping = keyData.keyMappingData;
     switch (mapping.keyMappingType) {
@@ -940,5 +954,5 @@ export const useKeyStore = defineStore('keyinfo', () => {
 
     state.combineKeyDialogShow = false;
   }
-  return { profile, state, keyMatrixLayer, keyClick, keyColor, isSelected, keybgColor, keyText, keySetToDefault, keySetMacro, mapping, isFunSelected, isMacroSelected, clickMacro, confirmSetMacro, setCombineKey, confirmSetCombineKey, getKeyMatrix, clickProfile, deleteProfile, onKeyDown, newProfile, handleEditClose, renameProfile, exportProfile, importProfile, init, destroy, getKeyMatrixNomal, saveProfile, keySetToDefaultAll }
+  return { profile, state, keyMatrixLayer, keyClick, keyColor, isSelected, keybgColor, keyText, keySetToDefault, keySetMacro, mapping, isFunSelected, isMacroSelected, clickMacro, confirmSetMacro, setCombineKey, confirmSetCombineKey, getKeyMatrix, clickProfile, deleteProfile, onKeyDown, newProfile, handleEditClose, renameProfile, exportProfile, importProfile, init, destroy, getKeyMatrixNomal, saveProfile, keySetToDefaultAll, refreshKeyMatrixData }
 })
