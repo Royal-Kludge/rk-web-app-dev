@@ -23,7 +23,7 @@ export class GetKeyMatrixPacket extends Packet_Dongle_Get {
         return this.setReport;
     }
 
-    fromReportData(buffer: DataView) : IPacket {
+    fromReportData(buffer: DataView): IPacket {
         super.fromReportData(buffer);
 
         if (this.packageNum - 1 == this.packageIndex) {
@@ -31,7 +31,7 @@ export class GetKeyMatrixPacket extends Packet_Dongle_Get {
                 this.getReport = new DataView(this.buffer.buffer);
                 if (this.getReport.byteLength >= KEY_MAXTRIX_LINE * KEY_MAXTRIX_COLOUMN) {
                     let keyMatrix = KeyMatrix.fromReportData(this.getReport);
-                    this.dispatchEvent(new CustomEvent('onReportDataRecvied', { detail: keyMatrix }));
+                    this.dispatchEvent(new CustomEvent('onReportDataRecvied', { detail: { layer: this.layer, data: keyMatrix } }));
                 }
             }
         }

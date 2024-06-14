@@ -242,6 +242,8 @@ export const uselightStore = defineStore('lightinfo', () => {
             '#FFFFFF',
             '#FFFFFF',
             '#FFFFFF',
+            '#FFFFFF',
+            '#FFFFFF',
             '#FFFFFF'
         ],
         lightProps: {
@@ -426,6 +428,8 @@ export const uselightStore = defineStore('lightinfo', () => {
     const lightClick = (light: LightEffectEnum) => {
         if (profile.value != undefined && rk_l87.value != undefined) {
             state.lightProps.light = light;
+            // 0x01: Gaming
+            profile.value.setFieldValue(FieldEnum.LedModeSelection, (light == LightEffectEnum.SelfDefine) ? 0x01 : 0x00);
             profile.value.setFieldValue(FieldEnum.LedMode, light);
             rk_l87.value.setProfile(profileIndex.value);
             refresh();

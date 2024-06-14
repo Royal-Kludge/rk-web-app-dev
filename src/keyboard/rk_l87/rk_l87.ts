@@ -60,7 +60,7 @@ export const COMMAND_ID: {
 export class RK_L87_Data {
     profile?: Profile;
     ledEffect?: LedEffect;
-    keyMatrix?: KeyMatrix;
+    keyMatrixs: Record<number, KeyMatrix> = {};
     ledColors?: LedColors;
     macros?: Macros;
 }

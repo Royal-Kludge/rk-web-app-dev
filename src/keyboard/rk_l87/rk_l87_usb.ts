@@ -83,14 +83,16 @@ export class RK_L87_Usb extends RK_L87 {
         await this.setFeature(REPORT_ID_USB, packet.setReport);
         packet.fromReportData(await this.getFeature(REPORT_ID_USB));
 
-        this.data.keyMatrix = packet.keyMatrix;
-        this.dispatchEvent(new CustomEvent(RK_L87_EVENT_DEFINE.OnKeyMatrixGotten, { detail: this.data.keyMatrix }));
+        if (this.data.keyMatrixs != undefined && packet.keyMatrix != undefined) {
+            this.data.keyMatrixs[layer] = packet.keyMatrix;
+        }
+        this.dispatchEvent(new CustomEvent(RK_L87_EVENT_DEFINE.OnKeyMatrixGotten, { detail: this.data.keyMatrixs }));
     }
 
     async setKeyMatrix(layer: KeyMatrixLayer, table: MatrixTable, board: number): Promise<void> {
-        if (this.data.keyMatrix != undefined) {
+        if (this.data.keyMatrixs != undefined) {
             let packet = new SetKeyMatrixPacket(layer, table, board);
-            packet.setPayload(this.data.keyMatrix.buffer);
+            packet.setPayload(this.data.keyMatrixs[layer].buffer);
             await this.setFeature(REPORT_ID_USB, packet.setReport);
         }
     }

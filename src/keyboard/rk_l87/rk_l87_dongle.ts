@@ -1,6 +1,6 @@
-import type { KeyboardState  } from '../interface'
+import type { KeyboardState } from '../interface'
 import { ConnectionStatusEnum, ConnectionType, KeyMatrixLayer } from '../enum';
-import { Packet_Dongle,  REPORT_ID_DONGLE, REPORT_MAX_RETRY, MACRO_PER_BLOCK_LENGTH, MACRO_MAX_LENGTH } from './packets/packet';
+import { Packet_Dongle, REPORT_ID_DONGLE, REPORT_MAX_RETRY, MACRO_PER_BLOCK_LENGTH, MACRO_MAX_LENGTH } from './packets/packet';
 import { Packet_Dongle_Block_Set } from './packets/dongle/setPacket';
 
 import type { KeyMatrix, MatrixTable } from './keyMatrix';
@@ -89,8 +89,8 @@ export class RK_L87_Dongle extends RK_L87 {
                     this.pktGetLedEffect.fromReportData(data);
                     break;
                 case COMMAND_ID.GetLedColors:
-                        this.pktGetLedColors.fromReportData(data);
-                        break;
+                    this.pktGetLedColors.fromReportData(data);
+                    break;
                 case COMMAND_ID.GetKeyMatrix:
                     this.pktGetKeyMatrix.fromReportData(data);
                     break;
@@ -176,13 +176,13 @@ export class RK_L87_Dongle extends RK_L87 {
     }
 
     async setKeyMatrix(layer: KeyMatrixLayer, table: MatrixTable, board: number): Promise<void> {
-        if (this.data.keyMatrix != undefined) {
+        if (this.data.keyMatrixs != undefined) {
             this.pktSetKeyMatrix.board = board;
             this.pktSetKeyMatrix.layer = layer;
             this.pktSetKeyMatrix.table = table;
             this.pktSetKeyMatrix.packageIndex = 0;
             this.pktSetKeyMatrix.retry = REPORT_MAX_RETRY;
-            this.pktSetKeyMatrix.buffer = new Uint8Array(this.data.keyMatrix?.buffer.buffer.slice(0, this.data.keyMatrix?.buffer.byteLength));
+            this.pktSetKeyMatrix.buffer = new Uint8Array(this.data.keyMatrixs[layer].buffer.buffer.slice(0, this.data.keyMatrixs[layer].buffer.byteLength));
             await this.setReport(REPORT_ID_DONGLE, this.pktSetKeyMatrix.command());
         }
     }
@@ -218,7 +218,7 @@ export class RK_L87_Dongle extends RK_L87 {
             await this.setReport(REPORT_ID_DONGLE, this.pktSetLedColors.command());
         }
     }
-    
+
     private dongleStatusReport(event: any) {
         let status = event.detail as boolean ? ConnectionStatusEnum.Connected : ConnectionStatusEnum.Disconnected;
         this.state.ConnectionStatus = status;
@@ -244,8 +244,12 @@ export class RK_L87_Dongle extends RK_L87 {
     }
 
     private getKeyMatrixReport(event: any) {
-        this.data.keyMatrix = event.detail as KeyMatrix;
-        this.dispatchEvent(new CustomEvent(RK_L87_EVENT_DEFINE.OnKeyMatrixGotten, { detail: this.data.keyMatrix }));
+        let layer = event.detail.layer as KeyMatrixLayer;
+        let data = event.detail.data as KeyMatrix;
+        if (this.data.keyMatrixs != undefined) {
+            this.data.keyMatrixs[layer] = data as KeyMatrix;
+        }
+        this.dispatchEvent(new CustomEvent(RK_L87_EVENT_DEFINE.OnKeyMatrixGotten, { detail: this.data.keyMatrixs }));
     }
 
     private getMacrosReport(event: any) {
@@ -269,7 +273,7 @@ export class RK_L87_Dongle extends RK_L87 {
         pkt.block = pkt.block + 1;
         if (pkt.block < pkt.blockCount) {
             await this.setReport(REPORT_ID_DONGLE, pkt.command());
-        } 
+        }
     }
 
     async destroy(): Promise<void> {
