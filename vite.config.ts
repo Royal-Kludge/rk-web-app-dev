@@ -13,7 +13,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/down': {
-        target: 'http://www.rkgaming.com',  //你要跨域访问的网址
+        target: 'https://www.rkgaming.com',  //你要跨域访问的网址
         changeOrigin: true,// 允许跨域
         rewrite: path => path.replace(/^\/down/, '')
       }

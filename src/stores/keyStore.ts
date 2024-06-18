@@ -714,6 +714,14 @@ export const useKeyStore = defineStore('keyinfo', () => {
     }
   }
 
+  const setToFactory = () => {
+    if (rk_l87.value != undefined) {
+      keyboard.loadDefaultValue(keyboard.state.keyTableData, keyboard.state.lightInfo);
+      refreshKeyMatrixData();
+      rk_l87.value.setFactory();
+    }
+  }
+
   const keySetStr = (keyData: KeyTableData) => {
     let mapping = keyData.keyMappingData;
     switch (mapping.keyMappingType) {
@@ -954,5 +962,5 @@ export const useKeyStore = defineStore('keyinfo', () => {
 
     state.combineKeyDialogShow = false;
   }
-  return { profile, state, keyMatrixLayer, keyClick, keyColor, isSelected, keybgColor, keyText, keySetToDefault, keySetMacro, mapping, isFunSelected, isMacroSelected, clickMacro, confirmSetMacro, setCombineKey, confirmSetCombineKey, getKeyMatrix, clickProfile, deleteProfile, onKeyDown, newProfile, handleEditClose, renameProfile, exportProfile, importProfile, init, destroy, getKeyMatrixNomal, saveProfile, keySetToDefaultAll, refreshKeyMatrixData }
+  return { profile, state, keyMatrixLayer, keyClick, keyColor, isSelected, keybgColor, keyText, keySetToDefault, keySetMacro, mapping, isFunSelected, isMacroSelected, clickMacro, confirmSetMacro, setCombineKey, confirmSetCombineKey, getKeyMatrix, clickProfile, deleteProfile, onKeyDown, newProfile, handleEditClose, renameProfile, exportProfile, importProfile, init, destroy, getKeyMatrixNomal, saveProfile, keySetToDefaultAll, refreshKeyMatrixData, setToFactory }
 })

@@ -32,24 +32,25 @@
                         <!-- <div class="py-3 my-3 w-100 bg-warn-1 text-grey-1 text-center br-2 b-grey c-p but">
                             {{ $t("set.but_1") }}
                         </div>-->
-                        <div class="py-3 my-3 w-100 bg-warn-1 text-grey-1 text-center br-2 b-grey c-p but" @click="reSet = true">
+                        <div class="py-3 my-3 w-100 bg-warn-1 text-grey-1 text-center br-2 b-grey c-p but"
+                            @click="reSet = true">
                             {{ $t("set.but_2") }}
                         </div>
                         <!-- <div class="py-3 my-3 w-100 bg-warn-1 text-grey-1 text-center br-2 b-grey c-p but">
                             {{ $t("set.but_3") }}
                         </div> -->
                         <div class="py-3 my-3 w-100 bg-warn-1 text-grey-1 text-center br-2 b-grey c-p but"
-                            @click="updateVer" v-if="isDown">
-                            {{ $t("set.but_4") }}  cur:{{ ver }}
+                            @click="checkVer(true)" v-if="isDown">
+                            {{ $t("set.but_4") }} cur:{{ ver }}
                         </div>
                     </div>
                     <div class="mb-5"></div>
-                    <el-dialog v-model="reSet" title="重置键盘">
-                        <span>恢复出厂设置将清除所有数据，是否继续？</span>
+                    <el-dialog v-model="reSet" :title="$t('set.but_2')">
+                        <span>{{ $t("set.title_1") }}</span>
                         <template #footer>
                             <div class="d-flex jc-center">
-                                <el-button @click="setToFactory()">是</el-button>
-                                <el-button type="primary" @click="reSet = false">否</el-button>
+                                <el-button @click="setToFactory()">{{ $t("set.but_5") }}</el-button>
+                                <el-button type="primary" @click="reSet = false">{{ $t("set.but_6") }}</el-button>
                             </div>
                         </template>
                     </el-dialog>
@@ -78,11 +79,11 @@ import { useI18n } from 'vue-i18n';
 import axios from 'axios'
 import { ConnectionType } from '@/keyboard/enum'
 import { keyboard } from '@/keyboard/keyboard'
+import { ElMessage, ElMessageBox } from 'element-plus'
+import type { Action } from 'element-plus'
+
 // 解构出t方法
 const { t } = useI18n();
-
-const rk_l87 = ref<RK_L87>();
-
 const useLight = uselightStore();
 const useLocale = useLocaleStore();
 const { locale } = storeToRefs(useLocale);
@@ -95,19 +96,46 @@ const mode = ref(100);
 const layer = ref(0);
 const layerVal = ref([]);
 const ver = ref(keyboard.state.fwVersion);
+const version = ref(keyboard.state.fwVersion)
+const url = ref()
 
 const modeStr = computed(() => (mode.value >= 2 ? "set.mode_work" : "set.mode_game"))
 const isLayer = computed(() => (layerVal.value.find(value => value == t('set.layer_1'))))
 const isDown = computed(() => (useLight.connectType == ConnectionType.USB))
 
-const updateVer = () => {
+const getVer = () => {
+    if (!isDown)
+        return
     axios.get('/down/work/RKWEB/firmware/R87PRO/firmware.json').then(response => {
         // 请求成功处理
-        window.open(response.data.url, '_blank')// 新窗口打开外连接
+        version.value = response.data.version
+        url.value = response.data.url
+        checkVer()
     }).catch(error => {
         // 请求失败处理   
         console.error(error);
     });
+}
+const checkVer = (flag: boolean = false) => {
+    if (ver.value !== version.value) {
+        ElMessageBox.alert(`${t('set.title_3')}:${version.value}`, t('set.but_4'), {
+            confirmButtonText: 'OK',
+            callback: (action: Action) => {
+                if (action === 'confirm') {
+                    updateVer();
+                }
+            },
+        })
+    }
+    else if (flag == true) {
+        ElMessage({
+            type: 'info',
+            message: t("set.title_2"),
+        })
+    }
+}
+const updateVer = () => {
+    window.open(url.value, '_blank')// 新窗口打开外连接
 }
 
 const formatModeValue = (val: number) => {
@@ -118,9 +146,7 @@ const formatModeValue = (val: number) => {
 }
 onMounted(async () => {
     await useLight.init();
-    if (rk_l87.value == undefined) {
-        rk_l87.value = (keyboard.protocol as RK_L87);
-    }
+    getVer()
 });
 
 onBeforeUnmount(() => {
@@ -134,12 +160,7 @@ const LayerChanged = () => {
 }
 
 const setToFactory = () => {
-    if (rk_l87.value != undefined) {
-        keyboard.loadDefaultValue(keyboard.state.keyTableData, keyboard.state.lightInfo);
-        useKey.refreshKeyMatrixData();
-        rk_l87.value.setFactory();
-    }
-
+    useKey.setToFactory();
     reSet.value = false;
 }
 </script>

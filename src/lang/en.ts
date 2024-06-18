@@ -89,5 +89,10 @@ export default {
     but_2: "Restore Factory Settings",
     but_3: "Driver Update",
     but_4: "Firmware Update",
+    but_5: "Ok",
+    but_6: "Cancel",
+    title_1:"Restoring factory settings will clear all data. Do you want to continue?",
+    title_2:"It is already the latest version",
+    title_3:"New version detected",
   }
 };
