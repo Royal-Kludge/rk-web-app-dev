@@ -20,7 +20,7 @@ import { GetLedColorsPacket } from './packets/usb/getLedColorsPacket';
 import { SetLedColorsPacket } from './packets/usb/setLedColorsPacket';
 
 import { GetPasswordPacket } from './packets/usb/getPasswordPacket';
-
+import { SetFactoryPacket } from './packets/usb/setFactoryPacket';
 
 import { Macros } from './macros';
 import { RK_L87_USB_DEFINE } from '.';
@@ -184,10 +184,7 @@ export class RK_L87_Usb extends RK_L87 {
     }
 
     async setFactory(): Promise<void> {
-        let index: any;
-        for (index in RK_L87_USB_DEFINE.keyMatrixLayer) {
-            let layer = RK_L87_USB_DEFINE.keyMatrixLayer[index];
-            await this.setKeyMatrix(layer, MatrixTable.WIN, 0);
-        }
+        let packet = new SetFactoryPacket();
+        await this.setFeature(REPORT_ID_USB, packet.setReport);
     }
 }
