@@ -719,6 +719,8 @@ export const useKeyStore = defineStore('keyinfo', () => {
       keyboard.loadDefaultValue(keyboard.state.keyTableData, keyboard.state.lightInfo);
       refreshKeyMatrixData();
       rk_l87.value.setFactory();
+      storage.clear();
+      getProfiles();
     }
   }
 

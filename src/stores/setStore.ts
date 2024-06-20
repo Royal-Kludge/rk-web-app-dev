@@ -4,12 +4,12 @@ export const useSetStore = defineStore("setstore", {
     state: () => ({
         langList: [
             {
-                value: "zh",
-                label: "简体中文",
-            },
-            {
                 value: "en",
                 label: "English",
+            },
+            {
+                value: "cn",
+                label: "简体中文",
             },
             {
                 value: "tw",

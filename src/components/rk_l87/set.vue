@@ -41,10 +41,13 @@
                         </div> -->
                         <div class="py-3 my-3 w-100 bg-warn-1 text-grey-1 text-center br-2 b-grey c-p but"
                             @click="checkVer(true)" v-if="isDown">
-                            {{ $t("set.but_4") }} cur:{{ ver }}
+                            {{ $t("set.but_4") }} ↑<span class="text-red">{{ version }}</span>
+                        </div>
+                        <div class="w-100 text-grey-1 text-center">
+                            Version:{{ ver }}
                         </div>
                     </div>
-                    <div class="mb-5"></div>
+                    <div class="mb-1"></div>
                     <el-dialog v-model="reSet" :title="$t('set.but_2')">
                         <span>{{ $t("set.title_1") }}</span>
                         <template #footer>
@@ -101,10 +104,10 @@ const url = ref()
 
 const modeStr = computed(() => (mode.value >= 2 ? "set.mode_work" : "set.mode_game"))
 const isLayer = computed(() => (layerVal.value.find(value => value == t('set.layer_1'))))
-const isDown = computed(() => (useLight.connectType == ConnectionType.USB))
+const isDown = computed(() => (useLight.connectType == ConnectionType.USB && ver.value !== version.value))
 
 const getVer = () => {
-    if (!isDown)
+    if (useLight.connectType !== ConnectionType.USB)
         return
     axios.get('/down/work/RKWEB/firmware/R87PRO/firmware.json').then(response => {
         // 请求成功处理
@@ -127,12 +130,12 @@ const checkVer = (flag: boolean = false) => {
             },
         })
     }
-    else if (flag == true) {
-        ElMessage({
-            type: 'info',
-            message: t("set.title_2"),
-        })
-    }
+    // else if (flag == true) {
+    //     ElMessage({
+    //         type: 'info',
+    //         message: t("set.title_2"),
+    //     })
+    // }
 }
 const updateVer = () => {
     window.open(url.value, '_blank')// 新窗口打开外连接
@@ -147,7 +150,7 @@ const formatModeValue = (val: number) => {
 onMounted(async () => {
     await useLight.init();
     getVer()
-});
+    });
 
 onBeforeUnmount(() => {
     useLight.destroy();
