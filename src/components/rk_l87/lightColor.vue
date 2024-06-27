@@ -72,8 +72,7 @@
                                     </div>
                                 </div>
                                 <div>
-                                    <Picker @onpick="useLight.onPicking" @picked="useLight.onPicked"
-                                        :rgb="useLight.rgb" />
+                                    <Picker @onpick="onPicking" @picked="onPicked" :rgb="useLight.rgb" />
                                 </div>
                             </div>
                         </el-scrollbar>
@@ -87,17 +86,23 @@
 import Picker from '../picker.vue'
 import { uselightStore } from "@/stores/lightStore";
 import { LightEffectEnum } from '@/keyboard/enum'
-
-import { onMounted, onBeforeUnmount } from "vue";
+import { useKeyStore } from "@/stores/keyStore";
+import { type KeyState } from '@/keyboard/interface'
 
 const useLight = uselightStore();
+const useKey = useKeyStore();
 
-onMounted(async () => {
-    await useLight.init();
-});
-
-onBeforeUnmount(() => {
-    useLight.destroy();
-});
+const onPicking = () => {
+    let i: any;
+    for (i in useKey.state.keyState) {
+        if ((useKey.state.keyState as Array<KeyState>)[i].selected) {
+            useLight.onPicking(useLight.rgb.r, useLight.rgb.g, useLight.rgb.b, Number((useKey.state.keyState as Array<KeyState>)[i].index));
+        }
+    }
+}
+const onPicked = () => {
+    useLight.onPicked()
+    useKey.saveProfile()
+}
 </script>
 <style scoped lang="scss"></style>

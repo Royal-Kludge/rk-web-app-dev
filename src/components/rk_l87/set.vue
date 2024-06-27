@@ -41,7 +41,7 @@
                         </div> -->
                         <div class="py-3 my-3 w-100 bg-warn-1 text-grey-1 text-center br-2 b-grey c-p but"
                             @click="checkVer(true)" v-if="isDown">
-                            {{ $t("set.but_4") }} ↑<span class="text-red">{{ version }}</span>
+                            {{ $t("set.but_4") }}(<span>{{ VerTips }}</span>)
                         </div>
                         <div class="w-100 text-grey-1 text-center">
                             Version:{{ ver }}
@@ -104,7 +104,8 @@ const url = ref()
 
 const modeStr = computed(() => (mode.value >= 2 ? "set.mode_work" : "set.mode_game"))
 const isLayer = computed(() => (layerVal.value.find(value => value == t('set.layer_1'))))
-const isDown = computed(() => (useLight.connectType == ConnectionType.USB && ver.value !== version.value))
+const isDown = computed(() => (useLight.connectType == ConnectionType.USB))
+const VerTips = computed(() => (ver.value !== version.value ? t('set.title_3') + ':' + version.value : t('set.title_2')))
 
 const getVer = () => {
     if (useLight.connectType !== ConnectionType.USB)
@@ -130,14 +131,18 @@ const checkVer = (flag: boolean = false) => {
             },
         })
     }
-    // else if (flag == true) {
-    //     ElMessage({
-    //         type: 'info',
-    //         message: t("set.title_2"),
-    //     })
-    // }
+    else if (flag == true) {
+        ElMessage({
+            type: 'info',
+            message: t("set.title_2"),
+        })
+    }
 }
 const updateVer = () => {
+    ElMessage({
+        type: 'info',
+        message: t("set.title_4"),
+    })
     window.open(url.value, '_blank')// 新窗口打开外连接
 }
 
@@ -150,7 +155,7 @@ const formatModeValue = (val: number) => {
 onMounted(async () => {
     await useLight.init();
     getVer()
-    });
+});
 
 onBeforeUnmount(() => {
     useLight.destroy();

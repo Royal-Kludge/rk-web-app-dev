@@ -9,6 +9,7 @@ import { LightEffectEnum, KeyMatrixLayer, ConnectionType } from '../keyboard/enu
 import { type LedColor } from '@/keyboard/interface';
 import { KeyDefineEnum } from '@/keyboard/keyCode';
 import { type KeyTableData } from '@/keyboard/interface'
+import { ps } from '@/keyboard/rk_l87/profiles';
 
 export const uselightStore = defineStore('lightinfo', () => {
     const rgb = ref({ r: 0, g: 0, b: 0, color: '#000000' });
@@ -272,6 +273,9 @@ export const uselightStore = defineStore('lightinfo', () => {
             rk_l87.value.addEventListener(RK_L87_EVENT_DEFINE.OnProfileGotten, profileGotten, false);
             rk_l87.value.addEventListener(RK_L87_EVENT_DEFINE.OnLedEffectGotten, ledEffectGotten, false);
             rk_l87.value.addEventListener(RK_L87_EVENT_DEFINE.OnLedColorsGotten, ledColorsGotten, false);
+            profile.value = rk_l87.value.data.profile
+            ledEffect.value = rk_l87.value.data.ledEffect
+            ledColors.value = rk_l87.value.data.ledColors
         }
 
         if (profile.value == undefined) {
@@ -286,6 +290,25 @@ export const uselightStore = defineStore('lightinfo', () => {
             rk_l87.value.removeEventListener(RK_L87_EVENT_DEFINE.OnLedColorsGotten, ledColorsGotten, false);
         }
     };
+
+    const setProfile = () => {
+        if (profile.value != undefined) {
+            const dataView = new DataView(profile.value.buffer.buffer)
+            ps.initProfile(new Uint8Array(dataView.buffer, dataView.byteOffset, dataView.byteLength))
+        }
+    }
+    const setledEffect = () => {
+        if (ledEffect.value != undefined) {
+            const dataView = new DataView(ledEffect.value.buffer.buffer)
+            ps.initledEffect(new Uint8Array(dataView.buffer, dataView.byteOffset, dataView.byteLength))
+        }
+    }
+    const setledColors = () => {
+        if (ledColors.value != undefined) {
+            const dataView = new DataView(ledColors.value.buffer.buffer)
+            ps.initledColors(new Uint8Array(dataView.buffer, dataView.byteOffset, dataView.byteLength))
+        }
+    }
 
     const DebounceChanged = (mode: number) => {
         if (profile.value != undefined && rk_l87.value != undefined) {
@@ -308,15 +331,18 @@ export const uselightStore = defineStore('lightinfo', () => {
     const profileGotten = async (event: any) => {
         profile.value = event.detail as Profile;
         await rk_l87.value?.getLedEffect(profileIndex.value);
+        setProfile()
     };
 
     const ledEffectGotten = async (event: any) => {
         ledEffect.value = event.detail as LedEffect;
         await rk_l87.value?.getLedColors(profileIndex.value);
+        setledEffect()
     };
 
     const ledColorsGotten = (event: any) => {
         ledColors.value = event.detail as LedColors;
+        setledColors()
         refresh();
     };
 
@@ -335,7 +361,15 @@ export const uselightStore = defineStore('lightinfo', () => {
 
             state.lightProps.sleep = profile.value.getFieldValue(FieldEnum.SleepTime) == 0 ? 0 : (profile.value.getFieldValue(FieldEnum.SleepTime) * 30) / 60;
         }
-
+        if (state.lightProps.light == LightEffectEnum.SelfDefine) {
+            if (ledColors.value != undefined) {
+                rk_l87.value?.setLedColors(profileIndex.value);
+            }
+        } else if (state.lightProps.light != LightEffectEnum.OFF && state.lightProps.light != LightEffectEnum.Music) {
+            if (ledEffect.value != undefined) {
+                rk_l87.value?.setLedEffect(profileIndex.value);
+            }
+        }
         if (ledColors.value != undefined) {
             let index: number;
             for (index = 0; index < state.keyColors.length; index++) {
@@ -463,5 +497,5 @@ export const uselightStore = defineStore('lightinfo', () => {
     const keyTextColor = (index: number): string => {
         return state.keyColors[index];
     };
-    return { connectType, state, rgb, ligtChanged, onPicking, onPicked, selectd, lightClick, selectdCustom, keyChanged, keyTextColor, init, destroy, SelfDefineDefault, setLayer, DebounceChanged, SelfDefineDefaultAll }
+    return { connectType, state, rgb, ligtChanged, onPicking, onPicked, selectd, lightClick, selectdCustom, keyChanged, keyTextColor, init, destroy, SelfDefineDefault, setLayer, DebounceChanged, SelfDefineDefaultAll, refresh }
 })

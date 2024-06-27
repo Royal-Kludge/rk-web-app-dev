@@ -2,7 +2,8 @@
     <div class="d-flex jc-center ai-center">
         <div v-if="isMin" class="fs-big">Not enough space to display keyboard</div>
         <div v-else>
-            <div class="d-flex flex-column bg-white p-3" style="border-radius: 15px" @contextmenu.prevent>
+            <div class="keybox d-flex flex-column bg-white p-3" style="border-radius: 15px;position: relative;"
+                @contextmenu.prevent @mousedown="handleMouseDown">
                 <div class="d-flex" v-for="line in useKey.state.keyMatrix" :class="[`${line.style}`]">
                     <el-dropdown :id="`key${key.index}`" trigger="contextmenu" ref="keyMapping"
                         @visible-change="handleOpen($event, `key${key.index}`)" v-for="key in line.keys"
@@ -28,13 +29,16 @@
                             </el-dropdown-menu>
                         </template>
                     </el-dropdown>
-                    <div @click="keyClick(key.index)" class="d-flex ai-center jc-center c-p"
+                    <div :i="key.index" class="item d-flex ai-center jc-center c-p"
                         :class="[`d-flex p-2 pl-3 ${key.style}`, useKey.keyColor(key.keyData), useKey.isSelected(key.index)]"
                         v-for="key in line.keys" v-else>
                         <div :class="[`text-white-1`, keyTextColorClass(key.keyData)]"
                             :style="`word-wrap: break-word;overflow: hidden;text-align: center;${keyTextColorStyle(key.keyData)}`">
                             {{ useKey.keyText(key.keyData) }}
                         </div>
+                    </div>
+                    <div :style="'width:' + mask_width + 'left:' + mask_left + 'height:' + mask_height + 'top:' + mask_top"
+                        class="mask">
                     </div>
                 </div>
                 <el-dialog v-model="useKey.state.macroDialogShow" top="10vh" width="680px"
@@ -107,10 +111,12 @@
 import { useKeyStore } from "@/stores/keyStore";
 import { useMenuStore } from "../../stores/menuStore";
 import { uselightStore } from "@/stores/lightStore";
-import { ref, onMounted, onBeforeUnmount, watch } from 'vue';
+import { ref, onMounted, onBeforeUnmount, watch, reactive, computed } from 'vue';
 import type { DropdownInstance } from 'element-plus'
 import { storeToRefs } from "pinia";
 import type { KeyTableData } from "@/keyboard/interface";
+import { LightEffectEnum } from '@/keyboard/enum'
+import type { NativePropType } from "element-plus/es/utils/index.mjs";
 
 const useMenu = useMenuStore();
 const { meunid } = storeToRefs(useMenu);
@@ -121,6 +127,21 @@ const screenWidth = ref(0);
 const isMin = ref(false);
 
 const keyMapping = ref<any>(null);
+
+const positionList = reactive({
+    is_show_mask: false,
+    box_screen_left: 0, // 盒子距离浏览器左侧的距离
+    box_screen_top: 0, // 盒子距离浏览器顶部的距离
+    start_x: 0,
+    start_y: 0,
+    end_x: 0,
+    end_y: 0
+})
+
+const mask_width = computed(() => (`${Math.abs(positionList.end_x - positionList.start_x)}px;`))
+const mask_height = computed(() => (`${Math.abs(positionList.end_y - positionList.start_y)}px;`))
+const mask_left = computed(() => (`${Math.min(positionList.start_x, positionList.end_x) - positionList.box_screen_left}px;`))
+const mask_top = computed(() => (`${Math.min(positionList.start_y, positionList.end_y) - positionList.box_screen_top}px;`))
 
 onMounted(async () => {
     await useKey.init();
@@ -148,6 +169,56 @@ watch(
         deep: true,
     }
 );
+const handleMouseDown = (event: any) => {
+    // 0 左键 2 右键
+    //console.log(event.button)    
+    positionList.is_show_mask = true
+    positionList.start_x = event.clientX
+    positionList.start_y = event.clientY
+    positionList.end_x = event.clientX
+    positionList.end_y = event.clientY
+    positionList.box_screen_left = document.querySelector('.keybox')?.getBoundingClientRect().left as number
+    positionList.box_screen_top = document.querySelector('.keybox')?.getBoundingClientRect().top as number
+    document.body.addEventListener('mousemove', handleMouseMove) // 监听鼠标移动事件
+    document.body.addEventListener('mouseup', handleMouseUp) // 监听鼠标抬起事件    
+}
+const handleMouseMove = (event: any) => {
+    useKey.unSelected()
+    positionList.end_x = event.clientX
+    positionList.end_y = event.clientY
+}
+const handleMouseUp = (event: any) => {
+    document.body.removeEventListener('mousemove', handleMouseMove)
+    document.body.removeEventListener('mouseup', handleMouseUp)
+    positionList.is_show_mask = false
+    handleDomSelect()
+    resSetXY()
+}
+const handleDomSelect = () => {
+    const dom_mask = window.document.querySelector('.mask')
+    const rect_select = dom_mask?.getClientRects()[0]
+    document.querySelectorAll('.item').forEach((node, index) => {
+        const rects = node.getClientRects()[0]
+        if (collide(rects, rect_select) === true) {
+            const i = node.getAttribute('i')
+            keyClick(Number(i))
+        }
+    })
+}
+const collide = (rect1: any, rect2: any) => {
+    const maxX = Math.max(rect1.x + rect1.width, rect2.x + rect2.width)
+    const maxY = Math.max(rect1.y + rect1.height, rect2.y + rect2.height)
+    const minX = Math.min(rect1.x, rect2.x)
+    const minY = Math.min(rect1.y, rect2.y)
+    return maxX - minX <= rect1.width + rect2.width && maxY - minY <= rect1.height + rect2.height
+}
+const resSetXY = () => {
+    positionList.start_x = 0
+    positionList.start_y = 0
+    positionList.end_x = 0
+    positionList.end_y = 0
+}
+
 const keySetToDefault = (Index: number) => {
     useKey.keySetToDefault(Index);
     useKey.saveProfile();
@@ -164,10 +235,13 @@ const handleOpen = (e: boolean, id: string) => {
     }
 };
 
-const keyClick = (index: number) => {
-    useKey.keyClick(index);
-    useLight.keyChanged(index);
-    useLight.SelfDefineDefault();
+const keyClick = async (index: number) => {
+    useKey.keyClick(index, meunid.value == 3);
+    if (meunid.value == 3) {
+        useLight.keyChanged(index);
+        useLight.SelfDefineDefault();
+        await useKey.saveProfile();
+    }
 }
 
 const keyTextColorClass = (key: KeyTableData | undefined): string => {
@@ -186,7 +260,9 @@ const keyTextColorStyle = (key: KeyTableData | undefined): string => {
     switch (meunid.value) {
         case 3:
             if (key != undefined) {
-                color = `color: ${useLight.keyTextColor(key.index)};`;
+                color = `color:rgb(0, 0, 0);`;
+                if (useLight.state.lightProps.light == LightEffectEnum.SelfDefine)
+                    color = `color: ${useLight.keyTextColor(key.index)};`;
             }
             break;
     }
@@ -205,6 +281,25 @@ const dialogClosed = () => {
 
 </script>
 <style scoped lang="scss">
+* {
+    -webkit-user-select: none;
+    /* Safari */
+    -moz-user-select: none;
+    /* Firefox */
+    -ms-user-select: none;
+    /* IE10+/Edge */
+    user-select: none;
+    /* Standard syntax */
+}
+
+.mask {
+    position: absolute;
+    background: #4743A7;
+    opacity: 0.1;
+    border: 1px dashed #000;
+    pointer-events: none;
+}
+
 :deep {
     .el-dialog__body {
         padding: 0px !important;
@@ -221,6 +316,11 @@ const dialogClosed = () => {
 
 .selected {
     background-color: #4743A7 !important;
+}
+
+.key:hover {
+    background: #4743A7;
+    opacity: 0.8;
 }
 
 .key {

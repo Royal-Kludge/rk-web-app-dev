@@ -8,7 +8,7 @@
                         <div style="padding-left: 16%" v-for="item in useKey.state.profiles?.get()"
                             class="module_box d-flex p-3 my-2 text-grey-1 jc-between"
                             :class="{ 'module_active': item.index === useKey.profile?.index }"
-                            @click="useKey.clickProfile(item)">
+                            @click="clickProfile(item)">
                             <div class="d-flex">
                                 <span class="pr-4 d-flex ai-center">
                                     <img src="../../assets/images/dot.png" />
@@ -69,9 +69,15 @@
 <script setup lang="ts">
 import { useKeyStore } from "@/stores/keyStore";
 import type { UploadProps } from 'element-plus'
-import { ElMessage } from 'element-plus'
+import { uselightStore } from "@/stores/lightStore";
+import { Profile } from '@/keyboard/rk_l87/profiles';
 
 const useKey = useKeyStore();
+const useLight = uselightStore();
+const clickProfile = async (obj: Profile) => {
+    await useKey.clickProfile(obj)
+    useLight.refresh()
+}
 
 const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
     console.log(rawFile)

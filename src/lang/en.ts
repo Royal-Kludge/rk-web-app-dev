@@ -91,8 +91,9 @@ export default {
     but_4: "Firmware Update",
     but_5: "Ok",
     but_6: "Cancel",
-    title_1:"Restoring factory settings will clear all data. Do you want to continue?",
-    title_2:"It is already the latest version",
-    title_3:"New version detected",
+    title_1: "Restoring factory settings will clear all data. Do you want to continue?",
+    title_2: "No update required",
+    title_3: "Update Version",
+    title_4: "Downloading",
   }
 };

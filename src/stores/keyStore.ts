@@ -3,30 +3,27 @@ import { reactive, ref } from 'vue';
 import { keyboard } from '../keyboard/keyboard'
 import { RK_L87, RK_L87_EVENT_DEFINE } from '../keyboard/rk_l87/rk_l87';
 import { KeyDefineEnum } from '../keyboard/keyCode'
-import { type KeyMappingData, type KeyTableData } from '../keyboard/interface'
+import { type KeyMappingData, type KeyTableData, type KeyState } from '../keyboard/interface'
 import { KeyMappingType, KeyMatrixLayer } from '../keyboard/enum'
 import { KeyMatrix, MatrixTable } from '@/keyboard/rk_l87/keyMatrix';
 import { Action, Macro, Macros } from '@/keyboard/rk_l87/macros';
-import { Profile, Profiles } from '@/keyboard/rk_l87/profiles';
+import { Profile, ps } from '@/keyboard/rk_l87/profiles';
 import { KeyCodeMap } from '@/keyboard/keyCode'
 import fileSaver from "file-saver";
 import { ElMessage } from 'element-plus'
 
 import { storage } from '@/keyboard/storage';
-export const useKeyStore = defineStore('keyinfo', () => {
-  interface KeyState {
-    index: number,
-    selected: boolean,
-    KeyData: KeyTableData
-  }
+import { Profile as KeyProfile } from '@/keyboard/rk_l87/profile';
+import { LedEffect } from '@/keyboard/rk_l87/ledEffect';
+import { LedColors } from '@/keyboard/rk_l87/ledColors';
 
+export const useKeyStore = defineStore('keyinfo', () => {
   const rk_l87 = ref<RK_L87>();
   //const keyMatrix = ref<KeyMatrix>();
 
   const macros = ref<Macros>();
   const macro = ref<Macro>();
   const keyState = ref<KeyState>();
-  const profiles = ref<Profiles>();
   const profile = ref<Profile>();
   const keyMatrixLayer = ref<KeyMatrixLayer>(KeyMatrixLayer.Nomal);
 
@@ -52,8 +49,7 @@ export const useKeyStore = defineStore('keyinfo', () => {
   const state = reactive({
     name: '',
     nameEditorDisplay: false,
-    profiles: profiles,
-    profile: profile,
+    profiles: ps,
     //MatrixLayer: keyMatrixLayer.value,
     MatrixLayers: [
       { value: KeyMatrixLayer.Nomal, label: 'key.layer_1' },
@@ -473,13 +469,14 @@ export const useKeyStore = defineStore('keyinfo', () => {
         ElMessage.error('Error parsing JSON data')
       }
       else {
-        if (profiles.value != undefined) {
-          let tm = new Profile(p.name)
-          tm.layers = p.layers
-          profile.value = tm;
-          profiles.value.add(profile.value);
-          saveProfile()
-        }
+        let tm = new Profile(p.name)
+        tm.layers = p.layers
+        tm.profile = p.profile
+        tm.ledEffect = p.ledEffect
+        tm.ledColors = p.ledColors
+        profile.value = tm;
+        ps.add(profile.value);
+        saveProfile()
       }
       // 成功解析后的代码
     } catch (e) {
@@ -494,11 +491,9 @@ export const useKeyStore = defineStore('keyinfo', () => {
   };
 
   const renameProfile = (obj: Profile) => {
-    if (profiles.value != undefined) {
-      profile.value = obj;
-      state.name = obj.name;
-      state.nameEditorDisplay = true;
-    }
+    profile.value = obj;
+    state.name = obj.name;
+    state.nameEditorDisplay = true;
   };
 
   const handleEditClose = (done: () => void) => {
@@ -510,60 +505,32 @@ export const useKeyStore = defineStore('keyinfo', () => {
   };
   const getProfiles = () => {
     if (rk_l87.value != undefined) {
-      let tmp = storage.get('profile') as Profiles;
-      if (profiles != undefined && tmp != null && tmp.list.length > 0) {
-        let ps = new Profiles();
-        for (let m of tmp.list) {
-          let tm = new Profile(m.name)
-          tm.layers = m.layers
-          ps.add(tm);
+      ps.init()
+      profile.value = ps.get()[0];
+      if (keyboard.keyboardDefine != undefined) {
+        let index: any;
+        for (index in keyboard.keyboardDefine.keyMatrixLayer) {
+          let layer = keyboard.keyboardDefine.keyMatrixLayer[index];
+          rk_l87.value.data.keyMatrixs[layer] = new KeyMatrix(new DataView(new Uint8Array(Object.values(profile.value.get(layer))).buffer));
         }
-        profiles.value = ps;
-        profile.value = profiles.value.get()[0];
-        if (keyboard.keyboardDefine != undefined) {
-          let index: any;
-          for (index in keyboard.keyboardDefine.keyMatrixLayer) {
-            let layer = keyboard.keyboardDefine.keyMatrixLayer[index];
-            rk_l87.value.data.keyMatrixs[layer] = new KeyMatrix(new DataView(new Uint8Array(Object.values(profile.value.get(layer))).buffer));
-          }
-        }
-        KeyMatrixData.value = rk_l87.value.data.keyMatrixs;
-      } else {
-        let ps = new Profiles();
-        for (let i = 0; i < 3; i++) {
-          let tm = new Profile('profile' + (i + 1));
-          if (keyboard.keyboardDefine != undefined) {
-            let index: any;
-            for (index in keyboard.keyboardDefine.keyMatrixLayer) {
-              let layer = keyboard.keyboardDefine.keyMatrixLayer[index];
-              tm.add(layer, new Uint8Array(512))
-              let keyDatas = new KeyMatrix(new DataView(tm.layers[layer].buffer));
-              let layout = keyboard.keyboardDefine?.keyLayout[layer];
-              if (layout != undefined) {
-                for (let j = 0; j < layout.length; j++) {
-                  keyDatas.setKeyMappingRaw(j, layout[j]);
-                }
-              }
-              if (i == 0) {
-                rk_l87.value.data.keyMatrixs[layer] = keyDatas;
-              }
-            }
-          }
-          ps.add(tm);
-        }
-
-        KeyMatrixData.value = rk_l87.value.data.keyMatrixs;
-        profiles.value = ps;
-        profile.value = profiles.value.get()[0];
-        saveProfile();
       }
+      if (profile.value.profile != undefined && rk_l87.value.data.profile != undefined) {
+        rk_l87.value.data.profile.buffer = new DataView(new Uint8Array(Object.values(profile.value.profile)).buffer);
+      }
+      if (profile.value.ledEffect != undefined && rk_l87.value.data.ledEffect != undefined) {
+        rk_l87.value.data.ledEffect.buffer = new DataView(new Uint8Array(Object.values(profile.value.ledEffect)).buffer);
+      }
+      if (profile.value.ledColors != undefined && rk_l87.value.data.ledColors != undefined) {
+        rk_l87.value.data.ledColors.buffer = new DataView(new Uint8Array(Object.values(profile.value.ledColors)).buffer);
+      }
+      KeyMatrixData.value = rk_l87.value.data.keyMatrixs;
     }
     refresh();
   }
 
   const clickProfile = async (obj: Profile) => {
     keyMatrixLayer.value = KeyMatrixLayer.Nomal
-    profile.value = obj;
+    profile.value = ps.find(obj);
     if (profile.value != undefined && keyboard.keyboardDefine != undefined) {
       let index: any;
       for (index in keyboard.keyboardDefine.keyMatrixLayer) {
@@ -573,18 +540,27 @@ export const useKeyStore = defineStore('keyinfo', () => {
       }
       refresh()
     }
+
+    if (profile.value?.profile != undefined && rk_l87.value != undefined && rk_l87.value.data.profile != undefined) {
+      rk_l87.value.data.profile.buffer = new DataView(new Uint8Array(Object.values(profile.value.profile)).buffer);
+    }
+    if (profile.value?.ledEffect != undefined && rk_l87.value != undefined && rk_l87.value.data.ledEffect != undefined) {
+      rk_l87.value.data.ledEffect.buffer = new DataView(new Uint8Array(Object.values(profile.value.ledEffect)).buffer);
+    }
+    if (profile.value?.ledColors != undefined && rk_l87.value != undefined && rk_l87.value.data.ledColors != null) {
+      rk_l87.value.data.ledColors.buffer = new DataView(new Uint8Array(Object.values(profile.value?.ledColors)).buffer);
+    }
+
     unSelected();
   }
   const deleteProfile = (obj: Profile) => {
-    if (profiles.value != undefined) {
-      profiles.value.remove(obj);
-      if (profiles.value.get().length > 0) {
-        profile.value = profiles.value.get()[0];
-      } else {
-        profile.value = undefined;
-      }
-      saveProfile();
+    ps.remove(obj);
+    if (ps.get().length > 0) {
+      profile.value = ps.get()[0];
+    } else {
+      profile.value = undefined;
     }
+    saveProfile();
   };
   const saveProfile = () => {
     if (profile.value != undefined) {
@@ -592,28 +568,37 @@ export const useKeyStore = defineStore('keyinfo', () => {
       profile.value.add(keyMatrixLayer.value, new Uint8Array(dataView.buffer, dataView.byteOffset, dataView.byteLength));
       refresh()
     }
-    if (profiles.value != undefined) {
-      storage.set('profile', profiles.value);
+    if (rk_l87.value?.data.profile != undefined) {
+      const dataView = new DataView(rk_l87.value?.data.profile.buffer.buffer)
+      profile.value?.setProfile(new Uint8Array(dataView.buffer, dataView.byteOffset, dataView.byteLength))
     }
+    if (rk_l87.value?.data.ledEffect != undefined) {
+      const dataView = new DataView(rk_l87.value?.data.ledEffect.buffer.buffer)
+      profile.value?.setledEffect(new Uint8Array(dataView.buffer, dataView.byteOffset, dataView.byteLength))
+
+    }
+    if (rk_l87.value?.data.ledColors != undefined) {
+      const dataView = new DataView(rk_l87.value?.data.ledColors.buffer.buffer)
+      profile.value?.setledColors(new Uint8Array(dataView.buffer, dataView.byteOffset, dataView.byteLength))
+    }
+    ps.save()
   }
   const newProfile = () => {
-    if (profiles.value != undefined) {
-      let tm = new Profile(`profile ${profiles.value.get().length + 1}`);
-      let layer: any;
-      for (layer in keyboard.keyboardDefine?.keyLayout) {
-        tm.add(layer, new Uint8Array(512))
-        KeyMatrixData.value[layer] = new KeyMatrix(new DataView(tm.layers[layer].buffer));
-        let layout = keyboard.keyboardDefine?.keyLayout[layer];
-        if (layout != undefined) {
-          for (let j = 0; j < layout.length; j++) {
-            KeyMatrixData.value[layer].setKeyMappingRaw(j, layout[j]);
-          }
+    let tm = new Profile(`profile ${ps.get().length + 1}`);
+    let layer: any;
+    for (layer in keyboard.keyboardDefine?.keyLayout) {
+      tm.add(layer, new Uint8Array(512))
+      KeyMatrixData.value[layer].buffer = new DataView(tm.layers[layer].buffer);
+      let layout = keyboard.keyboardDefine?.keyLayout[layer];
+      if (layout != undefined) {
+        for (let j = 0; j < layout.length; j++) {
+          KeyMatrixData.value[layer].setKeyMappingRaw(j, layout[j]);
         }
       }
-      profile.value = tm;
-      profiles.value.add(profile.value);
-      saveProfile()
     }
+    profile.value = tm;
+    ps.add(profile.value);
+    saveProfile()
   };
 
   const getKeyMatrixNomal = () => {
@@ -794,10 +779,11 @@ export const useKeyStore = defineStore('keyinfo', () => {
     return !(state.keyState as Array<KeyState>)[index].selected ? '' : 'selected';
   }
 
-  const keyClick = (index: number) => {
+  const keyClick = (index: number, multi: boolean = false) => {
     if (state.keyState.length <= 0 || index >= 999) return '';
     let v = !(state.keyState as Array<KeyState>)[index].selected;
-    unSelected();
+    if (!multi)
+      unSelected();
     (state.keyState as Array<KeyState>)[index].selected = v;
   }
   const unSelected = (): void => {
@@ -964,5 +950,5 @@ export const useKeyStore = defineStore('keyinfo', () => {
 
     state.combineKeyDialogShow = false;
   }
-  return { profile, state, keyMatrixLayer, keyClick, keyColor, isSelected, keybgColor, keyText, keySetToDefault, keySetMacro, mapping, isFunSelected, isMacroSelected, clickMacro, confirmSetMacro, setCombineKey, confirmSetCombineKey, getKeyMatrix, clickProfile, deleteProfile, onKeyDown, newProfile, handleEditClose, renameProfile, exportProfile, importProfile, init, destroy, getKeyMatrixNomal, saveProfile, keySetToDefaultAll, refreshKeyMatrixData, setToFactory }
+  return { profile, state, keyMatrixLayer, keyClick, keyColor, isSelected, keybgColor, keyText, keySetToDefault, keySetMacro, mapping, isFunSelected, isMacroSelected, clickMacro, confirmSetMacro, setCombineKey, confirmSetCombineKey, getKeyMatrix, clickProfile, deleteProfile, onKeyDown, newProfile, handleEditClose, renameProfile, exportProfile, importProfile, init, destroy, getKeyMatrixNomal, saveProfile, keySetToDefaultAll, refreshKeyMatrixData, setToFactory, unSelected }
 })

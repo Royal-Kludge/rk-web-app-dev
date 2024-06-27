@@ -1,6 +1,11 @@
 import { KeyDefineEnum } from "./keyCode"
 import { ConnectionType, ConnectionEventEnum, ConnectionStatusEnum, KeyMappingType, KeyMatrixLayer } from "./enum"
 
+export interface KeyState {
+    index: number,
+    selected: boolean,
+    KeyData: KeyTableData
+  }
 /**
  * Keyboard State
  * 

@@ -47,14 +47,6 @@ const useKey = useKeyStore();
 const useLight = uselightStore();
 
 onMounted(async () => {
-    await useKey.init();
     await useKey.getKeyMatrixNomal()
-    await useLight.init();
 });
-
-onBeforeUnmount(() => {
-    useKey.destroy();
-    useLight.destroy();
-});
-
 </script>
