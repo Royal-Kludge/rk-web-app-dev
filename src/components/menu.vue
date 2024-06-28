@@ -5,12 +5,12 @@
         <img src="../assets/images/menu/home.png" />
       </div>
       <div v-for="item in menuList" class="box p-4" :class="{ active: item.id === meunid }"
-        @click="useMenu.setMeunid(item.id)">
+        @click="onMenuClick(item.id)">
         <img :src="item.src" />
       </div>
     </div>
     <div>
-      <div class="box p-4" :class="{ active: 5 === meunid }" @click="useMenu.setMeunid(5)">
+      <div class="box p-4" :class="{ active: 5 === meunid }" @click="onMenuClick(5)">
         <img src="../assets/images/menu/exit.png" />
       </div>
     </div>
@@ -20,14 +20,21 @@
 import { useMenuStore } from "../stores/menuStore";
 import { storeToRefs } from "pinia";
 import { onMounted } from "vue";
+import { useKeyStore } from "@/stores/keyStore";
 import { keyboard } from "../keyboard/keyboard";
 
+const useKey = useKeyStore();
 const useMenu = useMenuStore();
 const { meunid, menuList } = storeToRefs(useMenu);
 // 页面加载时
 onMounted(() => {
   useMenu.setMeunid(meunid.value);
 });
+
+const onMenuClick = async (id: any) => {
+    useKey.unSelected();
+    useMenu.setMeunid(id)
+}
 
 const disconnect = () => {
   keyboard.close();

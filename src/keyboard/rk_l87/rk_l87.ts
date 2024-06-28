@@ -105,13 +105,13 @@ export abstract class RK_L87 extends Protocol {
     }
 
     async setFeature(reportId: number, data: Uint8Array): Promise<void> {
-        console.log(`SetFeature [${data.byteLength}] bytes -> ${data.toString()}`);
         await this.device.sendFeatureReport(reportId, data);
+        console.log(`SetFeature [${data.byteLength}] bytes -> ${data.toString()}`);
     }
 
     async setReport(reportId: number, data: Uint8Array): Promise<void> {
-        console.log(`SetReport [${data.byteLength}] bytes -> ${data.toString()}`);
         await this.device.sendReport(reportId, data);
+        console.log(`SetReport [${data.byteLength}] bytes -> ${data.toString()}`);
     }
 
     private async processKeyboardReport(report: HIDInputReportEvent) {

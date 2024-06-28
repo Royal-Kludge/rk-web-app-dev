@@ -705,7 +705,7 @@ export const useKeyStore = defineStore('keyinfo', () => {
       refreshKeyMatrixData();
       rk_l87.value.setFactory();
       storage.clear();
-      getProfiles();
+      //getProfiles();
     }
   }
 
@@ -779,11 +779,10 @@ export const useKeyStore = defineStore('keyinfo', () => {
     return !(state.keyState as Array<KeyState>)[index].selected ? '' : 'selected';
   }
 
-  const keyClick = (index: number, multi: boolean = false) => {
+  const keyClick = (index: number) => {
     if (state.keyState.length <= 0 || index >= 999) return '';
     let v = !(state.keyState as Array<KeyState>)[index].selected;
-    if (!multi)
-      unSelected();
+    //  unSelected();
     (state.keyState as Array<KeyState>)[index].selected = v;
   }
   const unSelected = (): void => {

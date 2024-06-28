@@ -93,15 +93,19 @@ const useLight = uselightStore();
 const useKey = useKeyStore();
 
 const onPicking = () => {
-    let i: any;
-    for (i in useKey.state.keyState) {
-        if ((useKey.state.keyState as Array<KeyState>)[i].selected) {
-            useLight.onPicking(useLight.rgb.r, useLight.rgb.g, useLight.rgb.b, Number((useKey.state.keyState as Array<KeyState>)[i].index));
+    if (useLight.state.lightProps.light == LightEffectEnum.SelfDefine) {
+        let i: any;
+        for (i in useKey.state.keyState) {
+            if ((useKey.state.keyState as Array<KeyState>)[i].selected) {
+                useLight.onPicking(useLight.rgb.r, useLight.rgb.g, useLight.rgb.b, Number((useKey.state.keyState as Array<KeyState>)[i].index));
+            }
         }
+    } else {
+        useLight.onPicking(useLight.rgb.r, useLight.rgb.g, useLight.rgb.b, 0);
     }
 }
-const onPicked = () => {
-    useLight.onPicked()
+const onPicked = async () => {
+    await useLight.onPicked()
     useKey.saveProfile()
 }
 </script>

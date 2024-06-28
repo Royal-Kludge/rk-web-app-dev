@@ -154,12 +154,12 @@ export default {
       let s = parseFloat(((x / panelWidth) * 100).toFixed(2));
       let v = parseFloat(((-(y - panelHeight) / panelHeight) * 100).toFixed(2));
       let rgbArr = convert.hsv.rgb(h, s, v);
-      this.$emit('onpick', rgbArr[0], rgbArr[1], rgbArr[2])
-      this.cursorPosition.x = x;
-      this.cursorPosition.y = y;
       this.cursorPosition.rgb.r = rgbArr[0];
       this.cursorPosition.rgb.g = rgbArr[1];
       this.cursorPosition.rgb.b = rgbArr[2];
+      this.$emit('onpick', rgbArr[0], rgbArr[1], rgbArr[2])
+      this.cursorPosition.x = x;
+      this.cursorPosition.y = y;
       let r = this.cursorPosition.rgb.r.toString(16).toUpperCase().padStart(2, '0');
       let g = this.cursorPosition.rgb.g.toString(16).toUpperCase().padStart(2, '0');
       let b = this.cursorPosition.rgb.b.toString(16).toUpperCase().padStart(2, '0');

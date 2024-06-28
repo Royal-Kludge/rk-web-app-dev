@@ -8,7 +8,7 @@
                         <el-scrollbar>
                             <div style="padding-left: 16%" v-for="item in useLight.state.lightEffects"
                                 class="module_box d-flex p-3 my-2 text-grey-1 jc-between"
-                                :class="[useLight.selectd(item.light)]" @click="useLight.lightClick(item.light)">
+                                :class="[useLight.selectd(item.light)]" @click="onLightClick(item.light)">
                                 <div class="d-flex">
                                     <span class="pr-4 d-flex ai-center">
                                         <img src="../../assets/images/dot.png" />
@@ -49,4 +49,9 @@ const useLight = uselightStore();
 onMounted(async () => {
     await useKey.getKeyMatrixNomal()
 });
+
+const onLightClick = async (light: any) => {
+    useKey.unSelected();
+    useLight.lightClick(light);
+}
 </script>

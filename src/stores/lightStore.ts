@@ -340,13 +340,13 @@ export const uselightStore = defineStore('lightinfo', () => {
         setledEffect()
     };
 
-    const ledColorsGotten = (event: any) => {
+    const ledColorsGotten = async (event: any) => {
         ledColors.value = event.detail as LedColors;
         setledColors()
-        refresh();
+        await refresh();
     };
 
-    const refresh = () => {
+    const refresh = async () => {
         if (profile.value != undefined) {
             state.lightProps.light = profile.value.getFieldValue(FieldEnum.LedMode);
             let ledParam = profile.value.getLedParam(state.lightProps.light);
@@ -361,6 +361,7 @@ export const uselightStore = defineStore('lightinfo', () => {
 
             state.lightProps.sleep = profile.value.getFieldValue(FieldEnum.SleepTime) == 0 ? 0 : (profile.value.getFieldValue(FieldEnum.SleepTime) * 30) / 60;
         }
+
         if (state.lightProps.light == LightEffectEnum.SelfDefine) {
             if (ledColors.value != undefined) {
                 rk_l87.value?.setLedColors(profileIndex.value);
@@ -370,6 +371,7 @@ export const uselightStore = defineStore('lightinfo', () => {
                 rk_l87.value?.setLedEffect(profileIndex.value);
             }
         }
+
         if (ledColors.value != undefined) {
             let index: number;
             for (index = 0; index < state.keyColors.length; index++) {
@@ -445,28 +447,28 @@ export const uselightStore = defineStore('lightinfo', () => {
             ledEffect.value?.setLedColor(state.lightProps.light, color);
         }
     };
-    const onPicked = () => {
+    const onPicked = async () => {
         if (rk_l87.value != undefined) {
             if (state.lightProps.light == LightEffectEnum.SelfDefine) {
                 if (ledColors.value != undefined) {
-                    rk_l87.value.setLedColors(profileIndex.value);
+                    await rk_l87.value.setLedColors(profileIndex.value);
                 }
             } else if (state.lightProps.light != LightEffectEnum.OFF && state.lightProps.light != LightEffectEnum.Music) {
                 if (ledEffect.value != undefined) {
-                    rk_l87.value.setLedEffect(profileIndex.value);
+                    await rk_l87.value.setLedEffect(profileIndex.value);
                 }
             }
-            refresh();
+            await refresh();
         }
     };
-    const lightClick = (light: LightEffectEnum) => {
+    const lightClick = async (light: LightEffectEnum) => {
         if (profile.value != undefined && rk_l87.value != undefined) {
             state.lightProps.light = light;
             // 0x01: Gaming
             profile.value.setFieldValue(FieldEnum.LedModeSelection, (light == LightEffectEnum.SelfDefine) ? 0x01 : 0x00);
             profile.value.setFieldValue(FieldEnum.LedMode, light);
-            rk_l87.value.setProfile(profileIndex.value);
-            refresh();
+            await rk_l87.value.setProfile(profileIndex.value);
+            await refresh();
         }
     };
 
