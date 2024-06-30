@@ -1,7 +1,7 @@
 import type { IPacket } from "@/keyboard/interface";
 import { PROFILE_LENGTH } from "@/keyboard/rk_l87/packets/packet";
 import { Packet_Dongle_Get } from "@/keyboard/rk_l87/packets/dongle/getPacket";
-import { Profile } from "../../profile";
+import { BoardProfile } from "../../boardProfile";
 
 export class GetProfilePacket extends Packet_Dongle_Get {
 
@@ -16,8 +16,8 @@ export class GetProfilePacket extends Packet_Dongle_Get {
             if (this.buffer != undefined) {
                 this.getReport = new DataView(this.buffer.buffer);
                 if (this.getReport.byteLength >= PROFILE_LENGTH) {
-                    let profile = Profile.fromReportData(this.getReport);
-                    this.dispatchEvent(new CustomEvent('onReportDataRecvied', { detail: profile }));
+                    let boardProfile = BoardProfile.fromReportData(this.getReport);
+                    this.dispatchEvent(new CustomEvent('onReportDataRecvied', { detail: boardProfile }));
                 }
             }
         }

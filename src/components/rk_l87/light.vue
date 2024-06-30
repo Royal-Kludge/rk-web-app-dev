@@ -52,6 +52,7 @@ onMounted(async () => {
 
 const onLightClick = async (light: any) => {
     useKey.unSelected();
-    useLight.lightClick(light);
+    await useLight.lightClick(light);
+    useKey.saveProfile();
 }
 </script>

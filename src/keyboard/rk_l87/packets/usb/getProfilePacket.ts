@@ -1,12 +1,12 @@
 import type { IPacket } from "@/keyboard/interface";
 import { Packet_Usb, PROFILE_LENGTH, PACKET_HEAD_LENGTH } from "@/keyboard/rk_l87/packets/packet";
-import { Profile } from "@/keyboard/rk_l87/profile";
+import { BoardProfile } from "@/keyboard/rk_l87/boardProfile";
 
 export class GetProfilePacket extends Packet_Usb {
 
     setReport: Uint8Array;
     getReport?: DataView;
-    profile?: Profile;
+    boardProfile?: BoardProfile;
 
     constructor(board: number) {
         super(0x84);
@@ -23,7 +23,7 @@ export class GetProfilePacket extends Packet_Usb {
         super.fromReportData(buffer);
         this.getReport = new DataView(buffer.buffer.slice(1, this.dataLength + PACKET_HEAD_LENGTH + 1));
         if (this.getReport.byteLength >= PROFILE_LENGTH + PACKET_HEAD_LENGTH) {
-            this.profile = Profile.fromReportData(new DataView(this.getReport.buffer.slice(PACKET_HEAD_LENGTH, PROFILE_LENGTH + PACKET_HEAD_LENGTH)));
+            this.boardProfile = BoardProfile.fromReportData(new DataView(this.getReport.buffer.slice(PACKET_HEAD_LENGTH, PROFILE_LENGTH + PACKET_HEAD_LENGTH)));
         }
 
         return this;

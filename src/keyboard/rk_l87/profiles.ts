@@ -34,9 +34,11 @@ export class Profile {
 
 export class Profiles {
     list: Array<Profile>;
+    curIndex: number;
 
     constructor() {
         this.list = new Array<Profile>();
+        this.curIndex = 0;
     }
 
     add(profile: Profile) {
@@ -50,7 +52,7 @@ export class Profiles {
 
     remove(profile: Profile) {
         let index = this.list.findIndex(obj => obj.index === profile.index);
-        if (index >= 1) {
+        if (this.list.length > 1) {
             this.list.splice(index, 1);
         }
 
@@ -91,6 +93,7 @@ export class Profiles {
                 tm.ledColors = m.ledColors
                 this.add(tm);
             }
+            this.curIndex = tmp.curIndex;
         }
         else {
             for (let i = 0; i < 3; i++) {

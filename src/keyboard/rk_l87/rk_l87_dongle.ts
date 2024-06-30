@@ -6,7 +6,7 @@ import { Packet_Dongle_Block_Set } from './packets/dongle/setPacket';
 import type { KeyMatrix, MatrixTable } from './keyMatrix';
 import { RK_L87, COMMAND_ID, RK_L87_EVENT_DEFINE } from './rk_l87';
 
-import type { Profile } from './profile';
+import type { BoardProfile } from './boardProfile';
 import type { LedEffect } from './ledEffect';
 import type { Macros } from './macros';
 import type { LedColors } from './ledColors'
@@ -147,11 +147,11 @@ export class RK_L87_Dongle extends RK_L87 {
     }
 
     async setProfile(board: number): Promise<void> {
-        if (this.data.profile != undefined) {
+        if (this.data.boardProfile != undefined) {
             this.pktSetProfile.board = board;
             this.pktSetProfile.packageIndex = 0;
             this.pktSetProfile.retry = REPORT_MAX_RETRY;
-            this.pktSetProfile.buffer = new Uint8Array(this.data.profile?.buffer.buffer.slice(0, this.data.profile?.buffer.byteLength));
+            this.pktSetProfile.buffer = new Uint8Array(this.data.boardProfile?.buffer.buffer.slice(0, this.data.boardProfile?.buffer.byteLength));
             await this.setReport(REPORT_ID_DONGLE, this.pktSetProfile.command());
         }
     }
@@ -243,8 +243,8 @@ export class RK_L87_Dongle extends RK_L87 {
     }
 
     private getProfileReport(event: any) {
-        this.data.profile = event.detail as Profile;
-        this.dispatchEvent(new CustomEvent(RK_L87_EVENT_DEFINE.OnProfileGotten, { detail: this.data.profile }));
+        this.data.boardProfile = event.detail as BoardProfile;
+        this.dispatchEvent(new CustomEvent(RK_L87_EVENT_DEFINE.OnProfileGotten, { detail: this.data.boardProfile }));
     }
 
     private getLedEffectReport(event: any) {

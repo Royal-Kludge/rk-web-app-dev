@@ -13,7 +13,7 @@ import fileSaver from "file-saver";
 import { ElMessage } from 'element-plus'
 
 import { storage } from '@/keyboard/storage';
-import { Profile as KeyProfile } from '@/keyboard/rk_l87/profile';
+import { BoardProfile } from '@/keyboard/rk_l87/boardProfile';
 import { LedEffect } from '@/keyboard/rk_l87/ledEffect';
 import { LedColors } from '@/keyboard/rk_l87/ledColors';
 
@@ -432,6 +432,8 @@ export const useKeyStore = defineStore('keyinfo', () => {
     altKey: false
   });
 
+  const isInited = ref(false);
+
   const init = async () => {
     if (rk_l87.value == undefined) {
       rk_l87.value = (keyboard.protocol as RK_L87);
@@ -449,9 +451,10 @@ export const useKeyStore = defineStore('keyinfo', () => {
       getProfiles();
     }
 
-    if (rk_l87.value != undefined) {
+    if (rk_l87.value != undefined && !isInited.value) {
       rk_l87.value.addEventListener(RK_L87_EVENT_DEFINE.OnMacrosGotten, macroGotten, false);
       rk_l87.value.addEventListener(RK_L87_EVENT_DEFINE.OnKeyMatrixGotten, keyMatrixGotten, false);
+      isInited.value = true;
     }
   };
 
@@ -506,7 +509,7 @@ export const useKeyStore = defineStore('keyinfo', () => {
   const getProfiles = () => {
     if (rk_l87.value != undefined) {
       ps.init()
-      profile.value = ps.get()[0];
+      profile.value = ps.get()[ps.curIndex];
       if (keyboard.keyboardDefine != undefined) {
         let index: any;
         for (index in keyboard.keyboardDefine.keyMatrixLayer) {
@@ -514,15 +517,31 @@ export const useKeyStore = defineStore('keyinfo', () => {
           rk_l87.value.data.keyMatrixs[layer] = new KeyMatrix(new DataView(new Uint8Array(Object.values(profile.value.get(layer))).buffer));
         }
       }
-      if (profile.value.profile != undefined && rk_l87.value.data.profile != undefined) {
-        rk_l87.value.data.profile.buffer = new DataView(new Uint8Array(Object.values(profile.value.profile)).buffer);
+
+      if (profile.value.profile != undefined) {
+        if (rk_l87.value.data.boardProfile != undefined) {
+          rk_l87.value.data.boardProfile.buffer = new DataView(new Uint8Array(Object.values(profile.value.profile)).buffer);
+        } else {
+          rk_l87.value.data.boardProfile = new BoardProfile(new DataView(new Uint8Array(Object.values(profile.value.profile)).buffer));
+        }
       }
-      if (profile.value.ledEffect != undefined && rk_l87.value.data.ledEffect != undefined) {
-        rk_l87.value.data.ledEffect.buffer = new DataView(new Uint8Array(Object.values(profile.value.ledEffect)).buffer);
+
+      if (profile.value.ledEffect != undefined) {
+        if (rk_l87.value.data.ledEffect != undefined) {
+          rk_l87.value.data.ledEffect.buffer = new DataView(new Uint8Array(Object.values(profile.value.ledEffect)).buffer);
+        } else {
+          rk_l87.value.data.ledEffect = new LedEffect(new DataView(new Uint8Array(Object.values(profile.value.ledEffect)).buffer));
+        }
       }
-      if (profile.value.ledColors != undefined && rk_l87.value.data.ledColors != undefined) {
-        rk_l87.value.data.ledColors.buffer = new DataView(new Uint8Array(Object.values(profile.value.ledColors)).buffer);
+
+      if (profile.value.ledColors != undefined) {
+        if (rk_l87.value.data.ledColors != undefined) {
+          rk_l87.value.data.ledColors.buffer = new DataView(new Uint8Array(Object.values(profile.value.ledColors)).buffer);
+        } else {
+          rk_l87.value.data.ledColors = new LedColors(new DataView(new Uint8Array(Object.values(profile.value.ledColors)).buffer));
+        }
       }
+      
       KeyMatrixData.value = rk_l87.value.data.keyMatrixs;
     }
     refresh();
@@ -533,6 +552,7 @@ export const useKeyStore = defineStore('keyinfo', () => {
     profile.value = ps.find(obj);
     if (profile.value != undefined && keyboard.keyboardDefine != undefined) {
       let index: any;
+      ps.curIndex = profile.value?.index;
       for (index in keyboard.keyboardDefine.keyMatrixLayer) {
         let layer = keyboard.keyboardDefine.keyMatrixLayer[index];
         KeyMatrixData.value[layer] = new KeyMatrix(new DataView(new Uint8Array(Object.values(profile.value.get(layer))).buffer));
@@ -541,8 +561,8 @@ export const useKeyStore = defineStore('keyinfo', () => {
       refresh()
     }
 
-    if (profile.value?.profile != undefined && rk_l87.value != undefined && rk_l87.value.data.profile != undefined) {
-      rk_l87.value.data.profile.buffer = new DataView(new Uint8Array(Object.values(profile.value.profile)).buffer);
+    if (profile.value?.profile != undefined && rk_l87.value != undefined && rk_l87.value.data.boardProfile != undefined) {
+      rk_l87.value.data.boardProfile.buffer = new DataView(new Uint8Array(Object.values(profile.value.profile)).buffer);
     }
     if (profile.value?.ledEffect != undefined && rk_l87.value != undefined && rk_l87.value.data.ledEffect != undefined) {
       rk_l87.value.data.ledEffect.buffer = new DataView(new Uint8Array(Object.values(profile.value.ledEffect)).buffer);
@@ -552,7 +572,9 @@ export const useKeyStore = defineStore('keyinfo', () => {
     }
 
     unSelected();
+    saveProfile();
   }
+  
   const deleteProfile = (obj: Profile) => {
     ps.remove(obj);
     if (ps.get().length > 0) {
@@ -562,14 +584,15 @@ export const useKeyStore = defineStore('keyinfo', () => {
     }
     saveProfile();
   };
+
   const saveProfile = () => {
     if (profile.value != undefined) {
       const dataView = new DataView(KeyMatrixData.value[keyMatrixLayer.value].buffer.buffer)
       profile.value.add(keyMatrixLayer.value, new Uint8Array(dataView.buffer, dataView.byteOffset, dataView.byteLength));
       refresh()
     }
-    if (rk_l87.value?.data.profile != undefined) {
-      const dataView = new DataView(rk_l87.value?.data.profile.buffer.buffer)
+    if (rk_l87.value?.data.boardProfile != undefined) {
+      const dataView = new DataView(rk_l87.value?.data.boardProfile.buffer.buffer)
       profile.value?.setProfile(new Uint8Array(dataView.buffer, dataView.byteOffset, dataView.byteLength))
     }
     if (rk_l87.value?.data.ledEffect != undefined) {

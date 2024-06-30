@@ -1,6 +1,5 @@
 import type { IPacket } from "@/keyboard/interface";
 import { Packet_Usb, PROFILE_LENGTH, PACKET_HEAD_LENGTH } from "@/keyboard/rk_l87/packets/packet";
-import { Profile } from "@/keyboard/rk_l87/profile";
 
 export class GetPasswordPacket extends Packet_Usb {
 

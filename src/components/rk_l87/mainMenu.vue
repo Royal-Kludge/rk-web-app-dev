@@ -5,17 +5,19 @@
                 <div class="p-3 bg-white-1 fw-b fs-xxl">{{ $t("key.title") }}</div>
                 <div style="height: 75vh">
                     <el-scrollbar>
-                        <div style="padding-left: 16%" v-for="item in useKey.state.profiles?.get()"
+                        <div v-for="item in useKey.state.profiles.list"
                             class="module_box d-flex p-3 my-2 text-grey-1 jc-between"
                             :class="{ 'module_active': item.index === useKey.profile?.index }"
-                            @click="clickProfile(item)">
-                            <div class="d-flex">
-                                <span class="pr-4 d-flex ai-center">
-                                    <img src="../../assets/images/dot.png" />
-                                </span>
-                                <span>
-                                    {{ item.name }}
-                                </span>
+                            >
+                            <div style="padding-left: 16%;width: 100%" class="d-flex"  @click="clickProfile(item)">
+                                <div class="d-flex">
+                                    <span class="pr-4 d-flex ai-center">
+                                        <img src="../../assets/images/dot.png" />
+                                    </span>
+                                    <span>
+                                        {{ item.name }}
+                                    </span>
+                                </div>
                             </div>
                             <div>
                                 <el-dropdown>
@@ -28,7 +30,7 @@
                                                 <img src="../../assets/images/title/edit.png" class="img-title" />
                                                 {{ $t("key.but_4") }}
                                             </el-dropdown-item>
-                                            <el-dropdown-item @click="useKey.deleteProfile(item)">
+                                            <el-dropdown-item @click="useKey.deleteProfile(item)" v-if="useKey.state.profiles.list.length > 1">
                                                 <img src="../../assets/images/title/del.png" class="img-title" />
                                                 {{ $t("key.but_5") }}
                                             </el-dropdown-item>
@@ -76,7 +78,8 @@ const useKey = useKeyStore();
 const useLight = uselightStore();
 const clickProfile = async (obj: Profile) => {
     await useKey.clickProfile(obj)
-    useLight.refresh()
+    await useLight.refresh()
+    await useLight.saveBoardProfileToDevice()
 }
 
 const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {

@@ -4,7 +4,7 @@ import { KeyMatrixLayer } from '@/keyboard/enum'
 
 import type { KeyMatrix } from "./keyMatrix";
 import type { LedEffect } from "./ledEffect";
-import type { Profile } from "./profile";
+import type { BoardProfile } from "./boardProfile";
 import type { Macros } from './macros';
 import type { LedColors } from './ledColors';
 import type { LedColor } from '../interface';
@@ -60,7 +60,7 @@ export const COMMAND_ID: {
 }
 
 export class RK_L87_Data {
-    profile?: Profile;
+    boardProfile?: BoardProfile;
     ledEffect?: LedEffect;
     keyMatrixs: Record<number, KeyMatrix> = {};
     ledColors?: LedColors;

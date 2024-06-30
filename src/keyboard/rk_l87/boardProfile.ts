@@ -40,7 +40,7 @@ export interface LedParameter {
     color: number
 }
 
-export class Profile {
+export class BoardProfile {
     buffer: DataView;
 
     constructor(data: DataView) {
@@ -82,12 +82,12 @@ export class Profile {
         }
     }
 
-    static fromReportData(data: DataView) : Profile | undefined {
+    static fromReportData(data: DataView) : BoardProfile | undefined {
         let profile = undefined;
         
         if (data.byteLength >= PROFILE_LENGTH) {
             //let buffer = new DataView(data.buffer.slice(PACKET_HEAD_LENGTH, PROFILE_LENGTH + PACKET_HEAD_LENGTH));
-            profile = new Profile(data);
+            profile = new BoardProfile(data);
         }
 
         return profile;

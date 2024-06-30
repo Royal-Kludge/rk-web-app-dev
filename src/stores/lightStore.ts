@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 import { reactive, ref } from 'vue';
 import { keyboard } from '../keyboard/keyboard'
 import { RK_L87, RK_L87_EVENT_DEFINE } from '../keyboard/rk_l87/rk_l87';
-import { Profile, FieldEnum } from '../keyboard/rk_l87/profile';
+import { BoardProfile, FieldEnum } from '../keyboard/rk_l87/boardProfile';
 import { LedEffect } from '../keyboard/rk_l87/ledEffect';
 import { LedColors } from '../keyboard/rk_l87/ledColors';
 import { LightEffectEnum, KeyMatrixLayer, ConnectionType } from '../keyboard/enum'
@@ -13,7 +13,7 @@ import { ps } from '@/keyboard/rk_l87/profiles';
 
 export const uselightStore = defineStore('lightinfo', () => {
     const rgb = ref({ r: 0, g: 0, b: 0, color: '#000000' });
-    const profile = ref<Profile>();
+    const boardProfile = ref<BoardProfile>();
     const ledEffect = ref<LedEffect>();
     const ledColors = ref<LedColors>();
     const rk_l87 = ref<RK_L87>();
@@ -263,22 +263,25 @@ export const uselightStore = defineStore('lightinfo', () => {
         }
     });
 
+    const isInited = ref(false);
+    
     const init = async () => {
         connectType.value = keyboard.state.connectType;
         if (rk_l87.value == undefined) {
             rk_l87.value = (keyboard.protocol as RK_L87);
         }
 
-        if (rk_l87.value != undefined) {
+        if (rk_l87.value != undefined && !isInited.value) {
             rk_l87.value.addEventListener(RK_L87_EVENT_DEFINE.OnProfileGotten, profileGotten, false);
             rk_l87.value.addEventListener(RK_L87_EVENT_DEFINE.OnLedEffectGotten, ledEffectGotten, false);
             rk_l87.value.addEventListener(RK_L87_EVENT_DEFINE.OnLedColorsGotten, ledColorsGotten, false);
-            profile.value = rk_l87.value.data.profile
+            boardProfile.value = rk_l87.value.data.boardProfile
             ledEffect.value = rk_l87.value.data.ledEffect
             ledColors.value = rk_l87.value.data.ledColors
+            isInited.value = true;
         }
 
-        if (profile.value == undefined) {
+        if (boardProfile.value == undefined) {
             await getLightData();
         }
     };
@@ -292,8 +295,8 @@ export const uselightStore = defineStore('lightinfo', () => {
     };
 
     const setProfile = () => {
-        if (profile.value != undefined) {
-            const dataView = new DataView(profile.value.buffer.buffer)
+        if (boardProfile.value != undefined) {
+            const dataView = new DataView(boardProfile.value.buffer.buffer)
             ps.initProfile(new Uint8Array(dataView.buffer, dataView.byteOffset, dataView.byteLength))
         }
     }
@@ -311,15 +314,15 @@ export const uselightStore = defineStore('lightinfo', () => {
     }
 
     const DebounceChanged = (mode: number) => {
-        if (profile.value != undefined && rk_l87.value != undefined) {
-            profile.value.setFieldValue(FieldEnum.Debounce, mode);
+        if (boardProfile.value != undefined && rk_l87.value != undefined) {
+            boardProfile.value.setFieldValue(FieldEnum.Debounce, mode);
             rk_l87.value.setProfile(profileIndex.value);
         }
     };
 
     const setLayer = (layer: number) => {
-        if (profile.value != undefined && rk_l87.value != undefined) {
-            profile.value.setFieldValue(FieldEnum.TapDelay, layer);
+        if (boardProfile.value != undefined && rk_l87.value != undefined) {
+            boardProfile.value.setFieldValue(FieldEnum.TapDelay, layer);
             rk_l87.value.setProfile(profileIndex.value);
         }
     };
@@ -329,7 +332,7 @@ export const uselightStore = defineStore('lightinfo', () => {
     }
 
     const profileGotten = async (event: any) => {
-        profile.value = event.detail as Profile;
+        boardProfile.value = event.detail as BoardProfile;
         await rk_l87.value?.getLedEffect(profileIndex.value);
         setProfile()
     };
@@ -347,28 +350,34 @@ export const uselightStore = defineStore('lightinfo', () => {
     };
 
     const refresh = async () => {
-        if (profile.value != undefined) {
-            state.lightProps.light = profile.value.getFieldValue(FieldEnum.LedMode);
-            let ledParam = profile.value.getLedParam(state.lightProps.light);
-            if (ledParam != undefined && profile.value.getFieldValue(FieldEnum.LedParameterType) == 0) {
+        // if (rk_l87.value != undefined) {
+        //     profile.value = rk_l87.value.data.profile
+        //     ledEffect.value = rk_l87.value.data.ledEffect
+        //     ledColors.value = rk_l87.value.data.ledColors
+        // }
+
+        if (boardProfile.value != undefined) {
+            state.lightProps.light = boardProfile.value.getFieldValue(FieldEnum.LedMode);
+            let ledParam = boardProfile.value.getLedParam(state.lightProps.light);
+            if (ledParam != undefined && boardProfile.value.getFieldValue(FieldEnum.LedParameterType) == 0) {
                 state.lightProps.brightness = ledParam.brightness + 1;
                 state.lightProps.mixing = ledParam.color > 0;
                 state.lightProps.speed = ledParam.speed;
             } else {
-                state.lightProps.brightness = profile.value.getFieldValue(FieldEnum.LedBrightness) + 1;
-                state.lightProps.speed = profile.value.getFieldValue(FieldEnum.LedSpeed);
+                state.lightProps.brightness = boardProfile.value.getFieldValue(FieldEnum.LedBrightness) + 1;
+                state.lightProps.speed = boardProfile.value.getFieldValue(FieldEnum.LedSpeed);
             }
 
-            state.lightProps.sleep = profile.value.getFieldValue(FieldEnum.SleepTime) == 0 ? 0 : (profile.value.getFieldValue(FieldEnum.SleepTime) * 30) / 60;
+            state.lightProps.sleep = boardProfile.value.getFieldValue(FieldEnum.SleepTime) == 0 ? 0 : (boardProfile.value.getFieldValue(FieldEnum.SleepTime) * 30) / 60;
         }
 
         if (state.lightProps.light == LightEffectEnum.SelfDefine) {
             if (ledColors.value != undefined) {
-                rk_l87.value?.setLedColors(profileIndex.value);
+                await rk_l87.value?.setLedColors(profileIndex.value);
             }
         } else if (state.lightProps.light != LightEffectEnum.OFF && state.lightProps.light != LightEffectEnum.Music) {
             if (ledEffect.value != undefined) {
-                rk_l87.value?.setLedEffect(profileIndex.value);
+                await rk_l87.value?.setLedEffect(profileIndex.value);
             }
         }
 
@@ -401,18 +410,25 @@ export const uselightStore = defineStore('lightinfo', () => {
         }
     };
 
-    const ligtChanged = () => {
-        if (profile.value != undefined && rk_l87.value != undefined) {
-            profile.value.setLedParam(state.lightProps.light, {
+    const ligtChanged = async () => {
+        if (boardProfile.value != undefined && rk_l87.value != undefined) {
+            boardProfile.value.setLedParam(state.lightProps.light, {
                 brightness: state.lightProps.brightness - 1,
                 speed: state.lightProps.speed,
                 color: state.lightProps.mixing ? 0x07 : 0x00
             });
-            profile.value.setFieldValue(FieldEnum.SleepTime, (state.lightProps.sleep * 60) / 30);
-            rk_l87.value.setProfile(profileIndex.value);
-            refresh();
+            boardProfile.value.setFieldValue(FieldEnum.SleepTime, (state.lightProps.sleep * 60) / 30);
+            await rk_l87.value.setProfile(profileIndex.value);
+            await refresh();
         }
     };
+
+    const saveBoardProfileToDevice = async () => {
+        if (rk_l87.value != undefined) {
+            await rk_l87.value.setProfile(profileIndex.value);
+        }
+    };
+
     const SelfDefineDefaultAll = () => {
         if (ledColors.value != undefined) {
             let index: number;
@@ -461,12 +477,13 @@ export const uselightStore = defineStore('lightinfo', () => {
             await refresh();
         }
     };
+
     const lightClick = async (light: LightEffectEnum) => {
-        if (profile.value != undefined && rk_l87.value != undefined) {
+        if (boardProfile.value != undefined && rk_l87.value != undefined) {
             state.lightProps.light = light;
             // 0x01: Gaming
-            profile.value.setFieldValue(FieldEnum.LedModeSelection, (light == LightEffectEnum.SelfDefine) ? 0x01 : 0x00);
-            profile.value.setFieldValue(FieldEnum.LedMode, light);
+            boardProfile.value.setFieldValue(FieldEnum.LedModeSelection, (light == LightEffectEnum.SelfDefine) ? 0x01 : 0x00);
+            boardProfile.value.setFieldValue(FieldEnum.LedMode, light);
             await rk_l87.value.setProfile(profileIndex.value);
             await refresh();
         }
@@ -474,7 +491,7 @@ export const uselightStore = defineStore('lightinfo', () => {
 
     const selectd = (light: LightEffectEnum) => {
         let style = '';
-        if (profile.value != undefined && light == state.lightProps.light) {
+        if (boardProfile.value != undefined && light == state.lightProps.light) {
             style = 'module_active';
         }
 
@@ -482,7 +499,7 @@ export const uselightStore = defineStore('lightinfo', () => {
     };
     const selectdCustom = (light: LightEffectEnum) => {
         let style = '';
-        if (profile.value != undefined && light == state.lightProps.light) {
+        if (boardProfile.value != undefined && light == state.lightProps.light) {
             style = 'active';
         }
 
@@ -499,5 +516,5 @@ export const uselightStore = defineStore('lightinfo', () => {
     const keyTextColor = (index: number): string => {
         return state.keyColors[index];
     };
-    return { connectType, state, rgb, ligtChanged, onPicking, onPicked, selectd, lightClick, selectdCustom, keyChanged, keyTextColor, init, destroy, SelfDefineDefault, setLayer, DebounceChanged, SelfDefineDefaultAll, refresh }
+    return { connectType, state, rgb, ligtChanged, onPicking, onPicked, selectd, lightClick, selectdCustom, keyChanged, keyTextColor, init, destroy, SelfDefineDefault, setLayer, DebounceChanged, SelfDefineDefaultAll, refresh, saveBoardProfileToDevice }
 })

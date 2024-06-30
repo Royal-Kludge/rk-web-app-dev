@@ -63,8 +63,8 @@ export class RK_L87_Usb extends RK_L87 {
         await this.setFeature(REPORT_ID_USB, packet.setReport);
         packet.fromReportData(await this.getFeature(REPORT_ID_USB));
 
-        this.data.profile = packet.profile;
-        this.dispatchEvent(new CustomEvent(RK_L87_EVENT_DEFINE.OnProfileGotten, { detail: this.data.profile }));
+        this.data.boardProfile = packet.boardProfile;
+        this.dispatchEvent(new CustomEvent(RK_L87_EVENT_DEFINE.OnProfileGotten, { detail: this.data.boardProfile }));
     }
 
     async getPassword(): Promise<void> {
@@ -78,9 +78,9 @@ export class RK_L87_Usb extends RK_L87 {
     }
 
     async setProfile(board: number): Promise<void> {
-        if (this.data.profile != undefined) {
+        if (this.data.boardProfile != undefined) {
             let packet = new SetProfilePacket(board);
-            packet.setPayload(this.data.profile.buffer);
+            packet.setPayload(this.data.boardProfile.buffer);
             //await this.setFeature(REPORT_ID_USB, packet.setReport);
             worker.postMessage(packet.setReport);
         }
