@@ -26,6 +26,7 @@ import { SetKeyMatrixPacket } from './packets/dongle/setKeyMatrixPacket';
 import { SetMacrosPacket } from './packets/dongle/setMacrosPacket';
 import { SetFactoryPacket } from './packets/dongle/setFactoryPacket';
 
+const dongleWorker = new Worker(new URL('./dongleCommunication.ts', import.meta.url));
 
 export class RK_L87_Dongle extends RK_L87 {
 
@@ -54,11 +55,11 @@ export class RK_L87_Dongle extends RK_L87 {
         this.pktGetLedColors = new GetLedColorsPacket(this.getLedColorsReport.bind(this));
         this.pktGetKeyMatrix = new GetKeyMatrixPacket(this.getKeyMatrixReport.bind(this));
         this.pktGetMacros = new GetMacrosPacket(this.getMacrosReport.bind(this));
-        this.pktSetProfile = new SetProfilePacket(this.nextReport.bind(this));
-        this.pktSetLedEffect = new SetLedEffectPacket(this.nextReport.bind(this));
-        this.pktSetLedColors = new SetLedColorsPacket(this.nextReport.bind(this));
-        this.pktSetKeyMatrix = new SetKeyMatrixPacket(this.nextReport.bind(this));
-        this.pktSetMacros = new SetMacrosPacket(this.nextReport.bind(this), this.nextBlock.bind(this));
+        this.pktSetProfile = new SetProfilePacket(this.nextReport.bind(this), this.packetFinished.bind(this));
+        this.pktSetLedEffect = new SetLedEffectPacket(this.nextReport.bind(this), this.packetFinished.bind(this));
+        this.pktSetLedColors = new SetLedColorsPacket(this.nextReport.bind(this), this.packetFinished.bind(this));
+        this.pktSetKeyMatrix = new SetKeyMatrixPacket(this.nextReport.bind(this), this.packetFinished.bind(this));
+        this.pktSetMacros = new SetMacrosPacket(this.nextReport.bind(this), this.nextBlock.bind(this), this.packetFinished.bind(this));
         this.pktSetFactory = new SetFactoryPacket(this.setFactoryReport.bind(this));
     }
 
@@ -68,6 +69,32 @@ export class RK_L87_Dongle extends RK_L87 {
 
     async init(): Promise<void> {
         super.init();
+
+        dongleWorker.onmessage = async (event) => {
+            if (event.data == 'heartbeat') {
+            } else {
+                switch (event.data) {
+                    case 'SetProfile':
+                        await this.setReport(REPORT_ID_DONGLE, this.pktSetProfile.command());
+                        break;
+                    case 'SetLedEffect':
+                        await this.setReport(REPORT_ID_DONGLE, this.pktSetLedEffect.command());
+                        break;
+                    case 'SetLedColors':
+                        await this.setReport(REPORT_ID_DONGLE, this.pktSetLedColors.command());
+                        break;
+                    case 'SetKeyMatrix':
+                        await this.setReport(REPORT_ID_DONGLE, this.pktSetKeyMatrix.command());
+                        break;
+                    case 'SetMacros':
+                        await this.setReport(REPORT_ID_DONGLE, this.pktSetMacros.command());
+                        break;
+                }
+            }
+        };
+        
+        dongleWorker.postMessage('start');
+
         await this.getDongleStatus();
     }
 
@@ -152,7 +179,8 @@ export class RK_L87_Dongle extends RK_L87 {
             this.pktSetProfile.packageIndex = 0;
             this.pktSetProfile.retry = REPORT_MAX_RETRY;
             this.pktSetProfile.buffer = new Uint8Array(this.data.boardProfile?.buffer.buffer.slice(0, this.data.boardProfile?.buffer.byteLength));
-            await this.setReport(REPORT_ID_DONGLE, this.pktSetProfile.command());
+            dongleWorker.postMessage('SetProfile');
+            //await this.setReport(REPORT_ID_DONGLE, this.pktSetProfile.command());
         }
     }
 
@@ -167,7 +195,8 @@ export class RK_L87_Dongle extends RK_L87 {
             this.pktSetLedEffect.packageIndex = 0;
             this.pktSetLedEffect.retry = REPORT_MAX_RETRY;
             this.pktSetLedEffect.buffer = new Uint8Array(this.data.ledEffect?.buffer.buffer.slice(0, this.data.ledEffect?.buffer.byteLength));
-            await this.setReport(REPORT_ID_DONGLE, this.pktSetLedEffect.command());
+            //await this.setReport(REPORT_ID_DONGLE, this.pktSetLedEffect.command());
+            dongleWorker.postMessage('SetLedEffect');
         }
     }
 
@@ -186,7 +215,8 @@ export class RK_L87_Dongle extends RK_L87 {
             this.pktSetKeyMatrix.packageIndex = 0;
             this.pktSetKeyMatrix.retry = REPORT_MAX_RETRY;
             this.pktSetKeyMatrix.buffer = new Uint8Array(this.data.keyMatrixs[layer].buffer.buffer.slice(0, this.data.keyMatrixs[layer].buffer.byteLength));
-            await this.setReport(REPORT_ID_DONGLE, this.pktSetKeyMatrix.command());
+            //await this.setReport(REPORT_ID_DONGLE, this.pktSetKeyMatrix.command());
+            dongleWorker.postMessage('SetKeyMatrix');
         }
     }
 
@@ -203,7 +233,8 @@ export class RK_L87_Dongle extends RK_L87 {
             this.pktSetMacros.retry = REPORT_MAX_RETRY;
             this.pktSetMacros.buffer = this.data.macros.serialize();
             this.pktSetMacros.blockCount = Math.ceil(this.pktSetMacros.buffer.length / MACRO_PER_BLOCK_LENGTH);
-            await this.setReport(REPORT_ID_DONGLE, this.pktSetMacros.command());
+            //await this.setReport(REPORT_ID_DONGLE, this.pktSetMacros.command());
+            dongleWorker.postMessage('SetMacros');
         }
     }
 
@@ -218,7 +249,8 @@ export class RK_L87_Dongle extends RK_L87 {
             this.pktSetLedColors.packageIndex = 0;
             this.pktSetLedColors.retry = REPORT_MAX_RETRY;
             this.pktSetLedColors.buffer = new Uint8Array(this.data.ledColors?.buffer.buffer.slice(0, this.data.ledColors?.buffer.byteLength));
-            await this.setReport(REPORT_ID_DONGLE, this.pktSetLedColors.command());
+            //await this.setReport(REPORT_ID_DONGLE, this.pktSetLedColors.command());
+            dongleWorker.postMessage('SetLedColors');
         }
     }
 
@@ -275,10 +307,13 @@ export class RK_L87_Dongle extends RK_L87 {
         this.dispatchEvent(new CustomEvent(RK_L87_EVENT_DEFINE.OnSetFactorySuccess, { detail: true }));
     }
 
-
     private async nextReport(event: any) {
         let pkt = event.detail as Packet_Dongle;
         await this.setReport(REPORT_ID_DONGLE, pkt.command());
+    }
+
+    private packetFinished(event: any) {
+        dongleWorker.postMessage('finish');
     }
 
     private async nextBlock(event: any) {

@@ -7,8 +7,8 @@ export class SetKeyMatrixPacket extends Packet_Dongle_Set {
     layer: KeyMatrixLayer = KeyMatrixLayer.Nomal;
     table: MatrixTable = MatrixTable.WIN;
 
-    constructor(callback: (event: any) => void) {
-        super(0x01, callback);
+    constructor(callback: (event: any) => void, pktFinish: (event: any) => void) {
+        super(0x01, callback, pktFinish);
     }
 
     command(): Uint8Array {

@@ -1,18 +1,18 @@
 import { Packet_Dongle } from "./packets/packet";
 
-const donglePkgQueue = new Array<Packet_Dongle>();
+const donglePkgQueue = new Array<any>();
 const dongleLastTime = new Date();
-const dongleMsgInterval = 20;
+const dongleMsgInterval = 3000;
 
-let dongleIsWaitReport = false;
+let dongleIsWaitPkgFinish = false;
 
 self.addEventListener('message', (event) => {
     if (event.data === 'start') {
         startLoop();
-    } else if (event.data === 'report') {
-        dongleIsWaitReport = false;
+    } else if (event.data === 'finish') {
+        dongleIsWaitPkgFinish = false;
     } else {
-        let p = event.data as Packet_Dongle;
+        let p = event.data;
         donglePkgQueue.push(p);
     }
 });
@@ -21,10 +21,10 @@ function startLoop() {
     setInterval(() => {
         const currentTime = new Date();
         let elapsedTime = currentTime.getTime() - dongleLastTime.getTime();
-        if (elapsedTime > dongleMsgInterval) dongleIsWaitReport = false;
-        if (!dongleIsWaitReport) {
-            if (packages.length > 0) {
-                let p = packages.pop();
+        if (elapsedTime > dongleMsgInterval) dongleIsWaitPkgFinish = false;
+        if (!dongleIsWaitPkgFinish) {
+            if (donglePkgQueue.length > 0) {
+                let p = donglePkgQueue.pop();
                 if (p != undefined) {
                     self.postMessage(p);
                     dongleLastTime.setTime(currentTime.getTime());
@@ -36,7 +36,7 @@ function startLoop() {
                 }
             }
 
-            dongleIsWaitReport = true;
+            dongleIsWaitPkgFinish = true;
         }
-    }, 10);
+    }, 5);
 }

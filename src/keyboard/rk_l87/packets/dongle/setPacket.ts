@@ -6,8 +6,13 @@ export class Packet_Dongle_Set extends Packet_Dongle {
     board: number = 0;
     retry: number = 10;
 
-    constructor(cmdId: number, callback: (event: any) => void) {
+    pktFinish?: (event: any) => void
+
+    constructor(cmdId: number, callback: (event: any) => void, pktFinish: (event: any) => void) {
         super(cmdId, callback);
+
+        this.pktFinish = pktFinish;
+        this.addEventListener('onReportPacketFinish', this.pktFinish, false);
     }
 
     command(): Uint8Array {
@@ -44,6 +49,8 @@ export class Packet_Dongle_Set extends Packet_Dongle {
 
         if (this.packageIndex < this.packageNum && this.retry > 0) {
             this.dispatchEvent(new CustomEvent('onReportDataRecvied', { detail: this }));
+        } else {
+            this.dispatchEvent(new CustomEvent('onReportPacketFinish', { detail: this }));
         }
 
         return this;
@@ -57,8 +64,8 @@ export class Packet_Dongle_Block_Set extends Packet_Dongle_Set {
 
     nextBlock?: (event: any) => void
 
-    constructor(cmdId: number, callback: (event: any) => void, nextBlock: (event: any) => void) {
-        super(cmdId, callback);
+    constructor(cmdId: number, callback: (event: any) => void, nextBlock: (event: any) => void, pktFinish: (event: any) => void) {
+        super(cmdId, callback, pktFinish);
 
         this.block = 0;
         this.blockCount = 0;
@@ -104,6 +111,8 @@ export class Packet_Dongle_Block_Set extends Packet_Dongle_Set {
             this.packageIndex = 0;
             this.retry = REPORT_MAX_RETRY;
             this.dispatchEvent(new CustomEvent('onReportDataRecvied', { detail: this }));
+        } else {
+            this.dispatchEvent(new CustomEvent('onReportPacketFinish', { detail: this }));
         }
 
         return this;
