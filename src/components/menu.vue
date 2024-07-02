@@ -22,9 +22,11 @@ import { storeToRefs } from "pinia";
 import { onMounted } from "vue";
 import { useKeyStore } from "@/stores/keyStore";
 import { keyboard } from "../keyboard/keyboard";
+import { uselightStore } from "@/stores/lightStore";
 
 const useKey = useKeyStore();
 const useMenu = useMenuStore();
+const useLight = uselightStore();
 const { meunid, menuList } = storeToRefs(useMenu);
 // 页面加载时
 onMounted(() => {
@@ -34,6 +36,9 @@ onMounted(() => {
 const onMenuClick = async (id: any) => {
     useKey.unSelected();
     useMenu.setMeunid(id)
+    if (id == 3) {
+      await useLight.saveBoardProfileToDevice();
+    }
 }
 
 const disconnect = () => {

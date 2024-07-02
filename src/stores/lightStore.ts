@@ -5,7 +5,7 @@ import { RK_L87, RK_L87_EVENT_DEFINE } from '../keyboard/rk_l87/rk_l87';
 import { BoardProfile, FieldEnum } from '../keyboard/rk_l87/boardProfile';
 import { LedEffect } from '../keyboard/rk_l87/ledEffect';
 import { LedColors } from '../keyboard/rk_l87/ledColors';
-import { LightEffectEnum, KeyMatrixLayer, ConnectionType } from '../keyboard/enum'
+import { LightEffectEnum, KeyMatrixLayer, ConnectionType, ConnectionStatusEnum, ConnectionEventEnum } from '../keyboard/enum'
 import { type LedColor } from '@/keyboard/interface';
 import { KeyDefineEnum } from '@/keyboard/keyCode';
 import { type KeyTableData } from '@/keyboard/interface'
@@ -269,6 +269,7 @@ export const uselightStore = defineStore('lightinfo', () => {
         connectType.value = keyboard.state.connectType;
         if (rk_l87.value == undefined) {
             rk_l87.value = (keyboard.protocol as RK_L87);
+            keyboard.addEventListener("connection", connectionEventCallback);
         }
 
         if (rk_l87.value != undefined && !isInited.value) {
@@ -286,11 +287,26 @@ export const uselightStore = defineStore('lightinfo', () => {
         }
     };
 
+    const connectionEventCallback = async (event: Event) => {
+        switch (keyboard.state.connectionEvent) {
+            case ConnectionEventEnum.Disconnect:
+            case ConnectionEventEnum.Close:
+              destroy();
+              break;
+        }
+      };
+
     const destroy = () => {
         if (rk_l87.value != undefined) {
             rk_l87.value.removeEventListener(RK_L87_EVENT_DEFINE.OnProfileGotten, profileGotten, false);
             rk_l87.value.removeEventListener(RK_L87_EVENT_DEFINE.OnLedEffectGotten, ledEffectGotten, false);
             rk_l87.value.removeEventListener(RK_L87_EVENT_DEFINE.OnLedColorsGotten, ledColorsGotten, false);
+        }
+
+        if (keyboard.state.ConnectionStatus != ConnectionStatusEnum.Connected) {
+            keyboard.removeEventListener("connection", connectionEventCallback);
+            isInited.value = false;
+            rk_l87.value = undefined;
         }
     };
 
@@ -333,6 +349,7 @@ export const uselightStore = defineStore('lightinfo', () => {
 
     const profileGotten = async (event: any) => {
         boardProfile.value = event.detail as BoardProfile;
+        boardProfile.value.setFieldValue(FieldEnum.LedMode, LightEffectEnum.NeonStream);
         await rk_l87.value?.getLedEffect(profileIndex.value);
         setProfile()
     };
@@ -345,6 +362,23 @@ export const uselightStore = defineStore('lightinfo', () => {
 
     const ledColorsGotten = async (event: any) => {
         ledColors.value = event.detail as LedColors;
+        if (ledColors.value != undefined) {
+            let color: LedColor = {
+                red: 0xFF,
+                green: 0xFF,
+                blue: 0xFF,
+                color: '#FFFFFF'
+            }
+            ledColors.value?.setLedColor(0, color);
+            ledColors.value?.setLedColor(14, color);
+            ledColors.value?.setLedColor(15, color);
+            ledColors.value?.setLedColor(21, color);
+            ledColors.value?.setLedColor(9, color);
+            ledColors.value?.setLedColor(94, color);
+            ledColors.value?.setLedColor(89, color);
+            ledColors.value?.setLedColor(95, color);
+            ledColors.value?.setLedColor(101, color);
+        }
         setledColors()
         await refresh();
     };

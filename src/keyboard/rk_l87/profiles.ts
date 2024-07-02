@@ -83,6 +83,7 @@ export class Profiles {
         return this.list;
     }
     init() {
+        this.list.splice(0, this.list.length);
         let tmp = storage.get('profile') as Profiles;
         if (tmp != null && tmp.list.length > 0) {
             for (let m of tmp.list) {

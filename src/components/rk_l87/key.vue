@@ -62,7 +62,7 @@
                                 <span class="mr-3">{{ $t('key.title_1') }}</span>
                                 <el-select v-model="useKey.state.cycleType" placeholder="Select" style="width: 240px;">
                                     <el-option v-for="item in useKey.state.cycleTypes" :key="item.value"
-                                        :label="item.label" :value="item.value" />
+                                        :label="$t(item.strKey)" :value="item.value" />
                                 </el-select>
                             </div>
                             <div class="m-3">
@@ -158,7 +158,7 @@
                                 <span class="mr-3">{{ $t('key.title_1') }}</span>
                                 <el-select v-model="useKey.state.cycleType" placeholder="Select" style="width: 240px;">
                                     <el-option v-for="item in useKey.state.cycleTypes" :key="item.value"
-                                        :label="item.label" :value="item.value" />
+                                        :label="$t(item.strKey)" :value="item.value" />
                                 </el-select>
                             </div>
                             <div class="m-3">
@@ -214,7 +214,9 @@ import type { KeyState, KeyTableData } from "@/keyboard/interface";
 import { LightEffectEnum } from '@/keyboard/enum'
 import type { NativePropType } from "element-plus/es/utils/index.mjs";
 import { lightInfo } from "@/keyboard/state";
+import { useMacroStore } from "../../stores/macroStore";
 
+const useMacro = useMacroStore();
 const useMenu = useMenuStore();
 const { meunid } = storeToRefs(useMenu);
 
@@ -245,6 +247,8 @@ const mask_top = computed(() => (`${Math.min(positionList.start_y, positionList.
 onMounted(async () => {
     await useKey.init();
     await useLight.init();
+    await useMacro.init();
+    useKey.state.macros = useMacro.macros;
     screenWidth.value = document.body.clientWidth;
     window.onresize = () => {
         //屏幕尺寸变化
@@ -252,6 +256,8 @@ onMounted(async () => {
             screenWidth.value = document.body.clientWidth;
         })();
     };
+
+    useKey.refresh();
 });
 
 onBeforeUnmount(() => {

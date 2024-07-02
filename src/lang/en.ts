@@ -25,7 +25,10 @@ export default {
     but_3: "Confirm",
     but_4: "Edit",
     but_5: "Delete",
-    but_6: "Import",
+    but_6: "Export",
+    type_1: "Cycles",
+    type_2: "Cycle to any key pressed",
+    type_3: "Cycle to any key released",
   },
   macro: {
     title: "Macro List",

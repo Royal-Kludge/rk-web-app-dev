@@ -26,6 +26,9 @@ export default {
     but_4: "編輯",
     but_5: "刪除",
     but_6: "導出",
+    type_1: "指定迴圈次數",
+    type_2: "迴圈到任意鍵按下",
+    type_3: "迴圈到該按鍵鬆開",
   },
   macro: {
     title: "宏列表",

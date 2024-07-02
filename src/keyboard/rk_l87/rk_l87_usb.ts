@@ -45,7 +45,11 @@ export class RK_L87_Usb extends RK_L87 {
         worker.onmessage = async (event) => {
             if (event.data == 'heartbeat') {
             } else {
-                await this.setFeature(REPORT_ID_USB, event.data as Uint8Array);
+                try {
+                    await this.setFeature(REPORT_ID_USB, event.data as Uint8Array);
+                } catch (e) {
+                    this.device.close();
+                }
             }
         };
         
@@ -83,6 +87,7 @@ export class RK_L87_Usb extends RK_L87 {
             packet.setPayload(this.data.boardProfile.buffer);
             //await this.setFeature(REPORT_ID_USB, packet.setReport);
             worker.postMessage(packet.setReport);
+            console.log(`Push profile data to queue.`);
         }
     }
 
@@ -102,6 +107,7 @@ export class RK_L87_Usb extends RK_L87 {
             packet.setPayload(this.data.ledEffect.buffer);
             //await this.setFeature(REPORT_ID_USB, packet.setReport);
             worker.postMessage(packet.setReport);
+            console.log(`Push led effect data to queue.`);
         }
     }
 
@@ -123,6 +129,7 @@ export class RK_L87_Usb extends RK_L87 {
             packet.setPayload(this.data.keyMatrixs[layer].buffer);
             //await this.setFeature(REPORT_ID_USB, packet.setReport);
             worker.postMessage(packet.setReport);
+            console.log(`Push layer [${layer}] key matrix data to queue.`);
         }
     }
 
@@ -195,6 +202,7 @@ export class RK_L87_Usb extends RK_L87 {
             packet.setPayload(this.data.ledColors.buffer);
             //await this.setFeature(REPORT_ID_USB, packet.setReport);
             worker.postMessage(packet.setReport);
+            console.log(`Push led colors data to queue.`);
         }
     }
 

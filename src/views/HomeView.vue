@@ -8,7 +8,7 @@ import { ref } from 'vue';
 import WebApp from './WebApp.vue'
 import Nodevice from './NoDevice.vue'
 import { Keyboard, keyboard } from '../keyboard/keyboard'
-import { ConnectionEventEnum } from '../keyboard/enum'
+import { ConnectionEventEnum, ConnectionStatusEnum } from '../keyboard/enum'
 import { ElMessage } from 'element-plus'
 
 const isConnected = ref(false);
@@ -42,6 +42,7 @@ const onConnect = async () => {
             case ConnectionEventEnum.Disconnect:
             case ConnectionEventEnum.Close:
                 isConnected.value = false;
+                keyboard.state.ConnectionStatus = ConnectionStatusEnum.Disconnected;
                 keyboard.removeEventListener("connection", connectionEventCallback);
                 keyboard.removeEventListener("reported", reportedEventCallback);
                 break;

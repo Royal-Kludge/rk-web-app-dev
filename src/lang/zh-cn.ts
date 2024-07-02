@@ -26,6 +26,9 @@ export default {
     but_4: "编辑",
     but_5: "删除",
     but_6: "导出",
+    type_1: "指定循环次数",
+    type_2: "循环到任意键按下",
+    type_3: "循环到该按键松开",
   },
   macro: {
     title: "宏列表",

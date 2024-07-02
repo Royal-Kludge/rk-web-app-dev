@@ -1,5 +1,5 @@
 import type { IProtocol, KeyTableData, LightEffect, LightInfo, KeyboardDefine } from './interface'
-import { ConnectionType, ConnectionEventEnum, KeyMappingType } from './enum'
+import { ConnectionType, ConnectionEventEnum, KeyMappingType, ConnectionStatusEnum } from './enum'
 import { defaultState, KeyboardDefineList } from './state'
 
 /**
@@ -42,7 +42,11 @@ export class Keyboard extends EventTarget {
      * (i.e in a click event handler), otherwise it might not work.
      */
     async init() {
-        if (this.device && this.device.opened) return;
+        if (this.device && this.device.opened)
+        {
+            this.device.close();
+            return;
+        }
 
         var option: HIDDeviceRequestOptions = { filters: []};
         var item: any;
@@ -97,6 +101,7 @@ export class Keyboard extends EventTarget {
                     const connectionEventCallback = (event: HIDConnectionEvent) => {
                         event.device.close();
                         this.protocol?.destroy();
+                        this.state.ConnectionStatus = ConnectionStatusEnum.Disconnected;
                         this.state.connectionEvent = ConnectionEventEnum.Disconnect;
                         this.dispatchEvent(new KeyboardEvent("connection", this));
                         this.hid?.removeEventListener("disconnect", connectionEventCallback, false);

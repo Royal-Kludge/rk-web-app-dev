@@ -1,6 +1,6 @@
 const packages = new Array<Uint8Array>();
 const lastTime = new Date();
-const msgInterval = 200;
+const msgInterval = 180;
 
 let isWaitReport = false;
 
@@ -11,7 +11,7 @@ self.addEventListener('message', (event) => {
         isWaitReport = false;
     } else {
         let p = event.data as Uint8Array;
-        packages.push(p);
+        packages.splice(0, 0, p);
     }
 });
 
@@ -36,5 +36,5 @@ function startLoop() {
 
             isWaitReport = true;
         }
-    }, 10);
+    }, 50);
 }

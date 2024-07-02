@@ -2,7 +2,7 @@ import { Packet_Dongle } from "./packets/packet";
 
 const donglePkgQueue = new Array<any>();
 const dongleLastTime = new Date();
-const dongleMsgInterval = 3000;
+const dongleMsgInterval = 1400;
 
 let dongleIsWaitPkgFinish = false;
 
@@ -13,7 +13,7 @@ self.addEventListener('message', (event) => {
         dongleIsWaitPkgFinish = false;
     } else {
         let p = event.data;
-        donglePkgQueue.push(p);
+        donglePkgQueue.splice(0, 0, p);
     }
 });
 
@@ -38,5 +38,5 @@ function startLoop() {
 
             dongleIsWaitPkgFinish = true;
         }
-    }, 5);
+    }, 10);
 }

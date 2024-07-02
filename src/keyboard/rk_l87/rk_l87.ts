@@ -118,11 +118,15 @@ export abstract class RK_L87 extends Protocol {
         let reportId = report.reportId;
         const { data } = report;
 
-        let u8 = new Uint8Array(data.buffer, 0, data.buffer.byteLength);
-        console.log(`GetReport [${data.byteLength}] bytes -> ${u8.toString()}`);
-
-        if (this.onGetReport != null) {
-            await this.onGetReport(reportId, data);
+        try {
+            let u8 = new Uint8Array(data.buffer, 0, data.buffer.byteLength);
+            console.log(`GetReport [${data.byteLength}] bytes -> ${u8.toString()}`);
+    
+            if (this.onGetReport != null) {
+                await this.onGetReport(reportId, data);
+            }
+        } catch (e) {
+            this.device.close();
         }
     }
 }

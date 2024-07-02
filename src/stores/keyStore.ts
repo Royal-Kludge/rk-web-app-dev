@@ -4,7 +4,7 @@ import { keyboard } from '../keyboard/keyboard'
 import { RK_L87, RK_L87_EVENT_DEFINE } from '../keyboard/rk_l87/rk_l87';
 import { KeyDefineEnum } from '../keyboard/keyCode'
 import { type KeyMappingData, type KeyTableData, type KeyState } from '../keyboard/interface'
-import { KeyMappingType, KeyMatrixLayer } from '../keyboard/enum'
+import { ConnectionEventEnum, ConnectionStatusEnum, KeyMappingType, KeyMatrixLayer } from '../keyboard/enum'
 import { KeyMatrix, MatrixTable } from '@/keyboard/rk_l87/keyMatrix';
 import { Action, Macro, Macros } from '@/keyboard/rk_l87/macros';
 import { Profile, ps } from '@/keyboard/rk_l87/profiles';
@@ -418,9 +418,9 @@ export const useKeyStore = defineStore('keyinfo', () => {
     combineKeyDialogShow: false,
     macros: macros,
     cycleTypes: [
-      { value: 1, label: 'Cycles' },
-      { value: 2, label: 'Cycle to any key pressed' },
-      { value: 4, label: 'Cycle to any key released' },
+      { value: 1, label: 'Cycles', strKey: 'key.type_1'},
+      { value: 2, label: 'Cycle to any key pressed', strKey: 'key.type_2' },
+      { value: 4, label: 'Cycle to any key released', strKey: 'key.type_3'  },
     ],
     cycleType: 1,
     cycleCount: 1,
@@ -447,21 +447,43 @@ export const useKeyStore = defineStore('keyinfo', () => {
           });
         }
       }
+
+      keyboard.addEventListener("connection", connectionEventCallback);
+
       initFunState();
       getProfiles();
+
+      //await rk_l87.value?.setKeyMatrix(layer, MatrixTable.WIN, 0);
+      await rk_l87.value?.setProfile(0);
+      await rk_l87.value?.setLedEffect(0);
+      await rk_l87.value?.setLedColors(0);
     }
 
     if (rk_l87.value != undefined && !isInited.value) {
-      rk_l87.value.addEventListener(RK_L87_EVENT_DEFINE.OnMacrosGotten, macroGotten, false);
       rk_l87.value.addEventListener(RK_L87_EVENT_DEFINE.OnKeyMatrixGotten, keyMatrixGotten, false);
+      macros.value = rk_l87.value.data.macros;
       isInited.value = true;
+    }
+  };
+
+  const connectionEventCallback = async (event: Event) => {
+    switch (keyboard.state.connectionEvent) {
+        case ConnectionEventEnum.Disconnect:
+        case ConnectionEventEnum.Close:
+          destroy();
+          break;
     }
   };
 
   const destroy = () => {
     if (rk_l87.value != undefined) {
       rk_l87.value.removeEventListener(RK_L87_EVENT_DEFINE.OnKeyMatrixGotten, keyMatrixGotten, false);
-      rk_l87.value.removeEventListener(RK_L87_EVENT_DEFINE.OnMacrosGotten, macroGotten, false);
+    }
+
+    if (keyboard.state.ConnectionStatus != ConnectionStatusEnum.Connected) {
+      keyboard.removeEventListener("connection", connectionEventCallback);
+      isInited.value = false;
+      rk_l87.value = undefined;
     }
   };
 
@@ -506,9 +528,11 @@ export const useKeyStore = defineStore('keyinfo', () => {
     done();
     saveProfile();
   };
+
   const getProfiles = () => {
     if (rk_l87.value != undefined) {
       ps.init()
+      if (ps.curIndex == undefined) ps.curIndex = 0;
       profile.value = ps.get()[ps.curIndex];
       if (keyboard.keyboardDefine != undefined) {
         let index: any;
@@ -668,33 +692,27 @@ export const useKeyStore = defineStore('keyinfo', () => {
 
     console.log(`Layer ${keyMatrixLayer.value}`);
 
-    if (rk_l87.value != undefined) {
-      let tmp = storage.get('macro') as Macros;
-      if (macros != undefined && tmp != null) {
-        let ms = new Macros();
-        for (let m of tmp.macroList) {
-          let tm = new Macro(m.name);
-          for (let a of m.actions) {
-            let ta = new Action(a.key, a.delay, a.action, a.type);
-            tm.add(ta);
-          }
-          ms.add(tm);
-        }
-        rk_l87.value.data.macros = ms;
-        macros.value = rk_l87.value.data.macros;
-        macro.value = macros.value.get()[0];
-        refresh();
-      } else {
-        await rk_l87.value.getMacros();
-      }
-    }
+    // if (rk_l87.value != undefined) {
+    //   let tmp = storage.get('macro') as Macros;
+    //   if (macros != undefined && tmp != null) {
+    //     let ms = new Macros();
+    //     for (let m of tmp.macroList) {
+    //       let tm = new Macro(m.name);
+    //       for (let a of m.actions) {
+    //         let ta = new Action(a.key, a.delay, a.action, a.type);
+    //         tm.add(ta);
+    //       }
+    //       ms.add(tm);
+    //     }
+    //     rk_l87.value.data.macros = ms;
+    //     macros.value = rk_l87.value.data.macros;
+    //     macro.value = macros.value.get()[0];
+    //     refresh();
+    //   } else {
+    //     await rk_l87.value.getMacros();
+    //   }
+    // }
   }
-
-  const macroGotten = (event: any) => {
-    macros.value = event.detail as Macros;
-    macro.value = macros.value?.get()[0];
-    refresh();
-  };
 
   const refresh = () => {
     let line, key: any;
@@ -767,6 +785,7 @@ export const useKeyStore = defineStore('keyinfo', () => {
         if (macros.value != undefined) {
           mapping.keyStr = macros.value.get()[mapping.keyCode & 0xFF].name;
         }
+        break;
       default:
         mapping.keyStr = `Unknow`;
         break;
@@ -890,12 +909,19 @@ export const useKeyStore = defineStore('keyinfo', () => {
     if (state.keyState.length <= 0 || index >= 999) {
       return '';
     }
+    
+    if (rk_l87.value != undefined && macros.value == undefined)
+    {
+      macros.value = rk_l87.value.data.macros;
+    }
+
+    macro.value = macros.value?.get()[0];
     keyState.value = (state.keyState as Array<KeyState>)[index];
     state.macroDialogShow = true;
   }
 
   const isMacroSelected = (obj: Macro): string => {
-    return obj.index == macro.value?.index ? 'macro_selected' : '';
+    return obj.index == macro.value?.index ? 'module_active2' : '';
   }
 
   const clickMacro = (obj: Macro) => {
@@ -972,5 +998,5 @@ export const useKeyStore = defineStore('keyinfo', () => {
 
     state.combineKeyDialogShow = false;
   }
-  return { profile, state, keyMatrixLayer, keyClick, keyColor, isSelected, keybgColor, keyText, keySetToDefault, keySetMacro, mapping, isFunSelected, isMacroSelected, clickMacro, confirmSetMacro, setCombineKey, confirmSetCombineKey, getKeyMatrix, clickProfile, deleteProfile, onKeyDown, newProfile, handleEditClose, renameProfile, exportProfile, importProfile, init, destroy, getKeyMatrixNomal, saveProfile, keySetToDefaultAll, refreshKeyMatrixData, setToFactory, unSelected }
+  return { profile, state, keyMatrixLayer, keyClick, keyColor, isSelected, keybgColor, keyText, keySetToDefault, keySetMacro, mapping, isFunSelected, isMacroSelected, clickMacro, confirmSetMacro, setCombineKey, confirmSetCombineKey, getKeyMatrix, clickProfile, deleteProfile, onKeyDown, newProfile, handleEditClose, renameProfile, exportProfile, importProfile, init, destroy, getKeyMatrixNomal, saveProfile, keySetToDefaultAll, refresh, refreshKeyMatrixData, setToFactory, unSelected }
 })

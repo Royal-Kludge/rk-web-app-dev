@@ -73,22 +73,26 @@ export class RK_L87_Dongle extends RK_L87 {
         dongleWorker.onmessage = async (event) => {
             if (event.data == 'heartbeat') {
             } else {
-                switch (event.data) {
-                    case 'SetProfile':
-                        await this.setReport(REPORT_ID_DONGLE, this.pktSetProfile.command());
-                        break;
-                    case 'SetLedEffect':
-                        await this.setReport(REPORT_ID_DONGLE, this.pktSetLedEffect.command());
-                        break;
-                    case 'SetLedColors':
-                        await this.setReport(REPORT_ID_DONGLE, this.pktSetLedColors.command());
-                        break;
-                    case 'SetKeyMatrix':
-                        await this.setReport(REPORT_ID_DONGLE, this.pktSetKeyMatrix.command());
-                        break;
-                    case 'SetMacros':
-                        await this.setReport(REPORT_ID_DONGLE, this.pktSetMacros.command());
-                        break;
+                try {
+                    switch (event.data) {
+                        case 'SetProfile':
+                            await this.setReport(REPORT_ID_DONGLE, this.pktSetProfile.command());
+                            break;
+                        case 'SetLedEffect':
+                            await this.setReport(REPORT_ID_DONGLE, this.pktSetLedEffect.command());
+                            break;
+                        case 'SetLedColors':
+                            await this.setReport(REPORT_ID_DONGLE, this.pktSetLedColors.command());
+                            break;
+                        case 'SetKeyMatrix':
+                            await this.setReport(REPORT_ID_DONGLE, this.pktSetKeyMatrix.command());
+                            break;
+                        case 'SetMacros':
+                            await this.setReport(REPORT_ID_DONGLE, this.pktSetMacros.command());
+                            break;
+                    }
+                } catch (e) {
+                    this.device.close();
                 }
             }
         };

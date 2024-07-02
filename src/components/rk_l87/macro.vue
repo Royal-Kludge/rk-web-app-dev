@@ -8,7 +8,7 @@
                         <el-scrollbar>
                             <div style="padding-left: 16%"
                                 :class="[`module_box d-flex p-3 my-2 text-grey-1 jc-between`, isSelected(macro)]"
-                                v-for=" macro in state.macros?.get()" @click="clickMacro(macro)">
+                                v-for=" macro in macros?.get()" @click="clickMacro(macro)">
                                 <div class="d-flex">
                                     <span class="pr-4 d-flex ai-center">
                                         <img src="../../assets/images/dot.png" />
@@ -69,14 +69,14 @@
                 <div class="m-5" style="border-bottom: 1px solid #E7EAF2;">
                     <div class="m-4">{{ $t('macro.title_3') }}</div>
                     <div class="m-4">
-                        <el-select v-model="eventVal" placeholder="Select" style="width: 100%;">
-                            <el-option v-for="item in eventList" :key="$t(item.value)" :label="$t(item.label)"
+                        <el-select v-model="state.eventVal" placeholder="Select" style="width: 100%;">
+                            <el-option v-for="item in state.eventList" :key="item.value" :label="$t(item.label)"
                                 :value="item.value" />
                         </el-select>
                     </div>
                     <div class="m-4">
                         <el-radio-group v-model="actVal" text-color="#00ffff" fill="#ffff00" :disabled="playing">
-                            <el-radio v-for="item in actList" :value="$t(item.value)" :label="$t(item.label)">
+                            <el-radio v-for="item in state.actList" :value="$t(item.value)" :label="$t(item.label)">
                                 {{ $t(item.label) }}
                             </el-radio>
                         </el-radio-group>
@@ -103,7 +103,7 @@
                     </div>
                     <div class="m-4 d-flex ai-center">
                         <el-radio-group v-model="delayVal" text-color="#00ffff" fill="#ffff00" :disabled="playing">
-                            <el-radio v-for="item in delayList" :value="$t(item.value)" :label="$t(item.label)"
+                            <el-radio v-for="item in state.delayList" :value="$t(item.value)" :label="$t(item.label)"
                                 style="width: 100%;">
                                 {{ $t(item.label) }}
                                 <span class="ml-3"
@@ -203,15 +203,15 @@ import type { Action as ElAction } from 'element-plus';
 // 解构出t方法
 const { t } = useI18n();
 const useMacro = useMacroStore();
-const { eventVal, eventList, actList, delayList } = storeToRefs(useMacro);
+const { state, macros, actions } = storeToRefs(useMacro);
 
 const actVal = ref(t('macro.menu_1'));
 const rk_l87 = ref<RK_L87>();
-const macros = ref<Macros>();
+//const macros = ref<Macros>();
 
-const key = ref<string>('');
+//const key = ref<string>('');
 const delay = ref<number>(30);
-const macro = ref<Macro>();
+//const macro = ref<Macro>();
 const elAction = ref<any>(null);
 const elMacro = ref<any>(null);
 const elActionScrollbar = ref<any>(null);
@@ -225,13 +225,13 @@ const repeat = ref<number>(0)
 const playing = ref<boolean>(false);
 const playTitle = ref<string>(t('macro.but_4'))
 
-const state = reactive({
-    macros: macros,
-    macro: macro,
-    name: '',
-    nameEditorDisplay: false,
-    key: key,
-});
+// const state = reactive({
+//     macros: macros,
+//     macro: macro,
+//     name: '',
+//     nameEditorDisplay: false,
+//     key: key,
+// });
 
 const isPlaying = (done: Function, cancel = () => { }) => {
     if (!playing.value) {
@@ -249,7 +249,7 @@ const isPlaying = (done: Function, cancel = () => { }) => {
 
 const clearAction = () => {
     isPlaying(() => {
-        if (macro.value != undefined) macro.value.actions = [];
+        if (state.value.macro != undefined) state.value.macro.actions = [];
     })
 };
 
@@ -263,36 +263,13 @@ const clickAction = (obj: Action) => {
 }
 
 onMounted(async () => {
-    rk_l87.value = (keyboard.protocol as RK_L87);
-    rk_l87.value.addEventListener(RK_L87_EVENT_DEFINE.OnMacrosGotten, macroGotten, false);
-
-    let tmp = storage.get('macro') as Macros;
-    if (macros != undefined && tmp != null) {
-        let ms = new Macros();
-        for (let m of tmp.macroList) {
-            let tm = new Macro(m.name);
-            for (let a of m.actions) {
-                let ta = new Action(a.key, a.delay, a.action, a.type);
-                tm.add(ta);
-            }
-            tm.refresh();
-            ms.add(tm);
-        }
-        rk_l87.value.data.macros = ms;
-        macros.value = rk_l87.value.data.macros;
-        refresh();
-    } else {
-        await getMacroData();
-    }
+    await useMacro.init();
     document.addEventListener('keydown', onKeyDown);
     document.addEventListener('keyup', onKeyUp);
 });
 
 onBeforeUnmount(() => {
-    if (rk_l87.value != undefined) {
-        rk_l87.value.removeEventListener(RK_L87_EVENT_DEFINE.OnMacrosGotten, macroGotten, false);
-    }
-
+    useMacro.destroy();
     document.removeEventListener('keydown', onKeyDown);
     document.removeEventListener('keyup', onKeyUp);
 });
@@ -311,20 +288,20 @@ const onKeyUp = (event: KeyboardEvent) => {
         } else if (delayVal.value == t('macro.menu_6')) {
             delay.value = delayFix.value;
         }
-        if (macro.value != undefined && keyCodeTable.value != undefined) {
+        if (state.value.macro != undefined && keyCodeTable.value != undefined) {
 
-            let index = macro.value.actions.findIndex(obj => obj.index === actionVal.value?.index)
+            let index = state.value.macro.actions.findIndex(obj => obj.index === actionVal.value?.index)
             index = index < 0 ? 0 : index
-            if (eventVal.value == 2)//之后插入
+            if (state.value.eventVal == 2)//之后插入
                 index += 1
             if (keyCodeTable.value != undefined) {
-                macro.value.insert(index, new Action(keyCodeTable.value.hid, delay.value, ActionType.Down));
-                macro.value.insert(index, new Action(keyCodeTable.value.hid, delay.value, ActionType.Up));
+                state.value.macro.insert(index, new Action(keyCodeTable.value.hid, delay.value, ActionType.Down));
+                state.value.macro.insert(index, new Action(keyCodeTable.value.hid, delay.value, ActionType.Up));
             }
             else if (delay.value > 0) {
-                macro.value.insert(index, new Action(KeyDefineEnum.NONE, delay.value, ActionType.Delay));
+                state.value.macro.insert(index, new Action(KeyDefineEnum.NONE, delay.value, ActionType.Delay));
             }
-            macro.value.refresh();
+            state.value.macro.refresh();
             elActionScrollbar.value.setScrollTop(2000);
         }
     }
@@ -347,25 +324,8 @@ const onKeyDown = (event: KeyboardEvent) => {
     console.log('Key pressed:', `${event.key} | ${event.code} | ${event.keyCode}`);
     keyCodeTable.value = KeyCodeMap[event.code];
     if (keyCodeTable.value != undefined) {
-        key.value = keyCodeTable.value.key;
+        state.value.key = keyCodeTable.value.key;
         keyDate.value = new Date()
-    }
-};
-
-const getMacroData = async () => {
-    if (rk_l87.value != undefined) {
-        rk_l87.value.getMacros();
-    }
-};
-
-const macroGotten = (event: any) => {
-    macros.value = event.detail as Macros;
-    refresh();
-};
-
-const refresh = () => {
-    if (macros.value != undefined) {
-        macro.value = macros.value.get()[0];
     }
 };
 
@@ -391,18 +351,18 @@ const handleOpen = (e: boolean, id: string) => {
 
 const deleteAction = (obj: Action) => {
     isPlaying(() => {
-        if (macro.value != undefined) macro.value.remove(obj);
+        if (state.value.macro != undefined) state.value.macro.remove(obj);
     })
 };
 
 const upAction = (obj: Action) => {
     isPlaying(() => {
-        if (macro.value != undefined) macro.value.removeUp(obj);
+        if (state.value.macro != undefined) state.value.macro.removeUp(obj);
     })
 };
 const downAction = (obj: Action) => {
     isPlaying(() => {
-        if (macro.value != undefined) macro.value.removeDown(obj);
+        if (state.value.macro != undefined) state.value.macro.removeDown(obj);
     })
 };
 const deleteMacro = (obj: Macro) => {
@@ -410,9 +370,9 @@ const deleteMacro = (obj: Macro) => {
         if (macros.value != undefined) {
             macros.value.remove(obj);
             if (macros.value.get().length > 0) {
-                macro.value = macros.value.get()[0];
+                state.value.macro = macros.value.get()[0];
             } else {
-                macro.value = undefined;
+                state.value.macro = undefined;
             }
         }
     })
@@ -420,16 +380,16 @@ const deleteMacro = (obj: Macro) => {
 
 const clickMacro = (obj: Macro) => {
     isPlaying(() => {
-        macro.value = obj;
+        state.value.macro = obj;
     })
 }
 
 const renameMacro = (obj: Macro) => {
     isPlaying(() => {
         if (macros.value != undefined) {
-            macro.value = obj;
-            state.name = obj.name;
-            state.nameEditorDisplay = true;
+            state.value.macro = obj;
+            state.value.name = obj.name;
+            state.value.nameEditorDisplay = true;
         }
     })
 };
@@ -437,9 +397,9 @@ const renameMacro = (obj: Macro) => {
 const newMacro = () => {
     isPlaying(() => {
         if (macros.value != undefined) {
-            macro.value = new Macro(`Macro ${macros.value.get().length + 1}`);
-            macros.value.add(macro.value);
-            //state.name = macro.value.name;
+            state.value.macro = new Macro(`Macro ${macros.value.get().length + 1}`);
+            macros.value.add(state.value.macro);
+            //state.name = state.value.macro.name;
             //state.nameEditorDisplay = true;
         }
     })
@@ -447,31 +407,31 @@ const newMacro = () => {
 
 const insert = () => {
     isPlaying(() => {
-        if (macro.value != undefined) {
-            let index = macro.value.actions.findIndex(obj => obj.index === actionVal.value?.index)
+        if (state.value.macro != undefined) {
+            let index = state.value.macro.actions.findIndex(obj => obj.index === actionVal.value?.index)
             index = index < 0 ? 0 : index
-            if (eventVal.value == 2)//之后插入
+            if (state.value.eventVal == 2)//之后插入
                 index += 1
             if (actVal.value === t('macro.menu_1') && keyCodeTable.value != undefined) {
-                macro.value.insert(index, new Action(keyCodeTable.value.hid, 30, ActionType.Down));
-                macro.value.insert(index, new Action(keyCodeTable.value.hid, 30, ActionType.Up));
+                state.value.macro.insert(index, new Action(keyCodeTable.value.hid, 30, ActionType.Down));
+                state.value.macro.insert(index, new Action(keyCodeTable.value.hid, 30, ActionType.Up));
             }
             else if (delay.value > 0) {
-                macro.value.insert(index, new Action(KeyDefineEnum.NONE, delay.value, ActionType.Delay));
+                state.value.macro.insert(index, new Action(KeyDefineEnum.NONE, delay.value, ActionType.Delay));
             }
-            macro.value.refresh();
+            state.value.macro.refresh();
             elActionScrollbar.value.setScrollTop(2000);
         }
     })
 };
 
 const isSelected = (obj: Macro): string => {
-    return obj.index == macro.value?.index ? 'module_active' : '';
+    return obj.index == state.value.macro?.index ? 'module_active' : '';
 }
 
 const handleEditClose = (done: () => void) => {
-    if (macro.value != undefined) {
-        macro.value.name = state.name;
+    if (state.value.macro != undefined) {
+        state.value.macro.name = state.value.name;
     }
     done();
 }
@@ -486,6 +446,6 @@ const saveMacro = async () => {
 }
 
 const loadMacro = async () => {
-    await getMacroData();
+    await useMacro.getMacroData();
 }
 </script>
