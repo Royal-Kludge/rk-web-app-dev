@@ -442,8 +442,8 @@ export const useKeyStore = defineStore('keyinfo', () => {
         for (index in keyboard.state.keyTableData[keyMatrixLayer.value]) {
           (state.keyState as Array<KeyState>).push({
             selected: false,
-            index: index,
-            KeyData: keyboard.state.keyTableData[keyMatrixLayer.value][index]
+            index: Number(index),
+            KeyData: keyboard.state.keyTableData[keyMatrixLayer.value][Number(index)]
           });
         }
       }
@@ -454,9 +454,9 @@ export const useKeyStore = defineStore('keyinfo', () => {
       getProfiles();
 
       //await rk_l87.value?.setKeyMatrix(layer, MatrixTable.WIN, 0);
-      await rk_l87.value?.setProfile(0);
-      await rk_l87.value?.setLedEffect(0);
-      await rk_l87.value?.setLedColors(0);
+      //await rk_l87.value?.setProfile(0);
+      //await rk_l87.value?.setLedEffect(0);
+      //await rk_l87.value?.setLedColors(0);
     }
 
     if (rk_l87.value != undefined && !isInited.value) {
@@ -823,10 +823,10 @@ export const useKeyStore = defineStore('keyinfo', () => {
 
   const keyClick = (index: number) => {
     if (state.keyState.length <= 0 || index >= 999) return '';
-    let v = !(state.keyState as Array<KeyState>)[index].selected;
-    //  unSelected();
-    (state.keyState as Array<KeyState>)[index].selected = v;
+    let isSelected = (state.keyState as Array<KeyState>)[index].selected;
+    (state.keyState as Array<KeyState>)[index].selected = !isSelected;
   }
+
   const unSelected = (): void => {
     let i: any;
     for (i in state.keyState) {

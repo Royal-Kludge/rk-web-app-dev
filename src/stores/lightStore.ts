@@ -425,23 +425,23 @@ export const uselightStore = defineStore('lightinfo', () => {
             keyChanged(state.keyColor.index);
         }
 
-        if (state.lightProps.light == LightEffectEnum.SelfDefine) {
-            let color = ledColors.value?.getLedColor(state.keyColor.index);
-            if (color != undefined) {
-                rgb.value.r = color.red;
-                rgb.value.g = color.green;
-                rgb.value.b = color.blue;
-                rgb.value.color = color.color;
-            }
-        } else {
-            let color = ledEffect.value?.getLedColor(state.lightProps.light);
-            if (color != undefined) {
-                rgb.value.r = color.red;
-                rgb.value.g = color.green;
-                rgb.value.b = color.blue;
-                rgb.value.color = color.color;
-            }
-        }
+        // if (state.lightProps.light == LightEffectEnum.SelfDefine) {
+        //     let color = ledColors.value?.getLedColor(state.keyColor.index);
+        //     if (color != undefined) {
+        //         rgb.value.r = color.red;
+        //         rgb.value.g = color.green;
+        //         rgb.value.b = color.blue;
+        //         rgb.value.color = color.color;
+        //     }
+        // } else {
+        //     let color = ledEffect.value?.getLedColor(state.lightProps.light);
+        //     if (color != undefined) {
+        //         rgb.value.r = color.red;
+        //         rgb.value.g = color.green;
+        //         rgb.value.b = color.blue;
+        //         rgb.value.color = color.color;
+        //     }
+        // }
     };
 
     const ligtChanged = async () => {
@@ -497,19 +497,20 @@ export const uselightStore = defineStore('lightinfo', () => {
             ledEffect.value?.setLedColor(state.lightProps.light, color);
         }
     };
+
     const onPicked = async () => {
-        if (rk_l87.value != undefined) {
-            if (state.lightProps.light == LightEffectEnum.SelfDefine) {
-                if (ledColors.value != undefined) {
-                    await rk_l87.value.setLedColors(profileIndex.value);
-                }
-            } else if (state.lightProps.light != LightEffectEnum.OFF && state.lightProps.light != LightEffectEnum.Music) {
-                if (ledEffect.value != undefined) {
-                    await rk_l87.value.setLedEffect(profileIndex.value);
-                }
-            }
+        // if (rk_l87.value != undefined) {
+        //     if (state.lightProps.light == LightEffectEnum.SelfDefine) {
+        //         if (ledColors.value != undefined) {
+        //             await rk_l87.value.setLedColors(profileIndex.value);
+        //         }
+        //     } else if (state.lightProps.light != LightEffectEnum.OFF && state.lightProps.light != LightEffectEnum.Music) {
+        //         if (ledEffect.value != undefined) {
+        //             await rk_l87.value.setLedEffect(profileIndex.value);
+        //         }
+        //     }
             await refresh();
-        }
+        //}
     };
 
     const lightClick = async (light: LightEffectEnum) => {
@@ -531,6 +532,7 @@ export const uselightStore = defineStore('lightinfo', () => {
 
         return style;
     };
+
     const selectdCustom = (light: LightEffectEnum) => {
         let style = '';
         if (boardProfile.value != undefined && light == state.lightProps.light) {
@@ -547,8 +549,28 @@ export const uselightStore = defineStore('lightinfo', () => {
             state.keyColor.keyStr = str.valueOf();
         }
     };
+
     const keyTextColor = (index: number): string => {
         return state.keyColors[index];
     };
-    return { connectType, state, rgb, ligtChanged, onPicking, onPicked, selectd, lightClick, selectdCustom, keyChanged, keyTextColor, init, destroy, SelfDefineDefault, setLayer, DebounceChanged, SelfDefineDefaultAll, refresh, saveBoardProfileToDevice }
+
+    const setSelectedKeyColor = (index: number = state.keyColor.index) => {
+        let color: LedColor = {
+            red: rgb.value.r,
+            green: rgb.value.g,
+            blue: rgb.value.b,
+            color: LedColors.getColorString(rgb.value.r, rgb.value.g, rgb.value.b)
+        }
+        state.keyColor.color = color.color;
+        state.keyColors[index] = color.color;
+        ledColors.value?.setLedColor(index, color);
+    }
+
+    const saveLedColorsToDevice = async () => {
+        if (ledColors.value != undefined) {
+            await rk_l87.value?.setLedColors(profileIndex.value);
+        }
+    }
+
+    return { connectType, state, rgb, ligtChanged, onPicking, onPicked, selectd, lightClick, selectdCustom, keyChanged, keyTextColor, init, destroy, SelfDefineDefault, setLayer, DebounceChanged, SelfDefineDefaultAll, refresh, saveBoardProfileToDevice, setSelectedKeyColor, saveLedColorsToDevice }
 })

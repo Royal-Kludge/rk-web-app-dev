@@ -294,15 +294,15 @@ const handleMouseMove = (event: any) => {
     positionList.end_x = event.clientX
     positionList.end_y = event.clientY
 }
-const handleMouseUp = (event: any) => {
+const handleMouseUp = async (event: any) => {
     document.body.removeEventListener('mousemove', handleMouseMove)
     document.body.removeEventListener('mouseup', handleMouseUp)
     positionList.is_show_mask = false
-    handleDomSelect()
+    await handleDomSelect()
     resSetXY()
     isMoving.value=false
 }
-const handleDomSelect = () => {
+const handleDomSelect = async () => {
     const dom_mask = window.document.querySelector('.mask')
     const rect_select = dom_mask?.getClientRects()[0]
     document.querySelectorAll('.item').forEach((node, index) => {
@@ -314,11 +314,15 @@ const handleDomSelect = () => {
             for (i in useKey.state.keyState) {
                 if ((useKey.state.keyState as Array<KeyState>)[i].index == Number(index)) {
                     (useKey.state.keyState as Array<KeyState>)[i].selected = true;
+                    useLight.setSelectedKeyColor((useKey.state.keyState as Array<KeyState>)[i].index);
                 }
             }
         }
-    })
+    });
+
+    await useLight.saveLedColorsToDevice();
 }
+
 const collide = (rect1: any, rect2: any) => {
     const maxX = Math.max(rect1.x + rect1.width, rect2.x + rect2.width)
     const maxY = Math.max(rect1.y + rect1.height, rect2.y + rect2.height)
@@ -326,6 +330,7 @@ const collide = (rect1: any, rect2: any) => {
     const minY = Math.min(rect1.y, rect2.y)
     return maxX - minX <= rect1.width + rect2.width && maxY - minY <= rect1.height + rect2.height
 }
+
 const resSetXY = () => {
     positionList.start_x = 0
     positionList.start_y = 0
@@ -353,9 +358,16 @@ const keyClick = async (index: number) => {
     if (meunid.value == 1 || (meunid.value == 3 && useLight.state.lightProps.light == LightEffectEnum.SelfDefine)) {
         useKey.keyClick(index);
     }
+
     if (meunid.value == 3) {
         useLight.keyChanged(index);
-        useLight.SelfDefineDefault();
+        let key = (useKey.state.keyState[index] as KeyState);
+        if (key.selected) {
+            useLight.setSelectedKeyColor(key.index);
+        } else {
+            useLight.SelfDefineDefault();
+        }
+        
         await useKey.saveProfile();
     }
 }
