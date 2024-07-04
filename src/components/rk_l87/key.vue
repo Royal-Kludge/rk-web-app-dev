@@ -236,7 +236,8 @@ const positionList = reactive({
     start_x: 0,
     start_y: 0,
     end_x: 0,
-    end_y: 0
+    end_y: 0,
+    is_selected: false
 })
 
 const mask_width = computed(() => (`${Math.abs(positionList.end_x - positionList.start_x)}px;`))
@@ -287,6 +288,7 @@ const handleMouseDown = (event: any) => {
     document.body.addEventListener('mousemove', handleMouseMove) // 监听鼠标移动事件
     document.body.addEventListener('mouseup', handleMouseUp) // 监听鼠标抬起事件
     isMoving.value=false
+    positionList.is_selected = false;
 }
 const handleMouseMove = (event: any) => {
     isMoving.value=true
@@ -303,6 +305,11 @@ const handleMouseUp = async (event: any) => {
     isMoving.value=false
 }
 const handleDomSelect = async () => {
+    if (positionList.start_x == positionList.end_x && positionList.start_y == positionList.start_y) {
+        return;
+    }
+
+    positionList.is_selected = true;
     const dom_mask = window.document.querySelector('.mask')
     const rect_select = dom_mask?.getClientRects()[0]
     document.querySelectorAll('.item').forEach((node, index) => {
@@ -355,6 +362,8 @@ const handleOpen = (e: boolean, id: string) => {
 };
 
 const keyClick = async (index: number) => {
+    if (positionList.is_selected) return;
+
     if (meunid.value == 1 || (meunid.value == 3 && useLight.state.lightProps.light == LightEffectEnum.SelfDefine)) {
         useKey.keyClick(index);
     }
@@ -364,6 +373,7 @@ const keyClick = async (index: number) => {
         let key = (useKey.state.keyState[index] as KeyState);
         if (key.selected) {
             useLight.setSelectedKeyColor(key.index);
+            await useLight.saveLedColorsToDevice();
         } else {
             useLight.SelfDefineDefault();
         }

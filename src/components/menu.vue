@@ -30,6 +30,7 @@ const useLight = uselightStore();
 const { meunid, menuList } = storeToRefs(useMenu);
 // 页面加载时
 onMounted(() => {
+  meunid.value = 1;
   useMenu.setMeunid(meunid.value);
 });
 

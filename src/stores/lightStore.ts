@@ -349,6 +349,7 @@ export const uselightStore = defineStore('lightinfo', () => {
 
     const profileGotten = async (event: any) => {
         boardProfile.value = event.detail as BoardProfile;
+        boardProfile.value.setFieldValue(FieldEnum.LedModeSelection, 0x00);
         boardProfile.value.setFieldValue(FieldEnum.LedMode, LightEffectEnum.NeonStream);
         await rk_l87.value?.getLedEffect(profileIndex.value);
         setProfile()

@@ -643,8 +643,10 @@ export const useKeyStore = defineStore('keyinfo', () => {
         }
       }
     }
-    profile.value = tm;
-    ps.add(profile.value);
+
+    //profile.value = tm;
+    ps.add(tm);
+
     saveProfile()
   };
 
