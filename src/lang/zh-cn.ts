@@ -3,6 +3,10 @@ export default {
     title: "浏览器不支持WebHID或WebHID不可用",
     but_1: "连接",
   },
+  Profile: {
+    default: "默认配置文件",
+    namePrefix: "配置文件",
+  },
   key: {
     title: "配置文件列表",
     title_1: "类型",

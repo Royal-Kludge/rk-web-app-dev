@@ -2,11 +2,13 @@ import { KeyMatrixLayer } from '@/keyboard/enum';
 import { storage } from '@/keyboard/storage';
 import { keyboard } from '@/keyboard/keyboard'
 import { KeyMatrix } from '@/keyboard/rk_l87/keyMatrix';
+import { useI18n } from 'vue-i18n';
 
 export class Profile {
     name: string;
     layers: Record<number, Uint8Array>;
     index = 0;
+    isDefault = false;
     profile?: Uint8Array;
     ledEffect?: Uint8Array;
     ledColors?: Uint8Array;
@@ -82,39 +84,63 @@ export class Profiles {
     get(): Array<Profile> {
         return this.list;
     }
+
     init() {
         this.list.splice(0, this.list.length);
         let tmp = storage.get('profile') as Profiles;
         if (tmp != null && tmp.list.length > 0) {
             for (let m of tmp.list) {
                 let tm = new Profile(m.name)
-                tm.layers = m.layers
-                tm.profile = m.profile
-                tm.ledEffect = m.ledEffect
-                tm.ledColors = m.ledColors
+                tm.isDefault = m.isDefault;
+                tm.layers = m.layers;
+                tm.profile = m.profile;
+                tm.ledEffect = m.ledEffect;
+                tm.ledColors = m.ledColors;
                 this.add(tm);
             }
             this.curIndex = tmp.curIndex;
         }
         else {
-            for (let i = 0; i < 3; i++) {
-                let tm = new Profile('profile' + (i + 1));
-                if (keyboard.keyboardDefine != undefined) {
-                    let index: any;
-                    for (index in keyboard.keyboardDefine.keyMatrixLayer) {
-                        let layer = keyboard.keyboardDefine.keyMatrixLayer[index];
-                        tm.add(layer, new Uint8Array(512))
-                        let keyDatas = new KeyMatrix(new DataView(tm.layers[layer].buffer));
-                        let layout = keyboard.keyboardDefine?.keyLayout[layer];
-                        if (layout != undefined) {
-                            for (let j = 0; j < layout.length; j++) {
-                                keyDatas.setKeyMappingRaw(j, layout[j]);
-                            }
+            // for (let i = 0; i < 3; i++) {
+            //     let tm = new Profile('profile' + (i + 1));
+            //     if (keyboard.keyboardDefine != undefined) {
+            //         let index: any;
+            //         for (index in keyboard.keyboardDefine.keyMatrixLayer) {
+            //             let layer = keyboard.keyboardDefine.keyMatrixLayer[index];
+            //             tm.add(layer, new Uint8Array(512))
+            //             let keyDatas = new KeyMatrix(new DataView(tm.layers[layer].buffer));
+            //             let layout = keyboard.keyboardDefine?.keyLayout[layer];
+            //             if (layout != undefined) {
+            //                 for (let j = 0; j < layout.length; j++) {
+            //                     keyDatas.setKeyMappingRaw(j, layout[j]);
+            //                 }
+            //             }
+            //         }
+            //     }
+            //     this.add(tm);
+            // }
+
+            const { t } = useI18n();
+            let name = t("Profile.default")
+            let tm = new Profile(name);
+            tm.isDefault = true;
+            tm.index = 0;
+            if (keyboard.keyboardDefine != undefined) {
+                let index: any;
+                for (index in keyboard.keyboardDefine.keyMatrixLayer) {
+                    let layer = keyboard.keyboardDefine.keyMatrixLayer[index];
+                    tm.add(layer, new Uint8Array(512))
+                    let keyDatas = new KeyMatrix(new DataView(tm.layers[layer].buffer));
+                    let layout = keyboard.keyboardDefine?.keyLayout[layer];
+                    if (layout != undefined) {
+                        for (let j = 0; j < layout.length; j++) {
+                            keyDatas.setKeyMappingRaw(j, layout[j]);
                         }
                     }
                 }
-                this.add(tm);
             }
+            
+            this.add(tm);
             this.save()
         }
     }

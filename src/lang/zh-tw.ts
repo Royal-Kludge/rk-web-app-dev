@@ -3,8 +3,12 @@ export default {
     title: "瀏覽器不支持WebHID或WebHID不可用",
     but_1: "連接",
   },
+  Profile: {
+    default: "默認設定檔",
+    namePrefix: "設定檔",
+  },
   key: {
-    title: "配置文件列表",
+    title: "設定檔清單",
     title_1: "類型",
     title_2: "周期",
     layer_1: "默認層",

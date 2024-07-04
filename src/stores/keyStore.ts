@@ -13,13 +13,15 @@ import fileSaver from "file-saver";
 import { ElMessage } from 'element-plus'
 
 import { storage } from '@/keyboard/storage';
-import { BoardProfile } from '@/keyboard/rk_l87/boardProfile';
+import { BoardProfile, FieldEnum } from '@/keyboard/rk_l87/boardProfile';
 import { LedEffect } from '@/keyboard/rk_l87/ledEffect';
 import { LedColors } from '@/keyboard/rk_l87/ledColors';
+import { useI18n } from 'vue-i18n';
 
 export const useKeyStore = defineStore('keyinfo', () => {
   const rk_l87 = ref<RK_L87>();
-  //const keyMatrix = ref<KeyMatrix>();
+
+  const { t } = useI18n();
 
   const macros = ref<Macros>();
   const macro = ref<Macro>();
@@ -50,6 +52,7 @@ export const useKeyStore = defineStore('keyinfo', () => {
     name: '',
     nameEditorDisplay: false,
     profiles: ps,
+    profileList: [],
     //MatrixLayer: keyMatrixLayer.value,
     MatrixLayers: [
       { value: KeyMatrixLayer.Nomal, label: 'key.layer_1' },
@@ -531,7 +534,7 @@ export const useKeyStore = defineStore('keyinfo', () => {
 
   const getProfiles = () => {
     if (rk_l87.value != undefined) {
-      ps.init()
+      ps.init();
       if (ps.curIndex == undefined) ps.curIndex = 0;
       profile.value = ps.get()[ps.curIndex];
       if (keyboard.keyboardDefine != undefined) {
@@ -631,7 +634,7 @@ export const useKeyStore = defineStore('keyinfo', () => {
     ps.save()
   }
   const newProfile = () => {
-    let tm = new Profile(`profile ${ps.get().length + 1}`);
+    let tm = new Profile(`${t("Profile.namePrefix")} ${ps.get().length + 1}`);
     let layer: any;
     for (layer in keyboard.keyboardDefine?.keyLayout) {
       tm.add(layer, new Uint8Array(512))
@@ -644,6 +647,17 @@ export const useKeyStore = defineStore('keyinfo', () => {
       }
     }
 
+    tm.ledColors = new Uint8Array(512);
+
+    if (rk_l87.value != undefined && rk_l87.value.data.boardProfile != undefined) {
+      tm.profile = new Uint8Array(rk_l87.value.data.boardProfile.buffer.buffer, 0, rk_l87.value.data.boardProfile.buffer.byteLength);
+      tm.profile[FieldEnum.LedModeSelection] == 0x00;
+      tm.profile[FieldEnum.LedMode] == 0x00;
+    }
+
+    if (rk_l87.value != undefined && rk_l87.value.data.ledEffect != undefined) {
+      tm.ledEffect = new Uint8Array(rk_l87.value.data.ledEffect.buffer.buffer, 0, rk_l87.value.data.ledEffect.buffer.byteLength);
+    }
     //profile.value = tm;
     ps.add(tm);
 
@@ -725,6 +739,15 @@ export const useKeyStore = defineStore('keyinfo', () => {
         KeyMatrixData.value[keyMatrixLayer.value]?.fillKeyMappingData(state.keyMatrix[line].keys[key].index, keyData.keyMappingData);
         keySetStr(keyData);
       }
+    }
+
+    if (state.profileList.length > 0) {
+      state.profileList.splice(0, state.profileList.length);
+    }
+
+    let i:number
+    for (i = 0; i < ps.list.length; i++) {
+      (state.profileList as Array<Profile>).push(ps.list[i]);
     }
   }
 

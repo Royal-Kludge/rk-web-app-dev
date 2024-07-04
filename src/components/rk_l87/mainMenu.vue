@@ -5,7 +5,7 @@
                 <div class="p-3 bg-white-1 fw-b fs-xxl">{{ $t("key.title") }}</div>
                 <div style="height: 75vh">
                     <el-scrollbar>
-                        <div v-for="item in useKey.state.profiles.list"
+                        <div v-for="item in (state.profileList as Array<Profile>)"
                             class="module_box d-flex p-3 my-2 text-grey-1 jc-between"
                             :class="{ 'module_active': item.index === useKey.profile?.index }"
                             >
@@ -15,7 +15,7 @@
                                         <img src="../../assets/images/dot.png" />
                                     </span>
                                     <span>
-                                        {{ item.name }}
+                                        {{ item.isDefault ? $t("Profile.default") : item.name }}
                                     </span>
                                 </div>
                             </div>
@@ -26,11 +26,11 @@
                                     </el-icon>
                                     <template #dropdown>
                                         <el-dropdown-menu style="padding: 0px;">
-                                            <el-dropdown-item @click="useKey.renameProfile(item)">
+                                            <el-dropdown-item @click="useKey.renameProfile(item)" v-if="!item.isDefault">
                                                 <img src="../../assets/images/title/edit.png" class="img-title" />
                                                 {{ $t("key.but_4") }}
                                             </el-dropdown-item>
-                                            <el-dropdown-item @click="useKey.deleteProfile(item)" v-if="useKey.state.profiles.list.length > 1">
+                                            <el-dropdown-item @click="useKey.deleteProfile(item)" v-if="!item.isDefault">
                                                 <img src="../../assets/images/title/del.png" class="img-title" />
                                                 {{ $t("key.but_5") }}
                                             </el-dropdown-item>
@@ -73,9 +73,13 @@ import { useKeyStore } from "@/stores/keyStore";
 import type { UploadProps } from 'element-plus'
 import { uselightStore } from "@/stores/lightStore";
 import { Profile } from '@/keyboard/rk_l87/profiles';
+import { storeToRefs } from "pinia";
 
 const useKey = useKeyStore();
 const useLight = uselightStore();
+
+const { state } = storeToRefs(useKey);
+
 const clickProfile = async (obj: Profile) => {
     await useKey.clickProfile(obj)
     await useLight.refresh()

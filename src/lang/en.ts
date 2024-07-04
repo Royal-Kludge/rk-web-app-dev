@@ -3,6 +3,10 @@ export default {
     title: "WebHID not supported by browser or not available",
     but_1: "Connect",
   },
+  Profile: {
+    default: "Default Profile",
+    namePrefix: "Profile",
+  },
   key: {
     title: "Profile List",
     title_1: "Type",
