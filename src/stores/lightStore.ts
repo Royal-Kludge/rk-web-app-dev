@@ -248,7 +248,7 @@ export const uselightStore = defineStore('lightinfo', () => {
             '#FFFFFF'
         ],
         lightProps: {
-            light: LightEffectEnum.Respire,
+            light: LightEffectEnum.OFF,
             brightness: 0,
             speed: 0,
             mixing: false,
@@ -284,6 +284,29 @@ export const uselightStore = defineStore('lightinfo', () => {
 
         if (boardProfile.value == undefined) {
             await getLightData();
+        } else {
+            state.lightProps.light = boardProfile.value.getFieldValue(FieldEnum.LedMode);
+            let ledParam = boardProfile.value.getLedParam(state.lightProps.light);
+            if (ledParam != undefined && boardProfile.value.getFieldValue(FieldEnum.LedParameterType) == 0) {
+                state.lightProps.brightness = ledParam.brightness + 1;
+                state.lightProps.mixing = ledParam.color > 0;
+                state.lightProps.speed = ledParam.speed;
+            } else {
+                state.lightProps.brightness = boardProfile.value.getFieldValue(FieldEnum.LedBrightness) + 1;
+                state.lightProps.speed = boardProfile.value.getFieldValue(FieldEnum.LedSpeed);
+            }
+    
+            state.lightProps.sleep = boardProfile.value.getFieldValue(FieldEnum.SleepTime) == 0 ? 0 : (boardProfile.value.getFieldValue(FieldEnum.SleepTime) * 30) / 60;
+        }
+
+        if (ledColors.value != undefined) {
+            let index: number;
+            for (index = 0; index < state.keyColors.length; index++) {
+                var color = ledColors.value.getLedColor(index);
+                state.keyColors[index] = color.color;
+            }
+
+            keyChanged(state.keyColor.index);
         }
     };
 
@@ -370,15 +393,15 @@ export const uselightStore = defineStore('lightinfo', () => {
                 blue: 0xFF,
                 color: '#FFFFFF'
             }
-            ledColors.value?.setLedColor(0, color);
-            ledColors.value?.setLedColor(14, color);
-            ledColors.value?.setLedColor(15, color);
-            ledColors.value?.setLedColor(21, color);
-            ledColors.value?.setLedColor(9, color);
-            ledColors.value?.setLedColor(94, color);
-            ledColors.value?.setLedColor(89, color);
-            ledColors.value?.setLedColor(95, color);
-            ledColors.value?.setLedColor(101, color);
+            // ledColors.value?.setLedColor(0, color);
+            // ledColors.value?.setLedColor(14, color);
+            // ledColors.value?.setLedColor(15, color);
+            // ledColors.value?.setLedColor(21, color);
+            // ledColors.value?.setLedColor(9, color);
+            // ledColors.value?.setLedColor(94, color);
+            // ledColors.value?.setLedColor(89, color);
+            // ledColors.value?.setLedColor(95, color);
+            // ledColors.value?.setLedColor(101, color);
         }
         setledColors()
         await refresh();

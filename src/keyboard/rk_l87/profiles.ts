@@ -3,6 +3,8 @@ import { storage } from '@/keyboard/storage';
 import { keyboard } from '@/keyboard/keyboard'
 import { KeyMatrix } from '@/keyboard/rk_l87/keyMatrix';
 import { useI18n } from 'vue-i18n';
+import { PROFILE_DEFAULT_DATA } from './boardProfile';
+import { LED_EFFECT_DEFAULT_DATA } from './ledEffect';
 
 export class Profile {
     name: string;
@@ -16,6 +18,25 @@ export class Profile {
     constructor(name: string) {
         this.name = name;
         this.layers = {};
+
+        if (keyboard.keyboardDefine != undefined) {
+            let index: any;
+            for (index in keyboard.keyboardDefine.keyMatrixLayer) {
+                let layer = keyboard.keyboardDefine.keyMatrixLayer[index];
+                this.add(layer, new Uint8Array(512))
+                let keyDatas = new KeyMatrix(new DataView(this.layers[layer].buffer));
+                let layout = keyboard.keyboardDefine?.keyLayout[layer];
+                if (layout != undefined) {
+                    for (let j = 0; j < layout.length; j++) {
+                        keyDatas.setKeyMappingRaw(j, layout[j]);
+                    }
+                }
+            }
+        }
+        
+        this.ledColors = new Uint8Array(512);
+        this.profile = new Uint8Array(PROFILE_DEFAULT_DATA.buffer, 0, PROFILE_DEFAULT_DATA.buffer.byteLength);
+        this.ledEffect = new Uint8Array(LED_EFFECT_DEFAULT_DATA.buffer, 0, LED_EFFECT_DEFAULT_DATA.buffer.byteLength);
     }
     get(index: KeyMatrixLayer | number): Uint8Array {
         return this.layers[index];
@@ -121,25 +142,11 @@ export class Profiles {
             // }
 
             const { t } = useI18n();
+            this.curIndex = 0;
             let name = t("Profile.default")
             let tm = new Profile(name);
             tm.isDefault = true;
             tm.index = 0;
-            if (keyboard.keyboardDefine != undefined) {
-                let index: any;
-                for (index in keyboard.keyboardDefine.keyMatrixLayer) {
-                    let layer = keyboard.keyboardDefine.keyMatrixLayer[index];
-                    tm.add(layer, new Uint8Array(512))
-                    let keyDatas = new KeyMatrix(new DataView(tm.layers[layer].buffer));
-                    let layout = keyboard.keyboardDefine?.keyLayout[layer];
-                    if (layout != undefined) {
-                        for (let j = 0; j < layout.length; j++) {
-                            keyDatas.setKeyMappingRaw(j, layout[j]);
-                        }
-                    }
-                }
-            }
-            
             this.add(tm);
             this.save()
         }

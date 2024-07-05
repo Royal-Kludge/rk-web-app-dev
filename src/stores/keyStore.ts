@@ -13,7 +13,7 @@ import fileSaver from "file-saver";
 import { ElMessage } from 'element-plus'
 
 import { storage } from '@/keyboard/storage';
-import { BoardProfile, FieldEnum } from '@/keyboard/rk_l87/boardProfile';
+import { BoardProfile, FieldEnum, PROFILE_DEFAULT_DATA } from '@/keyboard/rk_l87/boardProfile';
 import { LedEffect } from '@/keyboard/rk_l87/ledEffect';
 import { LedColors } from '@/keyboard/rk_l87/ledColors';
 import { useI18n } from 'vue-i18n';
@@ -635,29 +635,28 @@ export const useKeyStore = defineStore('keyinfo', () => {
   }
   const newProfile = () => {
     let tm = new Profile(`${t("Profile.namePrefix")} ${ps.get().length + 1}`);
-    let layer: any;
-    for (layer in keyboard.keyboardDefine?.keyLayout) {
-      tm.add(layer, new Uint8Array(512))
-      KeyMatrixData.value[layer].buffer = new DataView(tm.layers[layer].buffer);
-      let layout = keyboard.keyboardDefine?.keyLayout[layer];
-      if (layout != undefined) {
-        for (let j = 0; j < layout.length; j++) {
-          KeyMatrixData.value[layer].setKeyMappingRaw(j, layout[j]);
-        }
-      }
-    }
+    // let layer: any;
+    // for (layer in keyboard.keyboardDefine?.keyLayout) {
+    //   tm.add(layer, new Uint8Array(512))
+    //   KeyMatrixData.value[layer].buffer = new DataView(tm.layers[layer].buffer);
+    //   let layout = keyboard.keyboardDefine?.keyLayout[layer];
+    //   if (layout != undefined) {
+    //     for (let j = 0; j < layout.length; j++) {
+    //       KeyMatrixData.value[layer].setKeyMappingRaw(j, layout[j]);
+    //     }
+    //   }
+    // }
 
-    tm.ledColors = new Uint8Array(512);
+    // tm.ledColors = new Uint8Array(512);
 
-    if (rk_l87.value != undefined && rk_l87.value.data.boardProfile != undefined) {
-      tm.profile = new Uint8Array(rk_l87.value.data.boardProfile.buffer.buffer, 0, rk_l87.value.data.boardProfile.buffer.byteLength);
-      tm.profile[FieldEnum.LedModeSelection] == 0x00;
-      tm.profile[FieldEnum.LedMode] == 0x00;
-    }
+    // if (rk_l87.value != undefined && rk_l87.value.data.boardProfile != undefined) {
+    //   tm.profile = new Uint8Array(PROFILE_DEFAULT_DATA.buffer, 0, PROFILE_DEFAULT_DATA.buffer.byteLength);
+    // }
 
-    if (rk_l87.value != undefined && rk_l87.value.data.ledEffect != undefined) {
-      tm.ledEffect = new Uint8Array(rk_l87.value.data.ledEffect.buffer.buffer, 0, rk_l87.value.data.ledEffect.buffer.byteLength);
-    }
+    // if (rk_l87.value != undefined && rk_l87.value.data.ledEffect != undefined) {
+    //   tm.ledEffect = new Uint8Array(rk_l87.value.data.ledEffect.buffer.buffer, 0, rk_l87.value.data.ledEffect.buffer.byteLength);
+    // }
+
     //profile.value = tm;
     ps.add(tm);
 
