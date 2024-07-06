@@ -91,7 +91,7 @@ export default {
     mode_title: "按鍵去抖",
     mode_game: "遊戲模式",
     mode_work: "辦公模式",
-    layer_1: "啟用Tap圖層",
+    layer_1: "啟用Tap層",
     but_1: "重置鍵盤數據",
     but_2: "恢復出廠設置",
     but_3: "驅動更新",

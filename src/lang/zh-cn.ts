@@ -91,7 +91,7 @@ export default {
     mode_title: "按键去抖",
     mode_game: "游戏模式",
     mode_work: "办公模式",
-    layer_1: "启用Tap图层",
+    layer_1: "启用Tap层",
     but_1: "重置键盘数据",
     but_2: "恢复出厂设置",
     but_3: "驱动更新",
