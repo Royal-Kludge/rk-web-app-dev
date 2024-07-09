@@ -442,6 +442,9 @@ export const useKeyStore = defineStore('keyinfo', () => {
       rk_l87.value = (keyboard.protocol as RK_L87);
       let index: any;
       if (keyMatrixLayer.value in keyboard.state.keyTableData) {
+        if (state.keyState.length > 0) {
+          state.keyState.splice(0, state.keyState.length);
+        }
         for (index in keyboard.state.keyTableData[keyMatrixLayer.value]) {
           (state.keyState as Array<KeyState>).push({
             selected: false,

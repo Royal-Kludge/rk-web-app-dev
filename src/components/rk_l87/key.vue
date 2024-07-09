@@ -365,6 +365,9 @@ const keyClick = async (index: number) => {
     if (positionList.is_selected) return;
 
     if (meunid.value == 1 || (meunid.value == 3 && useLight.state.lightProps.light == LightEffectEnum.SelfDefine)) {
+        if (meunid.value == 1) {
+            useKey.unSelected();
+        }
         useKey.keyClick(index);
     }
 
