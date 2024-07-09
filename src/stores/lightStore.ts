@@ -433,10 +433,10 @@ export const uselightStore = defineStore('lightinfo', () => {
             if (ledColors.value != undefined) {
                 await rk_l87.value?.setLedColors(profileIndex.value);
             }
-        } else if (state.lightProps.light != LightEffectEnum.OFF && state.lightProps.light != LightEffectEnum.Music) {
-            if (ledEffect.value != undefined) {
-                await rk_l87.value?.setLedEffect(profileIndex.value);
-            }
+        // } else if (state.lightProps.light != LightEffectEnum.OFF && state.lightProps.light != LightEffectEnum.Music) {
+        //     if (ledEffect.value != undefined) {
+        //         await rk_l87.value?.setLedEffect(profileIndex.value);
+        //     }
         }
 
         if (ledColors.value != undefined) {
@@ -534,6 +534,11 @@ export const uselightStore = defineStore('lightinfo', () => {
         //         }
         //     }
             await refresh();
+        if (state.lightProps.light != LightEffectEnum.OFF && state.lightProps.light != LightEffectEnum.Music) {
+            if (ledEffect.value != undefined) {
+                await rk_l87.value?.setLedEffect(profileIndex.value);
+            }
+        }
         //}
     };
 

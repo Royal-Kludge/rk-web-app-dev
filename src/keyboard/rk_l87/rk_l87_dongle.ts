@@ -71,7 +71,8 @@ export class RK_L87_Dongle extends RK_L87 {
         super.init();
 
         dongleWorker.onmessage = async (event) => {
-            if (event.data == 'heartbeat') {
+            if (event.data == 'finish' || event.data == 'timeout') {
+                this.dispatchEvent(new CustomEvent(RK_L87_EVENT_DEFINE.OnReportFinish, { detail: event.data }));
             } else {
                 try {
                     switch (event.data) {
