@@ -22,19 +22,19 @@
             @change="colorHexChanged()" :maxlength="7" /> -->
         <div class="mb-2 d-flex ai-center">
           <div class="mr-4">R</div>
-          <div class="r"><el-slider style="width: 260px" v-model="cursorPosition.rgb.r" :min="0" :max="255" /></div>
+          <div class="r"><el-slider style="width: 260px" v-model="cursorPosition.rgb.r" :min="0" :max="255" @change="colorChanged"/></div>
           <div class="ml-3"><el-input-number v-model="cursorPosition.rgb.r" :min="0" :max="255" size="small"
               :controls="false" @change="colorChanged()" /></div>
         </div>
         <div class="mb-2 d-flex ai-center">
           <div class="mr-4">G</div>
-          <div class="g"><el-slider style="width: 260px" v-model="cursorPosition.rgb.g" :min="0" :max="255" /></div>
+          <div class="g"><el-slider style="width: 260px" v-model="cursorPosition.rgb.g" :min="0" :max="255" @change="colorChanged"/></div>
           <div class="ml-3"><el-input-number v-model="cursorPosition.rgb.g" :min="0" :max="255" size="small"
               :controls="false" @change="colorChanged()" /></div>
         </div>
         <div class="mb-2 d-flex ai-center">
           <div class="mr-4">B</div>
-          <div class="b"><el-slider style="width: 260px" v-model="cursorPosition.rgb.b" :min="0" :max="255" /></div>
+          <div class="b"><el-slider style="width: 260px" v-model="cursorPosition.rgb.b" :min="0" :max="255" @change="colorChanged"/></div>
           <div class="ml-3"><el-input-number v-model="cursorPosition.rgb.b" :min="0" :max="255" size="small"
               :controls="false" @change="colorChanged()" /></div>
         </div>

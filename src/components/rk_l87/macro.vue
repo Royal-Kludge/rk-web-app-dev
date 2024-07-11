@@ -26,11 +26,15 @@
                                             <el-dropdown-menu style="padding: 0px;">
                                                 <el-dropdown-item @click="renameMacro(macro)">
                                                     <img src="../../assets/images/title/edit.png" class="img-title" />
-                                                    编辑
+                                                    {{ $t("macro.but_9") }}
                                                 </el-dropdown-item>
                                                 <el-dropdown-item @click="deleteMacro(macro)">
                                                     <img src="../../assets/images/title/del.png" class="img-title" />
-                                                    删除
+                                                    {{ $t("macro.but_10") }}
+                                                </el-dropdown-item>
+                                                <el-dropdown-item @click="useMacro.exportMacro(macro)">
+                                                    <img src="../../assets/images/title/export.png" class="img-title" />
+                                                    {{ $t("macro.but_11") }}
                                                 </el-dropdown-item>
                                             </el-dropdown-menu>
                                         </template>
@@ -46,9 +50,11 @@
                     <div class="d-flex py-1 m-2 px-3 but-blue c-p" @click="newMacro">
                         <img src="../../assets/images/title/new.png" class="img-but" />{{ $t('macro.but_1') }}
                     </div>
-                    <div class="d-flex py-1 m-2 px-3 but-green c-p" @click="loadMacro">
-                        <img src="../../assets/images/title/import.png" class="img-but" /> {{
-                            $t('macro.but_2') }}
+                    <div class="d-flex py-1 m-2 px-3 but-green c-p">
+                        <el-upload :before-upload="beforeAvatarUpload" :show-file-list="false">
+                            <img src="../../assets/images/title/import.png" class="img-but" />
+                            {{ $t("macro.but_2") }}
+                        </el-upload>
                     </div>
                 </div>
             </div>
@@ -102,7 +108,8 @@
                         </div>
                     </div>
                     <div class="m-4 d-flex ai-center">
-                        <el-radio-group v-model="delayVal" text-color="#00ffff" fill="#ffff00" :disabled="playing">
+                        <el-radio-group v-model="delayVal" text-color="#00ffff" fill="#ffff00" :disabled="playing"
+                            @change="delayChanged">
                             <el-radio v-for="item in state.delayList" :value="$t(item.value)" :label="$t(item.label)"
                                 style="width: 100%;">
                                 {{ $t(item.label) }}
@@ -114,7 +121,8 @@
                         </el-radio-group>
                     </div>
                     <div class="m-4 d-flex">
-                        <div class="py-1 px-5 but-blue text-white c-p" @click="record">
+                        <div class="py-1 px-5  text-white c-p" @click="record"
+                            :class="[playing ? 'but-red' : 'but-blue']">
                             {{ playTitle }}
                         </div>
                     </div>
@@ -199,6 +207,7 @@ import { useI18n } from 'vue-i18n';
 import { KeyDefineEnum } from '../../keyboard/keyCode'
 import { ElMessageBox, ElMessage } from 'element-plus'
 import type { Action as ElAction } from 'element-plus';
+import type { UploadProps } from 'element-plus'
 
 // 解构出t方法
 const { t } = useI18n();
@@ -264,8 +273,8 @@ const clickAction = (obj: Action) => {
 
 onMounted(async () => {
     await useMacro.init();
-    document.addEventListener('keydown', onKeyDown);
-    document.addEventListener('keyup', onKeyUp);
+    document.addEventListener('keydown', onKeyDown, false);
+    document.addEventListener('keyup', onKeyUp, false);
 });
 
 onBeforeUnmount(() => {
@@ -295,8 +304,8 @@ const onKeyUp = (event: KeyboardEvent) => {
             if (state.value.eventVal == 2)//之后插入
                 index += 1
             if (keyCodeTable.value != undefined) {
-                state.value.macro.insert(index, new Action(keyCodeTable.value.hid, delay.value, ActionType.Down));
                 state.value.macro.insert(index, new Action(keyCodeTable.value.hid, delay.value, ActionType.Up));
+                state.value.macro.insert(index, new Action(keyCodeTable.value.hid, delay.value, ActionType.Down));
             }
             else if (delay.value > 0) {
                 state.value.macro.insert(index, new Action(KeyDefineEnum.NONE, delay.value, ActionType.Delay));
@@ -322,6 +331,7 @@ const ComputeTimeDiff = (date: any): number => {
 
 const onKeyDown = (event: KeyboardEvent) => {
     console.log('Key pressed:', `${event.key} | ${event.code} | ${event.keyCode}`);
+    event.preventDefault();
     keyCodeTable.value = KeyCodeMap[event.code];
     if (keyCodeTable.value != undefined) {
         state.value.key = keyCodeTable.value.key;
@@ -397,6 +407,7 @@ const renameMacro = (obj: Macro) => {
 const newMacro = () => {
     isPlaying(() => {
         if (macros.value != undefined) {
+            delayVal.value = t('macro.menu_4');
             state.value.macro = new Macro(`Macro ${macros.value.get().length + 1}`);
             macros.value.add(state.value.macro);
             //state.name = state.value.macro.name;
@@ -441,6 +452,10 @@ const saveMacro = async () => {
         if (macros.value != undefined) {
             storage.set('macro', macros.value);
             rk_l87.value?.setMacros();
+            ElMessage({
+                type: 'info',
+                message: t("macro.title_6"),
+            })
         }
     })
 }
@@ -448,4 +463,25 @@ const saveMacro = async () => {
 const loadMacro = async () => {
     await useMacro.getMacroData();
 }
+const delayChanged = () => {
+    if (delayVal.value === t('macro.menu_6')) {
+        delayFix.value = 30
+    }
+}
+
+const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
+    console.log(rawFile)
+    // if (rawFile.type !== 'application/json') {
+    //     ElMessage.error('File format error')
+    //     return false
+    // }
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        // 在这里可以处理文件内容，例如验证或转换
+        useMacro.importProfile(e.target?.result)
+    };
+    reader.readAsText(rawFile); // 读取文件内容为文本
+    return false
+}
+
 </script>

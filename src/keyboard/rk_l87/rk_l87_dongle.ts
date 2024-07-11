@@ -314,6 +314,7 @@ export class RK_L87_Dongle extends RK_L87 {
 
     private async nextReport(event: any) {
         let pkt = event.detail as Packet_Dongle;
+        this.dispatchEvent(new CustomEvent(RK_L87_EVENT_DEFINE.OnReportStart, { detail: true }));
         await this.setReport(REPORT_ID_DONGLE, pkt.command());
     }
 

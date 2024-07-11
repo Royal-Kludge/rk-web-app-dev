@@ -5,6 +5,8 @@ import { RK_L87, RK_L87_EVENT_DEFINE } from '../keyboard/rk_l87/rk_l87';
 import { keyboard } from '../keyboard/keyboard'
 import { storage } from '@/keyboard/storage';
 import { ConnectionEventEnum, ConnectionStatusEnum } from "@/keyboard/enum";
+import fileSaver from "file-saver";
+import { ElMessage } from 'element-plus'
 
 export const useMacroStore = defineStore("macrostore", () => {
   const rk_l87 = ref<RK_L87>();
@@ -59,6 +61,7 @@ export const useMacroStore = defineStore("macrostore", () => {
             let ta = new Action(a.key, a.delay, a.action, a.type);
             tm.add(ta);
           }
+          tm.refresh();
           ms.add(tm);
         }
         rk_l87.value.data.macros = ms;
@@ -73,24 +76,51 @@ export const useMacroStore = defineStore("macrostore", () => {
     }
   };
 
-  const connectionEventCallback = async (event: Event) => {
-    switch (keyboard.state.connectionEvent) {
-        case ConnectionEventEnum.Disconnect:
-        case ConnectionEventEnum.Close:
-          destroy();
-          break;
+  const importProfile = (str: any) => {
+    try {
+      var p: Macro = JSON.parse(str);
+      if (p.name == undefined) {
+        ElMessage.error('Error parsing JSON data')
+      }
+      else {
+        let tm = new Macro(p.name)
+        for (let a of p.actions) {
+          let ta = new Action(a.key, a.delay, a.action, a.type);
+          tm.add(ta);
+        }
+        tm.refresh();
+        macro.value = tm;
+        macros.value?.add(macro.value);
+      }
+      // 成功解析后的代码
+    } catch (e) {
+      // 解析出错时的代码
+      ElMessage.error('Error parsing JSON data')
     }
   };
-  
+
+  const exportMacro = (obj: Macro) => {
+    let blob = new Blob([JSON.stringify(obj)], { type: "application/json" });
+    fileSaver.saveAs(blob, `${obj.name}.rk`);
+  };
+  const connectionEventCallback = async (event: Event) => {
+    switch (keyboard.state.connectionEvent) {
+      case ConnectionEventEnum.Disconnect:
+      case ConnectionEventEnum.Close:
+        destroy();
+        break;
+    }
+  };
+
   const destroy = () => {
     if (rk_l87.value != undefined) {
       rk_l87.value.removeEventListener(RK_L87_EVENT_DEFINE.OnMacrosGotten, macroGotten, false);
     }
 
     if (keyboard.state.ConnectionStatus != ConnectionStatusEnum.Connected) {
-        keyboard.removeEventListener("connection", connectionEventCallback);
-        isInited.value = false;
-        rk_l87.value = undefined;
+      keyboard.removeEventListener("connection", connectionEventCallback);
+      isInited.value = false;
+      rk_l87.value = undefined;
     }
   };
 
@@ -100,9 +130,9 @@ export const useMacroStore = defineStore("macrostore", () => {
   };
 
   const refresh = () => {
-      if (macros.value != undefined) {
-          macro.value = macros.value.get()[0];
-      }
+    if (macros.value != undefined) {
+      macro.value = macros.value.get()[0];
+    }
   };
 
   const getMacroData = async () => {
@@ -111,5 +141,5 @@ export const useMacroStore = defineStore("macrostore", () => {
     }
   }
 
-  return { macros, state, actions, key, init, destroy, refresh, getMacroData }
+  return { macros, state, actions, key, init, destroy, refresh, getMacroData, exportMacro, importProfile }
 });

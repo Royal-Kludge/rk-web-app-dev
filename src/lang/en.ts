@@ -1,6 +1,7 @@
 export default {
   home: {
     title: "WebHID not supported by browser or not available",
+    title_1: "Please wait, we are synchronizing data ...",
     but_1: "Connect",
   },
   Profile: {
@@ -24,6 +25,7 @@ export default {
     key_4: "Function keys",
     key_5: "Keypad",
     key_6: "Modify",
+    key_7: "Direction Keys",
     but_1: "Add",
     but_2: "Import",
     but_3: "Confirm",
@@ -41,6 +43,7 @@ export default {
     title_3: "Insert Event",
     title_4: "Repeat Time",
     title_5: "Please stop macro recording first",
+    title_6: "Macro file save completed",
     but_1: "Add",
     but_2: "Import",
     but_3: "Insert",
@@ -49,6 +52,9 @@ export default {
     but_6: "Remove",
     but_7: "Save",
     but_8: "Recording",
+    but_9: "Edit",
+    but_10: "Delete",
+    but_11: "Export",
     menu_1: "Keyboard",
     menu_2: "Delay",
     menu_3: "CombineKey",

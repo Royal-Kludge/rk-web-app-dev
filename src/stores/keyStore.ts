@@ -78,11 +78,16 @@ export const useKeyStore = defineStore('keyinfo', () => {
         { key: KeyDefineEnum.KEY_9, text: '9', style: "key", selected: false },
         { key: KeyDefineEnum.KEY_0, text: '0', style: "key", selected: false }]
       }, {
-        box: 2, title: "key.key_2", style: "",
+        box: 2, title: "key.key_7", style: "",
         keys: [{ key: KeyDefineEnum.KEY_UpArrow, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_UpArrow], style: "key", selected: false },
         { key: KeyDefineEnum.KEY_DownArrow, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_DownArrow], style: "key", selected: false },
         { key: KeyDefineEnum.KEY_LeftArrow, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_LeftArrow], style: "key", selected: false },
         { key: KeyDefineEnum.KEY_RightArrow, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_RightArrow], style: "key", selected: false }]
+      }, {
+        box: 3, title: "key.key_2", style: "",
+        keys: [
+        { key: KeyDefineEnum.KEY_Fn1, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Fn1], style: "key", selected: false },
+        { key: KeyDefineEnum.KEY_Fn2, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Fn2], style: "key", selected: false }]
       }]
     },
     {
@@ -421,9 +426,9 @@ export const useKeyStore = defineStore('keyinfo', () => {
     combineKeyDialogShow: false,
     macros: macros,
     cycleTypes: [
-      { value: 1, label: 'Cycles', strKey: 'key.type_1'},
+      { value: 1, label: 'Cycles', strKey: 'key.type_1' },
       { value: 2, label: 'Cycle to any key pressed', strKey: 'key.type_2' },
-      { value: 4, label: 'Cycle to any key released', strKey: 'key.type_3'  },
+      { value: 4, label: 'Cycle to any key released', strKey: 'key.type_3' },
     ],
     cycleType: 1,
     cycleCount: 1,
@@ -474,10 +479,10 @@ export const useKeyStore = defineStore('keyinfo', () => {
 
   const connectionEventCallback = async (event: Event) => {
     switch (keyboard.state.connectionEvent) {
-        case ConnectionEventEnum.Disconnect:
-        case ConnectionEventEnum.Close:
-          destroy();
-          break;
+      case ConnectionEventEnum.Disconnect:
+      case ConnectionEventEnum.Close:
+        destroy();
+        break;
     }
   };
 
@@ -571,7 +576,7 @@ export const useKeyStore = defineStore('keyinfo', () => {
           rk_l87.value.data.ledColors = new LedColors(new DataView(new Uint8Array(Object.values(profile.value.ledColors)).buffer));
         }
       }
-      
+
       KeyMatrixData.value = rk_l87.value.data.keyMatrixs;
     }
     refresh();
@@ -604,7 +609,7 @@ export const useKeyStore = defineStore('keyinfo', () => {
     unSelected();
     saveProfile();
   }
-  
+
   const deleteProfile = (obj: Profile) => {
     ps.remove(obj);
     if (ps.get().length > 0) {
@@ -747,7 +752,7 @@ export const useKeyStore = defineStore('keyinfo', () => {
       state.profileList.splice(0, state.profileList.length);
     }
 
-    let i:number
+    let i: number
     for (i = 0; i < ps.list.length; i++) {
       (state.profileList as Array<Profile>).push(ps.list[i]);
     }
@@ -936,9 +941,8 @@ export const useKeyStore = defineStore('keyinfo', () => {
     if (state.keyState.length <= 0 || index >= 999) {
       return '';
     }
-    
-    if (rk_l87.value != undefined && macros.value == undefined)
-    {
+
+    if (rk_l87.value != undefined && macros.value == undefined) {
       macros.value = rk_l87.value.data.macros;
     }
 
@@ -986,6 +990,7 @@ export const useKeyStore = defineStore('keyinfo', () => {
 
   const onKeyDown = (event: KeyboardEvent) => {
     console.log('Key pressed:', `${event.key} | ${event.code} | ${event.keyCode}`);
+    event.preventDefault();
     state.keyStr = KeyCodeMap[event.code].key;
     state.keyHid = KeyCodeMap[event.code].hid;
   }

@@ -18,15 +18,14 @@
                 </div>
                 <div class="m-5" style="border-bottom: 1px solid #E7EAF2;">
                     <div class="m-4">
-                        <el-checkbox-group v-model="layerVal" @change="LayerChanged">
-                            <el-checkbox :label="$t('set.layer_1')" style="width: 100%;">
-                                {{ $t('set.layer_1') }}
-                            </el-checkbox>
-                        </el-checkbox-group>
+                        <el-checkbox v-model="isLayer" :label="$t('set.layer_1')" style="width: 100%;"
+                            @change="LayerChanged">
+                            {{ $t('set.layer_1') }}
+                        </el-checkbox>
                     </div>
                     <div class="m-4 px-3" v-if="isLayer">
-                        <el-slider style="width: 360px" v-model="layer" :min="1" :max="127"
-                            @change="useLight.setLayer(layer)" />
+                        <el-slider style="width: 360px" v-model="useLight.state.layer" :min="1" :max="127"
+                            @change="useLight.setLayer(useLight.state.layer)" />
                     </div>
                     <div class="m-4 d-flex flex-column">
                         <!-- <div class="py-3 my-3 w-100 bg-warn-1 text-grey-1 text-center br-2 b-grey c-p but">
@@ -96,14 +95,12 @@ const useKey = useKeyStore();
 
 const reSet = ref(false);
 const mode = ref(100);
-const layer = ref(0);
-const layerVal = ref([]);
 const ver = ref(keyboard.state.fwVersion);
 const version = ref(keyboard.state.fwVersion)
 const url = ref()
+const isLayer = ref(false);
 
 const modeStr = computed(() => (mode.value >= 2 ? "set.mode_work" : "set.mode_game"))
-const isLayer = computed(() => (layerVal.value.find(value => value == t('set.layer_1'))))
 const isDown = computed(() => (useLight.connectType == ConnectionType.USB))
 const VerTips = computed(() => (ver.value !== version.value ? t('set.title_3') + ':' + version.value : t('set.title_2')))
 
@@ -155,6 +152,7 @@ const formatModeValue = (val: number) => {
 onMounted(async () => {
     await useLight.init();
     getVer()
+    isLayer.value = useLight.state.layer > 0
 });
 
 onBeforeUnmount(() => {
@@ -162,7 +160,7 @@ onBeforeUnmount(() => {
 });
 
 const LayerChanged = () => {
-    if (!isLayer) {
+    if (!isLayer.value) {
         useLight.setLayer(0)
     }
 }

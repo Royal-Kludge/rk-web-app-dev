@@ -260,11 +260,12 @@ export const uselightStore = defineStore('lightinfo', () => {
             keyStr: "",
             key: KeyDefineEnum.KEY_ESC,
             color: "",
-        }
+        },
+        layer: 0
     });
 
     const isInited = ref(false);
-    
+
     const init = async () => {
         connectType.value = keyboard.state.connectType;
         if (rk_l87.value == undefined) {
@@ -285,6 +286,7 @@ export const uselightStore = defineStore('lightinfo', () => {
         if (boardProfile.value == undefined) {
             await getLightData();
         } else {
+            state.layer = boardProfile.value.getFieldValue(FieldEnum.TapDelay)
             state.lightProps.light = boardProfile.value.getFieldValue(FieldEnum.LedMode);
             let ledParam = boardProfile.value.getLedParam(state.lightProps.light);
             if (ledParam != undefined && boardProfile.value.getFieldValue(FieldEnum.LedParameterType) == 0) {
@@ -295,7 +297,7 @@ export const uselightStore = defineStore('lightinfo', () => {
                 state.lightProps.brightness = boardProfile.value.getFieldValue(FieldEnum.LedBrightness) + 1;
                 state.lightProps.speed = boardProfile.value.getFieldValue(FieldEnum.LedSpeed);
             }
-    
+
             state.lightProps.sleep = boardProfile.value.getFieldValue(FieldEnum.SleepTime) == 0 ? 0 : (boardProfile.value.getFieldValue(FieldEnum.SleepTime) * 30) / 60;
         }
 
@@ -314,10 +316,10 @@ export const uselightStore = defineStore('lightinfo', () => {
         switch (keyboard.state.connectionEvent) {
             case ConnectionEventEnum.Disconnect:
             case ConnectionEventEnum.Close:
-              destroy();
-              break;
+                destroy();
+                break;
         }
-      };
+    };
 
     const destroy = () => {
         if (rk_l87.value != undefined) {
@@ -360,6 +362,7 @@ export const uselightStore = defineStore('lightinfo', () => {
     };
 
     const setLayer = (layer: number) => {
+        state.layer = layer
         if (boardProfile.value != undefined && rk_l87.value != undefined) {
             boardProfile.value.setFieldValue(FieldEnum.TapDelay, layer);
             rk_l87.value.setProfile(profileIndex.value);
@@ -433,10 +436,10 @@ export const uselightStore = defineStore('lightinfo', () => {
             if (ledColors.value != undefined) {
                 await rk_l87.value?.setLedColors(profileIndex.value);
             }
-        // } else if (state.lightProps.light != LightEffectEnum.OFF && state.lightProps.light != LightEffectEnum.Music) {
-        //     if (ledEffect.value != undefined) {
-        //         await rk_l87.value?.setLedEffect(profileIndex.value);
-        //     }
+            // } else if (state.lightProps.light != LightEffectEnum.OFF && state.lightProps.light != LightEffectEnum.Music) {
+            //     if (ledEffect.value != undefined) {
+            //         await rk_l87.value?.setLedEffect(profileIndex.value);
+            //     }
         }
 
         if (ledColors.value != undefined) {
@@ -533,7 +536,7 @@ export const uselightStore = defineStore('lightinfo', () => {
         //             await rk_l87.value.setLedEffect(profileIndex.value);
         //         }
         //     }
-            await refresh();
+        await refresh();
         if (state.lightProps.light != LightEffectEnum.OFF && state.lightProps.light != LightEffectEnum.Music) {
             if (ledEffect.value != undefined) {
                 await rk_l87.value?.setLedEffect(profileIndex.value);

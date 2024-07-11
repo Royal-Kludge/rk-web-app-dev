@@ -78,7 +78,7 @@
                     </div>
                 </el-dialog>
                 <el-dialog v-model="useKey.state.combineKeyDialogShow" top="10vh" width="680px"
-                    style="--el-dialog-padding-primary:3px;" @opened="dialogOpened" @closed="dialogClosed">
+                    style="--el-dialog-padding-primary:3px;" @opened="dialogOpened" @closed="dialogClosed" :close-on-press-escape="false" :close-on-click-modal="false">
                     <div class="d-flex flex-column ml-4">
                         <div class="m-3" id="input">
                             <span class="mr-3">Input</span>
@@ -174,7 +174,7 @@
                     </div>
                 </el-dialog>
                 <el-dialog v-model="useKey.state.combineKeyDialogShow" top="10vh" width="680px"
-                    style="--el-dialog-padding-primary:3px;" @opened="dialogOpened" @closed="dialogClosed">
+                    style="--el-dialog-padding-primary:3px;" @opened="dialogOpened" @closed="dialogClosed" :close-on-press-escape="false" :close-on-click-modal="false">
                     <div class="d-flex flex-column ml-4">
                         <div class="m-3" id="input">
                             <span class="mr-3">Input</span>

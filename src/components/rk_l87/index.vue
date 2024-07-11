@@ -2,7 +2,7 @@
   <div class="d-flex jc-center ai-center p-5 fs-big m-5" v-if="!isKeyboardConnect()">
     No keyboard connected to dongle
   </div>
-  <div class="d-flex h-100" v-else>
+  <div class="d-flex h-100" style="overflow: hidden;" v-else>
     <Macro v-if="meunid === 2" />
     <Light v-else-if="meunid === 3" />
     <LightCustom v-else-if="meunid === 4" />

@@ -19,6 +19,7 @@ export const RK_L87_EVENT_DEFINE: {
     OnMacrosGotten: string;
     OnSetFactorySuccess: string;
     OnReportFinish: string;
+    OnReportStart: string;
 } = {
     OnDongleStatusChanged: 'OnDongleStatusChanged',
     OnPasswordGotten: 'OnPasswordGotten',
@@ -28,7 +29,8 @@ export const RK_L87_EVENT_DEFINE: {
     OnProfileGotten: 'OnProfileGotten',
     OnMacrosGotten: 'OnMacrosGotten',
     OnSetFactorySuccess: 'OnSetFactorySuccess',
-    OnReportFinish: 'OnReportFinish'
+    OnReportFinish: 'OnReportFinish',
+    OnReportStart: 'OnReportStart',
 }
 
 export const COMMAND_ID: {

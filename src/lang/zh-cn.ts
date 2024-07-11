@@ -1,6 +1,7 @@
 export default {
   home: {
     title: "浏览器不支持WebHID或WebHID不可用",
+    title_1: "请稍等，正在同步数据 。。。",
     but_1: "连接",
   },
   Profile: {
@@ -24,6 +25,7 @@ export default {
     key_4: "功能键",
     key_5: "小键盘",
     key_6: "修饰",
+    key_7: "方向键",
     but_1: "新键",
     but_2: "导入",
     but_3: "确认",
@@ -41,6 +43,7 @@ export default {
     title_3: "插入事件",
     title_4: "重复次数",
     title_5: "请先停止宏录制",
+    title_6: "宏文件保存完成",
     but_1: "新键",
     but_2: "导入",
     but_3: "插入",
@@ -49,6 +52,9 @@ export default {
     but_6: "刪除",
     but_7: "保存",
     but_8: "录制中",
+    but_9: "编辑",
+    but_10: "删除",
+    but_11: "导出",
     menu_1: "键盘",
     menu_2: "延迟",
     menu_3: "复合键",
