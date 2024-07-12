@@ -19,6 +19,7 @@ export default {
     menu_1: "Default",
     menu_2: "Macro",
     menu_3: "Combination Key",
+    menu_4: "Media Key",
     key_1: "Number",
     key_2: "Other",
     key_3: "Charachters",
@@ -35,6 +36,7 @@ export default {
     type_1: "Cycles",
     type_2: "Cycle to any key pressed",
     type_3: "Cycle to any key released",
+    select: "Select"
   },
   macro: {
     title: "Macro List",
@@ -51,7 +53,7 @@ export default {
     but_5: "Clear",
     but_6: "Remove",
     but_7: "Save",
-    but_8: "Recording",
+    but_8: "Stop Record",
     but_9: "Edit",
     but_10: "Delete",
     but_11: "Export",
@@ -108,5 +110,16 @@ export default {
     title_2: "No update required",
     title_3: "Update Version",
     title_4: "Downloading",
+  },
+  mediaKey: {
+    Media: "Media",
+    NextTr: "Next track",
+    PrevTr: "Prev track",
+    Stop: "Stop",
+    Eject: "Eject",
+    PlayPause: "Play/Pause",
+    Mute: "Mute",
+    VolumI: "Volume up",
+    VolumD: "Volume down",
   }
 };

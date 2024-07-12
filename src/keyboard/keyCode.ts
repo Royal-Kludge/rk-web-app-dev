@@ -1890,7 +1890,7 @@ export const KeyCodeMap: Record<string, KeyCodeTable> = {
 	'CapsLock':         { key: 'CapsLock',      hid: 0X39, vk: 0x14 }, 
 	'Enter':            { key: 'Enter',         hid: 0X28, vk: 0x0D }, 
 	'Space':            { key: 'Space',         hid: 0X2c, vk: 0x20 }, 
-    'ScrollLock':      { key: 'ScrollLock',    hid: 0X47, vk: 0x91 }, 
+    'ScrollLock':       { key: 'ScrollLock',    hid: 0X47, vk: 0x91 }, 
 	'Pause':            { key: 'Pause',         hid: 0X48, vk: 0x13 }, 
 	'Insert':           { key: 'Insert',        hid: 0X49, vk: 0x2D }, 
 	'PrintScreen':      { key: 'PrintScreen',   hid: 0X46, vk: 0x2C }, 

@@ -6,7 +6,7 @@ let dongleIsWaitPkgFinish = false;
 
 self.addEventListener('message', (event) => {
     if (event.data === 'start') {
-        startLoop();
+        dongleStartLoop();
     } else if (event.data === 'finish') {
         dongleIsWaitPkgFinish = false;
         if (donglePkgQueue.length <= 0) self.postMessage('finish');
@@ -16,7 +16,7 @@ self.addEventListener('message', (event) => {
     }
 });
 
-function startLoop() {
+function dongleStartLoop() {
     setInterval(() => {
         const currentTime = new Date();
         let elapsedTime = currentTime.getTime() - dongleLastTime.getTime();

@@ -26,6 +26,9 @@
                                 <el-dropdown-item @click="useKey.setCombineKey(key.index)" style="height: min-content;">
                                     {{ $t('key.menu_3') }}
                                 </el-dropdown-item>
+                                <el-dropdown-item @click="useKey.setMediaKey(key.index)" style="height: min-content;">
+                                    {{ $t('key.menu_4') }}
+                                </el-dropdown-item>
                             </el-dropdown-menu>
                         </template>
                     </el-dropdown>
@@ -41,7 +44,7 @@
                         class="mask">
                     </div>
                 </div>
-                <el-dialog v-model="useKey.state.macroDialogShow" top="10vh" width="680px"
+                <el-dialog v-model="useKey.state.macroDialogShow" top="18vh" width="680px"
                     style="--el-dialog-padding-primary:3px;">
                     <div class="d-flex flex-column" style="margin-top: 35px;">
                         <div class="d-flex flex-column flex-1 bg-white-1"
@@ -77,7 +80,7 @@
                         </div>
                     </div>
                 </el-dialog>
-                <el-dialog v-model="useKey.state.combineKeyDialogShow" top="10vh" width="680px"
+                <el-dialog v-model="useKey.state.combineKeyDialogShow" top="20vh" width="680px"
                     style="--el-dialog-padding-primary:3px;" @opened="dialogOpened" @closed="dialogClosed" :close-on-press-escape="false" :close-on-click-modal="false">
                     <div class="d-flex flex-column ml-4">
                         <div class="m-3" id="input">
@@ -93,6 +96,31 @@
                         </div>
                         <div class="d-flex p-4 jc-center" style="border-radius: 0px 0px 10px 10px">
                             <div class="py-1 px-5 but-green text-white mx-3 c-p" @click="useKey.confirmSetCombineKey">
+                                {{ $t('key.but_3') }}
+                            </div>
+                        </div>
+                    </div>
+                </el-dialog>
+                <el-dialog v-model="useKey.state.mediaKeyDialogShow" top="24vh" width="380px"
+                    style="--el-dialog-padding-primary:3px;" @opened="dialogOpened" @closed="dialogClosed" :close-on-press-escape="false" :close-on-click-modal="false">
+                    <div class="d-flex flex-column ml-4">
+                        <div class="m-3" id="input">
+                            <el-select
+                                v-model="useKey.state.mediaKey"
+                                :placeholder="$t('key.select')"
+                                size="large"
+                                style="width: 240px"
+                                >
+                                <el-option
+                                    v-for="item in useKey.state.mediaKeyOptions"
+                                    :key="item.key"
+                                    :label="$t(mediaStrKey(item.text?.valueOf()))"
+                                    :value="item.key"
+                                />
+                                </el-select>
+                        </div>
+                        <div class="d-flex p-4 " style="border-radius: 0px 0px 10px 10px">
+                            <div class="py-1 px-5 but-green text-white mx-3 c-p" @click="useKey.confirmMediaKey(useKey.state.mediaKey)">
                                 {{ $t('key.but_3') }}
                             </div>
                         </div>
@@ -122,6 +150,9 @@
                                 <el-dropdown-item @click="useKey.setCombineKey(key.index)" style="height: min-content;">
                                     {{ $t('key.menu_3') }}
                                 </el-dropdown-item>
+                                <el-dropdown-item @click="useKey.setMediaKey(key.index)" style="height: min-content;">
+                                    {{ $t('key.menu_4') }}
+                                </el-dropdown-item>
                             </el-dropdown-menu>
                         </template>
                     </el-dropdown>
@@ -137,7 +168,7 @@
                         class="mask">
                     </div>
                 </div>
-                <el-dialog v-model="useKey.state.macroDialogShow" top="10vh" width="680px"
+                <el-dialog v-model="useKey.state.macroDialogShow" top="18vh" width="680px"
                     style="--el-dialog-padding-primary:3px;">
                     <div class="d-flex flex-column" style="margin-top: 35px;">
                         <div class="d-flex flex-column flex-1 bg-white-1"
@@ -173,7 +204,7 @@
                         </div>
                     </div>
                 </el-dialog>
-                <el-dialog v-model="useKey.state.combineKeyDialogShow" top="10vh" width="680px"
+                <el-dialog v-model="useKey.state.combineKeyDialogShow" top="20vh" width="680px"
                     style="--el-dialog-padding-primary:3px;" @opened="dialogOpened" @closed="dialogClosed" :close-on-press-escape="false" :close-on-click-modal="false">
                     <div class="d-flex flex-column ml-4">
                         <div class="m-3" id="input">
@@ -189,6 +220,31 @@
                         </div>
                         <div class="d-flex p-4 jc-center" style="border-radius: 0px 0px 10px 10px">
                             <div class="py-1 px-5 but-green text-white mx-3 c-p" @click="useKey.confirmSetCombineKey">
+                                {{ $t('key.but_3') }}
+                            </div>
+                        </div>
+                    </div>
+                </el-dialog>
+                <el-dialog v-model="useKey.state.mediaKeyDialogShow" top="24vh" width="380px"
+                    style="--el-dialog-padding-primary:3px;" @opened="dialogOpened" @closed="dialogClosed" :close-on-press-escape="false" :close-on-click-modal="false">
+                    <div class="d-flex flex-column ml-4">
+                        <div class="m-3" id="input">
+                            <el-select
+                                v-model="useKey.state.mediaKey"
+                                :placeholder="$t('key.select')"
+                                size="large"
+                                style="width: 240px"
+                                >
+                                <el-option
+                                    v-for="item in useKey.state.mediaKeyOptions"
+                                    :key="item.key"
+                                    :label="$t(mediaStrKey(item.text?.valueOf()))"
+                                    :value="item.key"
+                                />
+                                </el-select>
+                        </div>
+                        <div class="d-flex p-4 " style="border-radius: 0px 0px 10px 10px">
+                            <div class="py-1 px-5 but-green text-white mx-3 c-p" @click="useKey.confirmMediaKey(useKey.state.mediaKey)">
                                 {{ $t('key.but_3') }}
                             </div>
                         </div>
@@ -420,6 +476,9 @@ const dialogClosed = () => {
     document.removeEventListener('keydown', useKey.onKeyDown);
 }
 
+const mediaStrKey = (key: string | undefined) => {
+    return `mediaKey.${key}`
+}
 </script>
 <style scoped lang="scss">
 * {

@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 import { reactive, ref } from 'vue';
 import { keyboard } from '../keyboard/keyboard'
 import { RK_L87, RK_L87_EVENT_DEFINE } from '../keyboard/rk_l87/rk_l87';
-import { KeyDefineEnum } from '../keyboard/keyCode'
+import { KeyCodeEnum, KeyDefineEnum } from '../keyboard/keyCode'
 import { type KeyMappingData, type KeyTableData, type KeyState } from '../keyboard/interface'
 import { ConnectionEventEnum, ConnectionStatusEnum, KeyMappingType, KeyMatrixLayer } from '../keyboard/enum'
 import { KeyMatrix, MatrixTable } from '@/keyboard/rk_l87/keyMatrix';
@@ -422,8 +422,20 @@ export const useKeyStore = defineStore('keyinfo', () => {
       { key: KeyDefineEnum.KEY_NUMLOCK, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_NUMLOCK] },
       { key: KeyDefineEnum.KEY_NUM_ENTER, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_NUM_ENTER] }
     ],
+    mediaKeyOptions: [
+      { key: KeyDefineEnum.KEY_Media, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Media] },
+      { key: KeyDefineEnum.KEY_NextTr, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_NextTr] },
+      { key: KeyDefineEnum.KEY_PrevTr, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_PrevTr] },
+      { key: KeyDefineEnum.KEY_Stop, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Stop] },
+      { key: KeyDefineEnum.KEY_Eject, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Eject] },
+      { key: KeyDefineEnum.KEY_PlayPause, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_PlayPause] },
+      { key: KeyDefineEnum.KEY_Mute, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Mute] },
+      { key: KeyDefineEnum.KEY_VolumI, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_VolumI] },
+      { key: KeyDefineEnum.KEY_VolumD, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_VolumD] }
+    ],
     macroDialogShow: false,
     combineKeyDialogShow: false,
+    mediaKeyDialogShow: false,
     macros: macros,
     cycleTypes: [
       { value: 1, label: 'Cycles', strKey: 'key.type_1' },
@@ -433,6 +445,7 @@ export const useKeyStore = defineStore('keyinfo', () => {
     cycleType: 1,
     cycleCount: 1,
     keyStr: "",
+    mediaKey: KeyDefineEnum.KEY_Media,
     keyHid: 0x00,
     shiftKey: false,
     ctrlKey: false,
@@ -641,6 +654,7 @@ export const useKeyStore = defineStore('keyinfo', () => {
     }
     ps.save()
   }
+  
   const newProfile = () => {
     let tm = new Profile(`${t("Profile.namePrefix")} ${ps.get().length + 1}`);
     // let layer: any;
@@ -867,22 +881,25 @@ export const useKeyStore = defineStore('keyinfo', () => {
   }
 
   const mapping = (keyCode: KeyDefineEnum) => {
-    let keyState = undefined;
+    //let key = undefined;
     let i: any;
     for (i in state.keyState) {
       if ((state.keyState as Array<KeyState>)[i].selected) {
-        keyState = (state.keyState as Array<KeyState>)[i];
+        //key = (state.keyState as Array<KeyState>)[i];
         break;
       }
     }
 
-    if (keyState != undefined) {
-      keyState.KeyData.keyMappingData.keyMappingType = KeyMappingType.KeyBoard;
-      keyState.KeyData.keyMappingData.keyCode = keyCode;
+    if ((state.keyState as Array<KeyState>)[i] != undefined) {
+      let key = (state.keyState as Array<KeyState>)[i];
+      key.KeyData.keyMappingData.keyRaw = keyCode;
+      key.KeyData.keyMappingData.keyCode = keyCode & 0x0000FFFF;
+      key.KeyData.keyMappingData.keyMappingType = keyCode >> 24;
+      key.KeyData.keyMappingData.keyMappingPara = (keyCode >> 16) & 0xFF;
       if (keyboard.keyboardDefine != undefined) {
-        keyState.KeyData.keyMappingData.keyStr = keyboard.keyboardDefine.keyText[keyCode];
+        key.KeyData.keyMappingData.keyStr = keyboard.keyboardDefine.keyText[keyCode];
       }
-      KeyMatrixData.value[keyMatrixLayer.value]?.setKeyMapping(keyState.index, keyState.KeyData.keyMappingData);
+      KeyMatrixData.value[keyMatrixLayer.value]?.setKeyMapping(key.index, key.KeyData.keyMappingData);
       rk_l87.value?.setKeyMatrix(keyMatrixLayer.value, MatrixTable.WIN, 0);
     }
     setSelected(keyCode);
@@ -1030,5 +1047,30 @@ export const useKeyStore = defineStore('keyinfo', () => {
 
     state.combineKeyDialogShow = false;
   }
-  return { profile, state, keyMatrixLayer, keyClick, keyColor, isSelected, keybgColor, keyText, keySetToDefault, keySetMacro, mapping, isFunSelected, isMacroSelected, clickMacro, confirmSetMacro, setCombineKey, confirmSetCombineKey, getKeyMatrix, clickProfile, deleteProfile, onKeyDown, newProfile, handleEditClose, renameProfile, exportProfile, importProfile, init, destroy, getKeyMatrixNomal, saveProfile, keySetToDefaultAll, refresh, refreshKeyMatrixData, setToFactory, unSelected }
+
+  const setMediaKey = (index: number) => {
+    if (state.keyState.length <= 0 || index >= 999) {
+      return '';
+    }
+    state.mediaKey = KeyDefineEnum.KEY_Media;
+    keyState.value = (state.keyState as Array<KeyState>)[index];
+    state.mediaKeyDialogShow = true;
+  }
+
+  const confirmMediaKey = (keyCode: KeyDefineEnum) => {
+    if (keyState.value != undefined && keyCode > 0) {
+      keyState.value.KeyData.keyMappingData.keyRaw = keyCode;
+      keyState.value.KeyData.keyMappingData.keyCode = keyCode & 0x0000FFFF;
+      keyState.value.KeyData.keyMappingData.keyMappingType = keyCode >> 24;
+      keyState.value.KeyData.keyMappingData.keyMappingPara = (keyCode >> 16) & 0xFF;
+      if (keyboard.keyboardDefine != undefined) {
+        keyState.value.KeyData.keyMappingData.keyStr = keyboard.keyboardDefine.keyText[keyCode];
+      }
+      KeyMatrixData.value[keyMatrixLayer.value]?.setKeyMapping(keyState.value.index, keyState.value.KeyData.keyMappingData);
+      rk_l87.value?.setKeyMatrix(keyMatrixLayer.value, MatrixTable.WIN, 0);
+    }
+
+    state.mediaKeyDialogShow = false;
+  }
+  return { profile, state, keyMatrixLayer, keyClick, keyColor, isSelected, keybgColor, keyText, keySetToDefault, keySetMacro, mapping, isFunSelected, isMacroSelected, clickMacro, confirmSetMacro, setCombineKey, confirmMediaKey, setMediaKey, confirmSetCombineKey, getKeyMatrix, clickProfile, deleteProfile, onKeyDown, newProfile, handleEditClose, renameProfile, exportProfile, importProfile, init, destroy, getKeyMatrixNomal, saveProfile, keySetToDefaultAll, refresh, refreshKeyMatrixData, setToFactory, unSelected }
 })

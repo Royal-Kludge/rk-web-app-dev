@@ -233,6 +233,7 @@ const keyDelay = ref<number>(0);
 const repeat = ref<number>(0)
 const playing = ref<boolean>(false);
 const playTitle = ref<string>(t('macro.but_4'))
+const lastKey = ref<string>('');
 
 // const state = reactive({
 //     macros: macros,
@@ -288,6 +289,7 @@ const onKeyUp = (event: KeyboardEvent) => {
     if (keyCodeTable.value != undefined) {
         keyDelay.value = ComputeTimeDiff(keyDate.value);
     }
+
     //录制中
     if (playing.value) {
         if (delayVal.value == t('macro.menu_4')) {
@@ -297,28 +299,34 @@ const onKeyUp = (event: KeyboardEvent) => {
         } else if (delayVal.value == t('macro.menu_6')) {
             delay.value = delayFix.value;
         }
+
         if (state.value.macro != undefined && keyCodeTable.value != undefined) {
 
-            let index = state.value.macro.actions.findIndex(obj => obj.index === actionVal.value?.index)
+            let index = state.value.macro.actions.length;
             index = index < 0 ? 0 : index
-            if (state.value.eventVal == 2)//之后插入
-                index += 1
+
+            if (delay.value > 0 && index > 0) {
+                state.value.macro.actions[index - 1].delay = delay.value;
+            }
+
             if (keyCodeTable.value != undefined) {
-                state.value.macro.insert(index, new Action(keyCodeTable.value.hid, delay.value, ActionType.Up));
-                state.value.macro.insert(index, new Action(keyCodeTable.value.hid, delay.value, ActionType.Down));
+                state.value.macro.insert(index, new Action(keyCodeTable.value.hid, 0, ActionType.Up));
             }
-            else if (delay.value > 0) {
-                state.value.macro.insert(index, new Action(KeyDefineEnum.NONE, delay.value, ActionType.Delay));
-            }
+
             state.value.macro.refresh();
             elActionScrollbar.value.setScrollTop(2000);
         }
     }
+
+    keyDate.value = new Date();
+    lastKey.value = '';
 };
 
 const record = () => {
-    playing.value = !playing.value
-    playTitle.value = playing.value ? t('macro.but_8') : t('macro.but_4')
+    playing.value = !playing.value;
+    playTitle.value = playing.value ? t('macro.but_8') : t('macro.but_4');
+    keyDate.value = new Date();
+    lastKey.value = '';
 };
 
 //计算剩余时间差
@@ -332,10 +340,45 @@ const ComputeTimeDiff = (date: any): number => {
 const onKeyDown = (event: KeyboardEvent) => {
     console.log('Key pressed:', `${event.key} | ${event.code} | ${event.keyCode}`);
     event.preventDefault();
+    
     keyCodeTable.value = KeyCodeMap[event.code];
+
+    if (keyCodeTable.value != undefined) {
+        keyDelay.value = ComputeTimeDiff(keyDate.value);
+    }
+
     if (keyCodeTable.value != undefined) {
         state.value.key = keyCodeTable.value.key;
-        keyDate.value = new Date()
+    }
+
+    if (playing.value &&  keyCodeTable.value.key != lastKey.value) {
+
+        keyDate.value = new Date();
+
+        if (delayVal.value == t('macro.menu_4')) {
+            delay.value = keyDelay.value;
+        } else if (delayVal.value == t('macro.menu_5')) {
+            delay.value = 30;
+        } else if (delayVal.value == t('macro.menu_6')) {
+            delay.value = delayFix.value;
+        }
+
+        if (state.value.macro != undefined && keyCodeTable.value != undefined) {
+            let index = state.value.macro.actions.length;
+            index = index < 0 ? 0 : index
+
+            if (delay.value > 0 && index > 0) {
+                    state.value.macro.actions[index - 1].delay = delay.value;
+            }
+
+            if (keyCodeTable.value != undefined) {
+                state.value.macro.insert(index, new Action(keyCodeTable.value.hid, 0, ActionType.Down));
+            }
+
+            state.value.macro.refresh();
+            elActionScrollbar.value.setScrollTop(2000);
+            lastKey.value = keyCodeTable.value.key;
+        }
     }
 };
 
@@ -419,13 +462,17 @@ const newMacro = () => {
 const insert = () => {
     isPlaying(() => {
         if (state.value.macro != undefined) {
-            let index = state.value.macro.actions.findIndex(obj => obj.index === actionVal.value?.index)
-            index = index < 0 ? 0 : index
-            if (state.value.eventVal == 2)//之后插入
-                index += 1
+            let index = state.value.macro.actions.findIndex(obj => obj.index === actionVal.value?.index);
+
+            if (state.value.eventVal == 2) {
+                index = index < 0 ? state.value.macro.actions.length : index + 1;
+            } else {
+                index = 0;
+            }
+
             if (actVal.value === t('macro.menu_1') && keyCodeTable.value != undefined) {
                 state.value.macro.insert(index, new Action(keyCodeTable.value.hid, 30, ActionType.Down));
-                state.value.macro.insert(index, new Action(keyCodeTable.value.hid, 30, ActionType.Up));
+                state.value.macro.insert(index + 1, new Action(keyCodeTable.value.hid, 30, ActionType.Up));
             }
             else if (delay.value > 0) {
                 state.value.macro.insert(index, new Action(KeyDefineEnum.NONE, delay.value, ActionType.Delay));
@@ -448,10 +495,10 @@ const handleEditClose = (done: () => void) => {
 }
 
 const saveMacro = async () => {
-    isPlaying(() => {
+    isPlaying(async () => {
         if (macros.value != undefined) {
             storage.set('macro', macros.value);
-            rk_l87.value?.setMacros();
+            await useMacro.setMacroData();
             ElMessage({
                 type: 'info',
                 message: t("macro.title_6"),

@@ -19,6 +19,7 @@ export default {
     menu_1: "默认",
     menu_2: "宏",
     menu_3: "组合键",
+    menu_4: "多媒体",
     key_1: "数字",
     key_2: "其它",
     key_3: "字符",
@@ -35,6 +36,7 @@ export default {
     type_1: "指定循环次数",
     type_2: "循环到任意键按下",
     type_3: "循环到该按键松开",
+    select: "选择"
   },
   macro: {
     title: "宏列表",
@@ -51,7 +53,7 @@ export default {
     but_5: "清空",
     but_6: "刪除",
     but_7: "保存",
-    but_8: "录制中",
+    but_8: "停止录制",
     but_9: "编辑",
     but_10: "删除",
     but_11: "导出",
@@ -108,5 +110,16 @@ export default {
     title_2:"无需更新",
     title_3:"更新版本",
     title_4:"下载中",
+  },
+  mediaKey: {
+    Media: "媒体",
+    NextTr: "下一首",
+    PrevTr: "上一首",
+    Stop: "停止",
+    Eject: "弹出",
+    PlayPause: "播放/暂停",
+    Mute: "静音",
+    VolumI: "音量+",
+    VolumD: "音量-",
   }
 };

@@ -141,5 +141,11 @@ export const useMacroStore = defineStore("macrostore", () => {
     }
   }
 
-  return { macros, state, actions, key, init, destroy, refresh, getMacroData, exportMacro, importProfile }
+  const setMacroData = async () => {
+    if (rk_l87.value != undefined) {
+      await rk_l87.value.setMacros();
+    }
+  }
+
+  return { macros, state, actions, key, init, destroy, refresh, getMacroData, exportMacro, importProfile, setMacroData }
 });

@@ -24,8 +24,8 @@
                         </el-checkbox>
                     </div>
                     <div class="m-4 px-3" v-if="isLayer">
-                        <el-slider style="width: 360px" v-model="useLight.state.layer" :min="1" :max="127"
-                            @change="useLight.setLayer(useLight.state.layer)" />
+                        <el-slider style="width: 360px" v-model="layer" :min="1" :max="127"
+                            @change="setLayer" />
                     </div>
                     <div class="m-4 d-flex flex-column">
                         <!-- <div class="py-3 my-3 w-100 bg-warn-1 text-grey-1 text-center br-2 b-grey c-p but">
@@ -61,7 +61,7 @@
                     <div class="m-4">{{ $t("set.mode_title") }}</div>
                     <div>
                         <el-slider style="width: 360px" v-model="mode" :min="0" :max="3"
-                            :format-tooltip="formatModeValue" @change="useLight.DebounceChanged(mode)" />
+                            :format-tooltip="formatModeValue" @change="DebounceChanged" />
                     </div>
                     <div class="m-4">{{ $t(modeStr) }}</div>
                 </div>
@@ -94,11 +94,12 @@ const { langList } = storeToRefs(setStore);
 const useKey = useKeyStore();
 
 const reSet = ref(false);
-const mode = ref(100);
+const mode = ref(0);
 const ver = ref(keyboard.state.fwVersion);
 const version = ref(keyboard.state.fwVersion)
 const url = ref()
 const isLayer = ref(false);
+const layer = ref(0);
 
 const modeStr = computed(() => (mode.value >= 2 ? "set.mode_work" : "set.mode_game"))
 const isDown = computed(() => (useLight.connectType == ConnectionType.USB))
@@ -151,8 +152,10 @@ const formatModeValue = (val: number) => {
 }
 onMounted(async () => {
     await useLight.init();
-    getVer()
-    isLayer.value = useLight.state.layer > 0
+    getVer();
+    isLayer.value = (useLight.state.layer & 0x01) > 0;
+    layer.value = useLight.state.layer >> 1;
+    mode.value = useLight.state.debounce;
 });
 
 onBeforeUnmount(() => {
@@ -162,7 +165,20 @@ onBeforeUnmount(() => {
 const LayerChanged = () => {
     if (!isLayer.value) {
         useLight.setLayer(0)
+    } else {
+        useLight.setLayer(layer.value)
     }
+    useKey.saveProfile();
+}
+
+const setLayer = () => {
+    useLight.setLayer(layer.value);
+    useKey.saveProfile();
+}
+
+const DebounceChanged = () => {
+    useLight.DebounceChanged(mode.value);
+    useKey.saveProfile();
 }
 
 const setToFactory = () => {

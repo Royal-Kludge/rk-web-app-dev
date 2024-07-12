@@ -24,7 +24,7 @@ export enum FieldEnum {
     LogoBrightness = 20,    // logo灯亮度
     LogoSpeed = 21,	        // logo灯速度
 	TapDelay = 22,          // tap层delay时间，0为关闭，后7位为有效DELAY时间
-	SleepTime = 24,         // 休眠时间 例步进30秒，0是不休眠
+	SleepTime = 24,         // 休眠时间 例 1==30 秒，默认 10 为 5 分钟，0 是不休
 	LedModeMemery = 26,     // 光灯模式记忆
 	Logo2Mode = 27          // logo2灯模式
 }

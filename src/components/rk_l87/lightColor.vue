@@ -15,7 +15,7 @@
                                         <div>
                                             <el-slider style="width: 360px" :step="1" :max="20" :min="1"
                                                 v-model="useLight.state.lightProps.brightness"
-                                                @change="useLight.ligtChanged" />
+                                                @change="ligtChanged" />
                                         </div>
                                         <div class="d-flex jc-center">{{ $t('light.title_3') }}</div>
                                     </div>
@@ -27,7 +27,7 @@
                                         <div>
                                             <el-slider style="width: 360px" :step="1" :max="4" :min="1"
                                                 v-model="useLight.state.lightProps.speed"
-                                                @change="useLight.ligtChanged" />
+                                                @change="ligtChanged" />
                                         </div>
                                         <div class="d-flex jc-center">{{ $t('light.title_4') }}</div>
                                     </div>
@@ -38,7 +38,7 @@
                                         <div>
                                             <el-slider style="width: 360px" :step="1" :max="30" :min="0"
                                                 v-model="useLight.state.lightProps.sleep"
-                                                @change="useLight.ligtChanged" />
+                                                @change="ligtChanged" />
                                         </div>
                                         <div class="d-flex jc-center">{{ $t('light.title_5') }}</div>
                                     </div>
@@ -62,7 +62,7 @@
                                     </div>
                                     <div v-if="useLight.state.lightProps.light != LightEffectEnum.SelfDefine">
                                         <el-checkbox v-model="useLight.state.lightProps.mixing"
-                                            :label="$t('light.title_7')" size="large" @change="useLight.ligtChanged" />
+                                            :label="$t('light.title_7')" size="large" @change="ligtChanged" />
                                     </div>
                                     <div v-else>
                                         <div class="py-1 px-3 but-red text-white c-p"
@@ -104,8 +104,14 @@ const onPicking = () => {
         useLight.onPicking(useLight.rgb.r, useLight.rgb.g, useLight.rgb.b, 0);
     }
 }
+
 const onPicked = async () => {
     await useLight.onPicked()
+    useKey.saveProfile()
+}
+
+const ligtChanged = async () => {
+    await useLight.ligtChanged();
     useKey.saveProfile()
 }
 </script>
