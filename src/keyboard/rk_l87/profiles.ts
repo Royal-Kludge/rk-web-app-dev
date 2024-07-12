@@ -106,7 +106,7 @@ export class Profiles {
         return this.list;
     }
 
-    init() {
+    init(defaultName: string) {
         this.list.splice(0, this.list.length);
         let tmp = storage.get('profile') as Profiles;
         if (tmp != null && tmp.list.length > 0) {
@@ -140,11 +140,10 @@ export class Profiles {
             //     }
             //     this.add(tm);
             // }
-
-            const { t } = useI18n();
+            //const { t } = useI18n();
             this.curIndex = 0;
-            let name = t("Profile.default")
-            let tm = new Profile(name);
+            //let name = t("Profile.default")
+            let tm = new Profile(defaultName);
             tm.isDefault = true;
             tm.index = 0;
             this.add(tm);

@@ -382,25 +382,25 @@ const onKeyDown = (event: KeyboardEvent) => {
     }
 };
 
-const handleOpen = (e: boolean, id: string) => {
-    if (e) {
-        let elaction = elAction.value as Array<DropdownInstance>;
-        var index: any;
-        for (index in elaction) {
-            if ((elaction[index] as DropdownInstance).id != id) {
-                (elaction[index] as DropdownInstance).handleClose();
-            }
-        }
+// const handleOpen = (e: boolean, id: string) => {
+//     if (e) {
+//         let elaction = elAction.value as Array<DropdownInstance>;
+//         var index: any;
+//         for (index in elaction) {
+//             if ((elaction[index] as DropdownInstance).id != id) {
+//                 (elaction[index] as DropdownInstance).handleClose();
+//             }
+//         }
 
-        let els = elMacro.value as Array<DropdownInstance>;
-        var index: any;
-        for (index in els) {
-            if ((els[index] as DropdownInstance).id != id) {
-                (els[index] as DropdownInstance).handleClose();
-            }
-        }
-    }
-};
+//         let els = elMacro.value as Array<DropdownInstance>;
+//         var index: any;
+//         for (index in els) {
+//             if ((els[index] as DropdownInstance).id != id) {
+//                 (els[index] as DropdownInstance).handleClose();
+//             }
+//         }
+//     }
+// };
 
 const deleteAction = (obj: Action) => {
     isPlaying(() => {
@@ -419,7 +419,7 @@ const downAction = (obj: Action) => {
     })
 };
 const deleteMacro = (obj: Macro) => {
-    isPlaying(() => {
+    isPlaying(async () => {
         if (macros.value != undefined) {
             macros.value.remove(obj);
             if (macros.value.get().length > 0) {
@@ -427,6 +427,8 @@ const deleteMacro = (obj: Macro) => {
             } else {
                 state.value.macro = undefined;
             }
+
+            await useMacro.setMacroData();
         }
     })
 };
@@ -523,9 +525,10 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
     //     return false
     // }
     const reader = new FileReader();
-    reader.onload = (e) => {
+    reader.onload = async (e) => {
         // 在这里可以处理文件内容，例如验证或转换
         useMacro.importProfile(e.target?.result)
+        await useMacro.setMacroData();
     };
     reader.readAsText(rawFile); // 读取文件内容为文本
     return false

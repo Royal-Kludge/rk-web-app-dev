@@ -427,7 +427,6 @@ export const useKeyStore = defineStore('keyinfo', () => {
       { key: KeyDefineEnum.KEY_NextTr, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_NextTr] },
       { key: KeyDefineEnum.KEY_PrevTr, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_PrevTr] },
       { key: KeyDefineEnum.KEY_Stop, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Stop] },
-      { key: KeyDefineEnum.KEY_Eject, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Eject] },
       { key: KeyDefineEnum.KEY_PlayPause, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_PlayPause] },
       { key: KeyDefineEnum.KEY_Mute, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Mute] },
       { key: KeyDefineEnum.KEY_VolumI, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_VolumI] },
@@ -555,7 +554,7 @@ export const useKeyStore = defineStore('keyinfo', () => {
 
   const getProfiles = () => {
     if (rk_l87.value != undefined) {
-      ps.init();
+      ps.init(t("Profile.default"));
       if (ps.curIndex == undefined) ps.curIndex = 0;
       profile.value = ps.get()[ps.curIndex];
       if (keyboard.keyboardDefine != undefined) {
@@ -786,13 +785,14 @@ export const useKeyStore = defineStore('keyinfo', () => {
     }
   }
 
-  const setToFactory = () => {
+  const setToFactory = async () => {
     if (rk_l87.value != undefined) {
       keyboard.loadDefaultValue(keyboard.state.keyTableData, keyboard.state.lightInfo);
       refreshKeyMatrixData();
-      rk_l87.value.setFactory();
+      await rk_l87.value.setFactory();
       storage.clear();
-      //getProfiles();
+      getProfiles();
+      await rk_l87.value.setProfile(0);
     }
   }
 
