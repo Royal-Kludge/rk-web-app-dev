@@ -69,7 +69,10 @@ export const useMacroStore = defineStore("macrostore", () => {
         macro.value = macros.value.get()[0];
         refresh();
       } else {
-        await rk_l87.value.getMacros();
+        let ms = new Macros();
+        rk_l87.value.data.macros = ms;
+        macros.value = rk_l87.value.data.macros;
+        //await rk_l87.value.getMacros();
       }
 
       isInited.value = true;
@@ -147,5 +150,14 @@ export const useMacroStore = defineStore("macrostore", () => {
     }
   }
 
-  return { macros, state, actions, key, init, destroy, refresh, getMacroData, exportMacro, importProfile, setMacroData }
+  const clearMacro = async () => {
+    if (rk_l87.value != undefined ) {
+      let ms = new Macros();
+      rk_l87.value.data.macros = ms;
+      macros.value = rk_l87.value.data.macros;
+      macro.value = undefined;
+    }
+  }
+
+  return { macros, state, actions, key, init, destroy, refresh, getMacroData, exportMacro, importProfile, setMacroData, clearMacro }
 });

@@ -60,7 +60,7 @@
                 <div class="m-5 d-flex ai-center flex-column">
                     <div class="m-4">{{ $t("set.mode_title") }}</div>
                     <div>
-                        <el-slider style="width: 360px" v-model="mode" :min="0" :max="3"
+                        <el-slider style="width: 360px" v-model="mode" :min="0" :max="3" :step="3"
                             :format-tooltip="formatModeValue" @change="DebounceChanged" />
                     </div>
                     <div class="m-4">{{ $t(modeStr) }}</div>
@@ -74,6 +74,7 @@ import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
 import { uselightStore } from "@/stores/lightStore";
 import { useSetStore } from "../../stores/setStore";
 import { useKeyStore } from "../../stores/keyStore";
+import { useMacroStore } from "../../stores/macroStore";
 import { useLocaleStore } from "../../stores/locale";
 import { storeToRefs } from "pinia";
 
@@ -92,6 +93,7 @@ const { locale } = storeToRefs(useLocale);
 const setStore = useSetStore();
 const { langList } = storeToRefs(setStore);
 const useKey = useKeyStore();
+const useMacro = useMacroStore();
 
 const reSet = ref(false);
 const mode = ref(0);
@@ -184,6 +186,7 @@ const DebounceChanged = () => {
 const setToFactory = () => {
     useKey.setToFactory();
     reSet.value = false;
+    useMacro.clearMacro();
 }
 </script>
 <style lang="scss" scoped>

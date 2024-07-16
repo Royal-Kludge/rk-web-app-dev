@@ -58,10 +58,12 @@
                     </div>
                 </div>
             </div>
-            <el-dialog v-model="state.nameEditorDisplay" top="30vh" width="680px" :lock-scroll="true"
-                :before-close="handleEditClose">
+            <el-dialog v-model="state.nameEditorDisplay" top="30vh" width="680px" :lock-scroll="true">
                 <div class="d-flex ai-center">
                     <el-input v-model="state.name" placeholder="Please input" maxlength="10" />
+                </div>
+                <div class="d-flex jc-end">
+                    <div class="py-1 px-4 but-green text-white c-p mt-4" @click="saveName">{{ $t('macro.but_7') }}</div>
                 </div>
             </el-dialog>
         </div>
@@ -284,8 +286,19 @@ onBeforeUnmount(() => {
     document.removeEventListener('keyup', onKeyUp);
 });
 
-const onKeyUp = (event: KeyboardEvent) => {
+const onKeyUp = async (event: KeyboardEvent) => {
     console.log('Key pressed:', `${event.key} | ${event.code} | ${event.keyCode}`);
+
+    if (state.value.nameEditorDisplay && event.key == "Enter") {
+        if (event.key == "Enter") {
+            await saveName();
+        } else if (event.key == "Esc") {
+            state.value.nameEditorDisplay = false;
+        }
+
+        return;
+    }
+
     if (keyCodeTable.value != undefined) {
         keyDelay.value = ComputeTimeDiff(keyDate.value);
     }
@@ -339,6 +352,8 @@ const ComputeTimeDiff = (date: any): number => {
 
 const onKeyDown = (event: KeyboardEvent) => {
     console.log('Key pressed:', `${event.key} | ${event.code} | ${event.keyCode}`);
+    if (state.value.nameEditorDisplay) return;
+
     event.preventDefault();
     
     keyCodeTable.value = KeyCodeMap[event.code];
@@ -445,6 +460,8 @@ const renameMacro = (obj: Macro) => {
             state.value.macro = obj;
             state.value.name = obj.name;
             state.value.nameEditorDisplay = true;
+            //document.removeEventListener('keydown', onKeyDown, false);
+            //document.removeEventListener('keyup', onKeyUp, false);
         }
     })
 };
@@ -455,8 +472,10 @@ const newMacro = () => {
             delayVal.value = t('macro.menu_4');
             state.value.macro = new Macro(`Macro ${macros.value.get().length + 1}`);
             macros.value.add(state.value.macro);
-            //state.name = state.value.macro.name;
-            //state.nameEditorDisplay = true;
+            state.value.name = state.value.macro.name;
+            state.value.nameEditorDisplay = true;
+            //document.removeEventListener('keydown', onKeyDown, false);
+            //document.removeEventListener('keyup', onKeyUp, false);
         }
     })
 };
@@ -464,36 +483,31 @@ const newMacro = () => {
 const insert = () => {
     isPlaying(() => {
         if (state.value.macro != undefined) {
-            let index = state.value.macro.actions.findIndex(obj => obj.index === actionVal.value?.index);
+            if (keyCodeTable.value != undefined && keyCodeTable.value.hid != KeyDefineEnum.NONE) {
+                let index = state.value.macro.actions.findIndex(obj => obj.index === actionVal.value?.index);
 
-            if (state.value.eventVal == 2) {
-                index = index < 0 ? state.value.macro.actions.length : index + 1;
-            } else {
-                index = 0;
-            }
+                if (state.value.eventVal == 2) {
+                    index = index < 0 ? state.value.macro.actions.length : index + 1;
+                } else {
+                    index = 0;
+                }
 
-            if (actVal.value === t('macro.menu_1') && keyCodeTable.value != undefined) {
-                state.value.macro.insert(index, new Action(keyCodeTable.value.hid, 30, ActionType.Down));
-                state.value.macro.insert(index + 1, new Action(keyCodeTable.value.hid, 30, ActionType.Up));
+                if (actVal.value === t('macro.menu_1')) {
+                    state.value.macro.insert(index, new Action(keyCodeTable.value.hid, 30, ActionType.Down));
+                    state.value.macro.insert(index + 1, new Action(keyCodeTable.value.hid, 30, ActionType.Up));
+                }
+                else if (delay.value > 0) {
+                    state.value.macro.insert(index, new Action(KeyDefineEnum.NONE, delay.value, ActionType.Delay));
+                }
+                state.value.macro.refresh();
+                elActionScrollbar.value.setScrollTop(2000);
             }
-            else if (delay.value > 0) {
-                state.value.macro.insert(index, new Action(KeyDefineEnum.NONE, delay.value, ActionType.Delay));
-            }
-            state.value.macro.refresh();
-            elActionScrollbar.value.setScrollTop(2000);
         }
     })
 };
 
 const isSelected = (obj: Macro): string => {
     return obj.index == state.value.macro?.index ? 'module_active' : '';
-}
-
-const handleEditClose = (done: () => void) => {
-    if (state.value.macro != undefined) {
-        state.value.macro.name = state.value.name;
-    }
-    done();
 }
 
 const saveMacro = async () => {
@@ -512,6 +526,7 @@ const saveMacro = async () => {
 const loadMacro = async () => {
     await useMacro.getMacroData();
 }
+
 const delayChanged = () => {
     if (delayVal.value === t('macro.menu_6')) {
         delayFix.value = 30
@@ -534,4 +549,12 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
     return false
 }
 
+const saveName = async () => {
+    if (state.value.macro != undefined) {
+        state.value.macro.name = state.value.name;
+        await saveMacro();
+    }
+    
+    state.value.nameEditorDisplay = false;
+}
 </script>

@@ -51,7 +51,7 @@
                         </el-scrollbar>
                     </div>
                 </div>
-                <div class="bg-box flex-1" style="border-radius: 0px 0px 10px 0px;">
+                <div class="bg-box flex-1" style="border-radius: 0px 0px 10px 0px;" v-if="useLight.state.lightProps.light != 3 && useLight.state.lightProps.light != 17">
                     <div class="w-100" style="height: 23vh">
                         <el-scrollbar>
                             <div class="d-flex flex-column ml-5">
