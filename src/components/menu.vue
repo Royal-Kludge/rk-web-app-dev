@@ -1,7 +1,7 @@
 <template>
   <div class="d-flex flex-column bg-white jc-between ai-center h-100">
     <div class="d-flex flex-column">
-      <div class="box p-4" @click="disconnect">
+      <div class="box p-4" @click="home">
         <img src="../assets/images/menu/home.png" />
       </div>
       <div v-for="item in menuList" class="box p-4" :class="{ active: item.id === meunid }"
@@ -42,8 +42,8 @@ const onMenuClick = async (id: any) => {
     }
 }
 
-const disconnect = () => {
-  keyboard.close();
+const home = () => {
+  useMenu.setMeunid(0);
 };
 </script>
 <style scoped lang="scss">

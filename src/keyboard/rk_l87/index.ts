@@ -6,7 +6,7 @@ import { RK_L87_Dongle } from './rk_l87_dongle'
 import { RK_L87_Usb } from './rk_l87_usb'
 
 export const RK_L87_USB_DEFINE: KeyboardDefine = {
-    name: "rk l87",
+    name: "RK-R87PRO",
     vendorId: 0x258A,
     productId: 0x019F,
     usagePage: 0xFF00,
@@ -29,7 +29,7 @@ export const RK_L87_USB_DEFINE: KeyboardDefine = {
 }
 
 export const RK_L87_DONGLE_DEFINE: KeyboardDefine = {
-    name: "rk l87",
+    name: "RK-R87PRO",
     vendorId: 0x3554,
     productId: 0xFA09,
     usagePage: 0xFF02,
