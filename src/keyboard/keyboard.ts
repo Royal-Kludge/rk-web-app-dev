@@ -6,6 +6,8 @@ import { defaultState, KeyboardDefineList } from './state'
  * Main class.
  */
 export class Keyboard extends EventTarget {
+    devices: Array<HIDDevice>
+
     /** Internal WebHID device */
     device?: HIDDevice;
 
@@ -26,6 +28,8 @@ export class Keyboard extends EventTarget {
     constructor() {
         super();
         
+        this.devices = new Array<HIDDevice>();
+
         if (!navigator.hid || !navigator.hid.requestDevice) {
             this.isHidAvailable = false;
             //throw new Error('WebHID not supported by browser or not available.')

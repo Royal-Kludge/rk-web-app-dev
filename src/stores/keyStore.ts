@@ -793,6 +793,13 @@ export const useKeyStore = defineStore('keyinfo', () => {
       storage.clear();
       getProfiles();
       await rk_l87.value.setProfile(0);
+      if (keyboard.keyboardDefine != undefined) {
+        let index: any;
+        for (index in keyboard.keyboardDefine.keyMatrixLayer) {
+          let layer = keyboard.keyboardDefine.keyMatrixLayer[index];
+          await rk_l87.value.setKeyMatrix(layer, MatrixTable.WIN, 0);
+        }
+      }
     }
   }
 

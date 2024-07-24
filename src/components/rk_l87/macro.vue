@@ -443,7 +443,7 @@ const deleteMacro = (obj: Macro) => {
                 state.value.macro = undefined;
             }
 
-            await useMacro.setMacroData();
+            await saveMacro();
         }
     })
 };
@@ -543,7 +543,7 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
     reader.onload = async (e) => {
         // 在这里可以处理文件内容，例如验证或转换
         useMacro.importProfile(e.target?.result)
-        await useMacro.setMacroData();
+        await saveMacro();
     };
     reader.readAsText(rawFile); // 读取文件内容为文本
     return false
