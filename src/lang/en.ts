@@ -2,7 +2,15 @@ export default {
   home: {
     title: "WebHID not supported by browser or not available",
     title_1: "Please wait, we are synchronizing data ...",
+    title_2: "Welcome to RK HUB WEB",
+    title_3: "Here, you can quickly configure your RK device, try out some unique settings, and personalize your device according to your preferences.",
+    title_4: "After completing the configuration, there is no need to leave it in the background, just save, close, and enjoy it.",
+    title_5: "Supports Chrome/EDGE/Opera browsers, more devices are being adapted",
+    title_6:"Network official:",
     but_1: "Connect",
+    but_2: "Initialize device",
+    but_3: "Click to enter",
+    but_4: "Close device",
   },
   Profile: {
     default: "Default Profile",

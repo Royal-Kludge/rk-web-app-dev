@@ -13,10 +13,11 @@
       RK-R87PRO
     </div>
     <div class="my-4"><img src="../assets/images/keyboard.png" /></div>
-    <div class="bg-white text-blue py-3 px-5 my-4 c-p" style="border-radius: 10px" @click="useMenu.setMeunid(1);">
-      点击进入
-    </div>
-    <div class="bg-white text-blue py-3 px-5 my-4 c-p" style="border-radius: 10px" @click="disconnect">关闭设备
+    <div class="d-flex my-4">
+      <div class="but-red text-white py-3 px-5 mx-4 c-p" style="border-radius: 10px;" @click="setMeunid();">
+        {{ $t("home.but_3") }}
+      </div>
+      <div class="bg-dark text-white py-3 px-5 mx-4 c-p" style="border-radius: 10px;" @click="disconnect"> {{ $t("home.but_4") }}</div>
     </div>
   </div>
 </template>
@@ -36,6 +37,12 @@ const { meunid } = storeToRefs(useMenu);
 
 const loading = ref(false)
 
+const setMeunid = () => {
+  useMenu.setMeunid(1);
+  if (keyboard != undefined && keyboard.keyboardDefine != undefined) {
+    useMenu.setName(keyboard.keyboardDefine.name.valueOf())
+  }
+};
 onMounted(async () => {
   rk_l87.value = keyboard.protocol as RK_L87;
   rk_l87.value.addEventListener(RK_L87_EVENT_DEFINE.OnReportStart, reportStart, false);
@@ -71,6 +78,7 @@ const reportFinish = async (event: any) => {
 };
 
 const disconnect = () => {
+  useMenu.nameInit();
   keyboard.close();
 };
 </script>

@@ -35,15 +35,17 @@ onMounted(() => {
 });
 
 const onMenuClick = async (id: any) => {
-    useKey.unSelected();
-    useMenu.setMeunid(id)
-    if (id == 3) {
-      await useLight.saveBoardProfileToDevice();
-    }
+  useKey.unSelected();
+  useMenu.setMeunid(id)
+  if (id == 3) {
+    await useLight.saveBoardProfileToDevice();
+  }
 }
 
 const home = () => {
-  useMenu.setMeunid(0);
+  keyboard.close();
+  useMenu.nameInit();
+  //useMenu.setMeunid(0);
 };
 </script>
 <style scoped lang="scss">

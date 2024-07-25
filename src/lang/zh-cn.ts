@@ -2,7 +2,15 @@ export default {
   home: {
     title: "浏览器不支持WebHID或WebHID不可用",
     title_1: "请稍等，正在同步数据 。。。",
+    title_2: "欢迎来到 RK HUB WEB",
+    title_3: "在这里您可以迅速配置您的RK设备，尝试一些与众不同的设定，并按您的喜好个性化定制您的设备。",
+    title_4: "当完成配置之后，后台都不用留，只需要保存、关闭、享受即可。",
+    title_5: "支持chrome/EDGE/opera三种浏览器，更多设备正在适配中...",
+    title_6:"网官：",
     but_1: "连接",
+    but_2: "初始化设备",
+    but_3: "点击进入",
+    but_4: "关闭设备",
   },
   Profile: {
     default: "默认配置文件",

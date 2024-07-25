@@ -4,6 +4,7 @@ export const useMenuStore = defineStore("menustore", {
   state: () => ({
     meunid: 0,
     moduleid: 0,
+    name: '<img src="/src/assets/images/logo@1x.png" style="width: 130px" />',
     moduleList: [] as any,
     menuList: [{
       id: 1, title: "键盘设置", src: "/src/assets/images/menu/key.png",
@@ -19,6 +20,12 @@ export const useMenuStore = defineStore("menustore", {
     ] as any,
   }),
   actions: {
+    setName(name: string) {
+      this.name = name;
+    },
+    nameInit() {
+      this.name = '<img src="/src/assets/images/logo@1x.png" style="width: 130px" />';
+    },
     setMeunid(id: number) {
       this.meunid = id;
       this.moduleid = 0;
