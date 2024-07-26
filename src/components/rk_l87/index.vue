@@ -1,8 +1,5 @@
 <template>
-  <div class="d-flex jc-center ai-center p-5 fs-big m-5" v-if="!isKeyboardConnect()">
-    No keyboard connected to dongle
-  </div>
-  <div class="d-flex h-100" style="overflow: hidden;" v-else>
+  <div class="d-flex h-100" style="overflow: hidden;" >
     <Macro v-if="meunid === 2" />
     <Light v-else-if="meunid === 3" />
     <LightCustom v-else-if="meunid === 4" />
@@ -32,7 +29,6 @@ const rk_l87 = ref<RK_L87>();
 const state = reactive({
   connectState: keyboard.state.ConnectionStatus,
   connectType: keyboard.state.connectType,
-  password: 0
 });
 
 onMounted(async () => {
@@ -40,34 +36,30 @@ onMounted(async () => {
   state.connectType = keyboard.state.connectType;
   rk_l87.value = keyboard.protocol as RK_L87;
   rk_l87.value.addEventListener(RK_L87_EVENT_DEFINE.OnDongleStatusChanged, dongleStatusChanged, false);
-  rk_l87.value.addEventListener(RK_L87_EVENT_DEFINE.OnPasswordGotten, passwordGotten, false);
 });
 
 onBeforeUnmount(() => {
   if (rk_l87.value != undefined) {
     rk_l87.value.removeEventListener(RK_L87_EVENT_DEFINE.OnDongleStatusChanged, dongleStatusChanged, false);
-    rk_l87.value.removeEventListener(RK_L87_EVENT_DEFINE.OnPasswordGotten, passwordGotten, false);
   }
 });
 
-const isKeyboardConnect = (): boolean => {
-  let isConnect = false;
-  if (keyboard.state.connectType == ConnectionType.Dongle) {
-    isConnect = state.connectState == ConnectionStatusEnum.Connected && state.password == 0x03000000 + 0x0156;
-  } else {
-    isConnect = state.connectState == ConnectionStatusEnum.Connected;
-  }
+// const isKeyboardConnect = (): boolean => {
+//   let isConnect = false;
+//   if (keyboard.state.connectType == ConnectionType.Dongle && rk_l87.value != undefined) {
+//     isConnect = state.connectState == ConnectionStatusEnum.Connected && rk_l87.value.data.donglePwd == 0x03000000 + 0x0156;
+//   } else {
+//     isConnect = state.connectState == ConnectionStatusEnum.Connected;
+//   }
 
-  return isConnect;
-};
+//   return isConnect;
+// };
 
 const dongleStatusChanged = (event: any) => {
   keyboard.state.ConnectionStatus = event.detail as ConnectionStatusEnum;
   state.connectState = event.detail as ConnectionStatusEnum;
+  if (state.connectState != ConnectionStatusEnum.Connected) {
+    useMenu.setMeunid(0);
+  }
 };
-
-const passwordGotten = (event: any) => {
-  state.password = event.detail as number;
-};
-
 </script>

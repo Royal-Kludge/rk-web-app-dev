@@ -91,6 +91,9 @@ export class RK_L87_Dongle extends RK_L87 {
                         case 'SetMacros':
                             await this.setReport(REPORT_ID_DONGLE, this.pktSetMacros.command());
                             break;
+                        case 'GetPassword':
+                            await this.setReport(REPORT_ID_DONGLE, this.pktGetPassword.command());
+                            break;
                     }
                 } catch (e) {
                     this.device.close();
@@ -109,7 +112,7 @@ export class RK_L87_Dongle extends RK_L87 {
             //let packet: Packet_Dongle | null = null;
             switch (cmd) {
                 case COMMAND_ID.ActivelyReport:
-                    this.activelyReport(data);
+                    await this.activelyReport(data);
                     break;
                 case COMMAND_ID.GetDongleStatus:
                     this.pktGetDongleStatus.fromReportData(data);
@@ -154,12 +157,17 @@ export class RK_L87_Dongle extends RK_L87 {
         }
     }
 
-    activelyReport(data: DataView): void {
+    async activelyReport(data: DataView): Promise<void> {
         let id = data.getUint8(4);
         let val = data.getUint8(5);
         switch (id) {
             case 0x02:
                 this.state.ConnectionStatus = val == 1 ? ConnectionStatusEnum.Connected : ConnectionStatusEnum.Disconnected;
+                if (this.state.ConnectionStatus == ConnectionStatusEnum.Connected) {
+                    setTimeout(this.getPassword, 1000);
+                } else {
+                    this.data.donglePwd = 0;
+                }
                 this.dispatchEvent(new CustomEvent(RK_L87_EVENT_DEFINE.OnDongleStatusChanged, { detail: this.state.ConnectionStatus }));
                 break;
         }
@@ -169,8 +177,8 @@ export class RK_L87_Dongle extends RK_L87 {
         await this.setReport(REPORT_ID_DONGLE, this.pktGetDongleStatus.command());
     }
 
-    async getPassword(): Promise<void> {
-        await this.setReport(REPORT_ID_DONGLE, this.pktGetPassword.command());
+    async getPassword() {
+        dongleWorker.postMessage('GetPassword');
     }
 
     async getProfile(board: number): Promise<void> {
@@ -276,6 +284,7 @@ export class RK_L87_Dongle extends RK_L87 {
         let password = event.detail.pwd as number;
         let version = event.detail.version as string;
         this.state.fwVersion = version;
+        this.data.donglePwd = password;
         this.dispatchEvent(new CustomEvent(RK_L87_EVENT_DEFINE.OnPasswordGotten, { detail: password }));
     }
 

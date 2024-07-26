@@ -8,7 +8,7 @@ export default {
     title_5: "支持chrome/EDGE/opera三種瀏覽器，更多設備正在適配中…",
     title_6:"網官：",
     but_1: "連接",
-    but_2: "初始化設備",
+    but_2: "選擇設備",
     but_3: "點擊進入",
     but_4: "關閉設備",
   },

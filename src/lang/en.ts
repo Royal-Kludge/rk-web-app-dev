@@ -8,7 +8,7 @@ export default {
     title_5: "Supports Chrome/EDGE/Opera browsers, more devices are being adapted",
     title_6:"Network official:",
     but_1: "Connect",
-    but_2: "Initialize device",
+    but_2: "Select device",
     but_3: "Click to enter",
     but_4: "Close device",
   },

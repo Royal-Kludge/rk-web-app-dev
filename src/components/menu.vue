@@ -43,9 +43,9 @@ const onMenuClick = async (id: any) => {
 }
 
 const home = () => {
-  keyboard.close();
+  //keyboard.close();
   useMenu.nameInit();
-  //useMenu.setMeunid(0);
+  useMenu.setMeunid(0);
 };
 </script>
 <style scoped lang="scss">

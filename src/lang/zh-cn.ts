@@ -8,7 +8,7 @@ export default {
     title_5: "支持chrome/EDGE/opera三种浏览器，更多设备正在适配中...",
     title_6:"网官：",
     but_1: "连接",
-    but_2: "初始化设备",
+    but_2: "选择设备",
     but_3: "点击进入",
     but_4: "关闭设备",
   },

@@ -69,6 +69,7 @@ export class RK_L87_Data {
     keyMatrixs: Record<number, KeyMatrix> = {};
     ledColors?: LedColors;
     macros?: Macros;
+    donglePwd: number = 0;
 }
 
 export abstract class RK_L87 extends Protocol {

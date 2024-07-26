@@ -10,7 +10,7 @@ const { name } = storeToRefs(useMenu);
   <el-container class="p-a w-100 h-100">
     <el-header class="header">
       <div class="d-flex ai-center h-100 ml-4">
-        <span style="word-wrap: break-word;font-size: 56px; font-weight: bold;font-family:'Microsoft YaHei';" v-html="name"></span>
+        <span style="word-wrap: break-word;font-size: 32px; font-weight: bold;font-family:'Microsoft YaHei';" v-html="name"></span>
       </div>
     </el-header>
     <el-main>
