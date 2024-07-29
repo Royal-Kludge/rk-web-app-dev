@@ -118,6 +118,8 @@ export default {
     title_2:"无需更新",
     title_3:"更新版本",
     title_4:"下载中",
+    title_5:"请到有线模式下更新",
+    title_6: "功能设置",
   },
   mediaKey: {
     Media: "媒体",

@@ -2,7 +2,7 @@
   <div class="d-flex h-100" style="overflow: hidden;" >
     <Macro v-if="meunid === 2" />
     <Light v-else-if="meunid === 3" />
-    <LightCustom v-else-if="meunid === 4" />
+    <SetFun v-else-if="meunid === 4" />
     <Set v-else-if="meunid === 5" />
     <Main v-else />
   </div>
@@ -15,6 +15,7 @@ import { RK_L87, RK_L87_EVENT_DEFINE } from "../../keyboard/rk_l87/rk_l87";
 import { ConnectionStatusEnum, ConnectionType } from "../../keyboard/enum";
 import Light from "./light.vue";
 import LightCustom from "./lightCustom.vue";
+import SetFun from "./setfun.vue";
 import Macro from "./macro.vue";
 import Set from "./set.vue";
 import Main from "./main.vue"

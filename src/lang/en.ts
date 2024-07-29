@@ -118,6 +118,8 @@ export default {
     title_2: "No update required",
     title_3: "Update Version",
     title_4: "Downloading",
+    title_5:"Please update in wired mode",
+    title_6: "Function settings",
   },
   mediaKey: {
     Media: "Media",

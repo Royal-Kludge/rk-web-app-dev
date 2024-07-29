@@ -16,8 +16,8 @@
                     </div>
                     <div class="mb-5"></div>
                 </div>
-                <div class="m-5" style="border-bottom: 1px solid #E7EAF2;">
-                    <div class="m-4">
+                <div class="m-5">
+                    <!-- <div class="m-4">
                         <el-checkbox v-model="isLayer" :label="$t('set.layer_1')" style="width: 100%;"
                             @change="LayerChanged">
                             {{ $t('set.layer_1') }}
@@ -26,7 +26,7 @@
                     <div class="m-4 px-3" v-if="isLayer">
                         <el-slider style="width: 360px" v-model="layer" :min="1" :max="127"
                             @change="setLayer" />
-                    </div>
+                    </div> -->
                     <div class="m-4 d-flex flex-column">
                         <!-- <div class="py-3 my-3 w-100 bg-warn-1 text-grey-1 text-center br-2 b-grey c-p but">
                             {{ $t("set.but_1") }}
@@ -39,7 +39,7 @@
                             {{ $t("set.but_3") }}
                         </div> -->
                         <div class="py-3 my-3 w-100 bg-warn-1 text-grey-1 text-center br-2 b-grey c-p but"
-                            @click="checkVer(true)" v-if="isDown">
+                            @click="checkVer(true)">
                             {{ $t("set.but_4") }}(<span>{{ VerTips }}</span>)
                         </div>
                         <div class="w-100 text-grey-1 text-center">
@@ -57,14 +57,14 @@
                         </template>
                     </el-dialog>
                 </div>
-                <div class="m-5 d-flex ai-center flex-column">
+                <!-- <div class="m-5 d-flex ai-center flex-column">
                     <div class="m-4">{{ $t("set.mode_title") }}</div>
                     <div>
                         <el-slider style="width: 360px" v-model="mode" :min="0" :max="3" :step="3"
                             :format-tooltip="formatModeValue" @change="DebounceChanged" />
                     </div>
                     <div class="m-4">{{ $t(modeStr) }}</div>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>
@@ -121,6 +121,13 @@ const getVer = () => {
     });
 }
 const checkVer = (flag: boolean = false) => {
+    if (useLight.connectType !== ConnectionType.USB) {
+        ElMessage({
+            type: 'info',
+            message: t("set.title_5"),
+        })
+        return
+    }
     if (ver.value !== version.value) {
         ElMessageBox.alert(`${t('set.title_3')}:${version.value}`, t('set.but_4'), {
             confirmButtonText: 'OK',
