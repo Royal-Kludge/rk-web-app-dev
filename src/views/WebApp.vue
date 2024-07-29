@@ -1,30 +1,30 @@
 <template>
-  <div v-if="meunid > 0" class="d-flex h-100" v-loading="loading" :element-loading-text="$t('home.title_1')"
+  <div class="d-flex h-100" v-loading="loading" :element-loading-text="$t('home.title_1')"
     element-loading-background="rgba(0, 0, 0, 0.7)">
-    <div style="min-width: 60px">
+    <div style="min-width: 70px">
       <Meun />
     </div>
     <div class="flex-1">
-      <RK_L87_Page />
-    </div>
-  </div>
-  <div v-else class="d-flex flex-column jc-center ai-center">
-    <div class="d-flex flex-column jc-center ai-center" v-if="!isKeyboardConnect()">
-      <div class="p-5 fs-big m-5 mb-4">No keyboard connected to dongle</div>
-      <div class="bg-dark text-white py-3 px-5 mx-4 c-p mt-4" style="border-radius: 10px;height: 24px;"
-        @click="disconnect"> {{ $t("home.but_4") }}</div>
-    </div>
-    <div class="d-flex flex-column jc-center ai-center" v-else>
-      <div class="text-black my-4" style="font-size: 120px; font-weight: bold">
-        RK-R87PRO
-      </div>
-      <div class="my-4 c-p" @click="setMeunid();"><img src="../assets/images/keyboard.png" /></div>
-      <div class="d-flex my-4">
-        <!-- <div class="but-red text-white py-3 px-5 mx-4 c-p" style="border-radius: 10px;" @click="setMeunid();">
+      <RK_L87_Page v-if="meunid > 0" />
+      <div v-else class="d-flex flex-column jc-center ai-center">
+        <div class="d-flex flex-column jc-center ai-center" v-if="!isKeyboardConnect()">
+          <div class="p-5 fs-big m-5 mb-4">No keyboard connected to dongle</div>
+          <div class="bg-dark text-white py-3 px-5 mx-4 c-p mt-4" style="border-radius: 10px;height: 24px;"
+            @click="disconnect"> {{ $t("home.but_4") }}</div>
+        </div>
+        <div class="d-flex flex-column jc-center ai-center" v-else>
+          <div class="text-black my-4" style="font-size: 120px; font-weight: bold">
+            RK-R87PRO
+          </div>
+          <div class="my-4 c-p" @click="setMeunid();"><img src="../assets/images/keyboard.png" /></div>
+          <div class="d-flex my-4">
+            <!-- <div class="but-red text-white py-3 px-5 mx-4 c-p" style="border-radius: 10px;" @click="setMeunid();">
           {{ $t("home.but_3") }}
         </div> -->
-        <div class="bg-dark text-white py-3 px-5 mx-4 c-p" style="border-radius: 10px;" @click="disconnect"> {{
-          $t("home.but_2") }}</div>
+            <div class="bg-dark text-white py-3 px-5 mx-4 c-p" style="border-radius: 10px;" @click="disconnect"> {{
+              $t("home.but_2") }}</div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -62,6 +62,7 @@ const setMeunid = () => {
 };
 
 onMounted(async () => {
+  console.log("meunid:" + meunid.value)
   state.connectState = keyboard.state.ConnectionStatus;
   state.connectType = keyboard.state.connectType;
   rk_l87.value = keyboard.protocol as RK_L87;
