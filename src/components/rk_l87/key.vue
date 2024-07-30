@@ -525,8 +525,8 @@ const mediaStrKey = (key: string | undefined) => {
 
 .key {
     font-size: 14px;
-    width: 51px;
-    height: 51px;
+    width: 45px;
+    height: 45px;
     margin: 2px;
     background: #989aab;
     border-radius: 3px;
@@ -538,27 +538,27 @@ const mediaStrKey = (key: string | undefined) => {
 }
 
 .key2 {
-    width: 122px;
+    width: 110px;
 }
 
 .key3 {
-    width: 87px;
+    width: 78px;
 }
 
 .key4 {
-    width: 157px;
+    width: 142px;
 }
 
 .key5 {
-    width: 405px;
+    width: 321px;
 }
 
 .key6 {
-    width: 71px;
+    width: 70px;
 }
 
 .space-l {
-    margin-left: 20px;
+    margin-left: 18px;
 }
 
 .space-l2 {
@@ -566,7 +566,7 @@ const mediaStrKey = (key: string | undefined) => {
 }
 
 .space-l3 {
-    margin-left: 92px;
+    margin-left: 82px;
 }
 
 .space-t {
@@ -733,7 +733,7 @@ const mediaStrKey = (key: string | undefined) => {
     }
 
     .space-l3 {
-        margin-left: 55px;
+        margin-left: 53px;
     }
 
     .space-t {

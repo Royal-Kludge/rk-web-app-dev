@@ -6,7 +6,7 @@
             </div>
             <div class="d-flex flex-1">
                 <div class="bg-box" style="width: 50%; border-radius: 0px 0px 0px 10px;">
-                    <div class="w-100" style="height: 23vh">
+                    <div class="w-100" style="height: 28vh">
                         <el-scrollbar>
                             <div class="d-flex flex-column jc-between" style="padding-left: 15%;">
                                 <div class="d-flex m-3"
@@ -52,7 +52,7 @@
                     </div>
                 </div>
                 <div class="bg-box flex-1" style="border-radius: 0px 0px 10px 0px;" v-if="useLight.state.lightProps.light != 3 && useLight.state.lightProps.light != 17">
-                    <div class="w-100" style="height: 23vh">
+                    <div class="w-100" style="height: 28vh">
                         <el-scrollbar>
                             <div class="d-flex flex-column ml-5">
                                 <div class="d-flex ai-center">

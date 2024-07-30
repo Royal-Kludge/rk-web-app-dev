@@ -11,7 +11,7 @@
                 <Key />
             </div>
             <div class="d-flex jc-center">
-                <div style="height: 280px;overflow: hidden;">
+                <div style="height: 275px;overflow: hidden;">
                     <Fun />
                 </div>
             </div>
