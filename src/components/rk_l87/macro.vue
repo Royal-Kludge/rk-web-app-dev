@@ -159,9 +159,9 @@
                     <div class="py-1 px-5 but-red text-white mx-3 c-p" @click="deleteAction(actionVal as Action)">
                         {{ $t('macro.but_6') }}
                     </div>
-                    <div class="py-1 px-5 but-green text-white mx-3 c-p" @click="saveMacro()">
+                    <!-- <div class="py-1 px-5 but-green text-white mx-3 c-p" @click="saveMacro()">
                         {{ $t('macro.but_7') }}
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
@@ -336,7 +336,11 @@ const onKeyUp = async (event: KeyboardEvent) => {
 };
 
 const record = () => {
-    playing.value = !playing.value;
+    if (playing.value) {
+        playing.value = !playing.value;
+        saveMacro()
+    } else
+        playing.value = !playing.value;
     playTitle.value = playing.value ? t('macro.but_8') : t('macro.but_4');
     keyDate.value = new Date();
     lastKey.value = '';
@@ -355,7 +359,7 @@ const onKeyDown = (event: KeyboardEvent) => {
     if (state.value.nameEditorDisplay) return;
 
     event.preventDefault();
-    
+
     keyCodeTable.value = KeyCodeMap[event.code];
 
     if (keyCodeTable.value != undefined) {
@@ -383,7 +387,7 @@ const onKeyDown = (event: KeyboardEvent) => {
             index = index < 0 ? 0 : index
 
             if (delay.value > 0 && index > 0) {
-                    state.value.macro.actions[index - 1].delay = delay.value;
+                state.value.macro.actions[index - 1].delay = delay.value;
             }
 
             if (keyCodeTable.value != undefined) {
@@ -512,7 +516,7 @@ const isSelected = (obj: Macro): string => {
 
 const saveMacro = async () => {
     isPlaying(async () => {
-        if (macros.value != undefined) {
+        if (macros.value != undefined && state.value.macro != undefined) {
             storage.set('macro', macros.value);
             await useMacro.setMacroData();
             ElMessage({
@@ -554,7 +558,7 @@ const saveName = async () => {
         state.value.macro.name = state.value.name;
         await saveMacro();
     }
-    
+
     state.value.nameEditorDisplay = false;
 }
 </script>
