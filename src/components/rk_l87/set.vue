@@ -108,8 +108,8 @@ const isDown = computed(() => (useLight.connectType == ConnectionType.USB))
 const VerTips = computed(() => (ver.value !== version.value ? t('set.title_3') + ':' + version.value : t('set.title_2')))
 
 const getVer = () => {
-    if (useLight.connectType !== ConnectionType.USB)
-        return
+    // if (useLight.connectType !== ConnectionType.USB)
+    //     return
     axios.get('/down/work/RKWEB/firmware/R87PRO/firmware.json').then(response => {
         // 请求成功处理
         version.value = response.data.version
@@ -121,14 +121,14 @@ const getVer = () => {
     });
 }
 const checkVer = (flag: boolean = false) => {
-    if (useLight.connectType !== ConnectionType.USB) {
+    if (useLight.connectType !== ConnectionType.USB && flag == true) {
         ElMessage({
             type: 'info',
             message: t("set.title_5"),
         })
         return
     }
-    if (ver.value !== version.value) {
+    if (ver.value !== version.value && useLight.connectType == ConnectionType.USB) {
         ElMessageBox.alert(`${t('set.title_3')}:${version.value}`, t('set.but_4'), {
             confirmButtonText: 'OK',
             callback: (action: Action) => {
