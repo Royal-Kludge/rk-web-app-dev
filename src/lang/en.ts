@@ -6,7 +6,7 @@ export default {
     title_3: "Here, you can quickly configure your RK device, try out some unique settings, and personalize your device according to your preferences.",
     title_4: "After completing the configuration, there is no need to leave it in the background, just save, close, and enjoy it.",
     title_5: "Supports Chrome/EDGE/Opera browsers, more devices are being adapted",
-    title_6:"Official website:",
+    title_6:"Official Website:",
     but_1: "Connect",
     but_2: "Select device",
     but_3: "Click to enter",
