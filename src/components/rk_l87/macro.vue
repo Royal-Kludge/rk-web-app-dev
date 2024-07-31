@@ -159,9 +159,9 @@
                     <div class="py-1 px-5 but-red text-white mx-3 c-p" @click="deleteAction(actionVal as Action)">
                         {{ $t('macro.but_6') }}
                     </div>
-                    <!-- <div class="py-1 px-5 but-green text-white mx-3 c-p" @click="saveMacro()">
+                    <div class="py-1 px-5 but-green text-white mx-3 c-p" @click="saveMacro()">
                         {{ $t('macro.but_7') }}
-                    </div> -->
+                    </div>
                 </div>
             </div>
         </div>
@@ -336,11 +336,7 @@ const onKeyUp = async (event: KeyboardEvent) => {
 };
 
 const record = () => {
-    if (playing.value) {
-        playing.value = !playing.value;
-        saveMacro()
-    } else
-        playing.value = !playing.value;
+    playing.value = !playing.value;
     playTitle.value = playing.value ? t('macro.but_8') : t('macro.but_4');
     keyDate.value = new Date();
     lastKey.value = '';
@@ -370,7 +366,7 @@ const onKeyDown = (event: KeyboardEvent) => {
         state.value.key = keyCodeTable.value.key;
     }
 
-    if (playing.value &&  keyCodeTable.value.key != lastKey.value) {
+    if (playing.value && keyCodeTable.value.key != lastKey.value) {
 
         keyDate.value = new Date();
 
