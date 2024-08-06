@@ -471,7 +471,6 @@ const newMacro = () => {
         if (macros.value != undefined) {
             delayVal.value = t('macro.menu_4');
             state.value.macro = new Macro(`Macro ${macros.value.get().length + 1}`);
-            macros.value.add(state.value.macro);
             state.value.name = state.value.macro.name;
             state.value.nameEditorDisplay = true;
             //document.removeEventListener('keydown', onKeyDown, false);
@@ -552,6 +551,9 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
 const saveName = async () => {
     if (state.value.macro != undefined) {
         state.value.macro.name = state.value.name;
+        if (macros.value != undefined) {
+            macros.value.add(state.value.macro);
+        }
         await saveMacro();
     }
 

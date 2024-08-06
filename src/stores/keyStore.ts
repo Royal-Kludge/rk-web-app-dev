@@ -51,6 +51,7 @@ export const useKeyStore = defineStore('keyinfo', () => {
   const state = reactive({
     name: '',
     nameEditorDisplay: false,
+    isNewProfile: false,
     profiles: ps,
     profileList: [],
     //MatrixLayer: keyMatrixLayer.value,
@@ -86,8 +87,8 @@ export const useKeyStore = defineStore('keyinfo', () => {
       }, {
         box: 3, title: "key.key_2", style: "",
         keys: [
-        { key: KeyDefineEnum.KEY_Fn1, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Fn1], style: "key", selected: false },
-        { key: KeyDefineEnum.KEY_Fn2, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Fn2], style: "key", selected: false }]
+          { key: KeyDefineEnum.KEY_Fn1, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Fn1], style: "key", selected: false },
+          { key: KeyDefineEnum.KEY_Fn2, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Fn2], style: "key", selected: false }]
       }]
     },
     {
@@ -538,6 +539,18 @@ export const useKeyStore = defineStore('keyinfo', () => {
     fileSaver.saveAs(blob, `${obj.name}.rk`);
   };
 
+  const renameSaveProfile = () => {
+    if (profile.value != undefined) {
+      profile.value.name = state.name;
+      if (state.isNewProfile = true) {
+        ps.add(profile.value);
+      }
+    }
+    saveProfile();
+    state.nameEditorDisplay = false
+    state.isNewProfile = false
+  };
+
   const renameProfile = (obj: Profile) => {
     profile.value = obj;
     state.name = obj.name;
@@ -545,11 +558,12 @@ export const useKeyStore = defineStore('keyinfo', () => {
   };
 
   const handleEditClose = (done: () => void) => {
-    if (profile.value != undefined) {
-      profile.value.name = state.name;
-    }
+    // if (profile.value != undefined) {
+    //   profile.value.name = state.name;
+    // }
     done();
-    saveProfile();
+    //saveProfile();
+    state.isNewProfile = false
   };
 
   const getProfiles = () => {
@@ -653,7 +667,7 @@ export const useKeyStore = defineStore('keyinfo', () => {
     }
     ps.save()
   }
-  
+
   const newProfile = () => {
     let tm = new Profile(`${t("Profile.namePrefix")} ${ps.get().length + 1}`);
     // let layer: any;
@@ -679,9 +693,13 @@ export const useKeyStore = defineStore('keyinfo', () => {
     // }
 
     //profile.value = tm;
-    ps.add(tm);
+    // ps.add(tm);
 
-    saveProfile()
+    // saveProfile()
+
+    state.name = tm.name;
+    state.isNewProfile = true;
+    renameProfile(tm)
   };
 
   const getKeyMatrixNomal = () => {
@@ -691,6 +709,7 @@ export const useKeyStore = defineStore('keyinfo', () => {
   const getKeyMatrix = async () => {
     unSelected();
     refresh()
+    getKeyFunMatrix()
   }
 
   const setSelected = (keyCode: KeyDefineEnum) => {
@@ -699,6 +718,19 @@ export const useKeyStore = defineStore('keyinfo', () => {
         state.keyFunState[i].selected = true;
       }
       else state.keyFunState[i].selected = false;
+    }
+  }
+
+  const getKeyFunMatrix = () => {
+    for (var i = 0; i < state.keyFunList.length; i++) {
+      for (var j = 0; j < state.keyFunList[i].boxs.length; j++) {
+        if (state.keyFunList[i].line == 1 && state.keyFunList[i].boxs[j].box == 3 && keyMatrixLayer.value == KeyMatrixLayer.Tap) {
+          state.keyFunList[i].boxs[j].style = 'd-none'
+        }
+        else {
+          state.keyFunList[i].boxs[j].style = ''
+        }
+      }
     }
   }
 
@@ -1079,5 +1111,5 @@ export const useKeyStore = defineStore('keyinfo', () => {
 
     state.mediaKeyDialogShow = false;
   }
-  return { profile, state, keyMatrixLayer, keyClick, keyColor, isSelected, keybgColor, keyText, keySetToDefault, keySetMacro, mapping, isFunSelected, isMacroSelected, clickMacro, confirmSetMacro, setCombineKey, confirmMediaKey, setMediaKey, confirmSetCombineKey, getKeyMatrix, clickProfile, deleteProfile, onKeyDown, newProfile, handleEditClose, renameProfile, exportProfile, importProfile, init, destroy, getKeyMatrixNomal, saveProfile, keySetToDefaultAll, refresh, refreshKeyMatrixData, setToFactory, unSelected }
+  return { profile, state, keyMatrixLayer, keyClick, keyColor, isSelected, keybgColor, keyText, keySetToDefault, keySetMacro, mapping, isFunSelected, isMacroSelected, clickMacro, confirmSetMacro, setCombineKey, confirmMediaKey, setMediaKey, confirmSetCombineKey, getKeyMatrix, clickProfile, deleteProfile, onKeyDown, newProfile, handleEditClose, renameProfile, exportProfile, importProfile, init, destroy, getKeyMatrixNomal, saveProfile, keySetToDefaultAll, refresh, refreshKeyMatrixData, setToFactory, unSelected, renameSaveProfile }
 })

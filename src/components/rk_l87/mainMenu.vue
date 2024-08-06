@@ -7,9 +7,8 @@
                     <el-scrollbar>
                         <div v-for="item in (state.profileList as Array<Profile>)"
                             class="module_box d-flex p-3 my-2 text-grey-1 jc-between"
-                            :class="{ 'module_active': item.index === useKey.profile?.index }"
-                            >
-                            <div style="padding-left: 16%;width: 100%" class="d-flex"  @click="clickProfile(item)">
+                            :class="{ 'module_active': item.index === useKey.profile?.index }">
+                            <div style="padding-left: 16%;width: 100%" class="d-flex" @click="clickProfile(item)">
                                 <div class="d-flex">
                                     <span class="pr-4 d-flex ai-center">
                                         <img src="../../assets/images/dot.png" />
@@ -26,11 +25,13 @@
                                     </el-icon>
                                     <template #dropdown>
                                         <el-dropdown-menu style="padding: 0px;">
-                                            <el-dropdown-item @click="useKey.renameProfile(item)" v-if="!item.isDefault">
+                                            <el-dropdown-item @click="useKey.renameProfile(item)"
+                                                v-if="!item.isDefault">
                                                 <img src="../../assets/images/title/edit.png" class="img-title" />
                                                 {{ $t("key.but_4") }}
                                             </el-dropdown-item>
-                                            <el-dropdown-item @click="useKey.deleteProfile(item)" v-if="!item.isDefault">
+                                            <el-dropdown-item @click="useKey.deleteProfile(item)"
+                                                v-if="!item.isDefault">
                                                 <img src="../../assets/images/title/del.png" class="img-title" />
                                                 {{ $t("key.but_5") }}
                                             </el-dropdown-item>
@@ -50,6 +51,11 @@
                 :before-close="useKey.handleEditClose">
                 <div class="d-flex ai-center">
                     <el-input v-model="useKey.state.name" placeholder="Please input" maxlength="10" />
+                </div>
+                <div class="d-flex jc-end">
+                    <div class="py-1 px-4 but-green text-white c-p mt-4" @click="useKey.renameSaveProfile">
+                        {{ $t('macro.but_7') }}
+                    </div>
                 </div>
             </el-dialog>
         </div>

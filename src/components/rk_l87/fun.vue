@@ -34,6 +34,10 @@ onBeforeUnmount(() => {
 
 </script>
 <style scoped lang="scss">
+.d-none {
+  display: none;
+}
+
 .selected {
   background-color: #4743A7 !important;
   color: #ffffff;
