@@ -10,8 +10,8 @@
             <div class="d-flex jc-center ai-center flex-1">
                 <Key />
             </div>
-            <div class="d-flex jc-center">
-                <div style="height: 275px;overflow: hidden;">
+            <div class="d-flex mx-1">
+                <div style="height: 275px;overflow: hidden;" class="w-100">
                     <Fun />
                 </div>
             </div>

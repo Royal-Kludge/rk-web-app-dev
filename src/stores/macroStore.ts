@@ -39,6 +39,8 @@ export const useMacroStore = defineStore("macrostore", () => {
     name: '',
     nameEditorDisplay: false,
     key: key,
+    actionTextShow: false,
+    actionText: '',
   });
   const actions = {};
   const isInited = ref(false);
@@ -103,6 +105,22 @@ export const useMacroStore = defineStore("macrostore", () => {
     }
   };
 
+  const saveAction = () => {
+    try {
+      var as: Array<Action> = JSON.parse(state.actionText);
+      macro.value?.clear();
+      for (let a of as) {
+        let ta = new Action(a.key, a.delay, a.action, a.type);
+        macro.value?.add(ta);
+      }
+      macro.value?.refresh();
+      // 成功解析后的代码
+    } catch (e) {
+      // 解析出错时的代码
+      ElMessage.error('Error parsing JSON data')
+    }
+  };
+
   const exportMacro = (obj: Macro) => {
     let blob = new Blob([JSON.stringify(obj)], { type: "application/json" });
     fileSaver.saveAs(blob, `${obj.name}.rk`);
@@ -152,7 +170,7 @@ export const useMacroStore = defineStore("macrostore", () => {
   }
 
   const clearMacro = async () => {
-    if (rk_l87.value != undefined ) {
+    if (rk_l87.value != undefined) {
       let ms = new Macros();
       rk_l87.value.data.macros = ms;
       macros.value = rk_l87.value.data.macros;
@@ -160,5 +178,5 @@ export const useMacroStore = defineStore("macrostore", () => {
     }
   }
 
-  return { macros, state, actions, key, init, destroy, refresh, getMacroData, exportMacro, importProfile, setMacroData, clearMacro }
+  return { macros, state, actions, key, init, destroy, refresh, getMacroData, exportMacro, importProfile, setMacroData, clearMacro, saveAction }
 });

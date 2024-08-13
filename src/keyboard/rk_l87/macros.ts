@@ -142,6 +142,10 @@ export class Macro {
         this.actions.push(action);
     }
 
+    clear() {
+        this.actions.splice(0, this.actions.length);
+    }
+
     insert(index: number, action: Action) {
         this.actions.splice(index, 0, action);
     }

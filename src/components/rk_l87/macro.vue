@@ -69,6 +69,16 @@
         </div>
     </div>
     <div class="d-flex flex-1">
+        <el-dialog v-model="state.actionTextShow" top="30vh" width="680px" :lock-scroll="true">
+            <div class="d-flex ai-center">
+                <el-input v-model="state.actionText" placeholder="Please input" :rows="8" type="textarea" />
+            </div>
+            <div class="d-flex jc-end">
+                <div class="py-1 px-4 but-green text-white c-p mt-4" @click="saveAction()">
+                    {{ $t('macro.but_7') }}
+                </div>
+            </div>
+        </el-dialog>
         <div class="d-flex flex-column flex-1 ml-4 my-4">
             <div class="bg-white p-2" style="border-radius: 10px 10px 0px 0px;line-height: 30px;">
                 {{ $t('macro.title_1') }}
@@ -153,13 +163,16 @@
                     </div>
                 </div>
                 <div class="d-flex bg-white p-4 jc-center" style="border-radius: 0px 0px 10px 10px">
-                    <div class="py-1 px-5 but-grey text-white mx-3 c-p" @click="clearAction()">
+                    <div class="py-1 px-4 but-blue text-white mx-3 c-p" @click="textAction()">
+                        {{ $t('macro.but_12') }}
+                    </div>
+                    <div class="py-1 px-4 but-grey text-white mx-3 c-p" @click="clearAction()">
                         {{ $t('macro.but_5') }}
                     </div>
-                    <div class="py-1 px-5 but-red text-white mx-3 c-p" @click="deleteAction(actionVal as Action)">
+                    <div class="py-1 px-4 but-red text-white mx-3 c-p" @click="deleteAction(actionVal as Action)">
                         {{ $t('macro.but_6') }}
                     </div>
-                    <div class="py-1 px-5 but-green text-white mx-3 c-p" @click="saveMacro()">
+                    <div class="py-1 px-4 but-green text-white mx-3 c-p" @click="saveMacro()">
                         {{ $t('macro.but_7') }}
                     </div>
                 </div>
@@ -236,6 +249,7 @@ const repeat = ref<number>(0)
 const playing = ref<boolean>(false);
 const playTitle = ref<string>(t('macro.but_4'))
 const lastKey = ref<string>('');
+const isNew = ref<boolean>(false);
 
 // const state = reactive({
 //     macros: macros,
@@ -262,6 +276,19 @@ const isPlaying = (done: Function, cancel = () => { }) => {
 const clearAction = () => {
     isPlaying(() => {
         if (state.value.macro != undefined) state.value.macro.actions = [];
+    })
+};
+
+const textAction = () => {
+    isPlaying(() => {
+        state.value.actionTextShow = true
+        state.value.actionText = JSON.stringify(state.value.macro?.actions)
+    })
+};
+const saveAction = () => {
+    isPlaying(() => {
+        state.value.actionTextShow = false
+        useMacro.saveAction();
     })
 };
 
@@ -354,7 +381,7 @@ const onKeyDown = (event: KeyboardEvent) => {
     console.log('Key pressed:', `${event.key} | ${event.code} | ${event.keyCode}`);
     if (state.value.nameEditorDisplay) return;
 
-    event.preventDefault();
+    //event.preventDefault();
 
     keyCodeTable.value = KeyCodeMap[event.code];
 
@@ -460,6 +487,7 @@ const renameMacro = (obj: Macro) => {
             state.value.macro = obj;
             state.value.name = obj.name;
             state.value.nameEditorDisplay = true;
+            isNew.value = false;
             //document.removeEventListener('keydown', onKeyDown, false);
             //document.removeEventListener('keyup', onKeyUp, false);
         }
@@ -473,6 +501,7 @@ const newMacro = () => {
             state.value.macro = new Macro(`Macro ${macros.value.get().length + 1}`);
             state.value.name = state.value.macro.name;
             state.value.nameEditorDisplay = true;
+            isNew.value = true;
             //document.removeEventListener('keydown', onKeyDown, false);
             //document.removeEventListener('keyup', onKeyUp, false);
         }
@@ -551,7 +580,7 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
 const saveName = async () => {
     if (state.value.macro != undefined) {
         state.value.macro.name = state.value.name;
-        if (macros.value != undefined) {
+        if (macros.value != undefined && isNew.value) {
             macros.value.add(state.value.macro);
         }
         await saveMacro();

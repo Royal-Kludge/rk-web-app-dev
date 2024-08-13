@@ -1,23 +1,31 @@
 <template>
-  <div style="height: 30vh;">
-    <el-scrollbar>
-      <div class="d-flex text-black jc-center">
-        <div :class="[`d-flex flex-column ${line.style}`]" v-for="line in useKey.state.keyFunList">
-          <div :class="[`mt-3 ${box.style}`]" v-for="box in line.boxs">
-            <div class="bg-white-1 p-1" style="border-radius: 5px 5px 0px 0px">
-              {{ $t(box.title) }}
-            </div>
-            <div class="d-flex flex-wrap bg-white jc-between" style="border-radius: 0px 0px 5px 5px">
-              <div
-                :class="[`c-p d-flex ai-center jc-center p-1 m-1 bg-grey ${item.style}`, useKey.isFunSelected(item.key)]"
-                v-for="item in box.keys" @click="useKey.mapping(item.key)">
+  <div class="d-flex w-100">
+    <div style="width: 160px; height: 100vh;" class="bg-grey">
+      <div style="height: 30vh">
+        <el-scrollbar>
+          <div :class="[{ 'bg-white-1': item.id === useKey.state.funid }, `${item.style}`]"
+            class="mx-4 br-2 my-2 text-center p-2 c-p" v-for="item in useKey.state.funMenuList"
+            @click="useKey.setFunid(item.id)">
+            {{ $t(item.title) }}
+          </div>
+        </el-scrollbar>
+      </div>
+    </div>
+    <div class="flex-1 ml-3">
+      <div style="height: 100vh;" class="bg-white w-100">
+        <div style="height: 30vh;">
+          <el-scrollbar>
+            <div :class="['d-flex flex-wrap', `${line.style}`]" v-for="line in useKey.state.keyFunList">
+              <div v-if="line.id == useKey.state.funid"
+                :class="[`c-p d-flex ai-center jc-center p-3 m-1 bg-grey br-1`, useKey.isFunSelected(item.key)]"
+                v-for="item in line.keys" @click="useKey.mapping(item.key)" style="min-width: 24px;">
                 {{ item.text }}
               </div>
             </div>
-          </div>
+          </el-scrollbar>
         </div>
       </div>
-    </el-scrollbar>
+    </div>
   </div>
 </template>
 <script setup lang="ts">
