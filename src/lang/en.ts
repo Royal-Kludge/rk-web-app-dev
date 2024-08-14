@@ -98,9 +98,9 @@ export default {
     menu_11: "NeonStream",
     menu_12: "Reaction",
     menu_13: "SineWave",
-    menu_14: "Blossoming",
-    menu_15: "SelfDefine",
-    menu_16: "OFF",
+    menu_17: "Blossoming",
+    menu_18: "SelfDefine",
+    menu_0: "OFF",
   },
   set: {
     title: "Settings",

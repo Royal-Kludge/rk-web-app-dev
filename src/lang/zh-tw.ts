@@ -98,9 +98,9 @@ export default {
     menu_11: "隨波逐流",
     menu_12: "如影隨形",
     menu_13: "正弦光波",
-    menu_14: "花開富貴",
-    menu_15: "自定義模式",
-    menu_16: "關閉",
+    menu_17: "花開富貴",
+    menu_18: "自定義模式",
+    menu_0: "關閉",
   },
   set: {
     title: "設置",

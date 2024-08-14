@@ -48,9 +48,9 @@ export const uselightStore = defineStore('lightinfo', () => {
             { light: LightEffectEnum.NeonStream, label: 'light.menu_11' },
             { light: LightEffectEnum.Reaction, label: 'light.menu_12' },
             { light: LightEffectEnum.SineWave, label: 'light.menu_13' },
-            { light: LightEffectEnum.Blossoming, label: 'light.menu_14' },
-            { light: LightEffectEnum.SelfDefine, label: 'light.menu_15' },
-            { light: LightEffectEnum.OFF, label: 'light.menu_16' },
+            { light: LightEffectEnum.Blossoming, label: 'light.menu_17' },
+            { light: LightEffectEnum.SelfDefine, label: 'light.menu_18' },
+            { light: LightEffectEnum.OFF, label: 'light.menu_0' },
             //{ light: LightEffectEnum.Music, label: 'Music' },
         ],
         keyMatrix: [

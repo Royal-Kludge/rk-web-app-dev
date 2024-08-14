@@ -1213,6 +1213,22 @@ export enum KeyDefineEnum {
     KEY_LED_MODE1         = 0x08090100, //ֱ���趨Ϊģʽ1
     KEY_LED_MODE2         = 0x08090200, //ֱ���趨Ϊģʽ2
     KEY_LED_MODE3         = 0x08090300, //ֱ���趨Ϊģʽ3
+    KEY_LED_MODE4         = 0x08090400, //ֱ���趨Ϊģʽ0
+    KEY_LED_MODE5         = 0x08090500, //ֱ���趨Ϊģʽ1
+    KEY_LED_MODE6         = 0x08090600, //ֱ���趨Ϊģʽ2
+    KEY_LED_MODE7         = 0x08090700, //ֱ���趨Ϊģʽ3
+    KEY_LED_MODE8         = 0x08090800, //ֱ���趨Ϊģʽ0
+    KEY_LED_MODE9         = 0x08090900, //ֱ���趨Ϊģʽ1
+    KEY_LED_MODE10        = 0x08090A00, //ֱ���趨Ϊģʽ2
+    KEY_LED_MODE11        = 0x08090B00, //ֱ���趨Ϊģʽ3
+    KEY_LED_MODE12        = 0x08090C00, //ֱ���趨Ϊģʽ0
+    KEY_LED_MODE13        = 0x08090D00, //ֱ���趨Ϊģʽ1
+    KEY_LED_MODE14        = 0x08090E00, //ֱ���趨Ϊģʽ2
+    KEY_LED_MODE15        = 0x08090F00, //ֱ���趨Ϊģʽ3
+    KEY_LED_MODE16        = 0x08091000, //ֱ���趨Ϊģʽ0
+    KEY_LED_MODE17        = 0x08091100, //ֱ���趨Ϊģʽ1
+    KEY_LED_MODE18        = 0x08091200, //ֱ���趨Ϊģʽ2
+    KEY_LED_MODE19        = 0x08091300, //ֱ���趨Ϊģʽ3\
 
     KEY_LED_MODE20        = 0x08092000, //ֱ���趨Ϊģʽ20
     KEY_LED_MODE21        = 0x08092100, //ֱ���趨Ϊģʽ21
@@ -1291,7 +1307,29 @@ export enum KeyDefineEnum {
 //��Դ��
     KEY_Power             = 0x10000001,
     KEY_Sleep             = 0x10000002,
-    KEY_WakeUp            = 0x10000004
+    KEY_WakeUp            = 0x10000004,
+
+    KEY_Tilde             = 0x00020035,
+    KEY_Exclamation       = 0x0002001e,
+    KEY_AtSign            = 0x0002001f,
+    KEY_Sharp             = 0x00020020,
+    KEY_Dollar            = 0x00020021,
+    KEY_Percent           = 0x00020022,
+    KEY_Circumflex        = 0x00020023,
+    KEY_Ampersand         = 0x00020024,
+    KEY_Asterisk          = 0x00020025,
+    KEY_LeftParenthesis   = 0x00020026,
+    KEY_RightParenthesis  = 0x00020027,
+    KEY_Underscore2       = 0x0002002D,
+    KEY_Plus              = 0x0002002E,
+    KEY_LeftBrace         = 0x0002002F,
+    KEY_RightBrace        = 0x00020030,
+    KEY_Pipe              = 0x00020031,
+    KEY_Colon             = 0x00020033,
+    KEY_DoubleQuote       = 0x00020034,
+    KEY_LessSign          = 0x00020036,
+    KEY_GreaterSign       = 0x00020037,
+    KEY_Question          = 0x00020038,
 }
 
 export const KeyText: Record<number, String> = {
@@ -1555,10 +1593,10 @@ export const KeyText: Record<number, String> = {
 //byte2��0ѭ����1+/��2-/�ң����byte1Ϊ9����������ֵ������ǰģʽ
 //byte3��0��������1����1��2����2
 //�ƹ�ģʽ�趨
-    0x08090000:  'LedMode0', //ֱ���趨Ϊģʽ0
-    0x08090100:  'LedMode1', //ֱ���趨Ϊģʽ1
-    0x08090200:  'LedMode2', //ֱ���趨Ϊģʽ2
-    0x08090300:  'LedMode3', //ֱ���趨Ϊģʽ3
+    0x08090000:  'light.menu_0', //ֱ���趨Ϊģʽ0
+    0x08090100:  'light.menu_1', //ֱ���趨Ϊģʽ1
+    0x08090200:  'light.menu_2', //ֱ���趨Ϊģʽ2
+    0x08090300:  'light.menu_3', //ֱ���趨Ϊģʽ3
 
     0x08092000:  'LedMode20', //ֱ���趨Ϊģʽ20
     0x08092100:  'LedMode21', //ֱ���趨Ϊģʽ21
@@ -1583,13 +1621,13 @@ export const KeyText: Record<number, String> = {
     0x08020000:  'LedColorModeLoop', //ֱ���趨Ϊ��ɫLOOP
 
 //����
-    0x08030100:  'LedLumin+', //ֱ���趨Ϊģʽ+
-    0x08030200:  'LedLumin-', //ֱ���趨Ϊģʽ-
+    0x08030100:  'Bright+', //ֱ���趨Ϊģʽ+
+    0x08030200:  'Bright-', //ֱ���趨Ϊģʽ-
     0x08030000:  'LedLuminLoop', //ֱ���趨ΪģʽLOOP
 
 //�ٶ�
-    0x08040100:  'LedBreath+', //  +
-    0x08040200:  'LedBreath-', //  -
+    0x08040100:  'Speed+', //  +
+    0x08040200:  'Speed-', //  -
     0x08040000:  'LedBreathLoop', //  
 
 //¼��
@@ -1633,7 +1671,46 @@ export const KeyText: Record<number, String> = {
 //��Դ��
     0x10000001:  'Power',
     0x10000002:  'Sleep',
-    0x10000004:  'WakeUp'
+    0x10000004:  'WakeUp',
+
+    0x00020035:  '~',
+    0x0002001e:  '!',
+    0x0002001f:  '@',
+    0x00020020:  '#',
+    0x00020021:  '$',
+    0x00020022:  '%',
+    0x00020023:  '^',
+    0x00020024:  '&',
+    0x00020025:  '*',
+    0x00020026:  '(',
+    0x00020027:  ')',
+    0x0002002D:  '_',
+    0x0002002E:  '+',
+    0x0002002F:  '{',
+    0x00020030:  '}',
+    0x00020031:  '|',
+    0x00020033:  ':',
+    0x00020034:  '"',
+    0x00020036:  '<',
+    0x00020037:  '>',
+    0x00020038:  '?',
+
+    0x08090400:  'light.menu_4',
+    0x08090500:  'light.menu_5',
+    0x08090600:  'light.menu_6',
+    0x08090700:  'light.menu_7',
+    0x08090800:  'light.menu_8',
+    0x08090900:  'light.menu_9',
+    0x08090A00:  'light.menu_10',
+    0x08090B00:  'light.menu_11',
+    0x08090C00:  'light.menu_12',
+    0x08090D00:  'light.menu_13',
+    0x08090E00:  'light.menu_14',
+    0x08090F00:  'light.menu_15',
+    0x08091000:  'light.menu_16',
+    0x08091100:  'light.menu_17',
+    0x08091200:  'light.menu_18',
+    0x08091300:  'light.menu_19',
 }
 
 export const KeyText_2: Record<number, String> = {
@@ -1834,8 +1911,8 @@ export const KeyText_2: Record<number, String> = {
     0x020000b8: 'Eject',//0xEB
     0x020000cd: 'PlayPause',//0xEC
     0x020000E2: 'Mute',//0xED
-    0x020000e9: 'VolumI',//0xEE  //+
-    0x020000ea: 'VolumD',//0xEF  //-
+    0x020000e9: 'Volum+',//0xEE  //+
+    0x020000ea: 'Volum-',//0xEF  //-
 
     0x02000183: 'Media',//F0
     0x0200018a: 'Email',//F1
