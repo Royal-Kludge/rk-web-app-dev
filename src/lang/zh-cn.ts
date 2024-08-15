@@ -74,6 +74,12 @@ export default {
     menu_6: "固定延迟",
     event_1: "在这之前插入事件",
     event_2: "在这之后插入事件",
+    desc_1: "宏对象以JSON的格式进行编辑，一个宏由多个动作（Action）数组组成。每个Action是一个JSON格式的对象，每个Action是一个JSON格式的对象，其包含以下对象：",
+    desc_2: "action：动作类型 1:弹起 0:按下",
+    desc_3: "type：按键类型 0:普通按键",
+    desc_4: "delay：延迟时间 单位:毫秒",
+    desc_5: "key：按键HID键值",
+    desc_6: "index：动作顺序",
   },
   light: {
     title: "灯光列表",

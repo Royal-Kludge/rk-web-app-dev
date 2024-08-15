@@ -70,13 +70,21 @@
     </div>
     <div class="d-flex flex-1">
         <el-dialog v-model="state.actionTextShow" top="30vh" width="680px" :lock-scroll="true">
-            <div class="d-flex ai-center">
-                <el-input v-model="state.actionText" placeholder="Please input" :rows="8" type="textarea" />
-            </div>
-            <div class="d-flex jc-end">
-                <div class="py-1 px-4 but-green text-white c-p mt-4" @click="saveAction()">
+            <div class="d-flex">
+                <div class="py-1 px-4 but-green text-white c-p mb-4" @click="saveAction()">
                     {{ $t('macro.but_7') }}
                 </div>
+            </div>
+            <div class="d-flex ai-center mb-4">
+                <el-input v-model="state.actionText" placeholder="Please input" :rows="8" type="textarea" />
+            </div>
+            <div class="d-flex flex-column">
+                <span>{{ $t('macro.desc_1') }}</span>
+                <span>{{ $t('macro.desc_2') }}</span>
+                <span>{{ $t('macro.desc_3') }}</span>
+                <span>{{ $t('macro.desc_4') }}</span>
+                <span>{{ $t('macro.desc_5') }}</span>
+                <span>{{ $t('macro.desc_6') }}</span>
             </div>
         </el-dialog>
         <div class="d-flex flex-column flex-1 ml-4 my-4">

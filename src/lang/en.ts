@@ -74,6 +74,12 @@ export default {
     menu_6: "Fix Delay",
     event_1: "Insert event before this",
     event_2: "Insert event after this",
+    desc_1: "Macro objects are edited in JSON format, and a macro consists of multiple action arrays. Each Action is a JSON formatted object, which includes the following objects:",
+    desc_2: "action: Action type 1: Pop up 0: Press",
+    desc_3: "type: Key type 0: normal key",
+    desc_4: "delay: Delay time unit: milliseconds",
+    desc_5: "key: HID key value",
+    desc_6: "index: Action order",
   },
   light: {
     title: "Light List",
