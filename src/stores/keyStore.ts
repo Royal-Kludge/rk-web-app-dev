@@ -182,7 +182,7 @@ export const useKeyStore = defineStore('keyinfo', () => {
     {
       id: 2,
       style: "",
-      keys: [ 
+      keys: [
         { key: KeyDefineEnum.KEY_VolumI, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_VolumI], style: "key", selected: false },
         { key: KeyDefineEnum.KEY_VolumD, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_VolumD], style: "key", selected: false },
         { key: KeyDefineEnum.KEY_Mute, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Mute], style: "key", selected: false },
@@ -197,7 +197,7 @@ export const useKeyStore = defineStore('keyinfo', () => {
     {
       id: 4,
       style: "",
-      keys: [ 
+      keys: [
         { key: KeyDefineEnum.KEY_Fn1, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Fn1], style: "key", selected: false },
         { key: KeyDefineEnum.KEY_Fn2, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Fn2], style: "key", selected: false },
       ],
@@ -205,7 +205,7 @@ export const useKeyStore = defineStore('keyinfo', () => {
     {
       id: 5,
       style: "",
-      keys: [ 
+      keys: [
         { key: KeyDefineEnum.KEY_Tilde, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Tilde], style: "key", selected: false },
         { key: KeyDefineEnum.KEY_Exclamation, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Exclamation], style: "key", selected: false },
         { key: KeyDefineEnum.KEY_AtSign, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_AtSign], style: "key", selected: false },
@@ -244,23 +244,23 @@ export const useKeyStore = defineStore('keyinfo', () => {
       id: 6,
       style: "",
       keys: [
-        { key: KeyDefineEnum.KEY_LED_MODE0, text: t("light.menu_0"), style: "key", selected: false },
-        { key: KeyDefineEnum.KEY_LED_MODE1, text: t("light.menu_1"), style: "key", selected: false },
-        { key: KeyDefineEnum.KEY_LED_MODE2, text: t("light.menu_2"), style: "key", selected: false },
-        { key: KeyDefineEnum.KEY_LED_MODE3, text: t("light.menu_3"), style: "key", selected: false },
-        { key: KeyDefineEnum.KEY_LED_MODE4, text: t("light.menu_4"), style: "key", selected: false },
-        { key: KeyDefineEnum.KEY_LED_MODE5, text: t("light.menu_5"), style: "key", selected: false },
-        { key: KeyDefineEnum.KEY_LED_MODE6, text: t("light.menu_6"), style: "key", selected: false },
-        { key: KeyDefineEnum.KEY_LED_MODE7, text: t("light.menu_7"), style: "key", selected: false },
-        { key: KeyDefineEnum.KEY_LED_MODE8, text: t("light.menu_8"), style: "key", selected: false },
-        { key: KeyDefineEnum.KEY_LED_MODE9, text: t("light.menu_9"), style: "key", selected: false },
-        { key: KeyDefineEnum.KEY_LED_MODE10, text: t("light.menu_10"), style: "key", selected: false },
-        { key: KeyDefineEnum.KEY_LED_MODE11, text: t("light.menu_11"), style: "key", selected: false },
-        { key: KeyDefineEnum.KEY_LED_MODE12, text: t("light.menu_12"), style: "key", selected: false },
-        { key: KeyDefineEnum.KEY_LED_MODE13, text: t("light.menu_13"), style: "key", selected: false },
-        { key: KeyDefineEnum.KEY_LED_MODE17, text: t("light.menu_17"), style: "key", selected: false },
-        { key: KeyDefineEnum.KEY_LED_MODE18, text: t("light.menu_18"), style: "key", selected: false },
-        
+        { key: KeyDefineEnum.KEY_LED_MODE0, text: "light.menu_0", style: "key", selected: false },
+        { key: KeyDefineEnum.KEY_LED_MODE1, text: "light.menu_1", style: "key", selected: false },
+        { key: KeyDefineEnum.KEY_LED_MODE2, text: "light.menu_2", style: "key", selected: false },
+        { key: KeyDefineEnum.KEY_LED_MODE3, text: "light.menu_3", style: "key", selected: false },
+        { key: KeyDefineEnum.KEY_LED_MODE4, text: "light.menu_4", style: "key", selected: false },
+        { key: KeyDefineEnum.KEY_LED_MODE5, text: "light.menu_5", style: "key", selected: false },
+        { key: KeyDefineEnum.KEY_LED_MODE6, text: "light.menu_6", style: "key", selected: false },
+        { key: KeyDefineEnum.KEY_LED_MODE7, text: "light.menu_7", style: "key", selected: false },
+        { key: KeyDefineEnum.KEY_LED_MODE8, text: "light.menu_8", style: "key", selected: false },
+        { key: KeyDefineEnum.KEY_LED_MODE9, text: "light.menu_9", style: "key", selected: false },
+        { key: KeyDefineEnum.KEY_LED_MODE10, text: "light.menu_10", style: "key", selected: false },
+        { key: KeyDefineEnum.KEY_LED_MODE11, text: "light.menu_11", style: "key", selected: false },
+        { key: KeyDefineEnum.KEY_LED_MODE12, text: "light.menu_12", style: "key", selected: false },
+        { key: KeyDefineEnum.KEY_LED_MODE13, text: "light.menu_13", style: "key", selected: false },
+        { key: KeyDefineEnum.KEY_LED_MODE17, text: "light.menu_17", style: "key", selected: false },
+        { key: KeyDefineEnum.KEY_LED_MODE18, text: "light.menu_18", style: "key", selected: false },
+
         { key: KeyDefineEnum.KEY_LED_LUMINI, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_LED_LUMINI], style: "key", selected: false },
         { key: KeyDefineEnum.KEY_LED_LUMIND, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_LED_LUMIND], style: "key", selected: false },
         { key: KeyDefineEnum.KEY_LED_BREATHI, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_LED_BREATHI], style: "key", selected: false },
@@ -1006,6 +1006,7 @@ export const useKeyStore = defineStore('keyinfo', () => {
     if (state.keyState.length <= 0 || index >= 999) return '';
     let isSelected = (state.keyState as Array<KeyState>)[index].selected;
     (state.keyState as Array<KeyState>)[index].selected = !isSelected;
+    keyState.value = (state.keyState as Array<KeyState>)[index];
   }
 
   const unSelected = (): void => {

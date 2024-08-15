@@ -15,11 +15,17 @@
       <div style="height: 100vh;" class="bg-white w-100">
         <div style="height: 30vh;">
           <el-scrollbar>
-            <div :class="['d-flex flex-wrap', `${line.style}`]" v-for="line in useKey.state.keyFunList">
+            <div class="d-flex flex-wrap" v-if="useKey.state.funid == 3">
+              <div :class="['d-flex c-p ai-center jc-center p-3 m-1 bg-grey br-1', useKey.isMacroSelected(macro)]"
+                v-for=" macro in useKey.state.macros?.get()" @click="clickMacro(macro)" style="min-width: 24px;">
+                {{ macro.name }}
+              </div>
+            </div>
+            <div :class="['d-flex flex-wrap', `${line.style}`]" v-for="line in useKey.state.keyFunList" v-else>
               <div v-if="line.id == useKey.state.funid"
                 :class="[`c-p d-flex ai-center jc-center p-3 m-1 bg-grey br-1`, useKey.isFunSelected(item.key)]"
                 v-for="item in line.keys" @click="useKey.mapping(item.key)" style="min-width: 24px;">
-                {{ item.text }}
+                {{ $t(item.text as string) }}
               </div>
             </div>
           </el-scrollbar>
@@ -31,6 +37,7 @@
 <script setup lang="ts">
 import { useKeyStore } from "@/stores/keyStore";
 import { onMounted, onBeforeUnmount } from 'vue';
+import { Macro } from '@/keyboard/rk_l87/macros';
 const useKey = useKeyStore();
 onMounted(async () => {
   await useKey.init();
@@ -39,6 +46,11 @@ onMounted(async () => {
 onBeforeUnmount(() => {
   useKey.destroy();
 });
+
+const clickMacro = (obj: Macro) => {
+  useKey.clickMacro(obj)
+  useKey.confirmSetMacro()
+}
 
 </script>
 <style scoped lang="scss">
