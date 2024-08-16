@@ -1621,13 +1621,13 @@ export const KeyText: Record<number, String> = {
     0x08020000:  'LedColorModeLoop', //ֱ���趨Ϊ��ɫLOOP
 
 //����
-    0x08030100:  'Bright+', //ֱ���趨Ϊģʽ+
-    0x08030200:  'Bright-', //ֱ���趨Ϊģʽ-
+    0x08030100:  'light.fun_1', //ֱ���趨Ϊģʽ+
+    0x08030200:  'light.fun_2', //ֱ���趨Ϊģʽ-
     0x08030000:  'LedLuminLoop', //ֱ���趨ΪģʽLOOP
 
 //�ٶ�
-    0x08040100:  'Speed+', //  +
-    0x08040200:  'Speed-', //  -
+    0x08040100:  'light.fun_3', //  +
+    0x08040200:  'light.fun_4', //  -
     0x08040000:  'LedBreathLoop', //  
 
 //¼��

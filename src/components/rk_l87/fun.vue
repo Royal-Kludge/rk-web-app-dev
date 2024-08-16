@@ -22,11 +22,19 @@
               </div>
             </div>
             <div :class="['d-flex flex-wrap', `${line.style}`]" v-for="line in useKey.state.keyFunList" v-else>
-              <div v-if="line.id == useKey.state.funid"
-                :class="[`c-p d-flex ai-center jc-center p-3 m-1 bg-grey br-1`, useKey.isFunSelected(item.key)]"
-                v-for="item in line.keys" @click="useKey.mapping(item.key)" style="min-width: 24px;">
-                {{ $t(item.text as string) }}
-              </div>
+              <el-tooltip v-if="line.id == useKey.state.funid" v-for="item in line.keys" @click="useKey.mapping(item.key)"
+                class="box-item"
+                effect="light"
+                :disabled="item.tip == ''"
+                :content="$t(item.tip)"
+                placement="bottom"
+              >
+                <div 
+                  :class="[`c-p d-flex ai-center jc-center p-3 m-1 bg-grey br-1`, useKey.isFunSelected(item.key)]"
+                   style="min-width: 24px;">
+                  {{ $t(item.text as string) }}
+                </div>
+              </el-tooltip>
             </div>
           </el-scrollbar>
         </div>
