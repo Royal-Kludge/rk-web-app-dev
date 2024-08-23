@@ -6,15 +6,34 @@
         <el-radio-group v-model="useKey.keyMatrixLayer" text-color="#00ffff" fill="#ffff00"
           @change="useKey.getKeyMatrix">
           <el-radio v-for="item in useKey.state.MatrixLayers" :value="item.value" :label="item.value">
-            {{ $t(item.label) }}
+              <span>{{ $t(item.label) }}</span>
           </el-radio>
         </el-radio-group>
       </div>
       <div class="d-flex ml-4">
         <div>
-          <el-checkbox v-model="isLayer" :label="$t('set.layer_1')" style="width: 100%;" @change="LayerChanged">
-            {{ $t('set.layer_1') }}
-          </el-checkbox>
+          <!--<el-tooltip effect="light"
+                :content="$t('tip.tape')"
+                placement="bottom"
+                popper-class="tip_font"
+              >
+              <el-checkbox v-model="isLayer" :label="$t('set.layer_1')" style="width: 100%;" @change="LayerChanged">
+                {{ $t('set.layer_1') }}
+              </el-checkbox>
+          </el-tooltip> -->
+          <el-popover effect="light" :width="440"
+                      placement="bottom">
+              <div class="d-flex flex-column">
+                <span>{{$t('tip.tape1')}}</span>
+                <span>{{$t('tip.tape2')}}</span>
+                <span>{{$t('tip.tape3')}}</span>
+              </div>
+              <template #reference>
+                <el-checkbox v-model="isLayer" :label="$t('set.layer_1')" style="width: 100%;" @change="LayerChanged">
+                  {{ $t('set.layer_1') }}
+                </el-checkbox>
+              </template>
+          </el-popover>
         </div>
         <div class="ml-1 px-3" v-if="isLayer">
           <el-slider style="width: 360px" v-model="layer" :min="1" :max="127" @change="setLayer" />
@@ -24,6 +43,7 @@
   </div>
 </template>
 <script setup lang="ts">
+import { KeyMatrixLayer } from "@/keyboard/enum";
 import { useKeyStore } from "@/stores/keyStore";
 import { uselightStore } from "@/stores/lightStore";
 import { ref, onMounted, onBeforeUnmount } from 'vue';

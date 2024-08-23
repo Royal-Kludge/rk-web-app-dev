@@ -22,17 +22,17 @@
               </div>
             </div>
             <div :class="['d-flex flex-wrap', `${line.style}`]" v-for="line in useKey.state.keyFunList" v-else>
-              <el-tooltip v-if="line.id == useKey.state.funid" v-for="item in line.keys" @click="useKey.mapping(item.key)"
-                class="box-item"
+              <el-tooltip v-if="line.id == useKey.state.funid" v-for="item in line.keys"
                 effect="light"
                 :disabled="item.tip == ''"
-                :content="$t(item.tip)"
+                :content="itemTipText(item)"
                 placement="bottom"
+                popper-class="tip_font"
               >
-                <div 
-                  :class="[`c-p d-flex ai-center jc-center p-3 m-1 bg-grey br-1`, useKey.isFunSelected(item.key)]"
-                   style="min-width: 24px;">
-                  {{ $t(item.text as string) }}
+                <div :class="[`c-p d-flex ai-center jc-center p-3 m-1 bg-grey br-1`, useKey.isFunSelected(item.key)]"
+                     @click="useKey.mapping(item.key)"
+                     style="min-width: 24px;">
+                  {{ itemText(item) }}
                 </div>
               </el-tooltip>
             </div>
@@ -46,7 +46,12 @@
 import { useKeyStore } from "@/stores/keyStore";
 import { onMounted, onBeforeUnmount } from 'vue';
 import { Macro } from '@/keyboard/rk_l87/macros';
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
+
 const useKey = useKeyStore();
+
 onMounted(async () => {
   await useKey.init();
 });
@@ -58,6 +63,17 @@ onBeforeUnmount(() => {
 const clickMacro = (obj: Macro) => {
   useKey.clickMacro(obj)
   useKey.confirmSetMacro()
+}
+
+const itemText = (item: any) => {
+  if (item.tip != '') return t(item.text as string);
+  if ((item.key >> 24) == 8) return t(item.text as string);
+  return item.text;
+}
+
+const itemTipText = (item: any) => {
+  if (item.tip != '') return t(item.tip);
+  return '';
 }
 
 </script>

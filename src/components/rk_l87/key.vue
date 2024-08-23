@@ -5,7 +5,7 @@
             <div class="keybox d-flex flex-column bg-white p-3" style="border-radius: 15px;position: relative;"
                 @contextmenu.prevent @mousedown="handleMouseDown" v-if="useLight.state.lightProps.light == LightEffectEnum.SelfDefine">
                 <div class="d-flex" v-for="line in useKey.state.keyMatrix" :class="[`${line.style}`]">
-                    <el-dropdown :id="`key${key.index}`" trigger="contextmenu" ref="keyMapping"
+                    <div :id="`key${key.index}`" trigger="contextmenu" ref="keyMapping"
                         @visible-change="handleOpen($event, `key${key.index}`)" v-for="key in line.keys"
                         v-if="meunid == 1">
                         <div @click="keyClick(key.index)" class="d-flex ai-center jc-center c-p"
@@ -15,23 +15,7 @@
                                 {{ useKey.keyText(key.keyData) }}
                             </div>
                         </div>
-                        <template #dropdown>
-                            <el-dropdown-menu style="padding: 0px;">
-                                <el-dropdown-item @click="keySetToDefault(key.index)" style="height: min-content;">
-                                    {{ $t('key.menu_1') }}
-                                </el-dropdown-item>
-                                <el-dropdown-item @click="useKey.keySetMacro(key.index)" style="height: min-content;">
-                                    {{ $t('key.menu_2') }}
-                                </el-dropdown-item>
-                                <el-dropdown-item @click="useKey.setCombineKey(key.index)" style="height: min-content;">
-                                    {{ $t('key.menu_3') }}
-                                </el-dropdown-item>
-                                <el-dropdown-item @click="useKey.setMediaKey(key.index)" style="height: min-content;">
-                                    {{ $t('key.menu_4') }}
-                                </el-dropdown-item>
-                            </el-dropdown-menu>
-                        </template>
-                    </el-dropdown>
+                    </div>
                     <div :i="key.index" class="item d-flex ai-center jc-center c-p"
                         :class="[`d-flex p-2 pl-3 ${key.style}`, useKey.keyColor(key.keyData), useKey.isSelected(key.index)]"
                         v-for="key in line.keys" v-else @click="keyClick(key.index)">
@@ -44,92 +28,10 @@
                         class="mask">
                     </div>
                 </div>
-                <el-dialog v-model="useKey.state.macroDialogShow" top="18vh" width="680px"
-                    style="--el-dialog-padding-primary:3px;">
-                    <div class="d-flex flex-column" style="margin-top: 35px;">
-                        <div class="d-flex flex-column flex-1 bg-white-1"
-                            style="border-radius: 0px 0px 10px 10px;height: 100%;">
-
-                            <div class="list flex-1 bg-warn-1">
-                                <div style="height: 30vh">
-                                    <el-scrollbar>
-                                        <div :class="['p-1 c-p', useKey.isMacroSelected(macro)]"
-                                            v-for=" macro in useKey.state.macros?.get()"
-                                            @click="useKey.clickMacro(macro)">
-                                            {{ macro.name }}
-                                        </div>
-                                    </el-scrollbar>
-                                </div>
-                            </div>
-                            <div class="m-3">
-                                <span class="mr-3">{{ $t('key.title_1') }}</span>
-                                <el-select v-model="useKey.state.cycleType" placeholder="Select" style="width: 240px;">
-                                    <el-option v-for="item in useKey.state.cycleTypes" :key="item.value"
-                                        :label="$t(item.strKey)" :value="item.value" />
-                                </el-select>
-                            </div>
-                            <div class="m-3">
-                                <span class="mr-3">{{ $t('key.title_2') }}</span>
-                                <el-input-number v-model="useKey.state.cycleCount" style="width: 150px" type="number" />
-                            </div>
-                            <div class="d-flex p-4 jc-center" style="border-radius: 0px 0px 10px 10px">
-                                <div class="py-1 px-5 but-green text-white mx-3 c-p" @click="useKey.confirmSetMacro">
-                                    {{ $t('key.but_3') }}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </el-dialog>
-                <el-dialog v-model="useKey.state.combineKeyDialogShow" top="20vh" width="680px"
-                    style="--el-dialog-padding-primary:3px;" @opened="dialogOpened" @closed="dialogClosed" :close-on-press-escape="false" :close-on-click-modal="false">
-                    <div class="d-flex flex-column ml-4">
-                        <div class="m-3" id="input">
-                            <span class="mr-3">Input</span>
-                            <el-input style="width: 150px" v-model="useKey.state.keyStr" aria-placeholder="Please input"
-                                :readonly="true" maxlength="1" />
-                        </div>
-                        <div class="d-flex m-3">
-                            <el-checkbox v-model="useKey.state.shiftKey" label="Shift" size="nomal" />
-                            <el-checkbox v-model="useKey.state.ctrlKey" label="Ctrl" size="nomal" />
-                            <el-checkbox v-model="useKey.state.winKey" label="Win" size="nomal" />
-                            <el-checkbox v-model="useKey.state.altKey" label="Alt" size="nomal" />
-                        </div>
-                        <div class="d-flex p-4 jc-center" style="border-radius: 0px 0px 10px 10px">
-                            <div class="py-1 px-5 but-green text-white mx-3 c-p" @click="useKey.confirmSetCombineKey">
-                                {{ $t('key.but_3') }}
-                            </div>
-                        </div>
-                    </div>
-                </el-dialog>
-                <el-dialog v-model="useKey.state.mediaKeyDialogShow" top="24vh" width="380px"
-                    style="--el-dialog-padding-primary:3px;" @opened="dialogOpened" @closed="dialogClosed" :close-on-press-escape="false" :close-on-click-modal="false">
-                    <div class="d-flex flex-column ml-4">
-                        <div class="m-3" id="input">
-                            <el-select
-                                v-model="useKey.state.mediaKey"
-                                :placeholder="$t('key.select')"
-                                size="large"
-                                style="width: 240px"
-                                >
-                                <el-option
-                                    v-for="item in useKey.state.mediaKeyOptions"
-                                    :key="item.key"
-                                    :label="$t(mediaStrKey(item.text?.valueOf()))"
-                                    :value="item.key"
-                                />
-                                </el-select>
-                        </div>
-                        <div class="d-flex p-4 " style="border-radius: 0px 0px 10px 10px">
-                            <div class="py-1 px-5 but-green text-white mx-3 c-p" @click="useKey.confirmMediaKey(useKey.state.mediaKey)">
-                                {{ $t('key.but_3') }}
-                            </div>
-                        </div>
-                    </div>
-                </el-dialog>
             </div>
             <div class="keybox d-flex flex-column bg-white p-3" style="border-radius: 15px;position: relative;" v-else>
                 <div class="d-flex" v-for="line in useKey.state.keyMatrix" :class="[`${line.style}`]">
-                    <el-dropdown :id="`key${key.index}`" trigger="contextmenu" ref="keyMapping"
+                    <div :id="`key${key.index}`" trigger="contextmenu" ref="keyMapping"
                         @visible-change="handleOpen($event, `key${key.index}`)" v-for="key in line.keys"
                         v-if="meunid == 1">
                         <div @click="keyClick(key.index)" class="d-flex ai-center jc-center c-p"
@@ -139,23 +41,7 @@
                                 {{ useKey.keyText(key.keyData) }}
                             </div>
                         </div>
-                        <template #dropdown>
-                            <el-dropdown-menu style="padding: 0px;">
-                                <el-dropdown-item @click="keySetToDefault(key.index)" style="height: min-content;">
-                                    {{ $t('key.menu_1') }}
-                                </el-dropdown-item>
-                                <el-dropdown-item @click="useKey.keySetMacro(key.index)" style="height: min-content;">
-                                    {{ $t('key.menu_2') }}
-                                </el-dropdown-item>
-                                <el-dropdown-item @click="useKey.setCombineKey(key.index)" style="height: min-content;">
-                                    {{ $t('key.menu_3') }}
-                                </el-dropdown-item>
-                                <el-dropdown-item @click="useKey.setMediaKey(key.index)" style="height: min-content;">
-                                    {{ $t('key.menu_4') }}
-                                </el-dropdown-item>
-                            </el-dropdown-menu>
-                        </template>
-                    </el-dropdown>
+                    </div>
                     <div :i="key.index" class="item d-flex ai-center jc-center c-p"
                         :class="[`d-flex p-2 pl-3 ${key.style}`, useKey.keyColor(key.keyData), useKey.isSelected(key.index)]"
                         v-for="key in line.keys" v-else @click="keyClick(key.index)">
@@ -168,88 +54,6 @@
                         class="mask">
                     </div>
                 </div>
-                <el-dialog v-model="useKey.state.macroDialogShow" top="18vh" width="680px"
-                    style="--el-dialog-padding-primary:3px;">
-                    <div class="d-flex flex-column" style="margin-top: 35px;">
-                        <div class="d-flex flex-column flex-1 bg-white-1"
-                            style="border-radius: 0px 0px 10px 10px;height: 100%;">
-
-                            <div class="list flex-1 bg-warn-1">
-                                <div style="height: 30vh">
-                                    <el-scrollbar>
-                                        <div :class="['p-1 c-p', useKey.isMacroSelected(macro)]"
-                                            v-for=" macro in useKey.state.macros?.get()"
-                                            @click="useKey.clickMacro(macro)">
-                                            {{ macro.name }}
-                                        </div>
-                                    </el-scrollbar>
-                                </div>
-                            </div>
-                            <div class="m-3">
-                                <span class="mr-3">{{ $t('key.title_1') }}</span>
-                                <el-select v-model="useKey.state.cycleType" placeholder="Select" style="width: 240px;">
-                                    <el-option v-for="item in useKey.state.cycleTypes" :key="item.value"
-                                        :label="$t(item.strKey)" :value="item.value" />
-                                </el-select>
-                            </div>
-                            <div class="m-3">
-                                <span class="mr-3">{{ $t('key.title_2') }}</span>
-                                <el-input-number v-model="useKey.state.cycleCount" style="width: 150px" type="number" />
-                            </div>
-                            <div class="d-flex p-4 jc-center" style="border-radius: 0px 0px 10px 10px">
-                                <div class="py-1 px-5 but-green text-white mx-3 c-p" @click="useKey.confirmSetMacro">
-                                    {{ $t('key.but_3') }}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </el-dialog>
-                <el-dialog v-model="useKey.state.combineKeyDialogShow" top="20vh" width="680px"
-                    style="--el-dialog-padding-primary:3px;" @opened="dialogOpened" @closed="dialogClosed" :close-on-press-escape="false" :close-on-click-modal="false">
-                    <div class="d-flex flex-column ml-4">
-                        <div class="m-3" id="input">
-                            <span class="mr-3">Input</span>
-                            <el-input style="width: 150px" v-model="useKey.state.keyStr" aria-placeholder="Please input"
-                                :readonly="true" maxlength="1" />
-                        </div>
-                        <div class="d-flex m-3">
-                            <el-checkbox v-model="useKey.state.shiftKey" label="Shift" size="nomal" />
-                            <el-checkbox v-model="useKey.state.ctrlKey" label="Ctrl" size="nomal" />
-                            <el-checkbox v-model="useKey.state.winKey" label="Win" size="nomal" />
-                            <el-checkbox v-model="useKey.state.altKey" label="Alt" size="nomal" />
-                        </div>
-                        <div class="d-flex p-4 jc-center" style="border-radius: 0px 0px 10px 10px">
-                            <div class="py-1 px-5 but-green text-white mx-3 c-p" @click="useKey.confirmSetCombineKey">
-                                {{ $t('key.but_3') }}
-                            </div>
-                        </div>
-                    </div>
-                </el-dialog>
-                <el-dialog v-model="useKey.state.mediaKeyDialogShow" top="24vh" width="380px"
-                    style="--el-dialog-padding-primary:3px;" @opened="dialogOpened" @closed="dialogClosed" :close-on-press-escape="false" :close-on-click-modal="false">
-                    <div class="d-flex flex-column ml-4">
-                        <div class="m-3" id="input">
-                            <el-select
-                                v-model="useKey.state.mediaKey"
-                                :placeholder="$t('key.select')"
-                                size="large"
-                                style="width: 240px"
-                                >
-                                <el-option
-                                    v-for="item in useKey.state.mediaKeyOptions"
-                                    :key="item.key"
-                                    :label="$t(mediaStrKey(item.text?.valueOf()))"
-                                    :value="item.key"
-                                />
-                                </el-select>
-                        </div>
-                        <div class="d-flex p-4 " style="border-radius: 0px 0px 10px 10px">
-                            <div class="py-1 px-5 but-green text-white mx-3 c-p" @click="useKey.confirmMediaKey(useKey.state.mediaKey)">
-                                {{ $t('key.but_3') }}
-                            </div>
-                        </div>
-                    </div>
-                </el-dialog>
             </div>
             <div class="d-flex jc-center mt-3" v-if="meunid == 1">
                 <div class="py-1 px-3 but-red text-white c-p" @click="useKey.keySetToDefaultAll">

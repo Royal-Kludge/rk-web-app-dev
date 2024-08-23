@@ -260,10 +260,10 @@ export const useKeyStore = defineStore('keyinfo', () => {
         { key: KeyDefineEnum.KEY_LED_MODE13, text: "light.menu_13", style: "key", selected: false, tip: '' },
         { key: KeyDefineEnum.KEY_LED_MODE17, text: "light.menu_17", style: "key", selected: false, tip: '' },
         { key: KeyDefineEnum.KEY_LED_MODE18, text: "light.menu_18", style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_LED_LUMINI, text: "light.fun_1", style: "key", selected: false, tip: 'tip.brightI' },
-        { key: KeyDefineEnum.KEY_LED_LUMIND, text: "light.fun_2", style: "key", selected: false, tip: 'tip.brightD' },
-        { key: KeyDefineEnum.KEY_LED_BREATHI, text: "light.fun_3", style: "key", selected: false, tip: 'tip.speedI' },
-        { key: KeyDefineEnum.KEY_LED_BREATHD, text: "light.fun_4", style: "key", selected: false, tip: 'tip.speedD' },
+        { key: KeyDefineEnum.KEY_LED_LUMINI, text: "light.fun_3", style: "key", selected: false, tip: 'tip.brightI' },
+        { key: KeyDefineEnum.KEY_LED_LUMIND, text: "light.fun_4", style: "key", selected: false, tip: 'tip.brightD' },
+        { key: KeyDefineEnum.KEY_LED_BREATHI, text: "light.fun_1", style: "key", selected: false, tip: 'tip.speedI' },
+        { key: KeyDefineEnum.KEY_LED_BREATHD, text: "light.fun_2", style: "key", selected: false, tip: 'tip.speedD' },
       ],
     }],
     keyMatrix: [
@@ -1053,7 +1053,9 @@ export const useKeyStore = defineStore('keyinfo', () => {
 
       }
       kState.KeyData = key
+      kState.selected = false;
       KeyMatrixData.value[keyMatrixLayer.value]?.setKeyMapping(index, kState.KeyData.keyMappingData);
+      
     }
     rk_l87.value?.setKeyMatrix(keyMatrixLayer.value, MatrixTable.WIN, 0);
     saveProfile()

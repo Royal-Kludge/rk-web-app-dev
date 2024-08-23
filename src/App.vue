@@ -48,6 +48,10 @@ const { name } = storeToRefs(useMenu);
   box-shadow: 0px 0px 24px 0px #e9ebf3;
 }
 
+.tip_font {
+  font-size: 15px !important;
+}
+
 body {
   margin: 0;
   padding: 0;
