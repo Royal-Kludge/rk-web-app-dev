@@ -50,7 +50,7 @@ const home = () => {
 <style scoped lang="scss">
 .box {
   cursor: pointer;
-
+  
   img {
     height: 32px;
   }

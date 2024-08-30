@@ -162,6 +162,7 @@ export default {
     refresh: "Refresh the current browser page",
     favorites: "Add bookmark",
     search: "Browser Search",
+    bat: "View battery",
     ligthoff: "Turn off the light effect",
     brightI: "Brightness increases",
     brightD: "Decreased brightness",
@@ -189,4 +190,5 @@ export default {
   Stop: "Stop",
   PrevTr: "Prev track",
   NextTr: "Next track",
+  Battery: "Battery"
 };

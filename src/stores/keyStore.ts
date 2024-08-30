@@ -70,7 +70,7 @@ export const useKeyStore = defineStore('keyinfo', () => {
       { value: KeyMatrixLayer.FN2, label: 'key.layer_3' },
       { value: KeyMatrixLayer.Tap, label: 'key.layer_4' },
     ],
-    keyFunState: [] as any,
+    //keyFunState: [] as any,
     keyState: [],
     keyFunList: [{
       id: 1,
@@ -238,6 +238,7 @@ export const useKeyStore = defineStore('keyinfo', () => {
         { key: KeyDefineEnum.KEY_Refresh, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Refresh], style: "key", selected: false, tip: 'tip.refresh' },
         { key: KeyDefineEnum.KEY_Favorites, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Favorites], style: "key", selected: false, tip: 'tip.favorites' },
         { key: KeyDefineEnum.KEY_Search, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Search], style: "key", selected: false, tip: 'tip.search' },
+        { key: KeyDefineEnum.SP_BatView, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.SP_BatView], style: "key", selected: false, tip: 'tip.bat' },
       ],
     },
     {
@@ -551,7 +552,7 @@ export const useKeyStore = defineStore('keyinfo', () => {
 
       keyboard.addEventListener("connection", connectionEventCallback);
 
-      initFunState();
+      //initFunState();
       getProfiles();
 
       //await rk_l87.value?.setKeyMatrix(layer, MatrixTable.WIN, 0);
@@ -790,11 +791,21 @@ export const useKeyStore = defineStore('keyinfo', () => {
   }
 
   const setSelected = (keyCode: KeyDefineEnum) => {
-    for (var i = 0; i < state.keyFunState.length; i++) {
-      if (state.keyFunState[i].key === keyCode) {
-        state.keyFunState[i].selected = true;
+    // for (var i = 0; i < state.keyFunState.length; i++) {
+    //   if (state.keyFunState[i].key === keyCode) {
+    //     state.keyFunState[i].selected = true;
+    //   } else {
+    //     state.keyFunState[i].selected = false;
+    //   }
+    // }
+    for (var i = 0; i < state.keyFunList.length; i++) {
+      for (var j = 0; j < state.keyFunList[i].keys.length; j++) {
+        if (state.keyFunList[i].keys[j].key == keyCode) {
+          state.keyFunList[i].keys[j].selected = true;
+        } else {
+          state.keyFunList[i].keys[j].selected = false;
+        }
       }
-      else state.keyFunState[i].selected = false;
     }
   }
 
@@ -819,22 +830,41 @@ export const useKeyStore = defineStore('keyinfo', () => {
 
   const isFunSelected = (keyCode: KeyDefineEnum): string => {
     let style: string = ''
-    for (var i = 0; i < state.keyFunState.length; i++) {
-      if (state.keyFunState[i].key === keyCode && state.keyFunState[i].selected == true) {
-        style = 'selected'
-        break;
+    // for (var i = 0; i < state.keyFunState.length; i++) {
+    //   if (state.keyFunState[i].key === keyCode && state.keyFunState[i].selected == true) {
+    //     style = 'selected'
+    //     break;
+    //   }
+    // }
+    for (var i = 0; i < state.keyFunList.length; i++) {
+      for (var j = 0; j < state.keyFunList[i].keys.length; j++) {
+        if (state.keyFunList[i].keys[j].key == keyCode && state.keyFunList[i].keys[j].selected) {
+          style = 'selected';
+          break;
+        }
       }
     }
     return style;
   }
 
-  const initFunState = () => {
+  const getSelectedFun = (): KeyDefineEnum | undefined => {
     for (var i = 0; i < state.keyFunList.length; i++) {
       for (var j = 0; j < state.keyFunList[i].keys.length; j++) {
-        state.keyFunState.push({ selected: false, key: state.keyFunList[i].keys[j].key });
+        if (state.keyFunList[i].keys[j].selected) {
+          return state.keyFunList[i].keys[j].key;
+        }
       }
     }
+    return undefined;
   }
+
+  // const initFunState = () => {
+  //   for (var i = 0; i < state.keyFunList.length; i++) {
+  //     for (var j = 0; j < state.keyFunList[i].keys.length; j++) {
+  //       state.keyFunState.push({ selected: false, key: state.keyFunList[i].keys[j].key });
+  //     }
+  //   }
+  // }
 
   const keyMatrixGotten = async (event: any) => {
     KeyMatrixData.value = event.detail as Record<number, KeyMatrix>;
@@ -1003,9 +1033,25 @@ export const useKeyStore = defineStore('keyinfo', () => {
 
   const keyClick = (index: number) => {
     if (state.keyState.length <= 0 || index >= 999) return '';
-    let isSelected = (state.keyState as Array<KeyState>)[index].selected;
-    (state.keyState as Array<KeyState>)[index].selected = !isSelected;
-    keyState.value = (state.keyState as Array<KeyState>)[index];
+    let key = (state.keyState as Array<KeyState>)[index];
+    let isSelected = key.selected;
+    key.selected = !isSelected;
+    keyState.value = key.selected ? key : undefined;
+    
+    let keyCode = getSelectedFun();
+    if (keyCode != undefined) {
+      key.KeyData.keyMappingData.keyRaw = keyCode;
+      key.KeyData.keyMappingData.keyCode = keyCode & 0x0000FFFF;
+      key.KeyData.keyMappingData.keyMappingType = keyCode >> 24;
+      key.KeyData.keyMappingData.keyMappingPara = (keyCode >> 16) & 0xFF;
+      if (keyboard.keyboardDefine != undefined) {
+        key.KeyData.keyMappingData.keyStr = keyboard.keyboardDefine.keyText[keyCode];
+      }
+      KeyMatrixData.value[keyMatrixLayer.value]?.setKeyMapping(key.index, key.KeyData.keyMappingData);
+      rk_l87.value?.setKeyMatrix(keyMatrixLayer.value, MatrixTable.WIN, 0);
+
+      saveProfile();
+    }
   }
 
   const unSelected = (): void => {
@@ -1037,9 +1083,11 @@ export const useKeyStore = defineStore('keyinfo', () => {
       KeyMatrixData.value[keyMatrixLayer.value]?.setKeyMapping(key.index, key.KeyData.keyMappingData);
       rk_l87.value?.setKeyMatrix(keyMatrixLayer.value, MatrixTable.WIN, 0);
     }
+
     setSelected(keyCode);
     saveProfile()
   }
+
   const keySetToDefaultAll = () => {
     let index: any;
     for (index in state.keyState) {

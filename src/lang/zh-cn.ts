@@ -162,6 +162,7 @@ export default {
     refresh: "刷新当前浏览器页面",
     favorites: "添加书签",
     search: "浏览器查找",
+    bat: "显示电量",
     ligthoff: "关闭灯效",
     brightI: "亮度增加",
     brightD: "亮度减少",
@@ -189,4 +190,5 @@ export default {
   Stop: "停止",
   PrevTr: "上一首",
   NextTr: "下一首",
+  Battery: "电量"
 };
