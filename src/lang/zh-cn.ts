@@ -162,7 +162,7 @@ export default {
     refresh: "刷新当前浏览器页面",
     favorites: "添加书签",
     search: "浏览器查找",
-    bat: "显示电量",
+    bat: "显示键盘电量，2.4模式下生效",
     ligthoff: "关闭灯效",
     brightI: "亮度增加",
     brightD: "亮度减少",

@@ -162,7 +162,7 @@ export default {
     refresh: "Refresh the current browser page",
     favorites: "Add bookmark",
     search: "Browser Search",
-    bat: "View battery",
+    bat: "View battery level, only has effect in 2.4G",
     ligthoff: "Turn off the light effect",
     brightI: "Brightness increases",
     brightD: "Decreased brightness",
