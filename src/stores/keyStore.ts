@@ -809,6 +809,23 @@ export const useKeyStore = defineStore('keyinfo', () => {
     }
   }
 
+  const setUnselected = (keyCode: KeyDefineEnum) => {
+    // for (var i = 0; i < state.keyFunState.length; i++) {
+    //   if (state.keyFunState[i].key === keyCode) {
+    //     state.keyFunState[i].selected = true;
+    //   } else {
+    //     state.keyFunState[i].selected = false;
+    //   }
+    // }
+    for (var i = 0; i < state.keyFunList.length; i++) {
+      for (var j = 0; j < state.keyFunList[i].keys.length; j++) {
+        if (state.keyFunList[i].keys[j].key == keyCode) {
+          state.keyFunList[i].keys[j].selected = false;
+        }
+      }
+    }
+  }
+
   const getKeyFunMatrix = () => {
     for (var i = 0; i < state.funMenuList.length; i++) {
       if (state.funMenuList[i].id == 4 && keyMatrixLayer.value == KeyMatrixLayer.Tap) {
@@ -1051,6 +1068,8 @@ export const useKeyStore = defineStore('keyinfo', () => {
       rk_l87.value?.setKeyMatrix(keyMatrixLayer.value, MatrixTable.WIN, 0);
 
       saveProfile();
+      unSelected();
+      setUnselected(keyCode);
     }
   }
 
@@ -1062,17 +1081,20 @@ export const useKeyStore = defineStore('keyinfo', () => {
   }
 
   const mapping = (keyCode: KeyDefineEnum) => {
-    //let key = undefined;
-    let i: any;
-    for (i in state.keyState) {
+    let key = undefined;
+    let i: number = 0;
+    for (i = 0; i < state.keyState.length; i++) {
       if ((state.keyState as Array<KeyState>)[i].selected) {
-        //key = (state.keyState as Array<KeyState>)[i];
+        key = (state.keyState as Array<KeyState>)[i];
         break;
       }
     }
 
-    if ((state.keyState as Array<KeyState>)[i] != undefined) {
-      let key = (state.keyState as Array<KeyState>)[i];
+    setSelected(keyCode);
+
+    //if ((state.keyState as Array<KeyState>)[i] != undefined) {
+    if (key != undefined) {
+      //let key = (state.keyState as Array<KeyState>)[i];
       key.KeyData.keyMappingData.keyRaw = keyCode;
       key.KeyData.keyMappingData.keyCode = keyCode & 0x0000FFFF;
       key.KeyData.keyMappingData.keyMappingType = keyCode >> 24;
@@ -1082,9 +1104,10 @@ export const useKeyStore = defineStore('keyinfo', () => {
       }
       KeyMatrixData.value[keyMatrixLayer.value]?.setKeyMapping(key.index, key.KeyData.keyMappingData);
       rk_l87.value?.setKeyMatrix(keyMatrixLayer.value, MatrixTable.WIN, 0);
+      unSelected();
+      setUnselected(keyCode);
     }
 
-    setSelected(keyCode);
     saveProfile()
   }
 

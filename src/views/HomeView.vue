@@ -10,6 +10,9 @@ import Nodevice from './NoDevice.vue'
 import { Keyboard, keyboard } from '../keyboard/keyboard'
 import { ConnectionEventEnum, ConnectionStatusEnum } from '../keyboard/enum'
 import { ElMessage } from 'element-plus'
+import { storage } from '@/keyboard/storage';
+import type { Profiles } from '@/keyboard/rk_l87/profiles';
+import { VERSION } from '@/keyboard/state';
 
 const isConnected = ref(false);
 const data = ref(
@@ -67,11 +70,19 @@ const onConnect = async () => {
     keyboard.addEventListener("NotSupport", notSupportCallback);
 
     await keyboard.init()
+    checkProfileVersion();
 
     if (keyboard.device == null || !keyboard.device.opened) {
         keyboard.removeEventListener("connection", connectionEventCallback);
         keyboard.removeEventListener("reported", reportedEventCallback);
         keyboard.removeEventListener("NotSupport", notSupportCallback);
     }
-}
+};
+
+const checkProfileVersion = () => {
+    let tmp = storage.get('profile') as Profiles;
+    if (tmp == null || (tmp != null && (tmp.version == undefined || tmp.version != VERSION))) {
+        storage.clear();
+    }
+};
 </script>

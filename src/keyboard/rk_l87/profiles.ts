@@ -2,9 +2,9 @@ import { KeyMatrixLayer } from '@/keyboard/enum';
 import { storage } from '@/keyboard/storage';
 import { keyboard } from '@/keyboard/keyboard'
 import { KeyMatrix } from '@/keyboard/rk_l87/keyMatrix';
-import { useI18n } from 'vue-i18n';
 import { PROFILE_DEFAULT_DATA } from './boardProfile';
 import { LED_EFFECT_DEFAULT_DATA } from './ledEffect';
+import { VERSION } from '../state';
 
 export class Profile {
     name: string;
@@ -58,6 +58,7 @@ export class Profile {
 export class Profiles {
     list: Array<Profile>;
     curIndex: number;
+    version?: string;
 
     constructor() {
         this.list = new Array<Profile>();
@@ -109,7 +110,8 @@ export class Profiles {
     init(defaultName: string) {
         this.list.splice(0, this.list.length);
         let tmp = storage.get('profile') as Profiles;
-        if (tmp != null && tmp.list.length > 0) {
+
+        if (tmp != null && tmp.list.length > 0 && tmp.version != undefined && tmp.version == VERSION) {
             for (let m of tmp.list) {
                 let tm = new Profile(m.name)
                 tm.isDefault = m.isDefault;
@@ -142,6 +144,7 @@ export class Profiles {
             // }
             //const { t } = useI18n();
             this.curIndex = 0;
+            this.version = VERSION;
             //let name = t("Profile.default")
             let tm = new Profile(defaultName);
             tm.isDefault = true;
