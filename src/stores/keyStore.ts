@@ -4,8 +4,8 @@ import { keyboard } from '../keyboard/keyboard'
 import { RK_L87, RK_L87_EVENT_DEFINE } from '../keyboard/rk_l87/rk_l87';
 import { KeyCodeEnum, KeyDefineEnum } from '../keyboard/keyCode'
 import { type KeyMappingData, type KeyTableData, type KeyState } from '../keyboard/interface'
-import { ConnectionEventEnum, ConnectionStatusEnum, KeyMappingType, KeyMatrixLayer } from '../keyboard/enum'
-import { KeyMatrix, MatrixTable } from '@/keyboard/rk_l87/keyMatrix';
+import { ConnectionEventEnum, ConnectionStatusEnum, KeyMappingType, KeyMatrixLayer, MatrixTable } from '../keyboard/enum'
+import { KeyMatrix } from '@/keyboard/rk_l87/keyMatrix';
 import { Action, Macro, Macros } from '@/keyboard/rk_l87/macros';
 import { Profile, ps } from '@/keyboard/rk_l87/profiles';
 import { KeyCodeMap } from '@/keyboard/keyCode'
@@ -23,24 +23,28 @@ export const useKeyStore = defineStore('keyinfo', () => {
 
   const { t } = useI18n();
 
-  const keyOS = ref('win')
   const macros = ref<Macros>();
   const macro = ref<Macro>();
   const keyState = ref<KeyState>();
   const profile = ref<Profile>();
   const keyMatrixLayer = ref<KeyMatrixLayer>(KeyMatrixLayer.Nomal);
+  const keyMatrixTable = ref<MatrixTable>(MatrixTable.WIN);
 
-  const KeyMatrixData = ref<Record<number, KeyMatrix>>({});
+  const KeyMatrixData = ref<Record<number, Record<number, KeyMatrix>>>({});
 
   const getKeyData = (index: number): KeyTableData | undefined => {
     let keyData = undefined;
-    let layer = KeyMatrixLayer.Nomal
+    let layer = KeyMatrixLayer.Nomal;
+    let table = MatrixTable.WIN;
     if (keyMatrixLayer.value != undefined) {
       layer = keyMatrixLayer.value;
     }
+    if (keyMatrixTable.value != undefined) {
+      table = keyMatrixTable.value;
+    }
     if (layer in keyboard.state.keyTableData &&
-      index < keyboard.state.keyTableData[layer].length) {
-      keyData = keyboard.state.keyTableData[layer][index];
+      index < keyboard.state.keyTableData[table][layer].length) {
+      keyData = keyboard.state.keyTableData[table][layer][index];
     }
     return keyData;
   }
@@ -70,6 +74,10 @@ export const useKeyStore = defineStore('keyinfo', () => {
       { value: KeyMatrixLayer.FN1, label: 'key.layer_2' },
       { value: KeyMatrixLayer.FN2, label: 'key.layer_3' },
       { value: KeyMatrixLayer.Tap, label: 'key.layer_4' },
+    ],
+    MatrixTable: [
+      { value: MatrixTable.WIN, label: 'win', img: '/src/assets/images/win.png' },
+      { value: MatrixTable.MAC, label: 'mac', img: '/src/assets/images/mac.png' },
     ],
     //keyFunState: [] as any,
     keyState: [],
@@ -538,18 +546,21 @@ export const useKeyStore = defineStore('keyinfo', () => {
     if (rk_l87.value == undefined) {
       rk_l87.value = (keyboard.protocol as RK_L87);
       let index: any;
-      if (keyMatrixLayer.value in keyboard.state.keyTableData) {
-        if (state.keyState.length > 0) {
-          state.keyState.splice(0, state.keyState.length);
-        }
-        for (index in keyboard.state.keyTableData[keyMatrixLayer.value]) {
-          (state.keyState as Array<KeyState>).push({
-            selected: false,
-            index: Number(index),
-            KeyData: keyboard.state.keyTableData[keyMatrixLayer.value][Number(index)]
-          });
+      if (keyMatrixTable.value in keyboard.state.keyTableData) {
+        if (keyMatrixLayer.value in keyboard.state.keyTableData[keyMatrixTable.value]) {
+          if (state.keyState.length > 0) {
+            state.keyState.splice(0, state.keyState.length);
+          }
+          for (index in keyboard.state.keyTableData[keyMatrixTable.value][keyMatrixLayer.value]) {
+            (state.keyState as Array<KeyState>).push({
+              selected: false,
+              index: Number(index),
+              KeyData: keyboard.state.keyTableData[keyMatrixTable.value][keyMatrixLayer.value][Number(index)]
+            });
+          }
         }
       }
+
 
       keyboard.addEventListener("connection", connectionEventCallback);
 
@@ -651,10 +662,17 @@ export const useKeyStore = defineStore('keyinfo', () => {
       if (ps.curIndex == undefined) ps.curIndex = 0;
       profile.value = ps.get()[ps.curIndex];
       if (keyboard.keyboardDefine != undefined) {
-        let index: any;
-        for (index in keyboard.keyboardDefine.keyMatrixLayer) {
-          let layer = keyboard.keyboardDefine.keyMatrixLayer[index];
-          rk_l87.value.data.keyMatrixs[layer] = new KeyMatrix(new DataView(new Uint8Array(Object.values(profile.value.get(layer))).buffer));
+        let index: any, type: any;
+        for (type in keyboard.keyboardDefine.keyMatrixTable) {
+          let table = keyboard.keyboardDefine.keyMatrixTable[type];
+          for (index in keyboard.keyboardDefine.keyMatrixLayer) {
+            let layer = keyboard.keyboardDefine.keyMatrixLayer[index];
+            if (!rk_l87.value.data.keyMatrixs.hasOwnProperty(table)) {
+              rk_l87.value.data.keyMatrixs[table] = {};
+            }
+            rk_l87.value.data.keyMatrixs[table][layer] = new KeyMatrix(new DataView(new Uint8Array(Object.values(profile.value.get(table, layer))).buffer));
+            //rk_l87.value.data.keyMatrixs[table][layer] = new KeyMatrix(new DataView(profile.value.get(table, layer).buffer));
+          }
         }
       }
 
@@ -691,12 +709,15 @@ export const useKeyStore = defineStore('keyinfo', () => {
     keyMatrixLayer.value = KeyMatrixLayer.Nomal
     profile.value = ps.find(obj);
     if (profile.value != undefined && keyboard.keyboardDefine != undefined) {
-      let index: any;
+      let index: any, type: any;
       ps.curIndex = profile.value?.index;
-      for (index in keyboard.keyboardDefine.keyMatrixLayer) {
-        let layer = keyboard.keyboardDefine.keyMatrixLayer[index];
-        KeyMatrixData.value[layer] = new KeyMatrix(new DataView(new Uint8Array(Object.values(profile.value.get(layer))).buffer));
-        await rk_l87.value?.setKeyMatrix(layer, MatrixTable.WIN, 0);
+      for (type in keyboard.keyboardDefine.keyMatrixTable) {
+        let table = keyboard.keyboardDefine.keyMatrixTable[type];
+        for (index in keyboard.keyboardDefine.keyMatrixLayer) {
+          let layer = keyboard.keyboardDefine.keyMatrixLayer[index];
+          KeyMatrixData.value[table][layer] = new KeyMatrix(new DataView(new Uint8Array(Object.values(profile.value.get(table, layer))).buffer));
+          await rk_l87.value?.setKeyMatrix(layer, table, 0);
+        }
       }
       refresh()
     }
@@ -727,8 +748,8 @@ export const useKeyStore = defineStore('keyinfo', () => {
 
   const saveProfile = () => {
     if (profile.value != undefined) {
-      const dataView = new DataView(KeyMatrixData.value[keyMatrixLayer.value].buffer.buffer)
-      profile.value.add(keyMatrixLayer.value, new Uint8Array(dataView.buffer, dataView.byteOffset, dataView.byteLength));
+      const dataView = new DataView(KeyMatrixData.value[keyMatrixTable.value][keyMatrixLayer.value].buffer.buffer)
+      profile.value.add(keyMatrixTable.value, keyMatrixLayer.value, new Uint8Array(dataView.buffer, dataView.byteOffset, dataView.byteLength));
       refresh()
     }
     if (rk_l87.value?.data.boardProfile != undefined) {
@@ -785,6 +806,7 @@ export const useKeyStore = defineStore('keyinfo', () => {
     keyMatrixLayer.value = KeyMatrixLayer.Nomal
     refresh();
   }
+
   const getKeyMatrix = async () => {
     unSelected();
     refresh()
@@ -885,7 +907,7 @@ export const useKeyStore = defineStore('keyinfo', () => {
   // }
 
   const keyMatrixGotten = async (event: any) => {
-    KeyMatrixData.value = event.detail as Record<number, KeyMatrix>;
+    KeyMatrixData.value = event.detail as Record<number, Record<number, KeyMatrix>>;
 
     console.log(`Layer ${keyMatrixLayer.value}`);
 
@@ -917,7 +939,7 @@ export const useKeyStore = defineStore('keyinfo', () => {
       for (key in state.keyMatrix[line].keys) {
         let keyData = state.keyMatrix[line].keys[key].keyData;
         if (keyData == undefined) continue;
-        KeyMatrixData.value[keyMatrixLayer.value]?.fillKeyMappingData(state.keyMatrix[line].keys[key].index, keyData.keyMappingData);
+        KeyMatrixData.value[keyMatrixTable.value][keyMatrixLayer.value]?.fillKeyMappingData(state.keyMatrix[line].keys[key].index, keyData.keyMappingData);
         keySetStr(keyData);
       }
     }
@@ -935,12 +957,16 @@ export const useKeyStore = defineStore('keyinfo', () => {
   const refreshKeyMatrixData = () => {
     let key: any;
     let index: any;
+    let type: any;
     if (keyboard.keyboardDefine != undefined) {
-      for (index in keyboard.keyboardDefine.keyMatrixLayer) {
-        let layer = keyboard.keyboardDefine.keyMatrixLayer[index];
-        for (key in keyboard.state.keyTableData[layer]) {
-          let keyData = keyboard.state.keyTableData[layer][key];
-          KeyMatrixData.value[layer].setKeyMapping(keyData.index, keyData.keyMappingData);
+      for (type in keyboard.keyboardDefine.keyMatrixTable) {
+        let table = keyboard.keyboardDefine.keyMatrixTable[type];
+        for (index in keyboard.keyboardDefine.keyMatrixLayer) {
+          let layer = keyboard.keyboardDefine.keyMatrixLayer[index];
+          for (key in keyboard.state.keyTableData[layer]) {
+            let keyData = keyboard.state.keyTableData[table][layer][key];
+            KeyMatrixData.value[table][layer].setKeyMapping(keyData.index, keyData.keyMappingData);
+          }
         }
       }
     }
@@ -955,10 +981,13 @@ export const useKeyStore = defineStore('keyinfo', () => {
       getProfiles();
       await rk_l87.value.setProfile(0);
       if (keyboard.keyboardDefine != undefined) {
-        let index: any;
-        for (index in keyboard.keyboardDefine.keyMatrixLayer) {
-          let layer = keyboard.keyboardDefine.keyMatrixLayer[index];
-          await rk_l87.value.setKeyMatrix(layer, MatrixTable.WIN, 0);
+        let index: any, type: any;
+        for (type in keyboard.keyboardDefine.keyMatrixTable) {
+          let table = keyboard.keyboardDefine.keyMatrixTable[type];
+          for (index in keyboard.keyboardDefine.keyMatrixLayer) {
+            let layer = keyboard.keyboardDefine.keyMatrixLayer[index];
+            await rk_l87.value.setKeyMatrix(layer, table, 0);
+          }
         }
       }
     }
@@ -1065,8 +1094,8 @@ export const useKeyStore = defineStore('keyinfo', () => {
       if (keyboard.keyboardDefine != undefined) {
         key.KeyData.keyMappingData.keyStr = keyboard.keyboardDefine.keyText[keyCode];
       }
-      KeyMatrixData.value[keyMatrixLayer.value]?.setKeyMapping(key.index, key.KeyData.keyMappingData);
-      rk_l87.value?.setKeyMatrix(keyMatrixLayer.value, MatrixTable.WIN, 0);
+      KeyMatrixData.value[keyMatrixTable.value][keyMatrixLayer.value]?.setKeyMapping(key.index, key.KeyData.keyMappingData);
+      rk_l87.value?.setKeyMatrix(keyMatrixLayer.value, keyMatrixTable.value, 0);
 
       saveProfile();
       unSelected();
@@ -1103,8 +1132,8 @@ export const useKeyStore = defineStore('keyinfo', () => {
       if (keyboard.keyboardDefine != undefined) {
         key.KeyData.keyMappingData.keyStr = keyboard.keyboardDefine.keyText[keyCode];
       }
-      KeyMatrixData.value[keyMatrixLayer.value]?.setKeyMapping(key.index, key.KeyData.keyMappingData);
-      rk_l87.value?.setKeyMatrix(keyMatrixLayer.value, MatrixTable.WIN, 0);
+      KeyMatrixData.value[keyMatrixTable.value][keyMatrixLayer.value]?.setKeyMapping(key.index, key.KeyData.keyMappingData);
+      rk_l87.value?.setKeyMatrix(keyMatrixLayer.value, keyMatrixTable.value, 0);
       unSelected();
       setUnselected(keyCode);
     }
@@ -1116,7 +1145,7 @@ export const useKeyStore = defineStore('keyinfo', () => {
     let index: any;
     for (index in state.keyState) {
       let kState = state.keyState[index] as KeyState;
-      let code = keyboard.keyboardDefine?.keyLayout[keyMatrixLayer.value][index] as number;
+      let code = keyboard.keyboardDefine?.keyLayout[keyMatrixTable.value][keyMatrixLayer.value][index] as number;
       let key: KeyTableData = {
         keyStr: keyboard.keyboardDefine?.keyText[code] as string,
         keyCode: code,
@@ -1126,10 +1155,10 @@ export const useKeyStore = defineStore('keyinfo', () => {
       }
       kState.KeyData = key
       kState.selected = false;
-      KeyMatrixData.value[keyMatrixLayer.value]?.setKeyMapping(index, kState.KeyData.keyMappingData);
+      KeyMatrixData.value[keyMatrixTable.value][keyMatrixLayer.value]?.setKeyMapping(index, kState.KeyData.keyMappingData);
 
     }
-    rk_l87.value?.setKeyMatrix(keyMatrixLayer.value, MatrixTable.WIN, 0);
+    rk_l87.value?.setKeyMatrix(keyMatrixLayer.value, keyMatrixTable.value, 0);
     saveProfile()
   }
 
@@ -1149,7 +1178,7 @@ export const useKeyStore = defineStore('keyinfo', () => {
     }
 
     let kState = (state.keyState as Array<KeyState>)[index];
-    let code = keyboard.keyboardDefine?.keyLayout[keyMatrixLayer.value][index] as number;
+    let code = keyboard.keyboardDefine?.keyLayout[keyMatrixTable.value][keyMatrixLayer.value][index] as number;
     let key: KeyTableData = {
       keyStr: keyboard.keyboardDefine?.keyText[code] as string,
       keyCode: code,
@@ -1159,8 +1188,8 @@ export const useKeyStore = defineStore('keyinfo', () => {
     }
     kState.KeyData = key
 
-    KeyMatrixData.value[keyMatrixLayer.value]?.setKeyMapping(index, kState.KeyData.keyMappingData);
-    rk_l87.value?.setKeyMatrix(keyMatrixLayer.value, MatrixTable.WIN, 0);
+    KeyMatrixData.value[keyMatrixTable.value][keyMatrixLayer.value]?.setKeyMapping(index, kState.KeyData.keyMappingData);
+    rk_l87.value?.setKeyMatrix(keyMatrixLayer.value, keyMatrixTable.value, 0);
   }
 
   const keySetMacro = (index: number) => {
@@ -1192,8 +1221,8 @@ export const useKeyStore = defineStore('keyinfo', () => {
       mapping.keyStr = macro.value?.name;
       mapping.keyMappingType = KeyMappingType.Macro;
       mapping.keyMappingPara = state.cycleType;
-      KeyMatrixData.value[keyMatrixLayer.value]?.setKeyMapping(keyState.value.index, mapping);
-      rk_l87.value?.setKeyMatrix(keyMatrixLayer.value, MatrixTable.WIN, 0);
+      KeyMatrixData.value[keyMatrixTable.value][keyMatrixLayer.value]?.setKeyMapping(keyState.value.index, mapping);
+      rk_l87.value?.setKeyMatrix(keyMatrixLayer.value, keyMatrixTable.value, 0);
       saveProfile()
     }
 
@@ -1249,8 +1278,8 @@ export const useKeyStore = defineStore('keyinfo', () => {
       mapping.keyStr = combine;
       mapping.keyMappingPara = (mapping.keyCode & 0x00FF0000) >> 16;
       mapping.keyRaw = 0xFFFFFFFF & (mapping.keyMappingType << 24) && (mapping.keyMappingPara << 16) && mapping.keyCode;
-      KeyMatrixData.value[keyMatrixLayer.value]?.setKeyMapping(keyState.value.index, mapping);
-      await rk_l87.value?.setKeyMatrix(KeyMatrixLayer.Nomal, MatrixTable.WIN, 0);
+      KeyMatrixData.value[keyMatrixTable.value][keyMatrixLayer.value]?.setKeyMapping(keyState.value.index, mapping);
+      await rk_l87.value?.setKeyMatrix(keyMatrixLayer.value, keyMatrixTable.value, 0);
       saveProfile()
     }
 
@@ -1275,11 +1304,11 @@ export const useKeyStore = defineStore('keyinfo', () => {
       if (keyboard.keyboardDefine != undefined) {
         keyState.value.KeyData.keyMappingData.keyStr = keyboard.keyboardDefine.keyText[keyCode];
       }
-      KeyMatrixData.value[keyMatrixLayer.value]?.setKeyMapping(keyState.value.index, keyState.value.KeyData.keyMappingData);
-      rk_l87.value?.setKeyMatrix(keyMatrixLayer.value, MatrixTable.WIN, 0);
+      KeyMatrixData.value[keyMatrixTable.value][keyMatrixLayer.value]?.setKeyMapping(keyState.value.index, keyState.value.KeyData.keyMappingData);
+      rk_l87.value?.setKeyMatrix(keyMatrixLayer.value, keyMatrixTable.value, 0);
     }
 
     state.mediaKeyDialogShow = false;
   }
-  return { profile, state, keyOS, keyMatrixLayer, keyClick, keyColor, isSelected, keybgColor, keyText, keySetToDefault, keySetMacro, mapping, isFunSelected, isMacroSelected, clickMacro, confirmSetMacro, setCombineKey, confirmMediaKey, setMediaKey, confirmSetCombineKey, getKeyMatrix, clickProfile, deleteProfile, onKeyDown, newProfile, handleEditClose, renameProfile, exportProfile, importProfile, init, destroy, getKeyMatrixNomal, saveProfile, keySetToDefaultAll, refresh, refreshKeyMatrixData, setToFactory, unSelected, renameSaveProfile, setFunid }
+  return { profile, state, keyMatrixLayer, keyMatrixTable, keyClick, keyColor, isSelected, keybgColor, keyText, keySetToDefault, keySetMacro, mapping, isFunSelected, isMacroSelected, clickMacro, confirmSetMacro, setCombineKey, confirmMediaKey, setMediaKey, confirmSetCombineKey, getKeyMatrix, clickProfile, deleteProfile, onKeyDown, newProfile, handleEditClose, renameProfile, exportProfile, importProfile, init, destroy, getKeyMatrixNomal, saveProfile, keySetToDefaultAll, refresh, refreshKeyMatrixData, setToFactory, unSelected, renameSaveProfile, setFunid }
 })

@@ -5,7 +5,7 @@ import { RK_L87, RK_L87_EVENT_DEFINE } from '../keyboard/rk_l87/rk_l87';
 import { BoardProfile, FieldEnum } from '../keyboard/rk_l87/boardProfile';
 import { LedEffect } from '../keyboard/rk_l87/ledEffect';
 import { LedColors } from '../keyboard/rk_l87/ledColors';
-import { LightEffectEnum, KeyMatrixLayer, ConnectionType, ConnectionStatusEnum, ConnectionEventEnum } from '../keyboard/enum'
+import { LightEffectEnum, KeyMatrixLayer, ConnectionType, ConnectionStatusEnum, ConnectionEventEnum, MatrixTable } from '../keyboard/enum'
 import { type LedColor } from '@/keyboard/interface';
 import { KeyDefineEnum } from '@/keyboard/keyCode';
 import { type KeyTableData } from '@/keyboard/interface'
@@ -20,11 +20,11 @@ export const uselightStore = defineStore('lightinfo', () => {
     const profileIndex = ref(0);
     const connectType = ref<ConnectionType>()
 
-    const getKeyData = (index: number, layer: KeyMatrixLayer = KeyMatrixLayer.Nomal): KeyTableData | undefined => {
+    const getKeyData = (index: number, table: MatrixTable = MatrixTable.WIN, layer: KeyMatrixLayer = KeyMatrixLayer.Nomal): KeyTableData | undefined => {
         let keyData = undefined;
         if (layer in keyboard.state.keyTableData &&
-            index < keyboard.state.keyTableData[layer].length) {
-            keyData = keyboard.state.keyTableData[layer][index];
+            index < keyboard.state.keyTableData[table][layer].length) {
+            keyData = keyboard.state.keyTableData[table][layer][index];
         }
         return keyData;
     }

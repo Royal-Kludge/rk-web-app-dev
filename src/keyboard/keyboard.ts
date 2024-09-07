@@ -136,51 +136,57 @@ export class Keyboard extends EventTarget {
         }
     }
 
-    loadDefaultValue(keyTableDatas: Record<number, Array<KeyTableData>>, lightInfo: LightInfo) {
-        var layer: any;
-        var item: any;
+    loadDefaultValue(keyTableDatas: Record<number, Record<number, Array<KeyTableData>>>, lightInfo: LightInfo) {
+        var l:any, t:any, i:any;
         if (this.device != undefined && this.keyboardDefine != undefined) {
-            for (layer in this.keyboardDefine.keyMatrixLayer) {
-                if (!keyTableDatas.hasOwnProperty(layer)) {
-                    keyTableDatas[layer] = [];
+            for (t in this.keyboardDefine.keyMatrixTable) {
+                let table = this.keyboardDefine.keyMatrixTable[t];
+                if (!keyTableDatas.hasOwnProperty(table)) {
+                    keyTableDatas[table] = {};
                 }
 
-                let table = keyTableDatas[layer];
-                if (table.length > 0) {
-                    table.splice(0, table.length);
-                }
+                for (l in this.keyboardDefine.keyMatrixLayer) {
+                    let layer = this.keyboardDefine.keyMatrixLayer[l];
+                    if (!keyTableDatas[table].hasOwnProperty(layer)) {
+                        keyTableDatas[table][layer] = [];
+                    }
 
-                for (item in this.keyboardDefine.keyLayout[layer]) {
-                    let code = this.keyboardDefine.keyLayout[layer][item];
-                    let key: KeyTableData = {
-                        keyStr: this.keyboardDefine.keyText[code],
-                        keyCode: code,
-                        index: item,
-                        keyMappingData: {
+                    let layout = keyTableDatas[table][layer];
+                    if (layout.length > 0) {
+                        layout.splice(0, layout.length);
+                    }
+                
+                    for (i = 0; i < this.keyboardDefine.keyLayout[table][layer].length; i++) {
+                        let code = this.keyboardDefine.keyLayout[table][layer][i];
+                        let key: KeyTableData = {
                             keyStr: this.keyboardDefine.keyText[code],
                             keyCode: code,
-                            keyMappingType: KeyMappingType.KeyBoard,
-                            keyMappingPara: 0,
-                            keyRaw: code
+                            index: i,
+                            keyMappingData: {
+                                keyStr: this.keyboardDefine.keyText[code],
+                                keyCode: code,
+                                keyMappingType: KeyMappingType.KeyBoard,
+                                keyMappingPara: 0,
+                                keyRaw: code
+                            }
                         }
+                        layout.push(key);
                     }
-                    table.push(key);
                 }
             }
-
 
             if (lightInfo.lightEffects.length > 0) {
                 lightInfo.lightEffects.splice(0, this.state.lightInfo.lightEffects.length);
             }
 
-            for (item in this.keyboardDefine.lightEffects) {
+            for (i = 0; i < this.keyboardDefine.lightEffects.length; i++) {
                 let tmp: LightEffect = {
-                    effect: this.keyboardDefine.lightEffects[item].effect,
-                    speed: this.keyboardDefine.lightEffects[item].speed,
-                    brightness: this.keyboardDefine.lightEffects[item].brightness,
-                    color: this.keyboardDefine.lightEffects[item].color,
-                    mixColor: this.keyboardDefine.lightEffects[item].mixColor,
-                    sleep: this.keyboardDefine.lightEffects[item].sleep
+                    effect: this.keyboardDefine.lightEffects[i].effect,
+                    speed: this.keyboardDefine.lightEffects[i].speed,
+                    brightness: this.keyboardDefine.lightEffects[i].brightness,
+                    color: this.keyboardDefine.lightEffects[i].color,
+                    mixColor: this.keyboardDefine.lightEffects[i].mixColor,
+                    sleep: this.keyboardDefine.lightEffects[i].sleep
                 }
                 lightInfo.lightEffects.push(tmp);
             }

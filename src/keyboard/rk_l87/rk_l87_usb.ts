@@ -1,7 +1,6 @@
 import type { KeyboardState } from '../interface'
 import { REPORT_ID_USB, MACRO_PER_BLOCK_LENGTH, MACRO_MAX_LENGTH } from './packets/packet';
-import { MatrixTable } from './keyMatrix';
-import { ConnectionStatusEnum, ConnectionType, KeyMatrixLayer } from '../enum';
+import { ConnectionStatusEnum, ConnectionType, KeyMatrixLayer, MatrixTable } from '../enum';
 import { RK_L87, RK_L87_EVENT_DEFINE } from './rk_l87';
 
 import { GetProfilePacket } from './packets/usb/getProfilePacket';
@@ -118,7 +117,7 @@ export class RK_L87_Usb extends RK_L87 {
         packet.fromReportData(await this.getFeature(REPORT_ID_USB));
 
         if (this.data.keyMatrixs != undefined && packet.keyMatrix != undefined) {
-            this.data.keyMatrixs[layer] = packet.keyMatrix;
+            this.data.keyMatrixs[table][layer] = packet.keyMatrix;
         }
         this.dispatchEvent(new CustomEvent(RK_L87_EVENT_DEFINE.OnKeyMatrixGotten, { detail: this.data.keyMatrixs }));
     }
@@ -126,7 +125,7 @@ export class RK_L87_Usb extends RK_L87 {
     async setKeyMatrix(layer: KeyMatrixLayer, table: MatrixTable, board: number): Promise<void> {
         if (this.data.keyMatrixs != undefined) {
             let packet = new SetKeyMatrixPacket(layer, table, board);
-            packet.setPayload(this.data.keyMatrixs[layer].buffer);
+            packet.setPayload(this.data.keyMatrixs[table][layer].buffer);
             //await this.setFeature(REPORT_ID_USB, packet.setReport);
             worker.postMessage(packet.setReport);
             console.log(`Push layer [${layer}] key matrix data to queue.`);

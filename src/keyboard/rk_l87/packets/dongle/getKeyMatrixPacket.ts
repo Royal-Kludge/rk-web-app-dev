@@ -1,8 +1,8 @@
 import type { IPacket } from "@/keyboard/interface";
 import { KEY_MAXTRIX_LINE, KEY_MAXTRIX_COLOUMN } from "@/keyboard/rk_l87/packets/packet";
 import { Packet_Dongle_Get } from "@/keyboard/rk_l87/packets/dongle/getPacket";
-import { KeyMatrix, MatrixTable } from "../../keyMatrix";
-import { KeyMatrixLayer } from "@/keyboard/enum"
+import { KeyMatrix } from "../../keyMatrix";
+import { KeyMatrixLayer, MatrixTable } from "@/keyboard/enum"
 
 export class GetKeyMatrixPacket extends Packet_Dongle_Get {
 
@@ -31,7 +31,7 @@ export class GetKeyMatrixPacket extends Packet_Dongle_Get {
                 this.getReport = new DataView(this.buffer.buffer);
                 if (this.getReport.byteLength >= KEY_MAXTRIX_LINE * KEY_MAXTRIX_COLOUMN) {
                     let keyMatrix = KeyMatrix.fromReportData(this.getReport);
-                    this.dispatchEvent(new CustomEvent('onReportDataRecvied', { detail: { layer: this.layer, data: keyMatrix } }));
+                    this.dispatchEvent(new CustomEvent('onReportDataRecvied', { detail: { layer: this.layer, table: this.table, data: keyMatrix } }));
                 }
             }
         }

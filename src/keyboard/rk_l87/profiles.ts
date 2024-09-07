@@ -1,4 +1,4 @@
-import { KeyMatrixLayer } from '@/keyboard/enum';
+import { KeyMatrixLayer, MatrixTable } from '@/keyboard/enum';
 import { storage } from '@/keyboard/storage';
 import { keyboard } from '@/keyboard/keyboard'
 import { KeyMatrix } from '@/keyboard/rk_l87/keyMatrix';
@@ -8,7 +8,7 @@ import { VERSION } from '../state';
 
 export class Profile {
     name: string;
-    layers: Record<number, Uint8Array>;
+    layers: Record<number, Record<number, Uint8Array>>;
     index = 0;
     isDefault = false;
     profile?: Uint8Array;
@@ -20,15 +20,18 @@ export class Profile {
         this.layers = {};
 
         if (keyboard.keyboardDefine != undefined) {
-            let index: any;
-            for (index in keyboard.keyboardDefine.keyMatrixLayer) {
-                let layer = keyboard.keyboardDefine.keyMatrixLayer[index];
-                this.add(layer, new Uint8Array(512))
-                let keyDatas = new KeyMatrix(new DataView(this.layers[layer].buffer));
-                let layout = keyboard.keyboardDefine?.keyLayout[layer];
-                if (layout != undefined) {
-                    for (let j = 0; j < layout.length; j++) {
-                        keyDatas.setKeyMappingRaw(j, layout[j]);
+            let index: any, type: any;
+            for (type in keyboard.keyboardDefine.keyMatrixTable) {
+                let table = keyboard.keyboardDefine.keyMatrixTable[type];
+                for (index in keyboard.keyboardDefine.keyMatrixLayer) {
+                    let layer = keyboard.keyboardDefine.keyMatrixLayer[index];
+                    this.add(table, layer, new Uint8Array(512))
+                    let keyDatas = new KeyMatrix(new DataView(this.layers[table][layer].buffer));
+                    let layout = keyboard.keyboardDefine?.keyLayout[table][layer];
+                    if (layout != undefined) {
+                        for (let j = 0; j < layout.length; j++) {
+                            keyDatas.setKeyMappingRaw(j, layout[j]);
+                        }
                     }
                 }
             }
@@ -38,11 +41,14 @@ export class Profile {
         this.profile = new Uint8Array(PROFILE_DEFAULT_DATA.buffer, 0, PROFILE_DEFAULT_DATA.buffer.byteLength);
         this.ledEffect = new Uint8Array(LED_EFFECT_DEFAULT_DATA.buffer, 0, LED_EFFECT_DEFAULT_DATA.buffer.byteLength);
     }
-    get(index: KeyMatrixLayer | number): Uint8Array {
-        return this.layers[index];
+    get(table: MatrixTable | number, layer: KeyMatrixLayer | number): Uint8Array {
+        return this.layers[table][layer];
     }
-    add(layer: KeyMatrixLayer, data: Uint8Array) {
-        this.layers[layer] = data;
+    add(table: MatrixTable | number, layer: KeyMatrixLayer, data: Uint8Array) {
+        if (!this.layers.hasOwnProperty(table)) {
+            this.layers[table] = {};
+        }
+        this.layers[table][layer] = data;
     }
     setProfile(data: Uint8Array) {
         this.profile = data;

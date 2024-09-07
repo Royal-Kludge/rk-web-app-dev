@@ -1,6 +1,5 @@
 import { Protocol } from '@/keyboard/protocol'
-import type { MatrixTable } from '@/keyboard/rk_l87/keyMatrix';
-import { KeyMatrixLayer } from '@/keyboard/enum'
+import { KeyMatrixLayer, MatrixTable } from '@/keyboard/enum'
 
 import type { KeyMatrix } from "./keyMatrix";
 import type { LedEffect } from "./ledEffect";
@@ -66,7 +65,7 @@ export const COMMAND_ID: {
 export class RK_L87_Data {
     boardProfile?: BoardProfile;
     ledEffect?: LedEffect;
-    keyMatrixs: Record<number, KeyMatrix> = {};
+    keyMatrixs: Record<number, Record<number, KeyMatrix>> = {};
     ledColors?: LedColors;
     macros?: Macros;
     donglePwd: number = 0;

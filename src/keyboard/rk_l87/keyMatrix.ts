@@ -3,11 +3,6 @@ import type { KeyMappingData } from '../interface';
 import type { KeyDefineEnum } from '../keyCode';
 import { KEY_MAXTRIX_LINE, KEY_MAXTRIX_COLOUMN, PACKET_HEAD_LENGTH } from "./packets/packet";
 
-export enum MatrixTable {
-    WIN = 0x00,
-    MAC = 0x04
-}
-
 export class KeyMatrix {
     buffer: DataView;
 

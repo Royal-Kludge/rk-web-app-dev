@@ -1,9 +1,9 @@
 import type { KeyboardState } from '../interface'
-import { ConnectionStatusEnum, ConnectionType, KeyMatrixLayer } from '../enum';
+import { ConnectionStatusEnum, ConnectionType, KeyMatrixLayer, MatrixTable } from '../enum';
 import { Packet_Dongle, REPORT_ID_DONGLE, REPORT_MAX_RETRY, MACRO_PER_BLOCK_LENGTH, MACRO_MAX_LENGTH } from './packets/packet';
 import { Packet_Dongle_Block_Set } from './packets/dongle/setPacket';
 
-import type { KeyMatrix, MatrixTable } from './keyMatrix';
+import type { KeyMatrix } from './keyMatrix';
 import { RK_L87, COMMAND_ID, RK_L87_EVENT_DEFINE } from './rk_l87';
 
 import type { BoardProfile } from './boardProfile';
@@ -70,7 +70,7 @@ export class RK_L87_Dongle extends RK_L87 {
     async init(): Promise<void> {
         super.init();
 
-        dongleWorker.onmessage = async (event) => {
+        dongleWorker.onmessage = (async (event: any) => {
             if (event.data == 'finish' || event.data == 'timeout') {
                 this.dispatchEvent(new CustomEvent(RK_L87_EVENT_DEFINE.OnReportFinish, { detail: event.data }));
             } else {
@@ -99,7 +99,7 @@ export class RK_L87_Dongle extends RK_L87 {
                     this.device.close();
                 }
             }
-        };
+        }).bind(this);
         
         dongleWorker.postMessage('start');
 
@@ -227,7 +227,7 @@ export class RK_L87_Dongle extends RK_L87 {
             this.pktSetKeyMatrix.table = table;
             this.pktSetKeyMatrix.packageIndex = 0;
             this.pktSetKeyMatrix.retry = REPORT_MAX_RETRY;
-            this.pktSetKeyMatrix.buffer = new Uint8Array(this.data.keyMatrixs[layer].buffer.buffer.slice(0, this.data.keyMatrixs[layer].buffer.byteLength));
+            this.pktSetKeyMatrix.buffer = new Uint8Array(this.data.keyMatrixs[table][layer].buffer.buffer.slice(0, this.data.keyMatrixs[table][layer].buffer.byteLength));
             //await this.setReport(REPORT_ID_DONGLE, this.pktSetKeyMatrix.command());
             dongleWorker.postMessage('SetKeyMatrix');
         }
@@ -300,9 +300,10 @@ export class RK_L87_Dongle extends RK_L87 {
 
     private getKeyMatrixReport(event: any) {
         let layer = event.detail.layer as KeyMatrixLayer;
+        let table = event.detail.table as KeyMatrixLayer;
         let data = event.detail.data as KeyMatrix;
         if (this.data.keyMatrixs != undefined) {
-            this.data.keyMatrixs[layer] = data as KeyMatrix;
+            this.data.keyMatrixs[table][layer] = data as KeyMatrix;
         }
         this.dispatchEvent(new CustomEvent(RK_L87_EVENT_DEFINE.OnKeyMatrixGotten, { detail: this.data.keyMatrixs }));
     }

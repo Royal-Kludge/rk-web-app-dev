@@ -1,7 +1,7 @@
 import type { IPacket } from "@/keyboard/interface";
 import { Packet_Usb, KEY_MAXTRIX_LINE, KEY_MAXTRIX_COLOUMN, PACKET_HEAD_LENGTH } from "@/keyboard/rk_l87/packets/packet";
-import { KeyMatrix, MatrixTable } from "@/keyboard/rk_l87/keyMatrix";
-import { KeyMatrixLayer } from "@/keyboard/enum"
+import { KeyMatrix } from "@/keyboard/rk_l87/keyMatrix";
+import { KeyMatrixLayer, MatrixTable } from "@/keyboard/enum"
 
 export class GetKeyMatrixPacket extends Packet_Usb {
 
@@ -15,7 +15,7 @@ export class GetKeyMatrixPacket extends Packet_Usb {
         this.dataLength = KEY_MAXTRIX_LINE * KEY_MAXTRIX_COLOUMN * 4;
         this.setReport = new Uint8Array(519);
         this.setReport[0] = this.cmdId;
-        this.setReport[1] = this.cmdVal | layer | table;
+        this.setReport[1] = this.cmdVal | table << 2 | layer;
         this.setReport[2] = board;
         this.setReport[3] = 0x01;
         this.setReport[5] = this.dataLength & 0x00FF;

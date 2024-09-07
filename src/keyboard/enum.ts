@@ -55,6 +55,11 @@ export enum KeyMatrixLayer {
     Tap = 0x03
 }
 
+export enum MatrixTable {
+    WIN = 0x00,
+    MAC = 0x01
+}
+
 export enum LightEffectEnum {
     FixedOn = 1,
     Respire = 2,
