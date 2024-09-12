@@ -1160,6 +1160,37 @@ export enum KeyDefineEnum {
 
     MAC_F3                = 0x0200029F,
     MAC_F4                = 0x020002A0,
+    KEY_SIR               = 0x020000CF,
+    KEY_COM_X             = 0x0008001B,
+    KEY_COM_C             = 0x00080006,
+    KEY_COM_V             = 0x00080019,
+    KEY_COM_Z             = 0x0008001D,
+    KEY_SHIFT_COM_Z       = 0x0002081D,
+    KEY_COM_A             = 0x00080004,
+    KEY_COM_F             = 0x00080009,
+    KEY_COM_G             = 0x0008000A,
+    KEY_SHIFT_COM_G       = 0x0002080A,
+    KEY_COM_H             = 0x0008000B,
+    KEY_OPTION_COM_H      = 0x0002080B,
+    KEY_COM_M             = 0x00080010,
+    KEY_OPTION_COM_M      = 0x00020810,
+    KEY_COM_O             = 0x00080012,
+    KEY_COM_P             = 0x00080013,
+    KEY_COM_S             = 0x00080016,
+    KEY_COM_T             = 0x00080017,
+    KEY_COM_W             = 0x0008001A,
+    KEY_OPTION_COM_W      = 0x0002081A,
+    KEY_OPTION_COM_ESC    = 0x00020829,
+    KEY_COM_SPACEBAR      = 0x0008002C,
+    KEY_OPTION_COM_SPACEBAR = 0x0002082C,
+    KEY_CTRL_COM_SPACEBAR = 0x0010082C,
+    KEY_CTRL_COM_F        = 0x00100809,
+    KEY_COM_TAB           = 0x0008002B,
+    KEY_SHIFT_COM_5       = 0x00020822,
+    KEY_SHIFT_COM_3       = 0x00020820,
+    KEY_SHIFT_COM_4       = 0x00020821,
+    KEY_SHIFT_COM_N       = 0x00020811,
+    KEY_COM_COMMA         = 0x00080036,
 //****************************************************************
 //byte3��0x03��ʾ��macro��byte2��������ʾmacro��ѭ����ʽ��byte1��ѭ������  byte0��������ʾmacro���?
 //byte2����ʱ��������
@@ -1329,7 +1360,7 @@ export enum KeyDefineEnum {
     KEY_DoubleQuote       = 0x00020034,
     KEY_LessSign          = 0x00020036,
     KEY_GreaterSign       = 0x00020037,
-    KEY_Question          = 0x00020038,
+    KEY_Question          = 0x00020038,    
 }
 
 export const KeyText: Record<number, String> = {

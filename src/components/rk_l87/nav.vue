@@ -1,5 +1,5 @@
 <template>
-  <div class="m-4">
+  <div class="mx-4">
     <div class="fw-b fs-xxl">{{ useKey.profile?.name }}</div>
     <div class="d-flex mt-4">
       <div class="d-flex ai-center mr-4">
