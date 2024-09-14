@@ -281,13 +281,9 @@ export const useKeyStore = defineStore('keyinfo', () => {
       id: 7,
       style: "",
       keys: [
-        { key: KeyDefineEnum.KEY_L_CTRL, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_L_CTRL], style: "key key1", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_L_ALT, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_L_ALT], style: "key key1", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_L_WIN, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_L_WIN], style: "key key1", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_R_CTRL, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_R_CTRL], style: "key key1", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_R_ALT, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_R_ALT], style: "key key1", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_R_WIN, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_R_WIN], style: "key key1", selected: false, tip: '' },
-
+        { key: KeyDefineEnum.KEY_L_WIN, text: "Command", style: "key key1", selected: false, tip: '' },
+        { key: KeyDefineEnum.KEY_L_ALT, text: "Option", style: "key key1", selected: false, tip: '' },
+        { key: KeyDefineEnum.KEY_L_CTRL, text: "Control", style: "key key1", selected: false, tip: '' },
         { key: KeyDefineEnum.KEY_SIR, text: "key.fun_1", style: "key", selected: false, tip: 'key.tip1' },
         { key: KeyDefineEnum.MAC_F3, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.MAC_F3], style: "key", selected: false, tip: '' },
         { key: KeyDefineEnum.MAC_F4, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.MAC_F4], style: "key", selected: false, tip: '' },
