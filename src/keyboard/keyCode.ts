@@ -1165,31 +1165,31 @@ export enum KeyDefineEnum {
     KEY_COM_C             = 0x00080006,
     KEY_COM_V             = 0x00080019,
     KEY_COM_Z             = 0x0008001D,
-    KEY_SHIFT_COM_Z       = 0x0002081D,
+    KEY_SHIFT_COM_Z       = 0x000A001D,
     KEY_COM_A             = 0x00080004,
     KEY_COM_F             = 0x00080009,
     KEY_COM_G             = 0x0008000A,
-    KEY_SHIFT_COM_G       = 0x0002080A,
+    KEY_SHIFT_COM_G       = 0x000A000A,
     KEY_COM_H             = 0x0008000B,
-    KEY_OPTION_COM_H      = 0x0002080B,
+    KEY_OPTION_COM_H      = 0x000C000B,
     KEY_COM_M             = 0x00080010,
-    KEY_OPTION_COM_M      = 0x00020810,
+    KEY_OPTION_COM_M      = 0x000C0010,
     KEY_COM_O             = 0x00080012,
     KEY_COM_P             = 0x00080013,
     KEY_COM_S             = 0x00080016,
     KEY_COM_T             = 0x00080017,
     KEY_COM_W             = 0x0008001A,
-    KEY_OPTION_COM_W      = 0x0002081A,
-    KEY_OPTION_COM_ESC    = 0x00020829,
+    KEY_OPTION_COM_W      = 0x000C001A,
+    KEY_OPTION_COM_ESC    = 0x000C0029,
     KEY_COM_SPACEBAR      = 0x0008002C,
-    KEY_OPTION_COM_SPACEBAR = 0x0002082C,
-    KEY_CTRL_COM_SPACEBAR = 0x0010082C,
-    KEY_CTRL_COM_F        = 0x00100809,
+    KEY_OPTION_COM_SPACEBAR = 0x000C002C,
+    KEY_CTRL_COM_SPACEBAR = 0x0009002C,
+    KEY_CTRL_COM_F        = 0x00090009,
     KEY_COM_TAB           = 0x0008002B,
-    KEY_SHIFT_COM_5       = 0x00020822,
-    KEY_SHIFT_COM_3       = 0x00020820,
-    KEY_SHIFT_COM_4       = 0x00020821,
-    KEY_SHIFT_COM_N       = 0x00020811,
+    KEY_SHIFT_COM_5       = 0x000A0022,
+    KEY_SHIFT_COM_3       = 0x000A0020,
+    KEY_SHIFT_COM_4       = 0x000A0021,
+    KEY_SHIFT_COM_N       = 0x000A0011,
     KEY_COM_COMMA         = 0x00080036,
 //****************************************************************
 //byte3��0x03��ʾ��macro��byte2��������ʾmacro��ѭ����ʽ��byte1��ѭ������  byte0��������ʾmacro���?
@@ -1577,6 +1577,7 @@ export const KeyText: Record<number, String> = {
     0x02000227: 'Refresh',
     0x0200022a: 'Favorites',
 
+    0x020000CF: 'Siri',
     0x0200029F: 'MAC-F3',
     0x020002A0: 'MAC-F4',
 //****************************************************************
@@ -1958,6 +1959,7 @@ export const KeyText_2: Record<number, String> = {
     0x02000227: 'Refresh',
     0x0200022a: 'Favorites',
 
+    0x020000CF: 'Siri',
     0x0200029F: 'MAC-F3',
     0x020002A0: 'MAC-F4',
 //****************************************************************
@@ -1976,6 +1978,401 @@ export const KeyText_2: Record<number, String> = {
 //****************************************************************
     0x0d000000: 'Fn1',
     0x0d010000: 'Fn2'
+}
+
+export const KeyText_Mac: Record<number, String> = {
+    0x00: '',
+    0x04: 'A',
+    0x05: 'B',
+    0x06: 'C',
+    0x07: 'D',
+    0x08: 'E',
+    0x09: 'F',
+    0x0a: 'G',
+    0x0b: 'H',
+    0x0c: 'I',
+    0x0d: 'J',
+    0x0e: 'K',
+    0x0f: 'L',
+    0x10: 'M',
+    0x11: 'N',
+    0x12: 'O',
+    0x13: 'P',
+    0x14: 'Q',
+    0x15: 'R',
+    0x16: 'S',
+    0x17: 'T',
+    0x18: 'U',
+    0x19: 'V',
+    0x1a: 'W',
+    0x1b: 'X',
+    0x1c: 'Y',
+    0x1d: 'Z',
+
+    0x29: 'ESC',       
+    0x2b: 'TAB',
+    0x39: 'CAPS',
+    0x2a: 'BackSpace',
+    0x28: 'ENTER',
+    0x2c: 'Space',
+
+    0x35: '`~',   //bo lang
+    0x2d: '_-',   //xia hua xian
+    0x2e: '+=',   //deng hao
+    0x2f: '{[',   //zuo zhong kuo hao
+    0x30: '}]',   //you zhong kuo hao
+    0x31: '|\\',   //xie gang      //shu xian
+    0x33: ':;',   //fen hao
+    0x34: '"\'',   //yin hao
+    0x36: '<,',   //dou hao
+    0x37: '>.',   //ju hao
+    0x38: '?/',   //dun hao
+//////////////////////////////
+    0x1e: '1!',
+    0x1f: '2@',
+    0x20: '3#',
+    0x21: '4$',
+    0x22: '5%',
+    0x23: '6^',
+    0x24: '7&',
+    0x25: '8*',
+    0x26: '9(',
+    0x27: '0)',
+////////////////////
+    0x3a: 'F1',
+    0x3b: 'F2',
+    0x3c: 'F3',
+    0x3d: 'F4',
+    0x3e: 'F5',
+    0x3f: 'F6',
+    0x40: 'F7',
+    0x41: 'F8',
+    0x42: 'F9',
+    0x43: 'F10',
+    0x44: 'F11',
+    0x45: 'F12',
+    0x68: 'F13',
+    0x69: 'F14',
+    0x6A: 'F15',
+            
+    0x46: 'Print',
+    0x47: 'ScrLock',
+    0x48: 'Pause',
+    0x49: 'Ins',
+    0x4a: 'Home',
+    0x4b: 'PgUp',
+    0x4c: 'Del',
+    0x4d: 'End',
+    0x4e: 'PgDn',
+
+    0x4f: '→',
+    0x50: '←',
+    0x51: '↓',
+    0x52: '↑',
+
+    0x53: 'NumLock',
+    0x54: '/',
+    0x55: '*',
+    0x56: '-',       
+    0x57: '+',
+    0x58: 'Enter',
+    0x63: '.',
+
+    0x59: '1',
+    0x5a: '2',
+    0x5b: '3',
+    0x5c: '4',           
+    0x5d: '5',
+    0x5e: '6',
+    0x5f: '7',
+    0x60: '8',
+    0x61: '9',
+    0x62: '0',
+
+    //0x31: '',
+    0x32: '',
+    0x64: '',
+    0x65: 'App',
+    0x85: '',
+    0x87: '',
+    0x88: '',
+    0x89: '',
+    0x8a: '',
+    0x8b: '',
+    0x90: '',   //key_Hangul
+    0x91: '',   //Key_Hanja
+
+//****************************************************************
+//Modify key
+    0x00010000: 'Control',
+    0x00020000: 'L-Shift',
+    0x00040000: 'Option',
+    0x00080000: 'Command',
+    0x00100000: 'Control',
+    0x00200000: 'R-Shift',
+    0x00400000: 'Option',
+    0x00800000: 'Command',
+//****************************************************************
+//macro�е�modify key����
+    0xe0: 'Control',
+    0xe1: 'L-Shift',
+    0xe2: 'Option',
+    0xe3: 'Command',
+    0xe4: 'Control',
+    0xe5: 'R-Shift',
+    0xe6: 'Option',
+    0xe7: 'Command',
+//****************************************************************
+//macro�е�mouse key����
+    0x01: 'Mouse-L',
+    0x02: 'Mouse-R',
+    //0x04: 'Mouse-M',
+    //0x08: 'Mouse-B4',
+    //0x10: 'Mouse-B5',
+    0xff: 'Mouse-LT',
+    //0x01: 'Mouse-RT',
+    //0xff: 'Mouse-UP',
+    //0x01: 'Mouse-DN',
+//****************************************************************
+//��ϼ�����? 
+    //KEY_win_shift_4	  	  : 'Win + Shift + 4',
+    //KEY_win_shift_3	  	  : 'Win + Shift + 4',
+    //KEY_win_shift_ctrl_4  : 'Win + Shift + Ctrl + 4',
+    //KEY_WIN_D	  		  : 'Win + D',
+    //KEY_WIN_SPACEBAR	  : 'Win + Space',//SIRI
+    //KEY_WIN_TAB	  		  : 'Win + Tab',//�����񴰿�
+    //KEY_WIN_E	  		  : 'Win + E',//�����б�    
+    //KEY_ALT_SPACEBAR	  : 'Alt + Space',//SIRI    
+    //KEY_CTRL_UP	  		  : 'Ctrl + UP',
+    //KEY_CTRL_DN	  		  : 'Ctrl + DN',
+    //KEY_CTRL_C	  		  : 'Ctrl + C',
+    //KEY_CTRL_V	  		  : 'Ctrl + V',
+    //KEY_ALT_TAB	  		  : 'Alt + Tab',
+//****************************************************************
+//BYTE1:1�����?2�Ҽ���3�м���4ǰ������5���˼���6��ڡ�?7�Ұڡ�8�Ϲ��֡�9�¹��֡�10X����11X���ҡ�12Y���ϡ�13Y����
+//BYTE2:0xff��������0����һ�Σ����·������룬�ͷŷ��ͷ��룩��1˫����2������
+//BYTE3:�����ظ�ʱ�䣬0Ĭ�ϼ��ʱ��?
+//Mouse key
+    0x01010100: 'L-Button',
+    0x01020100: 'R-Button',
+    0x01030100: 'M-Button',
+    0x01040100: 'RB0-Button',
+    0x01050100: 'RB1-Button',
+    0x01060100: 'TL-Button',
+    0x01070100: 'TR-Button',
+    0x01080100: 'ScrollUp-Button',
+    0x01090100: 'ScrollDn-Button',
+    0x010A0000: 'MS-X-L',
+    0x010B0000: 'MX-X-R',
+    0x010C0000: 'MS-Y-L',
+    0x010D0000: 'MS-Y-R',
+//****************************************************************
+//��ý���?
+    0x0200006f: 'SysBkBrigthInc',
+    0x02000070: 'SysBkBrigthDec',
+    0x02000040: 'IOSBack',//F7
+
+    0x020000b5: 'NextTr',//0xE8
+    0x020000b6: 'PrevTr',//0xE9
+    0x020000b7: 'Stop',//0xEA
+    0x020000b8: 'Eject',//0xEB
+    0x020000cd: 'PlayPause',//0xEC
+    0x020000E2: 'Mute',//0xED
+    0x020000e9: 'VolumI',//0xEE  //+
+    0x020000ea: 'VolumD',//0xEF  //-
+
+    0x02000183: 'Media',//F0
+    0x0200018a: 'Email',//F1
+    0x02000192: 'Calculator',//F2
+    0x02000194: 'MyComputer',//F3
+    0x02000221: 'Search',//F4
+    0x02000223: 'WWW',//F5
+    0x02000224: 'Back',//F6
+    0x02000225: 'Forward',//F7
+
+    0x02000226: 'iStop',
+    0x02000227: 'Refresh',
+    0x0200022a: 'Favorites',
+
+    0x020000CF: 'Siri',
+    0x0200029F: 'MAC-F3',
+    0x020002A0: 'MAC-F4',
+    0x000A001D: 'Shift+Cmd+Z',
+    0x000A000A: 'Shift+Cmd+G',
+    0x000C000B: 'Opt+Cmd+H',
+    0x000C0010: 'Opt+Cmd+M',
+    0x000C001A: 'Opt+Cmd+W',
+    0x000C0029: 'Opt+Cmd+ESC',
+    0x000C002C: 'Opt+Cmd+Space',
+    0x0009002C: 'Ctr+Cmd+Space',
+    0x00090009: 'Ctr+Cmd+F',
+    0x000A0022: 'Shift+Cmd+5',
+    0x000A0020: 'Shift+Cmd+3',
+    0x000A0021: 'Shift+Cmd+4',
+    0x000A0011: 'Shift+Cmd+N',
+//****************************************************************
+//byte3��0x03��ʾ��macro��byte2��������ʾmacro��ѭ����ʽ��byte1��ѭ������  byte0��������ʾmacro���?
+//byte2����ʱ��������
+//0x01	ָ��ѭ��������0x02ѭ������������£�?0x03ѭ������ǰ���ɿ�
+//Macro Key
+    0x03000000: 'Macro0',
+    0x03000001: 'Macro1',
+
+//****************************************************************
+//ͨ��ð�ݶ˿ڷ����Զ���ļ�ֵ�������������⹦�ܴ�����������?�̶������ӣ�
+//�Զ����?
+    0x04000001: 'Define1',	
+    0x04000002: 'Define2',
+    0x05010000: 'DpiSwitch+',
+    0x05020000: 'DpiSwitch-',
+    0x05040000: 'DpiSwitchLoop',
+    0x06010000: 'ProfileSwitch+',
+    0x06020000: 'ProfileSwitch-',
+    0x06040000: 'ProfileSwitchLoop',
+//****************************************************************
+    0x07000000: 'InvertASWD',      //ȡ��ASWD�뷽��
+    0x07000001: 'WinLock',      //WIN Lock
+    0x07000002: 'AllLock',      //���м���ס
+    0x07000003: 'Macro',      //MACRO¼�Ƽ�
+    0x07000004: 'AllReset',      //���в����ָ�Ĭ�� 
+    0x07000005: 'BT0',      //����ģʽ0
+    0x07000006: 'BT1',      //����ģʽ1
+    0x07000007: 'BT2',      //����ģʽ2
+    0x07000008: '2.4G',      //2.4Gģʽ
+    0x07000009: 'USB',      //USBģʽ
+    0x0700000a: 'WirelessTest',      //���߽������?    
+    0x0700000b: 'Unknow',    
+    0x0700000c: 'Battery',      //电量显示 
+    0x0700000d: 'Unknow',
+    0x0700000e: 'Windows',      //����Windows
+    0x0700000f: 'Mac',      //����Mac   
+    0x07000010: 'Unknow',    
+    0x07000022: 'Mac',      //����Mac
+    0x07000023: 'Mac',      //����Mac
+//****************************************************************
+//byte0���̶�0x08
+//byte1��0��Ч�л���1��Ч����2��ɫ�л���3�����л���4�ٶ��л���5������Ϸ����¼�ƣ�6��Ϸ���ֱ��棬7¼��/���棬8��λ��9��Чģʽָ��
+//byte2��0ѭ����1+/��2-/�ң����byte1Ϊ9����������ֵ������ǰģʽ
+//byte3��0��������1����1��2����2
+//�ƹ�ģʽ�趨
+    0x08090000:  'light.menu_0', //ֱ���趨Ϊģʽ0
+    0x08090100:  'light.menu_1', //ֱ���趨Ϊģʽ1
+    0x08090200:  'light.menu_2', //ֱ���趨Ϊģʽ2
+    0x08090300:  'light.menu_3', //ֱ���趨Ϊģʽ3
+
+    0x08092000:  'LedMode20', //ֱ���趨Ϊģʽ20
+    0x08092100:  'LedMode21', //ֱ���趨Ϊģʽ21
+    0x08092200:  'LedMode22', //ֱ���趨Ϊģʽ22
+//��Ч�л�
+    0x08000000:  'LedMode+', //ֱ���趨Ϊģʽ+
+    0x08000100:  'LedMode-', //ֱ���趨Ϊģʽ-
+    0x08000200:  'LedModeLoop', //ֱ���趨ΪģʽLOOP
+
+    0x08000300:  'DefineLedModel+', //ֱ���趨Ϊģʽ+
+    0x08000400:  'DefineLedModel-', //ֱ���趨Ϊģʽ-
+    0x08000500:  'DefineLedModelLoop', //ֱ���趨ΪģʽLOOP
+
+//��Ч����
+    0x08010000:  'LedDirctionLoop', //��Ч����LOOP
+    0x08010100:  'LedDirction+', //��Ч������
+    0x08010200:  'LedDirction-', //��Ч������
+
+//��ɫ�л�
+    0x08020100:  'LedColorMode+', //ֱ���趨Ϊ��ɫ+
+    0x08020200:  'LedColorMode-', //ֱ���趨Ϊ��ɫ-
+    0x08020000:  'LedColorModeLoop', //ֱ���趨Ϊ��ɫLOOP
+
+//����
+    0x08030100:  'light.fun_1', //ֱ���趨Ϊģʽ+
+    0x08030200:  'light.fun_2', //ֱ���趨Ϊģʽ-
+    0x08030000:  'LedLuminLoop', //ֱ���趨ΪģʽLOOP
+
+//�ٶ�
+    0x08040100:  'light.fun_3', //  +
+    0x08040200:  'light.fun_4', //  -
+    0x08040000:  'LedBreathLoop', //  
+
+//¼��
+    0x08050000:  'LedRecStart', //LED¼�Ƽ�����
+    0x08060000:  'LedRecSave', //LED¼�Ƽ�����
+    0x08070000:  'LedRec', //LED¼�Ƽ�����/����
+    0x08080000:  'LedRecReset', //LED�ָ���������
+
+//logo
+    0x08000001:  'LogoModelLoop', //ֱ���趨Ϊģʽ+
+    0x08000101:  'LogoModel+', //ֱ���趨Ϊģʽ-
+    0x08000201:  'LogoModel-', //ֱ���趨ΪģʽLOOP
+
+    0x08010001:  'LogoDirectionLoop', //��Ч����LOOP
+    0x08010101:  'LogoDirection+', //��Ч������
+    0x08010201:  'LogoDirection-', //��Ч������
+
+    0x08020101:  'LogoColorMode+', //ֱ���趨Ϊ��ɫ+
+    0x08020201:  'LogoColorMode-', //ֱ���趨Ϊ��ɫ-
+    0x08020001:  'LogoColorModeLoop', //ֱ���趨Ϊ��ɫLOOP
+
+    0x08030101:  'LogoLumin+', //ֱ���趨Ϊģʽ+
+    0x08030201:  'LogoLumin-', //ֱ���趨Ϊģʽ-
+    0x08030001:  'LogoLuminLoop', //ֱ���趨ΪģʽLOOP
+
+    0x08040101:  'LogoBreath+', //ֱ���趨Ϊ�����ٶ�+
+    0x08040201:  'LogoBreath-', //ֱ���趨Ϊ�����ٶ�-
+    0x08040001:  'LogoBreathLoop', //ֱ���趨Ϊ�����ٶ�LOOP
+
+//ReportRate�趨
+    0x09000000:  'ReportRate125', //ֱ���趨Ϊ125
+    0x09000001:  'ReportRate250', //ֱ���趨Ϊ250
+    0x09000002:  'ReportRate500', //ֱ���趨Ϊ500
+    0x09000003:  'ReportRate1000', //ֱ���趨Ϊ1000
+    0x09010000:  'ReportRate+', //�ر��ʵ�λ��
+    0x09020000:  'ReportRate-', //�ر��ʵ�λ��
+    0x09030000:  'ReportRateLoop', //�ر��ʵ�λѭ��
+
+    0x0d000000:  'Fn1',
+    0x0d010000:  'Fn2',
+//��Դ��
+    0x10000001:  'Power',
+    0x10000002:  'Sleep',
+    0x10000004:  'WakeUp',
+
+    0x00020035:  '~',
+    0x0002001e:  '!',
+    0x0002001f:  '@',
+    0x00020020:  '#',
+    0x00020021:  '$',
+    0x00020022:  '%',
+    0x00020023:  '^',
+    0x00020024:  '&',
+    0x00020025:  '*',
+    0x00020026:  '(',
+    0x00020027:  ')',
+    0x0002002D:  '_',
+    0x0002002E:  '+',
+    0x0002002F:  '{',
+    0x00020030:  '}',
+    0x00020031:  '|',
+    0x00020033:  ':',
+    0x00020034:  '"',
+    0x00020036:  '<',
+    0x00020037:  '>',
+    0x00020038:  '?',
+
+    0x08090400:  'light.menu_4',
+    0x08090500:  'light.menu_5',
+    0x08090600:  'light.menu_6',
+    0x08090700:  'light.menu_7',
+    0x08090800:  'light.menu_8',
+    0x08090900:  'light.menu_9',
+    0x08090A00:  'light.menu_10',
+    0x08090B00:  'light.menu_11',
+    0x08090C00:  'light.menu_12',
+    0x08090D00:  'light.menu_13',
+    0x08090E00:  'light.menu_14',
+    0x08090F00:  'light.menu_15',
+    0x08091000:  'light.menu_16',
+    0x08091100:  'light.menu_17',
+    0x08091200:  'light.menu_18',
+    0x08091300:  'light.menu_19',
 }
 
 export const KeyCodeMap: Record<string, KeyCodeTable> = {

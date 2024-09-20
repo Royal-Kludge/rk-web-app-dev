@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 import { reactive, ref } from 'vue';
 import { keyboard } from '../keyboard/keyboard'
 import { RK_L87, RK_L87_EVENT_DEFINE } from '../keyboard/rk_l87/rk_l87';
-import { KeyCodeEnum, KeyDefineEnum } from '../keyboard/keyCode'
+import { KeyCodeEnum, KeyDefineEnum, KeyText, KeyText_Mac } from '../keyboard/keyCode'
 import { type KeyMappingData, type KeyTableData, type KeyState } from '../keyboard/interface'
 import { ConnectionEventEnum, ConnectionStatusEnum, KeyMappingType, KeyMatrixLayer, MatrixTable } from '../keyboard/enum'
 import { KeyMatrix } from '@/keyboard/rk_l87/keyMatrix';
@@ -86,120 +86,120 @@ export const useKeyStore = defineStore('keyinfo', () => {
       id: 1,
       style: "",
       keys: [
-        { key: KeyDefineEnum.KEY_1, text: '1', style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_2, text: '2', style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_3, text: '3', style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_4, text: '4', style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_5, text: '5', style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_6, text: '6', style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_7, text: '7', style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_8, text: '8', style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_9, text: '9', style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_0, text: '0', style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_UpArrow, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_UpArrow], style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_DownArrow, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_DownArrow], style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_LeftArrow, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_LeftArrow], style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_RightArrow, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_RightArrow], style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_A, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_A], style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_B, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_B], style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_C, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_C], style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_D, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_D], style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_E, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_E], style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_F, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_F], style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_G, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_G], style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_H, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_H], style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_I, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_I], style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_K, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_K], style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_L, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_L], style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_M, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_M], style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_N, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_N], style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_O, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_O], style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_P, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_P], style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_Q, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Q], style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_R, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_R], style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_S, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_S], style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_T, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_T], style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_U, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_U], style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_V, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_V], style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_W, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_W], style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_X, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_X], style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_Y, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Y], style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_Z, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Z], style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_Underscore, text: '-', style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_EqualSign, text: '=', style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_L_Brackets, text: '[', style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_R_Brackets, text: ']', style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_CODE29, text: '\\', style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_Semicolon, text: ';', style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_Quotation, text: '\'', style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_TILDE, text: '`', style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_COMMA, text: ',', style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_PERIOD, text: '.', style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_Interrogation, text: '/', style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_F1, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_F1], style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_F2, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_F2], style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_F3, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_F3], style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_F4, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_F4], style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_F5, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_F5], style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_F6, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_F6], style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_F7, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_F7], style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_F8, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_F8], style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_F9, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_F9], style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_F10, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_F10], style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_F11, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_F11], style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_F12, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_F12], style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_ESC, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_ESC], style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_TAB, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_TAB], style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_INS, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_INS], style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_PAUSE, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_PAUSE], style: "key key1", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_SPACEBAR, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_SPACEBAR], style: "key key1", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_HOME, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_HOME], style: "key key1", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_END, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_END], style: "key key1", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_DEL, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_DEL], style: "key key1", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_SCRLOCK, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_SCRLOCK], style: "key key1", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_PGDN, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_PGDN], style: "key key1", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_PGUP, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_PGUP], style: "key key1", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_CAPSLOCK, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_CAPSLOCK], style: "key key1", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_Backspace, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Backspace], style: "key key2", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_PRINT, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_PRINT], style: "key key1", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_NUM_1, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_NUM_1], style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_NUM_2, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_NUM_2], style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_NUM_3, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_NUM_3], style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_NUM_4, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_NUM_4], style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_NUM_5, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_NUM_5], style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_NUM_6, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_NUM_6], style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_NUM_7, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_NUM_7], style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_NUM_8, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_NUM_8], style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_NUM_9, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_NUM_9], style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_NUM_0, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_NUM_0], style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_NUM_PLUS, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_NUM_PLUS], style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_NUM_MINUS, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_NUM_MINUS], style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_NUM_MUL, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_NUM_MUL], style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_NUM_DIV, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_NUM_DIV], style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_NUM_DOT, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_NUM_DOT], style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_NUMLOCK, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_NUMLOCK], style: "key key1", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_NUM_ENTER, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_NUM_ENTER], style: "key key1", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_L_CTRL, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_L_CTRL], style: "key key1", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_L_SHIFT, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_L_SHIFT], style: "key key1", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_L_ALT, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_L_ALT], style: "key key1", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_L_WIN, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_L_WIN], style: "key key1", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_R_CTRL, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_R_CTRL], style: "key key1", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_R_SHIFT, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_R_SHIFT], style: "key key1", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_R_ALT, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_R_ALT], style: "key key1", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_R_WIN, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_R_WIN], style: "key key1", selected: false, tip: '' }
+        { key: KeyDefineEnum.KEY_1, text: '1', style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_2, text: '2', style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_3, text: '3', style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_4, text: '4', style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_5, text: '5', style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_6, text: '6', style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_7, text: '7', style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_8, text: '8', style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_9, text: '9', style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_0, text: '0', style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_UpArrow, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_UpArrow], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_DownArrow, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_DownArrow], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_LeftArrow, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_LeftArrow], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_RightArrow, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_RightArrow], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_A, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_A], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_B, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_B], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_C, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_C], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_D, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_D], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_E, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_E], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_F, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_F], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_G, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_G], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_H, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_H], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_I, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_I], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_K, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_K], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_L, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_L], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_M, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_M], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_N, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_N], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_O, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_O], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_P, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_P], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_Q, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Q], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_R, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_R], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_S, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_S], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_T, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_T], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_U, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_U], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_V, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_V], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_W, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_W], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_X, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_X], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_Y, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Y], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_Z, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Z], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_Underscore, text: '-', style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_EqualSign, text: '=', style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_L_Brackets, text: '[', style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_R_Brackets, text: ']', style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_CODE29, text: '\\', style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_Semicolon, text: ';', style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_Quotation, text: '\'', style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_TILDE, text: '`', style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_COMMA, text: ',', style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_PERIOD, text: '.', style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_Interrogation, text: '/', style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_F1, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_F1], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_F2, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_F2], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_F3, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_F3], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_F4, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_F4], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_F5, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_F5], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_F6, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_F6], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_F7, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_F7], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_F8, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_F8], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_F9, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_F9], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_F10, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_F10], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_F11, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_F11], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_F12, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_F12], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_ESC, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_ESC], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_TAB, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_TAB], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_INS, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_INS], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_PAUSE, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_PAUSE], style: "key key1", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_SPACEBAR, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_SPACEBAR], style: "key key1", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_HOME, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_HOME], style: "key key1", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_END, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_END], style: "key key1", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_DEL, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_DEL], style: "key key1", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_SCRLOCK, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_SCRLOCK], style: "key key1", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_PGDN, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_PGDN], style: "key key1", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_PGUP, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_PGUP], style: "key key1", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_CAPSLOCK, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_CAPSLOCK], style: "key key1", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_Backspace, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Backspace], style: "key key2", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_PRINT, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_PRINT], style: "key key1", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_NUM_1, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_NUM_1], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_NUM_2, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_NUM_2], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_NUM_3, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_NUM_3], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_NUM_4, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_NUM_4], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_NUM_5, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_NUM_5], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_NUM_6, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_NUM_6], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_NUM_7, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_NUM_7], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_NUM_8, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_NUM_8], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_NUM_9, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_NUM_9], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_NUM_0, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_NUM_0], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_NUM_PLUS, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_NUM_PLUS], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_NUM_MINUS, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_NUM_MINUS], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_NUM_MUL, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_NUM_MUL], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_NUM_DIV, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_NUM_DIV], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_NUM_DOT, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_NUM_DOT], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_NUMLOCK, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_NUMLOCK], style: "key key1", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_NUM_ENTER, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_NUM_ENTER], style: "key key1", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_L_CTRL, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_L_CTRL], style: "key key1", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_L_SHIFT, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_L_SHIFT], style: "key key1", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_L_ALT, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_L_ALT], style: "key key1", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_L_WIN, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_L_WIN], style: "key key1", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_R_CTRL, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_R_CTRL], style: "key key1", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_R_SHIFT, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_R_SHIFT], style: "key key1", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_R_ALT, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_R_ALT], style: "key key1", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_R_WIN, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_R_WIN], style: "key key1", selected: false, tip: '', type: MatrixTable.WIN }
       ],
     },
     {
       id: 2,
       style: "",
       keys: [
-        { key: KeyDefineEnum.KEY_VolumI, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_VolumI], style: "key", selected: false, tip: 'tip.volumI' },
-        { key: KeyDefineEnum.KEY_VolumD, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_VolumD], style: "key", selected: false, tip: 'tip.volumD' },
-        { key: KeyDefineEnum.KEY_Mute, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Mute], style: "key", selected: false, tip: 'tip.mute' },
-        { key: KeyDefineEnum.KEY_PlayPause, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_PlayPause], style: "key", selected: false, tip: 'tip.paly' },
-        { key: KeyDefineEnum.KEY_Stop, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Stop], style: "key", selected: false, tip: 'tip.stop' },
-        { key: KeyDefineEnum.KEY_PrevTr, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_PrevTr], style: "key", selected: false, tip: 'tip.prevTr' },
-        { key: KeyDefineEnum.KEY_NextTr, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_NextTr], style: "key", selected: false, tip: 'tip.nextTr' },
+        { key: KeyDefineEnum.KEY_VolumI, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_VolumI], style: "key", selected: false, tip: 'tip.volumI', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_VolumD, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_VolumD], style: "key", selected: false, tip: 'tip.volumD', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_Mute, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Mute], style: "key", selected: false, tip: 'tip.mute', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_PlayPause, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_PlayPause], style: "key", selected: false, tip: 'tip.paly', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_Stop, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Stop], style: "key", selected: false, tip: 'tip.stop', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_PrevTr, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_PrevTr], style: "key", selected: false, tip: 'tip.prevTr', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_NextTr, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_NextTr], style: "key", selected: false, tip: 'tip.nextTr', type: MatrixTable.WIN },
         //{ key: KeyDefineEnum.KEY_Back, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Back], style: "key", selected: false },
         //{ key: KeyDefineEnum.KEY_Forward, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Forward], style: "key", selected: false },
       ],
@@ -208,116 +208,116 @@ export const useKeyStore = defineStore('keyinfo', () => {
       id: 4,
       style: "",
       keys: [
-        { key: KeyDefineEnum.KEY_Fn1, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Fn1], style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_Fn2, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Fn2], style: "key", selected: false, tip: '' },
+        { key: KeyDefineEnum.KEY_Fn1, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Fn1], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_Fn2, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Fn2], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
       ],
     },
     {
       id: 5,
       style: "",
       keys: [
-        { key: KeyDefineEnum.KEY_Tilde, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Tilde], style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_Exclamation, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Exclamation], style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_AtSign, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_AtSign], style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_Sharp, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Sharp], style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_Dollar, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Dollar], style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_Percent, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Percent], style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_Circumflex, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Circumflex], style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_Ampersand, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Ampersand], style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_Asterisk, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Asterisk], style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_LeftParenthesis, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_LeftParenthesis], style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_RightParenthesis, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_RightParenthesis], style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_Underscore2, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Underscore2], style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_Plus, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Plus], style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_LeftBrace, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_LeftBrace], style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_RightBrace, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_RightBrace], style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_Pipe, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Pipe], style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_Colon, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Colon], style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_DoubleQuote, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_DoubleQuote], style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_LessSign, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_LessSign], style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_GreaterSign, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_GreaterSign], style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_Question, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Question], style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_Power, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Power], style: "key", selected: false, tip: 'tip.power' },
-        { key: KeyDefineEnum.KEY_Sleep, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Sleep], style: "key", selected: false, tip: 'tip.sleep' },
-        { key: KeyDefineEnum.KEY_Calculator, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Calculator], style: "key", selected: false, tip: 'tip.calc' },
-        { key: KeyDefineEnum.KEY_Email, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Email], style: "key", selected: false, tip: 'tip.mail' },
-        { key: KeyDefineEnum.KEY_MyComputer, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_MyComputer], style: "key", selected: false, tip: 'tip.computer' },
-        { key: KeyDefineEnum.KEY_Back, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Back], style: "key", selected: false, tip: 'tip.back' },
-        { key: KeyDefineEnum.KEY_Forward, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Forward], style: "key", selected: false, tip: 'tip.forward' },
-        { key: KeyDefineEnum.KEY_iStop, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_iStop], style: "key", selected: false, tip: 'tip.istop' },
-        { key: KeyDefineEnum.KEY_Refresh, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Refresh], style: "key", selected: false, tip: 'tip.refresh' },
-        { key: KeyDefineEnum.KEY_Favorites, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Favorites], style: "key", selected: false, tip: 'tip.favorites' },
-        { key: KeyDefineEnum.KEY_Search, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Search], style: "key", selected: false, tip: 'tip.search' },
-        { key: KeyDefineEnum.SP_BatView, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.SP_BatView], style: "key", selected: false, tip: 'tip.bat' },
+        { key: KeyDefineEnum.KEY_Tilde, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Tilde], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_Exclamation, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Exclamation], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_AtSign, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_AtSign], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_Sharp, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Sharp], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_Dollar, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Dollar], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_Percent, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Percent], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_Circumflex, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Circumflex], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_Ampersand, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Ampersand], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_Asterisk, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Asterisk], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_LeftParenthesis, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_LeftParenthesis], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_RightParenthesis, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_RightParenthesis], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_Underscore2, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Underscore2], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_Plus, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Plus], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_LeftBrace, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_LeftBrace], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_RightBrace, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_RightBrace], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_Pipe, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Pipe], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_Colon, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Colon], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_DoubleQuote, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_DoubleQuote], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_LessSign, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_LessSign], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_GreaterSign, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_GreaterSign], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_Question, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Question], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_Power, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Power], style: "key", selected: false, tip: 'tip.power', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_Sleep, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Sleep], style: "key", selected: false, tip: 'tip.sleep', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_Calculator, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Calculator], style: "key", selected: false, tip: 'tip.calc', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_Email, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Email], style: "key", selected: false, tip: 'tip.mail', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_MyComputer, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_MyComputer], style: "key", selected: false, tip: 'tip.computer', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_Back, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Back], style: "key", selected: false, tip: 'tip.back', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_Forward, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Forward], style: "key", selected: false, tip: 'tip.forward', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_iStop, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_iStop], style: "key", selected: false, tip: 'tip.istop', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_Refresh, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Refresh], style: "key", selected: false, tip: 'tip.refresh', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_Favorites, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Favorites], style: "key", selected: false, tip: 'tip.favorites', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_Search, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Search], style: "key", selected: false, tip: 'tip.search', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.SP_BatView, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.SP_BatView], style: "key", selected: false, tip: 'tip.bat', type: MatrixTable.WIN },
       ],
     },
     {
       id: 6,
       style: "",
       keys: [
-        { key: KeyDefineEnum.KEY_LED_MODE0, text: "light.menu_0", style: "key", selected: false, tip: 'tip.ligthoff' },
-        { key: KeyDefineEnum.KEY_LED_MODE1, text: "light.menu_1", style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_LED_MODE2, text: "light.menu_2", style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_LED_MODE3, text: "light.menu_3", style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_LED_MODE4, text: "light.menu_4", style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_LED_MODE5, text: "light.menu_5", style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_LED_MODE6, text: "light.menu_6", style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_LED_MODE7, text: "light.menu_7", style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_LED_MODE8, text: "light.menu_8", style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_LED_MODE9, text: "light.menu_9", style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_LED_MODE10, text: "light.menu_10", style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_LED_MODE11, text: "light.menu_11", style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_LED_MODE12, text: "light.menu_12", style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_LED_MODE13, text: "light.menu_13", style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_LED_MODE17, text: "light.menu_17", style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_LED_MODE18, text: "light.menu_18", style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_LED_LUMINI, text: "light.fun_3", style: "key", selected: false, tip: 'tip.brightI' },
-        { key: KeyDefineEnum.KEY_LED_LUMIND, text: "light.fun_4", style: "key", selected: false, tip: 'tip.brightD' },
-        { key: KeyDefineEnum.KEY_LED_BREATHI, text: "light.fun_1", style: "key", selected: false, tip: 'tip.speedI' },
-        { key: KeyDefineEnum.KEY_LED_BREATHD, text: "light.fun_2", style: "key", selected: false, tip: 'tip.speedD' },
+        { key: KeyDefineEnum.KEY_LED_MODE0, text: "light.menu_0", style: "key", selected: false, tip: 'tip.ligthoff', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_LED_MODE1, text: "light.menu_1", style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_LED_MODE2, text: "light.menu_2", style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_LED_MODE3, text: "light.menu_3", style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_LED_MODE4, text: "light.menu_4", style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_LED_MODE5, text: "light.menu_5", style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_LED_MODE6, text: "light.menu_6", style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_LED_MODE7, text: "light.menu_7", style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_LED_MODE8, text: "light.menu_8", style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_LED_MODE9, text: "light.menu_9", style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_LED_MODE10, text: "light.menu_10", style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_LED_MODE11, text: "light.menu_11", style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_LED_MODE12, text: "light.menu_12", style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_LED_MODE13, text: "light.menu_13", style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_LED_MODE17, text: "light.menu_17", style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_LED_MODE18, text: "light.menu_18", style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_LED_LUMINI, text: "light.fun_3", style: "key", selected: false, tip: 'tip.brightI', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_LED_LUMIND, text: "light.fun_4", style: "key", selected: false, tip: 'tip.brightD', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_LED_BREATHI, text: "light.fun_1", style: "key", selected: false, tip: 'tip.speedI', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_LED_BREATHD, text: "light.fun_2", style: "key", selected: false, tip: 'tip.speedD', type: MatrixTable.WIN },
       ],
     },
     {
       id: 7,
       style: "",
       keys: [
-        { key: KeyDefineEnum.KEY_L_WIN, text: "Command", style: "key key1", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_L_ALT, text: "Option", style: "key key1", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_L_CTRL, text: "Control", style: "key key1", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_SIR, text: "key.fun_1", style: "key", selected: false, tip: 'key.tip1' },
-        { key: KeyDefineEnum.MAC_F3, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.MAC_F3], style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.MAC_F4, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.MAC_F4], style: "key", selected: false, tip: '' },
-        { key: KeyDefineEnum.KEY_COM_X, text: "key.fun_2", style: "key", selected: false, tip: 'key.tip2' },
-        { key: KeyDefineEnum.KEY_COM_C, text: "key.fun_3", style: "key", selected: false, tip: 'key.tip3' },
-        { key: KeyDefineEnum.KEY_COM_V, text: "key.fun_4", style: "key", selected: false, tip: 'key.tip4' },
-        { key: KeyDefineEnum.KEY_COM_Z, text: "key.fun_5", style: "key", selected: false, tip: 'key.tip5' },
-        { key: KeyDefineEnum.KEY_SHIFT_COM_Z, text: "key.fun_6", style: "key", selected: false, tip: 'key.tip6' },
-        { key: KeyDefineEnum.KEY_COM_A, text: "key.fun_7", style: "key", selected: false, tip: 'key.tip7' },
-        { key: KeyDefineEnum.KEY_COM_F, text: "key.fun_8", style: "key", selected: false, tip: 'key.tip8' },
-        { key: KeyDefineEnum.KEY_COM_G, text: "key.fun_9", style: "key", selected: false, tip: 'key.tip9' },
-        { key: KeyDefineEnum.KEY_SHIFT_COM_G, text: "key.fun_10", style: "key", selected: false, tip: 'key.tip10' },
-        { key: KeyDefineEnum.KEY_COM_H, text: "key.fun_11", style: "key", selected: false, tip: 'key.tip11' },
-        { key: KeyDefineEnum.KEY_OPTION_COM_H, text: "key.fun_12", style: "key", selected: false, tip: 'key.tip12' },
-        { key: KeyDefineEnum.KEY_COM_M, text: "key.fun_13", style: "key", selected: false, tip: 'key.tip13' },
-        { key: KeyDefineEnum.KEY_OPTION_COM_M, text: "key.fun_14", style: "key", selected: false, tip: 'key.tip14' },
-        { key: KeyDefineEnum.KEY_COM_O, text: "key.fun_15", style: "key", selected: false, tip: 'key.tip15' },
-        { key: KeyDefineEnum.KEY_COM_P, text: "key.fun_16", style: "key", selected: false, tip: 'key.tip16' },
-        { key: KeyDefineEnum.KEY_COM_S, text: "key.fun_17", style: "key", selected: false, tip: 'key.tip17' },
-        { key: KeyDefineEnum.KEY_COM_T, text: "key.fun_18", style: "key", selected: false, tip: 'key.tip18' },
-        { key: KeyDefineEnum.KEY_COM_W, text: "key.fun_19", style: "key", selected: false, tip: 'key.tip19' },
-        { key: KeyDefineEnum.KEY_OPTION_COM_W, text: "key.fun_20", style: "key", selected: false, tip: 'key.tip20' },
-        { key: KeyDefineEnum.KEY_OPTION_COM_ESC, text: "key.fun_21", style: "key", selected: false, tip: 'key.tip21' },
-        { key: KeyDefineEnum.KEY_COM_SPACEBAR, text: "key.fun_22", style: "key", selected: false, tip: 'key.tip22' },
-        { key: KeyDefineEnum.KEY_OPTION_COM_SPACEBAR, text: "key.fun_23", style: "key", selected: false, tip: 'key.tip23' },
-        { key: KeyDefineEnum.KEY_CTRL_COM_SPACEBAR, text: "key.fun_24", style: "key", selected: false, tip: 'key.tip24' },
-        { key: KeyDefineEnum.KEY_CTRL_COM_F, text: "key.fun_25", style: "key", selected: false, tip: 'key.tip25' },
-        { key: KeyDefineEnum.KEY_SPACEBAR, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_SPACEBAR], style: "key key2", selected: false, tip: 'key.tip26' },
-        { key: KeyDefineEnum.KEY_COM_TAB, text: "key.fun_26", style: "key", selected: false, tip: 'key.tip27' },
-        { key: KeyDefineEnum.KEY_SHIFT_COM_5, text: "key.fun_27", style: "key", selected: false, tip: 'key.tip28' },
-        { key: KeyDefineEnum.KEY_SHIFT_COM_3, text: "key.fun_28", style: "key", selected: false, tip: 'key.tip29' },
-        { key: KeyDefineEnum.KEY_SHIFT_COM_4, text: "key.fun_29", style: "key", selected: false, tip: 'key.tip30' },
-        { key: KeyDefineEnum.KEY_SHIFT_COM_N, text: "key.fun_30", style: "key", selected: false, tip: 'key.tip31' },
-        { key: KeyDefineEnum.KEY_COM_COMMA, text: "key.fun_31", style: "key", selected: false, tip: 'key.tip32' },
+        { key: KeyDefineEnum.KEY_L_WIN, text: "Command", style: "key key1", selected: false, tip: '', type: MatrixTable.MAC },
+        { key: KeyDefineEnum.KEY_L_ALT, text: "Option", style: "key key1", selected: false, tip: '', type: MatrixTable.MAC },
+        { key: KeyDefineEnum.KEY_L_CTRL, text: "Control", style: "key key1", selected: false, tip: '', type: MatrixTable.MAC },
+        { key: KeyDefineEnum.KEY_SIR, text: "key.fun_1", style: "key", selected: false, tip: 'key.tip1', type: MatrixTable.MAC },
+        { key: KeyDefineEnum.MAC_F3, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.MAC_F3], style: "key", selected: false, tip: '', type: MatrixTable.MAC },
+        { key: KeyDefineEnum.MAC_F4, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.MAC_F4], style: "key", selected: false, tip: '', type: MatrixTable.MAC },
+        { key: KeyDefineEnum.KEY_COM_X, text: "key.fun_2", style: "key", selected: false, tip: 'key.tip2', type: MatrixTable.MAC },
+        { key: KeyDefineEnum.KEY_COM_C, text: "key.fun_3", style: "key", selected: false, tip: 'key.tip3', type: MatrixTable.MAC },
+        { key: KeyDefineEnum.KEY_COM_V, text: "key.fun_4", style: "key", selected: false, tip: 'key.tip4', type: MatrixTable.MAC },
+        { key: KeyDefineEnum.KEY_COM_Z, text: "key.fun_5", style: "key", selected: false, tip: 'key.tip5', type: MatrixTable.MAC },
+        { key: KeyDefineEnum.KEY_SHIFT_COM_Z, text: "key.fun_6", style: "key", selected: false, tip: 'key.tip6', type: MatrixTable.MAC },
+        { key: KeyDefineEnum.KEY_COM_A, text: "key.fun_7", style: "key", selected: false, tip: 'key.tip7', type: MatrixTable.MAC },
+        { key: KeyDefineEnum.KEY_COM_F, text: "key.fun_8", style: "key", selected: false, tip: 'key.tip8', type: MatrixTable.MAC },
+        { key: KeyDefineEnum.KEY_COM_G, text: "key.fun_9", style: "key", selected: false, tip: 'key.tip9', type: MatrixTable.MAC },
+        { key: KeyDefineEnum.KEY_SHIFT_COM_G, text: "key.fun_10", style: "key", selected: false, tip: 'key.tip10', type: MatrixTable.MAC },
+        { key: KeyDefineEnum.KEY_COM_H, text: "key.fun_11", style: "key", selected: false, tip: 'key.tip11', type: MatrixTable.MAC },
+        { key: KeyDefineEnum.KEY_OPTION_COM_H, text: "key.fun_12", style: "key", selected: false, tip: 'key.tip12', type: MatrixTable.MAC },
+        { key: KeyDefineEnum.KEY_COM_M, text: "key.fun_13", style: "key", selected: false, tip: 'key.tip13', type: MatrixTable.MAC },
+        { key: KeyDefineEnum.KEY_OPTION_COM_M, text: "key.fun_14", style: "key", selected: false, tip: 'key.tip14', type: MatrixTable.MAC },
+        { key: KeyDefineEnum.KEY_COM_O, text: "key.fun_15", style: "key", selected: false, tip: 'key.tip15', type: MatrixTable.MAC },
+        { key: KeyDefineEnum.KEY_COM_P, text: "key.fun_16", style: "key", selected: false, tip: 'key.tip16', type: MatrixTable.MAC },
+        { key: KeyDefineEnum.KEY_COM_S, text: "key.fun_17", style: "key", selected: false, tip: 'key.tip17', type: MatrixTable.MAC },
+        { key: KeyDefineEnum.KEY_COM_T, text: "key.fun_18", style: "key", selected: false, tip: 'key.tip18', type: MatrixTable.MAC },
+        { key: KeyDefineEnum.KEY_COM_W, text: "key.fun_19", style: "key", selected: false, tip: 'key.tip19', type: MatrixTable.MAC },
+        { key: KeyDefineEnum.KEY_OPTION_COM_W, text: "key.fun_20", style: "key", selected: false, tip: 'key.tip20', type: MatrixTable.MAC },
+        { key: KeyDefineEnum.KEY_OPTION_COM_ESC, text: "key.fun_21", style: "key", selected: false, tip: 'key.tip21', type: MatrixTable.MAC },
+        { key: KeyDefineEnum.KEY_COM_SPACEBAR, text: "key.fun_22", style: "key", selected: false, tip: 'key.tip22', type: MatrixTable.MAC },
+        { key: KeyDefineEnum.KEY_OPTION_COM_SPACEBAR, text: "key.fun_23", style: "key", selected: false, tip: 'key.tip23', type: MatrixTable.MAC },
+        { key: KeyDefineEnum.KEY_CTRL_COM_SPACEBAR, text: "key.fun_24", style: "key", selected: false, tip: 'key.tip24', type: MatrixTable.MAC },
+        { key: KeyDefineEnum.KEY_CTRL_COM_F, text: "key.fun_25", style: "key", selected: false, tip: 'key.tip25', type: MatrixTable.MAC },
+        { key: KeyDefineEnum.KEY_SPACEBAR, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_SPACEBAR], style: "key key2", selected: false, tip: 'key.tip26', type: MatrixTable.MAC },
+        { key: KeyDefineEnum.KEY_COM_TAB, text: "key.fun_26", style: "key", selected: false, tip: 'key.tip27', type: MatrixTable.MAC },
+        { key: KeyDefineEnum.KEY_SHIFT_COM_5, text: "key.fun_27", style: "key", selected: false, tip: 'key.tip28', type: MatrixTable.MAC },
+        { key: KeyDefineEnum.KEY_SHIFT_COM_3, text: "key.fun_28", style: "key", selected: false, tip: 'key.tip29', type: MatrixTable.MAC },
+        { key: KeyDefineEnum.KEY_SHIFT_COM_4, text: "key.fun_29", style: "key", selected: false, tip: 'key.tip30', type: MatrixTable.MAC },
+        { key: KeyDefineEnum.KEY_SHIFT_COM_N, text: "key.fun_30", style: "key", selected: false, tip: 'key.tip31', type: MatrixTable.MAC },
+        { key: KeyDefineEnum.KEY_COM_COMMA, text: "key.fun_31", style: "key", selected: false, tip: 'key.tip32', type: MatrixTable.MAC },
 
       ],
     }],
@@ -1040,21 +1040,28 @@ export const useKeyStore = defineStore('keyinfo', () => {
 
   const keySetStr = (keyData: KeyTableData) => {
     let mapping = keyData.keyMappingData;
+    let keyText = KeyText;
+    let keyType = profile.value?.keyTypes[keyMatrixTable.value][keyMatrixLayer.value][keyData.index];
+
+    if (keyType == MatrixTable.WIN && keyboard.keyboardDefine != undefined) {
+      keyText = keyboard.keyboardDefine.keyText;
+    } else if (keyType == MatrixTable.MAC) {
+      keyText = KeyText_Mac;
+    }
+
     switch (mapping.keyMappingType) {
       case KeyMappingType.KeyBoard:
-        if (keyboard.keyboardDefine != undefined) {
-          mapping.keyStr = '';
-          if (mapping.keyMappingPara > 0) {
-            let ori = keyboard.keyboardDefine.keyText[mapping.keyRaw];
-            if (ori == undefined) {
-              let add = mapping.keyCode > 0 ? ' + ' : '';
-              mapping.keyStr = `${keyboard.keyboardDefine.keyText[mapping.keyMappingPara << 16]}${add}${keyboard.keyboardDefine.keyText[mapping.keyCode]}`;
-            } else {
-              mapping.keyStr = ori;
-            }
+        mapping.keyStr = '';
+        if (mapping.keyMappingPara > 0) {
+          let ori = keyText[mapping.keyRaw];
+          if (ori == undefined) {
+            let add = mapping.keyCode > 0 ? ' + ' : '';
+            mapping.keyStr = `${keyText[mapping.keyMappingPara << 16]}${add}${keyText[mapping.keyCode]}`;
           } else {
-            mapping.keyStr = `${keyboard.keyboardDefine.keyText[mapping.keyCode]}`;
+            mapping.keyStr = ori;
           }
+        } else {
+          mapping.keyStr = `${keyText[mapping.keyCode]}`;
         }
         break;
       case KeyMappingType.Mousue:
@@ -1063,19 +1070,19 @@ export const useKeyStore = defineStore('keyinfo', () => {
       case KeyMappingType.ProfileSwitch:
       case KeyMappingType.SpecialFun:
       case KeyMappingType.LightSwitch:
-        if (keyboard.keyboardDefine != undefined && keyboard.keyboardDefine.keyText[mapping.keyRaw] != undefined) {
+        if (keyText[mapping.keyRaw] != undefined) {
           //if (mapping.keyMappingPara == 0x09) {
-          mapping.keyStr = t(keyboard.keyboardDefine.keyText[mapping.keyRaw].valueOf());
+          mapping.keyStr = t(keyText[mapping.keyRaw].valueOf());
           // } else {
-          //   mapping.keyStr = `${keyboard.keyboardDefine.keyText[mapping.keyRaw]}`;
+          //   mapping.keyStr = `${keyText[mapping.keyRaw]}`;
           // }
         }
         break;
       case KeyMappingType.ReportRate:
       case KeyMappingType.FnKey:
       case KeyMappingType.LodKey:
-        if (keyboard.keyboardDefine != undefined && keyboard.keyboardDefine.keyText[mapping.keyRaw] != undefined) {
-          mapping.keyStr = `${keyboard.keyboardDefine.keyText[mapping.keyRaw]}`;
+        if (keyText[mapping.keyRaw] != undefined) {
+          mapping.keyStr = `${keyText[mapping.keyRaw]}`;
         } else {
           mapping.keyStr = 'Unknow';
         }
@@ -1095,7 +1102,14 @@ export const useKeyStore = defineStore('keyinfo', () => {
   };
 
   const keyText = (keyData: KeyTableData | undefined): String => {
-    return keyData == undefined ? '' : keyData.keyMappingData.keyStr;
+    if (keyData == undefined) return '';
+  
+    let keyType = profile.value?.keyTypes[keyMatrixTable.value][keyMatrixLayer.value][keyData.index];
+    if (keyType != null && keyType != undefined && keyType == MatrixTable.MAC) {
+      return keyData.keyMappingData.keyStr;
+    } 
+
+    return keyData.keyMappingData.keyStr;
   };
 
   const keyColor = (key: KeyTableData | undefined): string => {
@@ -1155,7 +1169,7 @@ export const useKeyStore = defineStore('keyinfo', () => {
     }
   }
 
-  const mapping = (keyCode: KeyDefineEnum) => {
+  const mapping = (keyCode: KeyDefineEnum, table: MatrixTable) => {
     let key = undefined;
     let i: number = 0;
     for (i = 0; i < state.keyState.length; i++) {
@@ -1175,7 +1189,11 @@ export const useKeyStore = defineStore('keyinfo', () => {
       key.KeyData.keyMappingData.keyMappingType = keyCode >> 24;
       key.KeyData.keyMappingData.keyMappingPara = (keyCode >> 16) & 0xFF;
       if (keyboard.keyboardDefine != undefined) {
-        key.KeyData.keyMappingData.keyStr = keyboard.keyboardDefine.keyText[keyCode];
+        //key.KeyData.keyMappingData.keyStr = keyboard.keyboardDefine.keyText[keyCode];
+        keySetStr(key.KeyData);
+      }
+      if (profile.value != undefined) {
+        profile.value.keyTypes[keyMatrixTable.value][keyMatrixLayer.value][key.index] = table;
       }
       KeyMatrixData.value[keyMatrixTable.value][keyMatrixLayer.value]?.setKeyMapping(key.index, key.KeyData.keyMappingData);
       rk_l87.value?.setKeyMatrix(keyMatrixLayer.value, keyMatrixTable.value, 0);
@@ -1229,7 +1247,6 @@ export const useKeyStore = defineStore('keyinfo', () => {
       keyCode: code,
       index: index,
       keyMappingData: fillKeyMappingData(code),
-
     }
     kState.KeyData = key
 

@@ -14,10 +14,12 @@ export class Profile {
     profile?: Uint8Array;
     ledEffect?: Uint8Array;
     ledColors?: Uint8Array;
+    keyTypes: Record<number, Record<number, Array<number>>>;
 
     constructor(name: string) {
         this.name = name;
         this.layers = {};
+        this.keyTypes = {};
 
         if (keyboard.keyboardDefine != undefined) {
             let index: any, type: any;
@@ -27,10 +29,18 @@ export class Profile {
                     let layer = keyboard.keyboardDefine.keyMatrixLayer[index];
                     this.add(table, layer, new Uint8Array(512))
                     let keyDatas = new KeyMatrix(new DataView(this.layers[table][layer].buffer));
+
+                    if (!this.keyTypes.hasOwnProperty(table)) {
+                        this.keyTypes[table] = {};
+                    }
+                    this.keyTypes[table][layer] = new Array<number>(128);
+                    let keyType = this.keyTypes[table][layer];
+
                     let layout = keyboard.keyboardDefine?.keyLayout[table][layer];
                     if (layout != undefined) {
                         for (let j = 0; j < layout.length; j++) {
                             keyDatas.setKeyMappingRaw(j, layout[j]);
+                            keyType[j] = MatrixTable.WIN;
                         }
                     }
                 }
@@ -125,6 +135,7 @@ export class Profiles {
                 tm.profile = m.profile;
                 tm.ledEffect = m.ledEffect;
                 tm.ledColors = m.ledColors;
+                tm.keyTypes = m.keyTypes;
                 this.add(tm);
             }
             this.curIndex = tmp.curIndex;

@@ -1,4 +1,4 @@
-import { KeyMappingType } from '../enum';
+import { KeyMappingType, MatrixTable } from '../enum';
 import type { KeyMappingData } from '../interface';
 import type { KeyDefineEnum } from '../keyCode';
 import { KEY_MAXTRIX_LINE, KEY_MAXTRIX_COLOUMN, PACKET_HEAD_LENGTH } from "./packets/packet";

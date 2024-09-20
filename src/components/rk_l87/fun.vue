@@ -30,7 +30,7 @@
                 popper-class="tip_font"
               >
                 <div :class="[`c-p d-flex ai-center jc-center p-3 m-1 bg-grey br-1`, useKey.isFunSelected(item.key)]"
-                     @click="useKey.mapping(item.key)"
+                     @click="useKey.mapping(item.key, item.type)"
                      style="min-width: 24px;">
                   {{ itemText(item) }}
                 </div>
