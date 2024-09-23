@@ -11,6 +11,10 @@ export default {
     but_2: "Select device",
     but_3: "Click to enter",
     but_4: "Close device",
+    profile: "Your locally stored configuration file version is out of date. It is recommended to reset all configuration data for a better experience, otherwise unexpected issues may occur.",
+    profile_out: "Profile out of date",
+    profile_reset: "Reset",
+    profile_goon: "Go on",
   },
   Profile: {
     default: "Default Profile",

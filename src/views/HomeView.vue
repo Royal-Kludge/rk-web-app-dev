@@ -9,10 +9,13 @@ import WebApp from './WebApp.vue'
 import Nodevice from './NoDevice.vue'
 import { Keyboard, keyboard } from '../keyboard/keyboard'
 import { ConnectionEventEnum, ConnectionStatusEnum } from '../keyboard/enum'
-import { ElMessage } from 'element-plus'
+import { ElMessage, ElMessageBox } from 'element-plus'
 import { storage } from '@/keyboard/storage';
 import type { Profiles } from '@/keyboard/rk_l87/profiles';
 import { VERSION } from '@/keyboard/state';
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
 
 const isConnected = ref(false);
 const data = ref(
@@ -81,8 +84,18 @@ const onConnect = async () => {
 
 const checkProfileVersion = () => {
     let tmp = storage.get('profile') as Profiles;
-    if (tmp == null || (tmp != null && (tmp.version == undefined || tmp.version != VERSION))) {
-        storage.clear();
+    if (tmp != null && (tmp.version == undefined || tmp.version != VERSION)) {
+        ElMessageBox.confirm(
+            t('home.profile'),
+            t('home.profile_out'),
+            {
+                confirmButtonText: t('home.profile_reset'),
+                cancelButtonText: t('home.profile_goon'),
+                customClass: 'set-to-default',
+            }
+        ).then(async () => {
+            storage.clear();
+        });
     }
 };
 </script>

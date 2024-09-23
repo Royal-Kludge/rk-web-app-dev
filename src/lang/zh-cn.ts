@@ -11,6 +11,10 @@ export default {
     but_2: "选择设备",
     but_3: "点击进入",
     but_4: "关闭设备",
+    profile: "您本地存储的配置文件已经过期，推荐您重置所有配置数据，如果不重置，可能会出现意想不到的问题。",
+    profile_out: "配置文件已经过期",
+    profile_reset: "重置",
+    profile_goon: "继续",
   },
   Profile: {
     default: "默认配置文件",

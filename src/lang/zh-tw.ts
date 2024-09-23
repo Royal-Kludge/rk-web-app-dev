@@ -11,6 +11,10 @@ export default {
     but_2: "選擇設備",
     but_3: "點擊進入",
     but_4: "關閉設備",
+    profile: "您本地存儲的設定檔已經過期，推薦您重置所有配寘數據，如果不重置，可能會出現意想不到的問題。",
+    profile_out: "設定檔已經過期",
+    profile_reset: "重置",
+    profile_goon: "繼續",
   },
   Profile: {
     default: "默認設定檔",

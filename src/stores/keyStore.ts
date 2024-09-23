@@ -284,7 +284,6 @@ export const useKeyStore = defineStore('keyinfo', () => {
         { key: KeyDefineEnum.KEY_L_WIN, text: "Command", style: "key key1", selected: false, tip: '', type: MatrixTable.MAC },
         { key: KeyDefineEnum.KEY_L_ALT, text: "Option", style: "key key1", selected: false, tip: '', type: MatrixTable.MAC },
         { key: KeyDefineEnum.KEY_L_CTRL, text: "Control", style: "key key1", selected: false, tip: '', type: MatrixTable.MAC },
-        { key: KeyDefineEnum.KEY_SIR, text: "key.fun_1", style: "key", selected: false, tip: 'key.tip1', type: MatrixTable.MAC },
         { key: KeyDefineEnum.MAC_F3, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.MAC_F3], style: "key", selected: false, tip: '', type: MatrixTable.MAC },
         { key: KeyDefineEnum.MAC_F4, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.MAC_F4], style: "key", selected: false, tip: '', type: MatrixTable.MAC },
         { key: KeyDefineEnum.KEY_COM_X, text: "key.fun_2", style: "key", selected: false, tip: 'key.tip2', type: MatrixTable.MAC },
