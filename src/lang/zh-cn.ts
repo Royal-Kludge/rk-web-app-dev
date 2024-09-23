@@ -7,6 +7,7 @@ export default {
     title_4: "当完成配置之后，后台都不用留，只需要保存、关闭、享受即可。",
     title_5: "支持chrome/EDGE/opera三种浏览器，更多设备正在适配中...",
     title_6: "官网：",
+    title_tip: "进入产品驱动。",
     but_1: "连接",
     but_2: "选择设备",
     but_3: "点击进入",

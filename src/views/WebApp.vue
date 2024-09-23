@@ -16,7 +16,14 @@
           <div class="text-black my-4" style="font-size: 120px; font-weight: bold">
             RK-R87PRO
           </div>
-          <div class="my-4 c-p" @click="setMeunid();"><img src="../assets/images/keyboard.png" /></div>
+          <div class="my-4 c-p" @click="setMeunid();">
+            <el-tooltip effect="light"
+                :content="$t('home.title_tip')"
+                placement="top"
+                popper-class="tip_font2">
+              <img src="../assets/images/keyboard.png" />
+            </el-tooltip>
+          </div>
           <div class="d-flex my-4">
             <!-- <div class="but-red text-white py-3 px-5 mx-4 c-p" style="border-radius: 10px;" @click="setMeunid();">
           {{ $t("home.but_3") }}
