@@ -1,5 +1,17 @@
 @import "./_variables.scss";
 
+.keyimg {
+    vertical-align: top;
+    filter: invert(1);
+    width: 21px;
+    height: auto;
+}
+
+.keyimg1 {
+    filter: invert(1) brightness(0);
+    width: 24px;
+}
+
 /* 滑块 */
 .el-slider__bar {
     background-color: #4743A7 !important;
@@ -23,6 +35,7 @@
 .el-slider__stop {
     background-color: transparent !important;
 }
+
 /* 滑块 */
 
 .el-scrollbar__thumb {
@@ -42,10 +55,12 @@
         height: 18px;
     }
 }
-.img-but{
+
+.img-but {
     height: 24px;
 }
-.img-title{
+
+.img-title {
     height: 18px;
 }
 

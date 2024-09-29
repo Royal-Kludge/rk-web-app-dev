@@ -726,7 +726,7 @@ export enum KeyCodeEnum {
     //     Used to pass Unicode characters as if they were keystrokes. The Packet key value
     //     is the low word of a 32-bit virtual-key value used for non-keyboard input methods.
     Packet = 0xE7,
-        //
+    //
     // Summary:
     //     The FN1 key.
     Fn = 0xF5,
@@ -973,394 +973,394 @@ export enum KeyDefineEnum {
     KEY_Y = 0x1c,
     KEY_Z = 0x1d,
 
-    KEY_ESC       = 0x29,       
-    KEY_TAB       = 0x2b,
-    KEY_CAPSLOCK  = 0x39,
+    KEY_ESC = 0x29,
+    KEY_TAB = 0x2b,
+    KEY_CAPSLOCK = 0x39,
     KEY_Backspace = 0x2a,
-    KEY_ENTER     = 0x28,
-    KEY_SPACEBAR  = 0x2c,
+    KEY_ENTER = 0x28,
+    KEY_SPACEBAR = 0x2c,
 
-    KEY_TILDE         = 0x35,   //bo lang
-    KEY_Underscore    = 0x2d,   //xia hua xian
-    KEY_EqualSign     = 0x2e,   //deng hao
-    KEY_L_Brackets    = 0x2f,   //zuo zhong kuo hao
-    KEY_R_Brackets    = 0x30,   //you zhong kuo hao
-    KEY_Slash         = 0x31,   //xie gang      //shu xian
-    KEY_Semicolon     = 0x33,   //fen hao
-    KEY_Quotation     = 0x34,   //yin hao
-    KEY_COMMA         = 0x36,   //dou hao
-    KEY_PERIOD        = 0x37,   //ju hao
+    KEY_TILDE = 0x35,   //bo lang
+    KEY_Underscore = 0x2d,   //xia hua xian
+    KEY_EqualSign = 0x2e,   //deng hao
+    KEY_L_Brackets = 0x2f,   //zuo zhong kuo hao
+    KEY_R_Brackets = 0x30,   //you zhong kuo hao
+    KEY_Slash = 0x31,   //xie gang      //shu xian
+    KEY_Semicolon = 0x33,   //fen hao
+    KEY_Quotation = 0x34,   //yin hao
+    KEY_COMMA = 0x36,   //dou hao
+    KEY_PERIOD = 0x37,   //ju hao
     KEY_Interrogation = 0x38,   //dun hao
-//////////////////////////////
-    KEY_1           = 0x1e,
-    KEY_2           = 0x1f,
-    KEY_3           = 0x20,
-    KEY_4           = 0x21,
-    KEY_5           = 0x22,
-    KEY_6           = 0x23,
-    KEY_7           = 0x24,
-    KEY_8           = 0x25,
-    KEY_9           = 0x26,
-    KEY_0           = 0x27,
-////////////////////////////////
-    KEY_F1         	= 0x3a,
-    KEY_F2         	= 0x3b,
-    KEY_F3         	= 0x3c,
-    KEY_F4         	= 0x3d,
-    KEY_F5         	= 0x3e,
-    KEY_F6         	= 0x3f,
-    KEY_F7         	= 0x40,
-    KEY_F8         	= 0x41,
-    KEY_F9         	= 0x42,
-    KEY_F10        	= 0x43,
-    KEY_F11        	= 0x44,
-    KEY_F12        	= 0x45,
-    KEY_F13        	= 0x68,
-    KEY_F14        	= 0x69,
-    KEY_F15        	= 0x6A,
-            
-    KEY_PRINT		= 0x46,
-    KEY_SCRLOCK    	= 0x47,
-    KEY_PAUSE      	= 0x48,
-    KEY_INS        	= 0x49,
-    KEY_HOME       	= 0x4a,
-    KEY_PGUP       	= 0x4b,
-    KEY_DEL        	= 0x4c,
-    KEY_END        	= 0x4d,
-    KEY_PGDN       	= 0x4e,
+    //////////////////////////////
+    KEY_1 = 0x1e,
+    KEY_2 = 0x1f,
+    KEY_3 = 0x20,
+    KEY_4 = 0x21,
+    KEY_5 = 0x22,
+    KEY_6 = 0x23,
+    KEY_7 = 0x24,
+    KEY_8 = 0x25,
+    KEY_9 = 0x26,
+    KEY_0 = 0x27,
+    ////////////////////////////////
+    KEY_F1 = 0x3a,
+    KEY_F2 = 0x3b,
+    KEY_F3 = 0x3c,
+    KEY_F4 = 0x3d,
+    KEY_F5 = 0x3e,
+    KEY_F6 = 0x3f,
+    KEY_F7 = 0x40,
+    KEY_F8 = 0x41,
+    KEY_F9 = 0x42,
+    KEY_F10 = 0x43,
+    KEY_F11 = 0x44,
+    KEY_F12 = 0x45,
+    KEY_F13 = 0x68,
+    KEY_F14 = 0x69,
+    KEY_F15 = 0x6A,
 
-    KEY_RightArrow 	= 0x4f,
-    KEY_LeftArrow  	= 0x50,
-    KEY_DownArrow  	= 0x51,
-    KEY_UpArrow    	= 0x52,
+    KEY_PRINT = 0x46,
+    KEY_SCRLOCK = 0x47,
+    KEY_PAUSE = 0x48,
+    KEY_INS = 0x49,
+    KEY_HOME = 0x4a,
+    KEY_PGUP = 0x4b,
+    KEY_DEL = 0x4c,
+    KEY_END = 0x4d,
+    KEY_PGDN = 0x4e,
 
-    KEY_NUMLOCK    	= 0x53,
-    KEY_NUM_DIV    	= 0x54,
-    KEY_NUM_MUL    	= 0x55,
-    KEY_NUM_MINUS  	= 0x56,       
-    KEY_NUM_PLUS   	= 0x57,
-    KEY_NUM_ENTER  	= 0x58,
-    KEY_NUM_DOT    	= 0x63,
+    KEY_RightArrow = 0x4f,
+    KEY_LeftArrow = 0x50,
+    KEY_DownArrow = 0x51,
+    KEY_UpArrow = 0x52,
 
-    KEY_NUM_1       = 0x59,
-    KEY_NUM_2       = 0x5a,
-    KEY_NUM_3       = 0x5b,
-    KEY_NUM_4       = 0x5c,           
-    KEY_NUM_5       = 0x5d,
-    KEY_NUM_6       = 0x5e,
-    KEY_NUM_7       = 0x5f,
-    KEY_NUM_8       = 0x60,
-    KEY_NUM_9       = 0x61,
-    KEY_NUM_0       = 0x62,
+    KEY_NUMLOCK = 0x53,
+    KEY_NUM_DIV = 0x54,
+    KEY_NUM_MUL = 0x55,
+    KEY_NUM_MINUS = 0x56,
+    KEY_NUM_PLUS = 0x57,
+    KEY_NUM_ENTER = 0x58,
+    KEY_NUM_DOT = 0x63,
 
-    KEY_CODE29      = 0x31,
-    KEY_CODE42      = 0x32,
-    KEY_CODE45      = 0x64,
-    KEY_APP         = 0x65,
-    KEY_CODE107     = 0x85,
-    KEY_CODE56      = 0x87,
-    KEY_CODE133     = 0x88,
-    KEY_CODE14      = 0x89,
-    KEY_CODE132     = 0x8a,
-    KEY_CODE131     = 0x8b,
-    KEY_CODE151     = 0x90,   //key_Hangul
-    KEY_CODE150     = 0x91,   //Key_Hanja
+    KEY_NUM_1 = 0x59,
+    KEY_NUM_2 = 0x5a,
+    KEY_NUM_3 = 0x5b,
+    KEY_NUM_4 = 0x5c,
+    KEY_NUM_5 = 0x5d,
+    KEY_NUM_6 = 0x5e,
+    KEY_NUM_7 = 0x5f,
+    KEY_NUM_8 = 0x60,
+    KEY_NUM_9 = 0x61,
+    KEY_NUM_0 = 0x62,
 
-//****************************************************************
-//Modify key
-    KEY_L_CTRL      = 0x00010000,
-    KEY_L_SHIFT     = 0x00020000,
-    KEY_L_ALT       = 0x00040000,
-    KEY_L_WIN       = 0x00080000,
-    KEY_R_CTRL      = 0x00100000,
-    KEY_R_SHIFT     = 0x00200000,
-    KEY_R_ALT       = 0x00400000,
-    KEY_R_WIN       = 0x00800000,
-//****************************************************************
-//macro�е�modify key����
-    CTRL_L      	= 0xe0,
-    SHIFT_L      	= 0xe1,
-    ALT_L        	= 0xe2,
-    WIN_L        	= 0xe3,
-    CTRL_R       	= 0xe4,
-    SHIFT_R      	= 0xe5,
-    ALT_R        	= 0xe6,
-    WIN_R        	= 0xe7,
-//****************************************************************
-//macro�е�mouse key����
-    MOUSE_L      	= 0x01,
-    MOUSE_R      	= 0x02,
-    MOUSE_M      	= 0x04,
-    MOUSE_B4     	= 0x08,
-    MOUSE_B5     	= 0x10,
-    MOUSE_LT     	= 0xff,
-    MOUSE_RT        = 0x01,
-    MOUSE_UP     	= 0xff,
-    MOUSE_DN     	= 0x01,
-//****************************************************************
-//��ϼ�����? 
-    KEY_win_shift_4	  	  = 0x000a0000 | KEY_4,
-    KEY_win_shift_3	  	  = 0x000a0000 | KEY_3,
-    KEY_win_shift_ctrl_4  = 0x000b0000 | KEY_4,
-    KEY_WIN_D	  		  = 0x00080000 | KEY_D,
-    KEY_WIN_SPACEBAR	  = 0x00080000 | KEY_SPACEBAR,//SIRI
-    KEY_WIN_TAB	  		  = 0x00080000 | KEY_TAB,//�����񴰿�
-    KEY_WIN_E	  		  = 0x00080000 | KEY_E,//�����б�    
-    KEY_ALT_SPACEBAR	  = 0x00040000 | KEY_SPACEBAR,//SIRI    
-    KEY_CTRL_UP	  		  = 0x00010000 | KEY_UpArrow,
-    KEY_CTRL_DN	  		  = 0x00010000 | KEY_DownArrow,
-    KEY_CTRL_C	  		  = 0x00010000 | KEY_C,
-    KEY_CTRL_V	  		  = 0x00010000 | KEY_V,
-    KEY_ALT_TAB	  		  = 0x0004002B,
-//****************************************************************
-//BYTE1:1�����?2�Ҽ���3�м���4ǰ������5���˼���6��ڡ�?7�Ұڡ�8�Ϲ��֡�9�¹��֡�10X����11X���ҡ�12Y���ϡ�13Y����
-//BYTE2:0xff��������0����һ�Σ����·������룬�ͷŷ��ͷ��룩��1˫����2������
-//BYTE3:�����ظ�ʱ�䣬0Ĭ�ϼ��ʱ��?
-//Mouse key
-    KEY_L_BUTTON		  = 0x01010100,
-    KEY_R_BUTTON		  = 0x01020100,
-    KEY_M_BUTTON		  = 0x01030100,
-    KEY_RB0_BUTTON		  = 0x01040100,
-    KEY_RB1_BUTTON		  = 0x01050100,
-    KEY_TL_BUTTON		  = 0x01060100,
-    KEY_TR_BUTTON		  = 0x01070100,
-    KEY_SCROLLUP_BUTTON   = 0x01080100,
-    KEY_SCROLLDN_BUTTON   = 0x01090100,
-    KEY_MS_X_L   		  = 0x010A0000,
-    KEY_MS_X_R   		  = 0x010B0000,
-    KEY_MS_Y_L   		  = 0x010C0000,
-    KEY_MS_Y_R   		  = 0x010D0000,
-//****************************************************************
-//��ý���?
-    KEY_SysBkBrigthInc    = 0x0200006f,
-    KEY_SysBkBrigthDec    = 0x02000070,
-    KEY_IOSBack           = 0x02000040,//F7
+    KEY_CODE29 = 0x31,
+    KEY_CODE42 = 0x32,
+    KEY_CODE45 = 0x64,
+    KEY_APP = 0x65,
+    KEY_CODE107 = 0x85,
+    KEY_CODE56 = 0x87,
+    KEY_CODE133 = 0x88,
+    KEY_CODE14 = 0x89,
+    KEY_CODE132 = 0x8a,
+    KEY_CODE131 = 0x8b,
+    KEY_CODE151 = 0x90,   //key_Hangul
+    KEY_CODE150 = 0x91,   //Key_Hanja
 
-    KEY_NextTr            = 0x020000b5,//0xE8
-    KEY_PrevTr            = 0x020000b6,//0xE9
-    KEY_Stop              = 0x020000b7,//0xEA
-    KEY_Eject             = 0x020000b8,//0xEB
-    KEY_PlayPause         = 0x020000cd,//0xEC
-    KEY_Mute              = 0x020000E2,//0xED
-    KEY_VolumI            = 0x020000e9,//0xEE  //+
-    KEY_VolumD            = 0x020000ea,//0xEF  //-
+    //****************************************************************
+    //Modify key
+    KEY_L_CTRL = 0x00010000,
+    KEY_L_SHIFT = 0x00020000,
+    KEY_L_ALT = 0x00040000,
+    KEY_L_WIN = 0x00080000,
+    KEY_R_CTRL = 0x00100000,
+    KEY_R_SHIFT = 0x00200000,
+    KEY_R_ALT = 0x00400000,
+    KEY_R_WIN = 0x00800000,
+    //****************************************************************
+    //macro�е�modify key����
+    CTRL_L = 0xe0,
+    SHIFT_L = 0xe1,
+    ALT_L = 0xe2,
+    WIN_L = 0xe3,
+    CTRL_R = 0xe4,
+    SHIFT_R = 0xe5,
+    ALT_R = 0xe6,
+    WIN_R = 0xe7,
+    //****************************************************************
+    //macro�е�mouse key����
+    MOUSE_L = 0x01,
+    MOUSE_R = 0x02,
+    MOUSE_M = 0x04,
+    MOUSE_B4 = 0x08,
+    MOUSE_B5 = 0x10,
+    MOUSE_LT = 0xff,
+    MOUSE_RT = 0x01,
+    MOUSE_UP = 0xff,
+    MOUSE_DN = 0x01,
+    //****************************************************************
+    //��ϼ�����? 
+    KEY_win_shift_4 = 0x000a0000 | KEY_4,
+    KEY_win_shift_3 = 0x000a0000 | KEY_3,
+    KEY_win_shift_ctrl_4 = 0x000b0000 | KEY_4,
+    KEY_WIN_D = 0x00080000 | KEY_D,
+    KEY_WIN_SPACEBAR = 0x00080000 | KEY_SPACEBAR,//SIRI
+    KEY_WIN_TAB = 0x00080000 | KEY_TAB,//�����񴰿�
+    KEY_WIN_E = 0x00080000 | KEY_E,//�����б�    
+    KEY_ALT_SPACEBAR = 0x00040000 | KEY_SPACEBAR,//SIRI    
+    KEY_CTRL_UP = 0x00010000 | KEY_UpArrow,
+    KEY_CTRL_DN = 0x00010000 | KEY_DownArrow,
+    KEY_CTRL_C = 0x00010000 | KEY_C,
+    KEY_CTRL_V = 0x00010000 | KEY_V,
+    KEY_ALT_TAB = 0x0004002B,
+    //****************************************************************
+    //BYTE1:1�����?2�Ҽ���3�м���4ǰ������5���˼���6��ڡ�?7�Ұڡ�8�Ϲ��֡�9�¹��֡�10X����11X���ҡ�12Y���ϡ�13Y����
+    //BYTE2:0xff��������0����һ�Σ����·������룬�ͷŷ��ͷ��룩��1˫����2������
+    //BYTE3:�����ظ�ʱ�䣬0Ĭ�ϼ��ʱ��?
+    //Mouse key
+    KEY_L_BUTTON = 0x01010100,
+    KEY_R_BUTTON = 0x01020100,
+    KEY_M_BUTTON = 0x01030100,
+    KEY_RB0_BUTTON = 0x01040100,
+    KEY_RB1_BUTTON = 0x01050100,
+    KEY_TL_BUTTON = 0x01060100,
+    KEY_TR_BUTTON = 0x01070100,
+    KEY_SCROLLUP_BUTTON = 0x01080100,
+    KEY_SCROLLDN_BUTTON = 0x01090100,
+    KEY_MS_X_L = 0x010A0000,
+    KEY_MS_X_R = 0x010B0000,
+    KEY_MS_Y_L = 0x010C0000,
+    KEY_MS_Y_R = 0x010D0000,
+    //****************************************************************
+    //��ý���?
+    KEY_SysBkBrigthInc = 0x0200006f,
+    KEY_SysBkBrigthDec = 0x02000070,
+    KEY_IOSBack = 0x02000040,//F7
 
-    KEY_Media             = 0x02000183,//F0
-    KEY_Email             = 0x0200018a,//F1
-    KEY_Calculator        = 0x02000192,//F2
-    KEY_MyComputer        = 0x02000194,//F3
-    KEY_Search            = 0x02000221,//F4
-    KEY_WWW               = 0x02000223,//F5
-    KEY_Back              = 0x02000224,//F6
-    KEY_Forward           = 0x02000225,//F7
+    KEY_NextTr = 0x020000b5,//0xE8
+    KEY_PrevTr = 0x020000b6,//0xE9
+    KEY_Stop = 0x020000b7,//0xEA
+    KEY_Eject = 0x020000b8,//0xEB
+    KEY_PlayPause = 0x020000cd,//0xEC
+    KEY_Mute = 0x020000E2,//0xED
+    KEY_VolumI = 0x020000e9,//0xEE  //+
+    KEY_VolumD = 0x020000ea,//0xEF  //-
 
-    KEY_iStop             = 0x02000226,
-    KEY_Refresh           = 0x02000227,
-    KEY_Favorites         = 0x0200022a,
+    KEY_Media = 0x02000183,//F0
+    KEY_Email = 0x0200018a,//F1
+    KEY_Calculator = 0x02000192,//F2
+    KEY_MyComputer = 0x02000194,//F3
+    KEY_Search = 0x02000221,//F4
+    KEY_WWW = 0x02000223,//F5
+    KEY_Back = 0x02000224,//F6
+    KEY_Forward = 0x02000225,//F7
 
-    MAC_F3                = 0x0200029F,
-    MAC_F4                = 0x020002A0,
-    KEY_SIR               = 0x020000CF,
-    KEY_COM_X             = 0x0008001B,
-    KEY_COM_C             = 0x00080006,
-    KEY_COM_V             = 0x00080019,
-    KEY_COM_Z             = 0x0008001D,
-    KEY_SHIFT_COM_Z       = 0x000A001D,
-    KEY_COM_A             = 0x00080004,
-    KEY_COM_F             = 0x00080009,
-    KEY_COM_G             = 0x0008000A,
-    KEY_SHIFT_COM_G       = 0x000A000A,
-    KEY_COM_H             = 0x0008000B,
-    KEY_OPTION_COM_H      = 0x000C000B,
-    KEY_COM_M             = 0x00080010,
-    KEY_OPTION_COM_M      = 0x000C0010,
-    KEY_COM_O             = 0x00080012,
-    KEY_COM_P             = 0x00080013,
-    KEY_COM_S             = 0x00080016,
-    KEY_COM_T             = 0x00080017,
-    KEY_COM_W             = 0x0008001A,
-    KEY_OPTION_COM_W      = 0x000C001A,
-    KEY_OPTION_COM_ESC    = 0x000C0029,
-    KEY_COM_SPACEBAR      = 0x0008002C,
+    KEY_iStop = 0x02000226,
+    KEY_Refresh = 0x02000227,
+    KEY_Favorites = 0x0200022a,
+
+    MAC_F3 = 0x0200029F,
+    MAC_F4 = 0x020002A0,
+    KEY_SIR = 0x020000CF,
+    KEY_COM_X = 0x0008001B,
+    KEY_COM_C = 0x00080006,
+    KEY_COM_V = 0x00080019,
+    KEY_COM_Z = 0x0008001D,
+    KEY_SHIFT_COM_Z = 0x000A001D,
+    KEY_COM_A = 0x00080004,
+    KEY_COM_F = 0x00080009,
+    KEY_COM_G = 0x0008000A,
+    KEY_SHIFT_COM_G = 0x000A000A,
+    KEY_COM_H = 0x0008000B,
+    KEY_OPTION_COM_H = 0x000C000B,
+    KEY_COM_M = 0x00080010,
+    KEY_OPTION_COM_M = 0x000C0010,
+    KEY_COM_O = 0x00080012,
+    KEY_COM_P = 0x00080013,
+    KEY_COM_S = 0x00080016,
+    KEY_COM_T = 0x00080017,
+    KEY_COM_W = 0x0008001A,
+    KEY_OPTION_COM_W = 0x000C001A,
+    KEY_OPTION_COM_ESC = 0x000C0029,
+    KEY_COM_SPACEBAR = 0x0008002C,
     KEY_OPTION_COM_SPACEBAR = 0x000C002C,
     KEY_CTRL_COM_SPACEBAR = 0x0009002C,
-    KEY_CTRL_COM_F        = 0x00090009,
-    KEY_COM_TAB           = 0x0008002B,
-    KEY_SHIFT_COM_5       = 0x000A0022,
-    KEY_SHIFT_COM_3       = 0x000A0020,
-    KEY_SHIFT_COM_4       = 0x000A0021,
-    KEY_SHIFT_COM_N       = 0x000A0011,
-    KEY_COM_COMMA         = 0x00080036,
-//****************************************************************
-//byte3��0x03��ʾ��macro��byte2��������ʾmacro��ѭ����ʽ��byte1��ѭ������  byte0��������ʾmacro���?
-//byte2����ʱ��������
-//0x01	ָ��ѭ��������0x02ѭ������������£�?0x03ѭ������ǰ���ɿ�
-//Macro Key
-    KEY_MACRO0            = 0x03000000,
-    KEY_MACRO1            = 0x03000001,
+    KEY_CTRL_COM_F = 0x00090009,
+    KEY_COM_TAB = 0x0008002B,
+    KEY_SHIFT_COM_5 = 0x000A0022,
+    KEY_SHIFT_COM_3 = 0x000A0020,
+    KEY_SHIFT_COM_4 = 0x000A0021,
+    KEY_SHIFT_COM_N = 0x000A0011,
+    KEY_COM_COMMA = 0x00080036,
+    //****************************************************************
+    //byte3��0x03��ʾ��macro��byte2��������ʾmacro��ѭ����ʽ��byte1��ѭ������  byte0��������ʾmacro���?
+    //byte2����ʱ��������
+    //0x01	ָ��ѭ��������0x02ѭ������������£�?0x03ѭ������ǰ���ɿ�
+    //Macro Key
+    KEY_MACRO0 = 0x03000000,
+    KEY_MACRO1 = 0x03000001,
 
-//****************************************************************
-//ͨ��ð�ݶ˿ڷ����Զ���ļ�ֵ�������������⹦�ܴ�����������?�̶������ӣ�
-//�Զ����?
-    KEY_Define1           = 0x04000001,	
-    KEY_Define2           = 0x04000002,
-//****************************************************************
-    DPI_SWITCH_I          = 0x05010000,
-    DPI_SWITCH_D          = 0x05020000,
-    DPI_SWITCH_L          = 0x05040000,
-    PRFILE_SWITCH_I       = 0x06010000,
-    PRFILE_SWITCH_D       = 0x06020000,
-    PRFILE_SWITCH_L       = 0x06040000,
-//****************************************************************
-//���⹦�ܼ�
-    SP_SWAP_ASDW          = 0x07000000,      //ȡ��ASWD�뷽��
-    SP_Winlock            = 0x07000001,      //WIN Lock
-    SP_Allkeylock         = 0x07000002,      //���м���ס
-    SP_MACRO_REC0         = 0x07000003,      //MACRO¼�Ƽ�
-    SP_ProfileReset       = 0x07000004,      //���в����ָ�Ĭ�� 
-    SP_BT_DEV0			  = 0x07000005,      //����ģʽ0
-    SP_BT_DEV1			  = 0x07000006,      //����ģʽ1
-    SP_BT_DEV2			  = 0x07000007,      //����ģʽ2
-    SP_BT_DEV3			  = 0x07000008,      //2.4Gģʽ
-    SP_BT_DEV4			  = 0x07000009,      //USBģʽ
-    SP_TEST_EMI			  = 0x0700000a,      //���߽������?    
-    SP_LedOnOff			  = 0x0700000b,    
-    SP_BatView			  = 0x0700000c,      //电量显示
-    SP_Power_Mode		  = 0x0700000c,      //电量显示  
-    SP_WinMacMode		  = 0x0700000d,
-    SP_Windows_Mode		  = 0x0700000e,      //����Windows
-    SP_Mac_Mode			  = 0x0700000f,      //����Mac   
-    SP_KB_Mode            = 0x07000010,    
-    SP_O_Mode             = 0x07000022,      //����Mac
-    SP_L_Mode             = 0x07000023,      //����Mac
+    //****************************************************************
+    //ͨ��ð�ݶ˿ڷ����Զ���ļ�ֵ�������������⹦�ܴ�����������?�̶������ӣ�
+    //�Զ����?
+    KEY_Define1 = 0x04000001,
+    KEY_Define2 = 0x04000002,
+    //****************************************************************
+    DPI_SWITCH_I = 0x05010000,
+    DPI_SWITCH_D = 0x05020000,
+    DPI_SWITCH_L = 0x05040000,
+    PRFILE_SWITCH_I = 0x06010000,
+    PRFILE_SWITCH_D = 0x06020000,
+    PRFILE_SWITCH_L = 0x06040000,
+    //****************************************************************
+    //���⹦�ܼ�
+    SP_SWAP_ASDW = 0x07000000,      //ȡ��ASWD�뷽��
+    SP_Winlock = 0x07000001,      //WIN Lock
+    SP_Allkeylock = 0x07000002,      //���м���ס
+    SP_MACRO_REC0 = 0x07000003,      //MACRO¼�Ƽ�
+    SP_ProfileReset = 0x07000004,      //���в����ָ�Ĭ�� 
+    SP_BT_DEV0 = 0x07000005,      //����ģʽ0
+    SP_BT_DEV1 = 0x07000006,      //����ģʽ1
+    SP_BT_DEV2 = 0x07000007,      //����ģʽ2
+    SP_BT_DEV3 = 0x07000008,      //2.4Gģʽ
+    SP_BT_DEV4 = 0x07000009,      //USBģʽ
+    SP_TEST_EMI = 0x0700000a,      //���߽������?    
+    SP_LedOnOff = 0x0700000b,
+    SP_BatView = 0x0700000c,      //电量显示
+    SP_Power_Mode = 0x0700000c,      //电量显示  
+    SP_WinMacMode = 0x0700000d,
+    SP_Windows_Mode = 0x0700000e,      //����Windows
+    SP_Mac_Mode = 0x0700000f,      //����Mac   
+    SP_KB_Mode = 0x07000010,
+    SP_O_Mode = 0x07000022,      //����Mac
+    SP_L_Mode = 0x07000023,      //����Mac
 
-//****************************************************************
-//byte0���̶�0x08
-//byte1��0��Ч�л���1��Ч����2��ɫ�л���3�����л���4�ٶ��л���5������Ϸ����¼�ƣ�6��Ϸ���ֱ��棬7¼��/���棬8��λ��9��Чģʽָ��
-//byte2��0ѭ����1+/��2-/�ң����byte1Ϊ9����������ֵ������ǰģʽ
-//byte3��0��������1����1��2����2
-//�ƹ�ģʽ�趨
-    KEY_LED_MODE0         = 0x08090000, //ֱ���趨Ϊģʽ0
-    KEY_LED_MODE1         = 0x08090100, //ֱ���趨Ϊģʽ1
-    KEY_LED_MODE2         = 0x08090200, //ֱ���趨Ϊģʽ2
-    KEY_LED_MODE3         = 0x08090300, //ֱ���趨Ϊģʽ3
-    KEY_LED_MODE4         = 0x08090400, //ֱ���趨Ϊģʽ0
-    KEY_LED_MODE5         = 0x08090500, //ֱ���趨Ϊģʽ1
-    KEY_LED_MODE6         = 0x08090600, //ֱ���趨Ϊģʽ2
-    KEY_LED_MODE7         = 0x08090700, //ֱ���趨Ϊģʽ3
-    KEY_LED_MODE8         = 0x08090800, //ֱ���趨Ϊģʽ0
-    KEY_LED_MODE9         = 0x08090900, //ֱ���趨Ϊģʽ1
-    KEY_LED_MODE10        = 0x08090A00, //ֱ���趨Ϊģʽ2
-    KEY_LED_MODE11        = 0x08090B00, //ֱ���趨Ϊģʽ3
-    KEY_LED_MODE12        = 0x08090C00, //ֱ���趨Ϊģʽ0
-    KEY_LED_MODE13        = 0x08090D00, //ֱ���趨Ϊģʽ1
-    KEY_LED_MODE14        = 0x08090E00, //ֱ���趨Ϊģʽ2
-    KEY_LED_MODE15        = 0x08090F00, //ֱ���趨Ϊģʽ3
-    KEY_LED_MODE16        = 0x08091000, //ֱ���趨Ϊģʽ0
-    KEY_LED_MODE17        = 0x08091100, //ֱ���趨Ϊģʽ1
-    KEY_LED_MODE18        = 0x08091200, //ֱ���趨Ϊģʽ2
-    KEY_LED_MODE19        = 0x08091300, //ֱ���趨Ϊģʽ3\
+    //****************************************************************
+    //byte0���̶�0x08
+    //byte1��0��Ч�л���1��Ч����2��ɫ�л���3�����л���4�ٶ��л���5������Ϸ����¼�ƣ�6��Ϸ���ֱ��棬7¼��/���棬8��λ��9��Чģʽָ��
+    //byte2��0ѭ����1+/��2-/�ң����byte1Ϊ9����������ֵ������ǰģʽ
+    //byte3��0��������1����1��2����2
+    //�ƹ�ģʽ�趨
+    KEY_LED_MODE0 = 0x08090000, //ֱ���趨Ϊģʽ0
+    KEY_LED_MODE1 = 0x08090100, //ֱ���趨Ϊģʽ1
+    KEY_LED_MODE2 = 0x08090200, //ֱ���趨Ϊģʽ2
+    KEY_LED_MODE3 = 0x08090300, //ֱ���趨Ϊģʽ3
+    KEY_LED_MODE4 = 0x08090400, //ֱ���趨Ϊģʽ0
+    KEY_LED_MODE5 = 0x08090500, //ֱ���趨Ϊģʽ1
+    KEY_LED_MODE6 = 0x08090600, //ֱ���趨Ϊģʽ2
+    KEY_LED_MODE7 = 0x08090700, //ֱ���趨Ϊģʽ3
+    KEY_LED_MODE8 = 0x08090800, //ֱ���趨Ϊģʽ0
+    KEY_LED_MODE9 = 0x08090900, //ֱ���趨Ϊģʽ1
+    KEY_LED_MODE10 = 0x08090A00, //ֱ���趨Ϊģʽ2
+    KEY_LED_MODE11 = 0x08090B00, //ֱ���趨Ϊģʽ3
+    KEY_LED_MODE12 = 0x08090C00, //ֱ���趨Ϊģʽ0
+    KEY_LED_MODE13 = 0x08090D00, //ֱ���趨Ϊģʽ1
+    KEY_LED_MODE14 = 0x08090E00, //ֱ���趨Ϊģʽ2
+    KEY_LED_MODE15 = 0x08090F00, //ֱ���趨Ϊģʽ3
+    KEY_LED_MODE16 = 0x08091000, //ֱ���趨Ϊģʽ0
+    KEY_LED_MODE17 = 0x08091100, //ֱ���趨Ϊģʽ1
+    KEY_LED_MODE18 = 0x08091200, //ֱ���趨Ϊģʽ2
+    KEY_LED_MODE19 = 0x08091300, //ֱ���趨Ϊģʽ3\
 
-    KEY_LED_MODE20        = 0x08092000, //ֱ���趨Ϊģʽ20
-    KEY_LED_MODE21        = 0x08092100, //ֱ���趨Ϊģʽ21
-    KEY_LED_MODE22        = 0x08092200, //ֱ���趨Ϊģʽ22
-//��Ч�л�
-    KEY_LED_MODEL         = 0x08000000, //ֱ���趨Ϊģʽ+
-    KEY_LED_MODEI         = 0x08000100, //ֱ���趨Ϊģʽ-
-    KEY_LED_MODED         = 0x08000200, //ֱ���趨ΪģʽLOOP
+    KEY_LED_MODE20 = 0x08092000, //ֱ���趨Ϊģʽ20
+    KEY_LED_MODE21 = 0x08092100, //ֱ���趨Ϊģʽ21
+    KEY_LED_MODE22 = 0x08092200, //ֱ���趨Ϊģʽ22
+    //��Ч�л�
+    KEY_LED_MODEL = 0x08000000, //ֱ���趨Ϊģʽ+
+    KEY_LED_MODEI = 0x08000100, //ֱ���趨Ϊģʽ-
+    KEY_LED_MODED = 0x08000200, //ֱ���趨ΪģʽLOOP
 
-    KEY_Define_LED_MODEL  = 0x08000300, //ֱ���趨Ϊģʽ+
-    KEY_Define_LED_MODEI  = 0x08000400, //ֱ���趨Ϊģʽ-
-    KEY_Define_LED_MODED  = 0x08000500, //ֱ���趨ΪģʽLOOP
+    KEY_Define_LED_MODEL = 0x08000300, //ֱ���趨Ϊģʽ+
+    KEY_Define_LED_MODEI = 0x08000400, //ֱ���趨Ϊģʽ-
+    KEY_Define_LED_MODED = 0x08000500, //ֱ���趨ΪģʽLOOP
 
 
-//��Ч����
-    KEY_LED_DirectionL    = 0x08010000, //��Ч����LOOP
-    KEY_LED_DirectionI    = 0x08010100, //��Ч������
-    KEY_LED_DirectionD    = 0x08010200, //��Ч������
+    //��Ч����
+    KEY_LED_DirectionL = 0x08010000, //��Ч����LOOP
+    KEY_LED_DirectionI = 0x08010100, //��Ч������
+    KEY_LED_DirectionD = 0x08010200, //��Ч������
 
-//��ɫ�л�
-    KEY_LED_COLOR_MODEI   = 0x08020100, //ֱ���趨Ϊ��ɫ+
-    KEY_LED_COLOR_MODED   = 0x08020200, //ֱ���趨Ϊ��ɫ-
-    KEY_LED_COLOR_MODEL   = 0x08020000, //ֱ���趨Ϊ��ɫLOOP
+    //��ɫ�л�
+    KEY_LED_COLOR_MODEI = 0x08020100, //ֱ���趨Ϊ��ɫ+
+    KEY_LED_COLOR_MODED = 0x08020200, //ֱ���趨Ϊ��ɫ-
+    KEY_LED_COLOR_MODEL = 0x08020000, //ֱ���趨Ϊ��ɫLOOP
 
-//����
-    KEY_LED_LUMINI        = 0x08030100, //ֱ���趨Ϊģʽ+
-    KEY_LED_LUMIND        = 0x08030200, //ֱ���趨Ϊģʽ-
-    KEY_LED_LUMINL        = 0x08030000, //ֱ���趨ΪģʽLOOP
+    //����
+    KEY_LED_LUMINI = 0x08030100, //ֱ���趨Ϊģʽ+
+    KEY_LED_LUMIND = 0x08030200, //ֱ���趨Ϊģʽ-
+    KEY_LED_LUMINL = 0x08030000, //ֱ���趨ΪģʽLOOP
 
-//�ٶ�
-    KEY_LED_BREATHI       = 0x08040100, //  +
-    KEY_LED_BREATHD       = 0x08040200, //  -
-    KEY_LED_BREATHL       = 0x08040000, //  
+    //�ٶ�
+    KEY_LED_BREATHI = 0x08040100, //  +
+    KEY_LED_BREATHD = 0x08040200, //  -
+    KEY_LED_BREATHL = 0x08040000, //  
 
-//¼��
-    SP_LED_REC_Start      = 0x08050000, //LED¼�Ƽ�����
-    SP_LED_REC_Save       = 0x08060000, //LED¼�Ƽ�����
-    SP_LED_REC            = 0x08070000, //LED¼�Ƽ�����/����
-    SP_LED_REC_Reset      = 0x08080000, //LED�ָ���������
+    //¼��
+    SP_LED_REC_Start = 0x08050000, //LED¼�Ƽ�����
+    SP_LED_REC_Save = 0x08060000, //LED¼�Ƽ�����
+    SP_LED_REC = 0x08070000, //LED¼�Ƽ�����/����
+    SP_LED_REC_Reset = 0x08080000, //LED�ָ���������
 
-//logo
-    KEY_LOG_MODEL         = 0x08000001, //ֱ���趨Ϊģʽ+
-    KEY_LOG_MODEI         = 0x08000101, //ֱ���趨Ϊģʽ-
-    KEY_LOG_MODED         = 0x08000201, //ֱ���趨ΪģʽLOOP
+    //logo
+    KEY_LOG_MODEL = 0x08000001, //ֱ���趨Ϊģʽ+
+    KEY_LOG_MODEI = 0x08000101, //ֱ���趨Ϊģʽ-
+    KEY_LOG_MODED = 0x08000201, //ֱ���趨ΪģʽLOOP
 
-    KEY_LOG_DirectionL    = 0x08010001, //��Ч����LOOP
-    KEY_LOG_DirectionI    = 0x08010101, //��Ч������
-    KEY_LOG_DirectionD    = 0x08010201, //��Ч������
+    KEY_LOG_DirectionL = 0x08010001, //��Ч����LOOP
+    KEY_LOG_DirectionI = 0x08010101, //��Ч������
+    KEY_LOG_DirectionD = 0x08010201, //��Ч������
 
-    KEY_LOG_COLOR_MODEI   = 0x08020101, //ֱ���趨Ϊ��ɫ+
-    KEY_LOG_COLOR_MODED   = 0x08020201, //ֱ���趨Ϊ��ɫ-
-    KEY_LOG_COLOR_MODEL   = 0x08020001, //ֱ���趨Ϊ��ɫLOOP
+    KEY_LOG_COLOR_MODEI = 0x08020101, //ֱ���趨Ϊ��ɫ+
+    KEY_LOG_COLOR_MODED = 0x08020201, //ֱ���趨Ϊ��ɫ-
+    KEY_LOG_COLOR_MODEL = 0x08020001, //ֱ���趨Ϊ��ɫLOOP
 
-    KEY_LOG_LUMINI        = 0x08030101, //ֱ���趨Ϊģʽ+
-    KEY_LOG_LUMIND        = 0x08030201, //ֱ���趨Ϊģʽ-
-    KEY_LOG_LUMINL        = 0x08030001, //ֱ���趨ΪģʽLOOP
+    KEY_LOG_LUMINI = 0x08030101, //ֱ���趨Ϊģʽ+
+    KEY_LOG_LUMIND = 0x08030201, //ֱ���趨Ϊģʽ-
+    KEY_LOG_LUMINL = 0x08030001, //ֱ���趨ΪģʽLOOP
 
-    KEY_LOG_BREATHI       = 0x08040101, //ֱ���趨Ϊ�����ٶ�+
-    KEY_LOG_BREATHD       = 0x08040201, //ֱ���趨Ϊ�����ٶ�-
-    KEY_LOG_BREATHL       = 0x08040001, //ֱ���趨Ϊ�����ٶ�LOOP
+    KEY_LOG_BREATHI = 0x08040101, //ֱ���趨Ϊ�����ٶ�+
+    KEY_LOG_BREATHD = 0x08040201, //ֱ���趨Ϊ�����ٶ�-
+    KEY_LOG_BREATHL = 0x08040001, //ֱ���趨Ϊ�����ٶ�LOOP
 
-//ReportRate�趨
-    KEY_REPORT_RATE0      = 0x09000000, //ֱ���趨Ϊ125
-    KEY_REPORT_RATE1      = 0x09000001, //ֱ���趨Ϊ250
-    KEY_REPORT_RATE2      = 0x09000002, //ֱ���趨Ϊ500
-    KEY_REPORT_RATE3      = 0x09000003, //ֱ���趨Ϊ1000
-    KEY_REPORT_RATEI      = 0x09010000, //�ر��ʵ�λ��
-    KEY_REPORT_RATED      = 0x09020000, //�ر��ʵ�λ��
-    KEY_REPORT_RATEL      = 0x09030000, //�ر��ʵ�λѭ��
+    //ReportRate�趨
+    KEY_REPORT_RATE0 = 0x09000000, //ֱ���趨Ϊ125
+    KEY_REPORT_RATE1 = 0x09000001, //ֱ���趨Ϊ250
+    KEY_REPORT_RATE2 = 0x09000002, //ֱ���趨Ϊ500
+    KEY_REPORT_RATE3 = 0x09000003, //ֱ���趨Ϊ1000
+    KEY_REPORT_RATEI = 0x09010000, //�ر��ʵ�λ��
+    KEY_REPORT_RATED = 0x09020000, //�ر��ʵ�λ��
+    KEY_REPORT_RATEL = 0x09030000, //�ر��ʵ�λѭ��
 
-//****************************************************************
-//FN��
-    KEY_Fn1               = 0x0d000000,
-    KEY_Fn2               = 0x0d010000,
-//****************************************************************
-//��Դ��
-    KEY_Power             = 0x10000001,
-    KEY_Sleep             = 0x10000002,
-    KEY_WakeUp            = 0x10000004,
+    //****************************************************************
+    //FN��
+    KEY_Fn1 = 0x0d000000,
+    KEY_Fn2 = 0x0d010000,
+    //****************************************************************
+    //��Դ��
+    KEY_Power = 0x10000001,
+    KEY_Sleep = 0x10000002,
+    KEY_WakeUp = 0x10000004,
 
-    KEY_Tilde             = 0x00020035,
-    KEY_Exclamation       = 0x0002001e,
-    KEY_AtSign            = 0x0002001f,
-    KEY_Sharp             = 0x00020020,
-    KEY_Dollar            = 0x00020021,
-    KEY_Percent           = 0x00020022,
-    KEY_Circumflex        = 0x00020023,
-    KEY_Ampersand         = 0x00020024,
-    KEY_Asterisk          = 0x00020025,
-    KEY_LeftParenthesis   = 0x00020026,
-    KEY_RightParenthesis  = 0x00020027,
-    KEY_Underscore2       = 0x0002002D,
-    KEY_Plus              = 0x0002002E,
-    KEY_LeftBrace         = 0x0002002F,
-    KEY_RightBrace        = 0x00020030,
-    KEY_Pipe              = 0x00020031,
-    KEY_Colon             = 0x00020033,
-    KEY_DoubleQuote       = 0x00020034,
-    KEY_LessSign          = 0x00020036,
-    KEY_GreaterSign       = 0x00020037,
-    KEY_Question          = 0x00020038,    
+    KEY_Tilde = 0x00020035,
+    KEY_Exclamation = 0x0002001e,
+    KEY_AtSign = 0x0002001f,
+    KEY_Sharp = 0x00020020,
+    KEY_Dollar = 0x00020021,
+    KEY_Percent = 0x00020022,
+    KEY_Circumflex = 0x00020023,
+    KEY_Ampersand = 0x00020024,
+    KEY_Asterisk = 0x00020025,
+    KEY_LeftParenthesis = 0x00020026,
+    KEY_RightParenthesis = 0x00020027,
+    KEY_Underscore2 = 0x0002002D,
+    KEY_Plus = 0x0002002E,
+    KEY_LeftBrace = 0x0002002F,
+    KEY_RightBrace = 0x00020030,
+    KEY_Pipe = 0x00020031,
+    KEY_Colon = 0x00020033,
+    KEY_DoubleQuote = 0x00020034,
+    KEY_LessSign = 0x00020036,
+    KEY_GreaterSign = 0x00020037,
+    KEY_Question = 0x00020038,
 }
 
 export const KeyText: Record<number, String> = {
@@ -1392,7 +1392,7 @@ export const KeyText: Record<number, String> = {
     0x1c: 'Y',
     0x1d: 'Z',
 
-    0x29: 'ESC',       
+    0x29: 'ESC',
     0x2b: 'TAB',
     0x39: 'CAPS',
     0x2a: 'BackSpace',
@@ -1410,7 +1410,7 @@ export const KeyText: Record<number, String> = {
     0x36: '<,',   //dou hao
     0x37: '>.',   //ju hao
     0x38: '?/',   //dun hao
-//////////////////////////////
+    //////////////////////////////
     0x1e: '1!',
     0x1f: '2@',
     0x20: '3#',
@@ -1421,7 +1421,7 @@ export const KeyText: Record<number, String> = {
     0x25: '8*',
     0x26: '9(',
     0x27: '0)',
-////////////////////
+    ////////////////////
     0x3a: 'F1',
     0x3b: 'F2',
     0x3c: 'F3',
@@ -1437,7 +1437,7 @@ export const KeyText: Record<number, String> = {
     0x68: 'F13',
     0x69: 'F14',
     0x6A: 'F15',
-            
+
     0x46: 'Print',
     0x47: 'ScrLock',
     0x48: 'Pause',
@@ -1456,7 +1456,7 @@ export const KeyText: Record<number, String> = {
     0x53: 'NumLock',
     0x54: '/',
     0x55: '*',
-    0x56: '-',       
+    0x56: '-',
     0x57: '+',
     0x58: 'Enter',
     0x63: '.',
@@ -1464,7 +1464,7 @@ export const KeyText: Record<number, String> = {
     0x59: '1',
     0x5a: '2',
     0x5b: '3',
-    0x5c: '4',           
+    0x5c: '4',
     0x5d: '5',
     0x5e: '6',
     0x5f: '7',
@@ -1485,8 +1485,8 @@ export const KeyText: Record<number, String> = {
     0x90: '',   //key_Hangul
     0x91: '',   //Key_Hanja
 
-//****************************************************************
-//Modify key
+    //****************************************************************
+    //Modify key
     0x00010000: 'L-Ctrl',
     0x00020000: 'L-Shift',
     0x00040000: 'L-Alt',
@@ -1495,8 +1495,8 @@ export const KeyText: Record<number, String> = {
     0x00200000: 'R-Shift',
     0x00400000: 'R-Alt',
     0x00800000: 'R-Win',
-//****************************************************************
-//macro�е�modify key����
+    //****************************************************************
+    //macro�е�modify key����
     0xe0: 'L-Ctrl',
     0xe1: 'L-Shift',
     0xe2: 'L-Alt',
@@ -1505,8 +1505,8 @@ export const KeyText: Record<number, String> = {
     0xe5: 'R-Shift',
     0xe6: 'R-Alt',
     0xe7: 'R-Win',
-//****************************************************************
-//macro�е�mouse key����
+    //****************************************************************
+    //macro�е�mouse key����
     0x01: 'Mouse-L',
     0x02: 'Mouse-R',
     //0x04: 'Mouse-M',
@@ -1516,8 +1516,8 @@ export const KeyText: Record<number, String> = {
     //0x01: 'Mouse-RT',
     //0xff: 'Mouse-UP',
     //0x01: 'Mouse-DN',
-//****************************************************************
-//��ϼ�����? 
+    //****************************************************************
+    //��ϼ�����? 
     //KEY_win_shift_4	  	  : 'Win + Shift + 4',
     //KEY_win_shift_3	  	  : 'Win + Shift + 4',
     //KEY_win_shift_ctrl_4  : 'Win + Shift + Ctrl + 4',
@@ -1531,11 +1531,11 @@ export const KeyText: Record<number, String> = {
     //KEY_CTRL_C	  		  : 'Ctrl + C',
     //KEY_CTRL_V	  		  : 'Ctrl + V',
     //KEY_ALT_TAB	  		  : 'Alt + Tab',
-//****************************************************************
-//BYTE1:1�����?2�Ҽ���3�м���4ǰ������5���˼���6��ڡ�?7�Ұڡ�8�Ϲ��֡�9�¹��֡�10X����11X���ҡ�12Y���ϡ�13Y����
-//BYTE2:0xff��������0����һ�Σ����·������룬�ͷŷ��ͷ��룩��1˫����2������
-//BYTE3:�����ظ�ʱ�䣬0Ĭ�ϼ��ʱ��?
-//Mouse key
+    //****************************************************************
+    //BYTE1:1�����?2�Ҽ���3�м���4ǰ������5���˼���6��ڡ�?7�Ұڡ�8�Ϲ��֡�9�¹��֡�10X����11X���ҡ�12Y���ϡ�13Y����
+    //BYTE2:0xff��������0����һ�Σ����·������룬�ͷŷ��ͷ��룩��1˫����2������
+    //BYTE3:�����ظ�ʱ�䣬0Ĭ�ϼ��ʱ��?
+    //Mouse key
     0x01010100: 'L-Button',
     0x01020100: 'R-Button',
     0x01030100: 'M-Button',
@@ -1549,8 +1549,8 @@ export const KeyText: Record<number, String> = {
     0x010B0000: 'MX-X-R',
     0x010C0000: 'MS-Y-L',
     0x010D0000: 'MS-Y-R',
-//****************************************************************
-//��ý���?
+    //****************************************************************
+    //��ý���?
     0x0200006f: 'SysBkBrigthInc',
     0x02000070: 'SysBkBrigthDec',
     0x02000040: 'IOSBack',//F7
@@ -1580,18 +1580,18 @@ export const KeyText: Record<number, String> = {
     0x020000CF: 'Siri',
     0x0200029F: 'MAC-F3',
     0x020002A0: 'MAC-F4',
-//****************************************************************
-//byte3��0x03��ʾ��macro��byte2��������ʾmacro��ѭ����ʽ��byte1��ѭ������  byte0��������ʾmacro���?
-//byte2����ʱ��������
-//0x01	ָ��ѭ��������0x02ѭ������������£�?0x03ѭ������ǰ���ɿ�
-//Macro Key
+    //****************************************************************
+    //byte3��0x03��ʾ��macro��byte2��������ʾmacro��ѭ����ʽ��byte1��ѭ������  byte0��������ʾmacro���?
+    //byte2����ʱ��������
+    //0x01	ָ��ѭ��������0x02ѭ������������£�?0x03ѭ������ǰ���ɿ�
+    //Macro Key
     0x03000000: 'Macro0',
     0x03000001: 'Macro1',
 
-//****************************************************************
-//ͨ��ð�ݶ˿ڷ����Զ���ļ�ֵ�������������⹦�ܴ�����������?�̶������ӣ�
-//�Զ����?
-    0x04000001: 'Define1',	
+    //****************************************************************
+    //ͨ��ð�ݶ˿ڷ����Զ���ļ�ֵ�������������⹦�ܴ�����������?�̶������ӣ�
+    //�Զ����?
+    0x04000001: 'Define1',
     0x04000002: 'Define2',
     0x05010000: 'DpiSwitch+',
     0x05020000: 'DpiSwitch-',
@@ -1599,7 +1599,7 @@ export const KeyText: Record<number, String> = {
     0x06010000: 'ProfileSwitch+',
     0x06020000: 'ProfileSwitch-',
     0x06040000: 'ProfileSwitchLoop',
-//****************************************************************
+    //****************************************************************
     0x07000000: 'InvertASWD',      //ȡ��ASWD�뷽��
     0x07000001: 'WinLock',      //WIN Lock
     0x07000002: 'AllLock',      //���м���ס
@@ -1611,138 +1611,138 @@ export const KeyText: Record<number, String> = {
     0x07000008: '2.4G',      //2.4Gģʽ
     0x07000009: 'USB',      //USBģʽ
     0x0700000a: 'WirelessTest',      //���߽������?    
-    0x0700000b: 'Unknow',    
+    0x0700000b: 'Unknow',
     0x0700000c: 'Battery',      //电量显示 
     0x0700000d: 'Unknow',
     0x0700000e: 'Windows',      //����Windows
     0x0700000f: 'Mac',      //����Mac   
-    0x07000010: 'Unknow',    
+    0x07000010: 'Unknow',
     0x07000022: 'Mac',      //����Mac
     0x07000023: 'Mac',      //����Mac
-//****************************************************************
-//byte0���̶�0x08
-//byte1��0��Ч�л���1��Ч����2��ɫ�л���3�����л���4�ٶ��л���5������Ϸ����¼�ƣ�6��Ϸ���ֱ��棬7¼��/���棬8��λ��9��Чģʽָ��
-//byte2��0ѭ����1+/��2-/�ң����byte1Ϊ9����������ֵ������ǰģʽ
-//byte3��0��������1����1��2����2
-//�ƹ�ģʽ�趨
-    0x08090000:  'light.menu_0', //ֱ���趨Ϊģʽ0
-    0x08090100:  'light.menu_1', //ֱ���趨Ϊģʽ1
-    0x08090200:  'light.menu_2', //ֱ���趨Ϊģʽ2
-    0x08090300:  'light.menu_3', //ֱ���趨Ϊģʽ3
+    //****************************************************************
+    //byte0���̶�0x08
+    //byte1��0��Ч�л���1��Ч����2��ɫ�л���3�����л���4�ٶ��л���5������Ϸ����¼�ƣ�6��Ϸ���ֱ��棬7¼��/���棬8��λ��9��Чģʽָ��
+    //byte2��0ѭ����1+/��2-/�ң����byte1Ϊ9����������ֵ������ǰģʽ
+    //byte3��0��������1����1��2����2
+    //�ƹ�ģʽ�趨
+    0x08090000: 'light.menu_0', //ֱ���趨Ϊģʽ0
+    0x08090100: 'light.menu_1', //ֱ���趨Ϊģʽ1
+    0x08090200: 'light.menu_2', //ֱ���趨Ϊģʽ2
+    0x08090300: 'light.menu_3', //ֱ���趨Ϊģʽ3
 
-    0x08092000:  'LedMode20', //ֱ���趨Ϊģʽ20
-    0x08092100:  'LedMode21', //ֱ���趨Ϊģʽ21
-    0x08092200:  'LedMode22', //ֱ���趨Ϊģʽ22
-//��Ч�л�
-    0x08000000:  'LedMode+', //ֱ���趨Ϊģʽ+
-    0x08000100:  'LedMode-', //ֱ���趨Ϊģʽ-
-    0x08000200:  'LedModeLoop', //ֱ���趨ΪģʽLOOP
+    0x08092000: 'LedMode20', //ֱ���趨Ϊģʽ20
+    0x08092100: 'LedMode21', //ֱ���趨Ϊģʽ21
+    0x08092200: 'LedMode22', //ֱ���趨Ϊģʽ22
+    //��Ч�л�
+    0x08000000: 'LedMode+', //ֱ���趨Ϊģʽ+
+    0x08000100: 'LedMode-', //ֱ���趨Ϊģʽ-
+    0x08000200: 'LedModeLoop', //ֱ���趨ΪģʽLOOP
 
-    0x08000300:  'DefineLedModel+', //ֱ���趨Ϊģʽ+
-    0x08000400:  'DefineLedModel-', //ֱ���趨Ϊģʽ-
-    0x08000500:  'DefineLedModelLoop', //ֱ���趨ΪģʽLOOP
+    0x08000300: 'DefineLedModel+', //ֱ���趨Ϊģʽ+
+    0x08000400: 'DefineLedModel-', //ֱ���趨Ϊģʽ-
+    0x08000500: 'DefineLedModelLoop', //ֱ���趨ΪģʽLOOP
 
-//��Ч����
-    0x08010000:  'LedDirctionLoop', //��Ч����LOOP
-    0x08010100:  'LedDirction+', //��Ч������
-    0x08010200:  'LedDirction-', //��Ч������
+    //��Ч����
+    0x08010000: 'LedDirctionLoop', //��Ч����LOOP
+    0x08010100: 'LedDirction+', //��Ч������
+    0x08010200: 'LedDirction-', //��Ч������
 
-//��ɫ�л�
-    0x08020100:  'LedColorMode+', //ֱ���趨Ϊ��ɫ+
-    0x08020200:  'LedColorMode-', //ֱ���趨Ϊ��ɫ-
-    0x08020000:  'LedColorModeLoop', //ֱ���趨Ϊ��ɫLOOP
+    //��ɫ�л�
+    0x08020100: 'LedColorMode+', //ֱ���趨Ϊ��ɫ+
+    0x08020200: 'LedColorMode-', //ֱ���趨Ϊ��ɫ-
+    0x08020000: 'LedColorModeLoop', //ֱ���趨Ϊ��ɫLOOP
 
-//����
-    0x08030100:  'light.fun_1', //ֱ���趨Ϊģʽ+
-    0x08030200:  'light.fun_2', //ֱ���趨Ϊģʽ-
-    0x08030000:  'LedLuminLoop', //ֱ���趨ΪģʽLOOP
+    //����
+    0x08030100: 'light.fun_1', //ֱ���趨Ϊģʽ+
+    0x08030200: 'light.fun_2', //ֱ���趨Ϊģʽ-
+    0x08030000: 'LedLuminLoop', //ֱ���趨ΪģʽLOOP
 
-//�ٶ�
-    0x08040100:  'light.fun_3', //  +
-    0x08040200:  'light.fun_4', //  -
-    0x08040000:  'LedBreathLoop', //  
+    //�ٶ�
+    0x08040100: 'light.fun_3', //  +
+    0x08040200: 'light.fun_4', //  -
+    0x08040000: 'LedBreathLoop', //  
 
-//¼��
-    0x08050000:  'LedRecStart', //LED¼�Ƽ�����
-    0x08060000:  'LedRecSave', //LED¼�Ƽ�����
-    0x08070000:  'LedRec', //LED¼�Ƽ�����/����
-    0x08080000:  'LedRecReset', //LED�ָ���������
+    //¼��
+    0x08050000: 'LedRecStart', //LED¼�Ƽ�����
+    0x08060000: 'LedRecSave', //LED¼�Ƽ�����
+    0x08070000: 'LedRec', //LED¼�Ƽ�����/����
+    0x08080000: 'LedRecReset', //LED�ָ���������
 
-//logo
-    0x08000001:  'LogoModelLoop', //ֱ���趨Ϊģʽ+
-    0x08000101:  'LogoModel+', //ֱ���趨Ϊģʽ-
-    0x08000201:  'LogoModel-', //ֱ���趨ΪģʽLOOP
+    //logo
+    0x08000001: 'LogoModelLoop', //ֱ���趨Ϊģʽ+
+    0x08000101: 'LogoModel+', //ֱ���趨Ϊģʽ-
+    0x08000201: 'LogoModel-', //ֱ���趨ΪģʽLOOP
 
-    0x08010001:  'LogoDirectionLoop', //��Ч����LOOP
-    0x08010101:  'LogoDirection+', //��Ч������
-    0x08010201:  'LogoDirection-', //��Ч������
+    0x08010001: 'LogoDirectionLoop', //��Ч����LOOP
+    0x08010101: 'LogoDirection+', //��Ч������
+    0x08010201: 'LogoDirection-', //��Ч������
 
-    0x08020101:  'LogoColorMode+', //ֱ���趨Ϊ��ɫ+
-    0x08020201:  'LogoColorMode-', //ֱ���趨Ϊ��ɫ-
-    0x08020001:  'LogoColorModeLoop', //ֱ���趨Ϊ��ɫLOOP
+    0x08020101: 'LogoColorMode+', //ֱ���趨Ϊ��ɫ+
+    0x08020201: 'LogoColorMode-', //ֱ���趨Ϊ��ɫ-
+    0x08020001: 'LogoColorModeLoop', //ֱ���趨Ϊ��ɫLOOP
 
-    0x08030101:  'LogoLumin+', //ֱ���趨Ϊģʽ+
-    0x08030201:  'LogoLumin-', //ֱ���趨Ϊģʽ-
-    0x08030001:  'LogoLuminLoop', //ֱ���趨ΪģʽLOOP
+    0x08030101: 'LogoLumin+', //ֱ���趨Ϊģʽ+
+    0x08030201: 'LogoLumin-', //ֱ���趨Ϊģʽ-
+    0x08030001: 'LogoLuminLoop', //ֱ���趨ΪģʽLOOP
 
-    0x08040101:  'LogoBreath+', //ֱ���趨Ϊ�����ٶ�+
-    0x08040201:  'LogoBreath-', //ֱ���趨Ϊ�����ٶ�-
-    0x08040001:  'LogoBreathLoop', //ֱ���趨Ϊ�����ٶ�LOOP
+    0x08040101: 'LogoBreath+', //ֱ���趨Ϊ�����ٶ�+
+    0x08040201: 'LogoBreath-', //ֱ���趨Ϊ�����ٶ�-
+    0x08040001: 'LogoBreathLoop', //ֱ���趨Ϊ�����ٶ�LOOP
 
-//ReportRate�趨
-    0x09000000:  'ReportRate125', //ֱ���趨Ϊ125
-    0x09000001:  'ReportRate250', //ֱ���趨Ϊ250
-    0x09000002:  'ReportRate500', //ֱ���趨Ϊ500
-    0x09000003:  'ReportRate1000', //ֱ���趨Ϊ1000
-    0x09010000:  'ReportRate+', //�ر��ʵ�λ��
-    0x09020000:  'ReportRate-', //�ر��ʵ�λ��
-    0x09030000:  'ReportRateLoop', //�ر��ʵ�λѭ��
+    //ReportRate�趨
+    0x09000000: 'ReportRate125', //ֱ���趨Ϊ125
+    0x09000001: 'ReportRate250', //ֱ���趨Ϊ250
+    0x09000002: 'ReportRate500', //ֱ���趨Ϊ500
+    0x09000003: 'ReportRate1000', //ֱ���趨Ϊ1000
+    0x09010000: 'ReportRate+', //�ر��ʵ�λ��
+    0x09020000: 'ReportRate-', //�ر��ʵ�λ��
+    0x09030000: 'ReportRateLoop', //�ر��ʵ�λѭ��
 
-    0x0d000000:  'Fn1',
-    0x0d010000:  'Fn2',
-//��Դ��
-    0x10000001:  'Power',
-    0x10000002:  'Sleep',
-    0x10000004:  'WakeUp',
+    0x0d000000: 'Fn1',
+    0x0d010000: 'Fn2',
+    //��Դ��
+    0x10000001: 'Power',
+    0x10000002: 'Sleep',
+    0x10000004: 'WakeUp',
 
-    0x00020035:  '~',
-    0x0002001e:  '!',
-    0x0002001f:  '@',
-    0x00020020:  '#',
-    0x00020021:  '$',
-    0x00020022:  '%',
-    0x00020023:  '^',
-    0x00020024:  '&',
-    0x00020025:  '*',
-    0x00020026:  '(',
-    0x00020027:  ')',
-    0x0002002D:  '_',
-    0x0002002E:  '+',
-    0x0002002F:  '{',
-    0x00020030:  '}',
-    0x00020031:  '|',
-    0x00020033:  ':',
-    0x00020034:  '"',
-    0x00020036:  '<',
-    0x00020037:  '>',
-    0x00020038:  '?',
+    0x00020035: '~',
+    0x0002001e: '!',
+    0x0002001f: '@',
+    0x00020020: '#',
+    0x00020021: '$',
+    0x00020022: '%',
+    0x00020023: '^',
+    0x00020024: '&',
+    0x00020025: '*',
+    0x00020026: '(',
+    0x00020027: ')',
+    0x0002002D: '_',
+    0x0002002E: '+',
+    0x0002002F: '{',
+    0x00020030: '}',
+    0x00020031: '|',
+    0x00020033: ':',
+    0x00020034: '"',
+    0x00020036: '<',
+    0x00020037: '>',
+    0x00020038: '?',
 
-    0x08090400:  'light.menu_4',
-    0x08090500:  'light.menu_5',
-    0x08090600:  'light.menu_6',
-    0x08090700:  'light.menu_7',
-    0x08090800:  'light.menu_8',
-    0x08090900:  'light.menu_9',
-    0x08090A00:  'light.menu_10',
-    0x08090B00:  'light.menu_11',
-    0x08090C00:  'light.menu_12',
-    0x08090D00:  'light.menu_13',
-    0x08090E00:  'light.menu_14',
-    0x08090F00:  'light.menu_15',
-    0x08091000:  'light.menu_16',
-    0x08091100:  'light.menu_17',
-    0x08091200:  'light.menu_18',
-    0x08091300:  'light.menu_19',
+    0x08090400: 'light.menu_4',
+    0x08090500: 'light.menu_5',
+    0x08090600: 'light.menu_6',
+    0x08090700: 'light.menu_7',
+    0x08090800: 'light.menu_8',
+    0x08090900: 'light.menu_9',
+    0x08090A00: 'light.menu_10',
+    0x08090B00: 'light.menu_11',
+    0x08090C00: 'light.menu_12',
+    0x08090D00: 'light.menu_13',
+    0x08090E00: 'light.menu_14',
+    0x08090F00: 'light.menu_15',
+    0x08091000: 'light.menu_16',
+    0x08091100: 'light.menu_17',
+    0x08091200: 'light.menu_18',
+    0x08091300: 'light.menu_19',
 }
 
 export const KeyText_2: Record<number, String> = {
@@ -1774,7 +1774,7 @@ export const KeyText_2: Record<number, String> = {
     0x1c: 'Y',
     0x1d: 'Z',
 
-    0x29: 'ESE',       
+    0x29: 'ESE',
     0x2b: 'TAB',
     0x39: 'CAPS',
     0x2a: 'BackSpace',
@@ -1792,7 +1792,7 @@ export const KeyText_2: Record<number, String> = {
     0x36: '<',   //dou hao
     0x37: '>',   //ju hao
     0x38: '?',   //dun hao
-//////////////////////////////
+    //////////////////////////////
     0x1e: '1',
     0x1f: '2',
     0x20: '3',
@@ -1803,7 +1803,7 @@ export const KeyText_2: Record<number, String> = {
     0x25: '8',
     0x26: '9',
     0x27: '0',
-////////////////////
+    ////////////////////
     0x3a: 'F1',
     0x3b: 'F2',
     0x3c: 'F3',
@@ -1819,7 +1819,7 @@ export const KeyText_2: Record<number, String> = {
     0x68: 'F13',
     0x69: 'F14',
     0x6A: 'F15',
-            
+
     0x46: 'Print',
     0x47: 'ScrLock',
     0x48: 'Pause',
@@ -1838,7 +1838,7 @@ export const KeyText_2: Record<number, String> = {
     0x53: 'NumLock',
     0x54: '/',
     0x55: '*',
-    0x56: '-',       
+    0x56: '-',
     0x57: '+',
     0x58: 'Enter',
     0x63: '.',
@@ -1846,7 +1846,7 @@ export const KeyText_2: Record<number, String> = {
     0x59: '1',
     0x5a: '2',
     0x5b: '3',
-    0x5c: '4',           
+    0x5c: '4',
     0x5d: '5',
     0x5e: '6',
     0x5f: '7',
@@ -1867,8 +1867,8 @@ export const KeyText_2: Record<number, String> = {
     0x90: '',   //key_Hangul
     0x91: '',   //Key_Hanja
 
-//****************************************************************
-//Modify key
+    //****************************************************************
+    //Modify key
     0x00010000: 'L-Ctrl',
     0x00020000: 'L-Shift',
     0x00040000: 'L-Alt',
@@ -1877,8 +1877,8 @@ export const KeyText_2: Record<number, String> = {
     0x00200000: 'R-Shift',
     0x00400000: 'R-Alt',
     0x00800000: 'R-Win',
-//****************************************************************
-//macro�е�modify key����
+    //****************************************************************
+    //macro�е�modify key����
     0xe0: 'L-Ctrl',
     0xe1: 'L-Shift',
     0xe2: 'L-Alt',
@@ -1887,8 +1887,8 @@ export const KeyText_2: Record<number, String> = {
     0xe5: 'R-Shift',
     0xe6: 'R-Alt',
     0xe7: 'R-Win',
-//****************************************************************
-//macro�е�mouse key����
+    //****************************************************************
+    //macro�е�mouse key����
     0x01: 'Mouse-L',
     0x02: 'Mouse-R',
     //0x04: 'Mouse-M',
@@ -1898,8 +1898,8 @@ export const KeyText_2: Record<number, String> = {
     //0x01: 'Mouse-RT',
     //0xff: 'Mouse-UP',
     //0x01: 'Mouse-DN',
-//****************************************************************
-//��ϼ�����? 
+    //****************************************************************
+    //��ϼ�����? 
     //KEY_win_shift_4	  	  : 'Win + Shift + 4',
     //KEY_win_shift_3	  	  : 'Win + Shift + 4',
     //KEY_win_shift_ctrl_4  : 'Win + Shift + Ctrl + 4',
@@ -1913,11 +1913,11 @@ export const KeyText_2: Record<number, String> = {
     //KEY_CTRL_C	  		  : 'Ctrl + C',
     //KEY_CTRL_V	  		  : 'Ctrl + V',
     //KEY_ALT_TAB	  		  : 'Alt + Tab',
-//****************************************************************
-//BYTE1:1�����?2�Ҽ���3�м���4ǰ������5���˼���6��ڡ�?7�Ұڡ�8�Ϲ��֡�9�¹��֡�10X����11X���ҡ�12Y���ϡ�13Y����
-//BYTE2:0xff��������0����һ�Σ����·������룬�ͷŷ��ͷ��룩��1˫����2������
-//BYTE3:�����ظ�ʱ�䣬0Ĭ�ϼ��ʱ��?
-//Mouse key
+    //****************************************************************
+    //BYTE1:1�����?2�Ҽ���3�м���4ǰ������5���˼���6��ڡ�?7�Ұڡ�8�Ϲ��֡�9�¹��֡�10X����11X���ҡ�12Y���ϡ�13Y����
+    //BYTE2:0xff��������0����һ�Σ����·������룬�ͷŷ��ͷ��룩��1˫����2������
+    //BYTE3:�����ظ�ʱ�䣬0Ĭ�ϼ��ʱ��?
+    //Mouse key
     0x01010100: 'L-Button',
     0x01020100: 'R-Button',
     0x01030100: 'M-Button',
@@ -1931,8 +1931,8 @@ export const KeyText_2: Record<number, String> = {
     0x010B0000: 'MX-X-R',
     0x010C0000: 'MS-Y-L',
     0x010D0000: 'MS-Y-R',
-//****************************************************************
-//��ý���?
+    //****************************************************************
+    //��ý���?
     0x0200006f: 'SysBkBrigthInc',
     0x02000070: 'SysBkBrigthDec',
     0x02000040: 'IOSBack',//F7
@@ -1962,20 +1962,20 @@ export const KeyText_2: Record<number, String> = {
     0x020000CF: 'Siri',
     0x0200029F: 'MAC-F3',
     0x020002A0: 'MAC-F4',
-//****************************************************************
-//byte3��0x03��ʾ��macro��byte2��������ʾmacro��ѭ����ʽ��byte1��ѭ������  byte0��������ʾmacro���?
-//byte2����ʱ��������
-//0x01	ָ��ѭ��������0x02ѭ������������£�?0x03ѭ������ǰ���ɿ�
-//Macro Key
+    //****************************************************************
+    //byte3��0x03��ʾ��macro��byte2��������ʾmacro��ѭ����ʽ��byte1��ѭ������  byte0��������ʾmacro���?
+    //byte2����ʱ��������
+    //0x01	ָ��ѭ��������0x02ѭ������������£�?0x03ѭ������ǰ���ɿ�
+    //Macro Key
     0x03000000: 'Macro0',
     0x03000001: 'Macro1',
 
-//****************************************************************
-//ͨ��ð�ݶ˿ڷ����Զ���ļ�ֵ�������������⹦�ܴ�����������?�̶������ӣ�
-//�Զ����?
-    0x04000001: 'Define1',	
+    //****************************************************************
+    //ͨ��ð�ݶ˿ڷ����Զ���ļ�ֵ�������������⹦�ܴ�����������?�̶������ӣ�
+    //�Զ����?
+    0x04000001: 'Define1',
     0x04000002: 'Define2',
-//****************************************************************
+    //****************************************************************
     0x0d000000: 'Fn1',
     0x0d010000: 'Fn2'
 }
@@ -2009,7 +2009,7 @@ export const KeyText_Mac: Record<number, String> = {
     0x1c: 'Y',
     0x1d: 'Z',
 
-    0x29: 'ESC',       
+    0x29: 'ESC',
     0x2b: 'TAB',
     0x39: 'CAPS',
     0x2a: 'BackSpace',
@@ -2027,7 +2027,7 @@ export const KeyText_Mac: Record<number, String> = {
     0x36: '<,',   //dou hao
     0x37: '>.',   //ju hao
     0x38: '?/',   //dun hao
-//////////////////////////////
+    //////////////////////////////
     0x1e: '1!',
     0x1f: '2@',
     0x20: '3#',
@@ -2038,7 +2038,7 @@ export const KeyText_Mac: Record<number, String> = {
     0x25: '8*',
     0x26: '9(',
     0x27: '0)',
-////////////////////
+    ////////////////////
     0x3a: 'F1',
     0x3b: 'F2',
     0x3c: 'F3',
@@ -2054,7 +2054,7 @@ export const KeyText_Mac: Record<number, String> = {
     0x68: 'F13',
     0x69: 'F14',
     0x6A: 'F15',
-            
+
     0x46: 'Print',
     0x47: 'ScrLock',
     0x48: 'Pause',
@@ -2073,7 +2073,7 @@ export const KeyText_Mac: Record<number, String> = {
     0x53: 'NumLock',
     0x54: '/',
     0x55: '*',
-    0x56: '-',       
+    0x56: '-',
     0x57: '+',
     0x58: 'Enter',
     0x63: '.',
@@ -2081,7 +2081,7 @@ export const KeyText_Mac: Record<number, String> = {
     0x59: '1',
     0x5a: '2',
     0x5b: '3',
-    0x5c: '4',           
+    0x5c: '4',
     0x5d: '5',
     0x5e: '6',
     0x5f: '7',
@@ -2102,18 +2102,18 @@ export const KeyText_Mac: Record<number, String> = {
     0x90: '',   //key_Hangul
     0x91: '',   //Key_Hanja
 
-//****************************************************************
-//Modify key
-    0x00010000: 'Control',
+    //****************************************************************
+    //Modify key
+    0x00010000: '<img class="keyimg" src="/src/assets/images/mac/control.png" />',
     0x00020000: 'L-Shift',
-    0x00040000: 'Option',
-    0x00080000: 'Command',
+    0x00040000: '<img class="keyimg" src="/src/assets/images/mac/option.png" />',
+    0x00080000: '<img class="keyimg" src="/src/assets/images/mac/command.png" />',
     0x00100000: 'Control',
     0x00200000: 'R-Shift',
     0x00400000: 'Option',
     0x00800000: 'Command',
-//****************************************************************
-//macro�е�modify key����
+    //****************************************************************
+    //macro�е�modify key����
     0xe0: 'Control',
     0xe1: 'L-Shift',
     0xe2: 'Option',
@@ -2122,8 +2122,8 @@ export const KeyText_Mac: Record<number, String> = {
     0xe5: 'R-Shift',
     0xe6: 'Option',
     0xe7: 'Command',
-//****************************************************************
-//macro�е�mouse key����
+    //****************************************************************
+    //macro�е�mouse key����
     0x01: 'Mouse-L',
     0x02: 'Mouse-R',
     //0x04: 'Mouse-M',
@@ -2133,8 +2133,8 @@ export const KeyText_Mac: Record<number, String> = {
     //0x01: 'Mouse-RT',
     //0xff: 'Mouse-UP',
     //0x01: 'Mouse-DN',
-//****************************************************************
-//��ϼ�����? 
+    //****************************************************************
+    //��ϼ�����? 
     //KEY_win_shift_4	  	  : 'Win + Shift + 4',
     //KEY_win_shift_3	  	  : 'Win + Shift + 4',
     //KEY_win_shift_ctrl_4  : 'Win + Shift + Ctrl + 4',
@@ -2148,11 +2148,11 @@ export const KeyText_Mac: Record<number, String> = {
     //KEY_CTRL_C	  		  : 'Ctrl + C',
     //KEY_CTRL_V	  		  : 'Ctrl + V',
     //KEY_ALT_TAB	  		  : 'Alt + Tab',
-//****************************************************************
-//BYTE1:1�����?2�Ҽ���3�м���4ǰ������5���˼���6��ڡ�?7�Ұڡ�8�Ϲ��֡�9�¹��֡�10X����11X���ҡ�12Y���ϡ�13Y����
-//BYTE2:0xff��������0����һ�Σ����·������룬�ͷŷ��ͷ��룩��1˫����2������
-//BYTE3:�����ظ�ʱ�䣬0Ĭ�ϼ��ʱ��?
-//Mouse key
+    //****************************************************************
+    //BYTE1:1�����?2�Ҽ���3�м���4ǰ������5���˼���6��ڡ�?7�Ұڡ�8�Ϲ��֡�9�¹��֡�10X����11X���ҡ�12Y���ϡ�13Y����
+    //BYTE2:0xff��������0����һ�Σ����·������룬�ͷŷ��ͷ��룩��1˫����2������
+    //BYTE3:�����ظ�ʱ�䣬0Ĭ�ϼ��ʱ��?
+    //Mouse key
     0x01010100: 'L-Button',
     0x01020100: 'R-Button',
     0x01030100: 'M-Button',
@@ -2166,10 +2166,10 @@ export const KeyText_Mac: Record<number, String> = {
     0x010B0000: 'MX-X-R',
     0x010C0000: 'MS-Y-L',
     0x010D0000: 'MS-Y-R',
-//****************************************************************
-//��ý���?
-    0x0200006f: 'SysBkBrigthInc',
-    0x02000070: 'SysBkBrigthDec',
+    //****************************************************************
+    //��ý���?
+    0x0200006f: `<img class="keyimg keyimg1" src="/src/assets/images/mac/brightness+.png" />`,
+    0x02000070: `<img class="keyimg" src="/src/assets/images/mac/brightness-.png" />`,
     0x02000040: 'IOSBack',//F7
 
     0x020000b5: 'NextTr',//0xE8
@@ -2195,33 +2195,33 @@ export const KeyText_Mac: Record<number, String> = {
     0x0200022a: 'Favorites',
 
     0x020000CF: 'Siri',
-    0x0200029F: 'MAC-F3',
-    0x020002A0: 'MAC-F4',
-    0x000A001D: 'Shift+Cmd+Z',
-    0x000A000A: 'Shift+Cmd+G',
-    0x000C000B: 'Opt+Cmd+H',
-    0x000C0010: 'Opt+Cmd+M',
-    0x000C001A: 'Opt+Cmd+W',
-    0x000C0029: 'Opt+Cmd+ESC',
-    0x000C002C: 'Opt+Cmd+Space',
-    0x0009002C: 'Ctr+Cmd+Space',
-    0x00090009: 'Ctr+Cmd+F',
-    0x000A0022: 'Shift+Cmd+5',
-    0x000A0020: 'Shift+Cmd+3',
-    0x000A0021: 'Shift+Cmd+4',
-    0x000A0011: 'Shift+Cmd+N',
-//****************************************************************
-//byte3��0x03��ʾ��macro��byte2��������ʾmacro��ѭ����ʽ��byte1��ѭ������  byte0��������ʾmacro���?
-//byte2����ʱ��������
-//0x01	ָ��ѭ��������0x02ѭ������������£�?0x03ѭ������ǰ���ɿ�
-//Macro Key
+    0x0200029F: `<img class="keyimg" src="/src/assets/images/mac/mission.png" />`,
+    0x020002A0: `<img class="keyimg" src="/src/assets/images/mac/launchpad.png" />`,
+    0x000A001D: `<img class="keyimg" src="/src/assets/images/mac/shift.png" /> <img class="keyimg" src="/src/assets/images/mac/command.png" /> + Z`,
+    0x000A000A: `<img class="keyimg" src="/src/assets/images/mac/shift.png" /> <img class="keyimg" src="/src/assets/images/mac/command.png" /> + G`,
+    0x000C000B: `<img class="keyimg" src="/src/assets/images/mac/option.png" /> <img class="keyimg" src="/src/assets/images/mac/command.png" /> + H`,
+    0x000C0010: `<img class="keyimg" src="/src/assets/images/mac/option.png" /> <img class="keyimg" src="/src/assets/images/mac/command.png" /> + M`,
+    0x000C001A: `<img class="keyimg" src="/src/assets/images/mac/option.png" /> <img class="keyimg" src="/src/assets/images/mac/command.png" /> + W`,
+    0x000C0029: `<img class="keyimg" src="/src/assets/images/mac/option.png" /> <img class="keyimg" src="/src/assets/images/mac/command.png" /> + ESC`,
+    0x000C002C: `<img class="keyimg" src="/src/assets/images/mac/option.png" /> <img class="keyimg" src="/src/assets/images/mac/command.png" /> + Space`,
+    0x0009002C: `<img class="keyimg" src="/src/assets/images/mac/control.png" /> <img class="keyimg" src="/src/assets/images/mac/command.png" /> + Space`,
+    0x00090009: `<img class="keyimg" src="/src/assets/images/mac/control.png" /> <img class="keyimg" src="/src/assets/images/mac/command.png" /> + F`,
+    0x000A0022: `<img class="keyimg" src="/src/assets/images/mac/shift.png" /> <img class="keyimg" src="/src/assets/images/mac/command.png" /> + 5`,
+    0x000A0020: `<img class="keyimg" src="/src/assets/images/mac/shift.png" /> <img class="keyimg" src="/src/assets/images/mac/command.png" /> + 3`,
+    0x000A0021: `<img class="keyimg" src="/src/assets/images/mac/shift.png" /> <img class="keyimg" src="/src/assets/images/mac/command.png" /> + 4`,
+    0x000A0011: `<img class="keyimg" src="/src/assets/images/mac/shift.png" /> <img class="keyimg" src="/src/assets/images/mac/command.png" /> + N`,
+    //****************************************************************
+    //byte3��0x03��ʾ��macro��byte2��������ʾmacro��ѭ����ʽ��byte1��ѭ������  byte0��������ʾmacro���?
+    //byte2����ʱ��������
+    //0x01	ָ��ѭ��������0x02ѭ������������£�?0x03ѭ������ǰ���ɿ�
+    //Macro Key
     0x03000000: 'Macro0',
     0x03000001: 'Macro1',
 
-//****************************************************************
-//ͨ��ð�ݶ˿ڷ����Զ���ļ�ֵ�������������⹦�ܴ�����������?�̶������ӣ�
-//�Զ����?
-    0x04000001: 'Define1',	
+    //****************************************************************
+    //ͨ��ð�ݶ˿ڷ����Զ���ļ�ֵ�������������⹦�ܴ�����������?�̶������ӣ�
+    //�Զ����?
+    0x04000001: 'Define1',
     0x04000002: 'Define2',
     0x05010000: 'DpiSwitch+',
     0x05020000: 'DpiSwitch-',
@@ -2229,7 +2229,7 @@ export const KeyText_Mac: Record<number, String> = {
     0x06010000: 'ProfileSwitch+',
     0x06020000: 'ProfileSwitch-',
     0x06040000: 'ProfileSwitchLoop',
-//****************************************************************
+    //****************************************************************
     0x07000000: 'InvertASWD',      //ȡ��ASWD�뷽��
     0x07000001: 'WinLock',      //WIN Lock
     0x07000002: 'AllLock',      //���м���ס
@@ -2241,243 +2241,243 @@ export const KeyText_Mac: Record<number, String> = {
     0x07000008: '2.4G',      //2.4Gģʽ
     0x07000009: 'USB',      //USBģʽ
     0x0700000a: 'WirelessTest',      //���߽������?    
-    0x0700000b: 'Unknow',    
+    0x0700000b: 'Unknow',
     0x0700000c: 'Battery',      //电量显示 
     0x0700000d: 'Unknow',
     0x0700000e: 'Windows',      //����Windows
     0x0700000f: 'Mac',      //����Mac   
-    0x07000010: 'Unknow',    
+    0x07000010: 'Unknow',
     0x07000022: 'Mac',      //����Mac
     0x07000023: 'Mac',      //����Mac
-//****************************************************************
-//byte0���̶�0x08
-//byte1��0��Ч�л���1��Ч����2��ɫ�л���3�����л���4�ٶ��л���5������Ϸ����¼�ƣ�6��Ϸ���ֱ��棬7¼��/���棬8��λ��9��Чģʽָ��
-//byte2��0ѭ����1+/��2-/�ң����byte1Ϊ9����������ֵ������ǰģʽ
-//byte3��0��������1����1��2����2
-//�ƹ�ģʽ�趨
-    0x08090000:  'light.menu_0', //ֱ���趨Ϊģʽ0
-    0x08090100:  'light.menu_1', //ֱ���趨Ϊģʽ1
-    0x08090200:  'light.menu_2', //ֱ���趨Ϊģʽ2
-    0x08090300:  'light.menu_3', //ֱ���趨Ϊģʽ3
+    //****************************************************************
+    //byte0���̶�0x08
+    //byte1��0��Ч�л���1��Ч����2��ɫ�л���3�����л���4�ٶ��л���5������Ϸ����¼�ƣ�6��Ϸ���ֱ��棬7¼��/���棬8��λ��9��Чģʽָ��
+    //byte2��0ѭ����1+/��2-/�ң����byte1Ϊ9����������ֵ������ǰģʽ
+    //byte3��0��������1����1��2����2
+    //�ƹ�ģʽ�趨
+    0x08090000: 'light.menu_0', //ֱ���趨Ϊģʽ0
+    0x08090100: 'light.menu_1', //ֱ���趨Ϊģʽ1
+    0x08090200: 'light.menu_2', //ֱ���趨Ϊģʽ2
+    0x08090300: 'light.menu_3', //ֱ���趨Ϊģʽ3
 
-    0x08092000:  'LedMode20', //ֱ���趨Ϊģʽ20
-    0x08092100:  'LedMode21', //ֱ���趨Ϊģʽ21
-    0x08092200:  'LedMode22', //ֱ���趨Ϊģʽ22
-//��Ч�л�
-    0x08000000:  'LedMode+', //ֱ���趨Ϊģʽ+
-    0x08000100:  'LedMode-', //ֱ���趨Ϊģʽ-
-    0x08000200:  'LedModeLoop', //ֱ���趨ΪģʽLOOP
+    0x08092000: 'LedMode20', //ֱ���趨Ϊģʽ20
+    0x08092100: 'LedMode21', //ֱ���趨Ϊģʽ21
+    0x08092200: 'LedMode22', //ֱ���趨Ϊģʽ22
+    //��Ч�л�
+    0x08000000: 'LedMode+', //ֱ���趨Ϊģʽ+
+    0x08000100: 'LedMode-', //ֱ���趨Ϊģʽ-
+    0x08000200: 'LedModeLoop', //ֱ���趨ΪģʽLOOP
 
-    0x08000300:  'DefineLedModel+', //ֱ���趨Ϊģʽ+
-    0x08000400:  'DefineLedModel-', //ֱ���趨Ϊģʽ-
-    0x08000500:  'DefineLedModelLoop', //ֱ���趨ΪģʽLOOP
+    0x08000300: 'DefineLedModel+', //ֱ���趨Ϊģʽ+
+    0x08000400: 'DefineLedModel-', //ֱ���趨Ϊģʽ-
+    0x08000500: 'DefineLedModelLoop', //ֱ���趨ΪģʽLOOP
 
-//��Ч����
-    0x08010000:  'LedDirctionLoop', //��Ч����LOOP
-    0x08010100:  'LedDirction+', //��Ч������
-    0x08010200:  'LedDirction-', //��Ч������
+    //��Ч����
+    0x08010000: 'LedDirctionLoop', //��Ч����LOOP
+    0x08010100: 'LedDirction+', //��Ч������
+    0x08010200: 'LedDirction-', //��Ч������
 
-//��ɫ�л�
-    0x08020100:  'LedColorMode+', //ֱ���趨Ϊ��ɫ+
-    0x08020200:  'LedColorMode-', //ֱ���趨Ϊ��ɫ-
-    0x08020000:  'LedColorModeLoop', //ֱ���趨Ϊ��ɫLOOP
+    //��ɫ�л�
+    0x08020100: 'LedColorMode+', //ֱ���趨Ϊ��ɫ+
+    0x08020200: 'LedColorMode-', //ֱ���趨Ϊ��ɫ-
+    0x08020000: 'LedColorModeLoop', //ֱ���趨Ϊ��ɫLOOP
 
-//����
-    0x08030100:  'light.fun_1', //ֱ���趨Ϊģʽ+
-    0x08030200:  'light.fun_2', //ֱ���趨Ϊģʽ-
-    0x08030000:  'LedLuminLoop', //ֱ���趨ΪģʽLOOP
+    //����
+    0x08030100: `<img class="keyimg keyimg1" src="/src/assets/images/mac/backlight+.png" />`, //ֱ���趨Ϊģʽ+
+    0x08030200: `<img class="keyimg" src="/src/assets/images/mac/backlight-.png" />`, //ֱ���趨Ϊģʽ-
+    0x08030000: 'LedLuminLoop', //ֱ���趨ΪģʽLOOP
 
-//�ٶ�
-    0x08040100:  'light.fun_3', //  +
-    0x08040200:  'light.fun_4', //  -
-    0x08040000:  'LedBreathLoop', //  
+    //�ٶ�
+    0x08040100: 'light.fun_3', //  +
+    0x08040200: 'light.fun_4', //  -
+    0x08040000: 'LedBreathLoop', //  
 
-//¼��
-    0x08050000:  'LedRecStart', //LED¼�Ƽ�����
-    0x08060000:  'LedRecSave', //LED¼�Ƽ�����
-    0x08070000:  'LedRec', //LED¼�Ƽ�����/����
-    0x08080000:  'LedRecReset', //LED�ָ���������
+    //¼��
+    0x08050000: 'LedRecStart', //LED¼�Ƽ�����
+    0x08060000: 'LedRecSave', //LED¼�Ƽ�����
+    0x08070000: 'LedRec', //LED¼�Ƽ�����/����
+    0x08080000: 'LedRecReset', //LED�ָ���������
 
-//logo
-    0x08000001:  'LogoModelLoop', //ֱ���趨Ϊģʽ+
-    0x08000101:  'LogoModel+', //ֱ���趨Ϊģʽ-
-    0x08000201:  'LogoModel-', //ֱ���趨ΪģʽLOOP
+    //logo
+    0x08000001: 'LogoModelLoop', //ֱ���趨Ϊģʽ+
+    0x08000101: 'LogoModel+', //ֱ���趨Ϊģʽ-
+    0x08000201: 'LogoModel-', //ֱ���趨ΪģʽLOOP
 
-    0x08010001:  'LogoDirectionLoop', //��Ч����LOOP
-    0x08010101:  'LogoDirection+', //��Ч������
-    0x08010201:  'LogoDirection-', //��Ч������
+    0x08010001: 'LogoDirectionLoop', //��Ч����LOOP
+    0x08010101: 'LogoDirection+', //��Ч������
+    0x08010201: 'LogoDirection-', //��Ч������
 
-    0x08020101:  'LogoColorMode+', //ֱ���趨Ϊ��ɫ+
-    0x08020201:  'LogoColorMode-', //ֱ���趨Ϊ��ɫ-
-    0x08020001:  'LogoColorModeLoop', //ֱ���趨Ϊ��ɫLOOP
+    0x08020101: 'LogoColorMode+', //ֱ���趨Ϊ��ɫ+
+    0x08020201: 'LogoColorMode-', //ֱ���趨Ϊ��ɫ-
+    0x08020001: 'LogoColorModeLoop', //ֱ���趨Ϊ��ɫLOOP
 
-    0x08030101:  'LogoLumin+', //ֱ���趨Ϊģʽ+
-    0x08030201:  'LogoLumin-', //ֱ���趨Ϊģʽ-
-    0x08030001:  'LogoLuminLoop', //ֱ���趨ΪģʽLOOP
+    0x08030101: 'LogoLumin+', //ֱ���趨Ϊģʽ+
+    0x08030201: 'LogoLumin-', //ֱ���趨Ϊģʽ-
+    0x08030001: 'LogoLuminLoop', //ֱ���趨ΪģʽLOOP
 
-    0x08040101:  'LogoBreath+', //ֱ���趨Ϊ�����ٶ�+
-    0x08040201:  'LogoBreath-', //ֱ���趨Ϊ�����ٶ�-
-    0x08040001:  'LogoBreathLoop', //ֱ���趨Ϊ�����ٶ�LOOP
+    0x08040101: 'LogoBreath+', //ֱ���趨Ϊ�����ٶ�+
+    0x08040201: 'LogoBreath-', //ֱ���趨Ϊ�����ٶ�-
+    0x08040001: 'LogoBreathLoop', //ֱ���趨Ϊ�����ٶ�LOOP
 
-//ReportRate�趨
-    0x09000000:  'ReportRate125', //ֱ���趨Ϊ125
-    0x09000001:  'ReportRate250', //ֱ���趨Ϊ250
-    0x09000002:  'ReportRate500', //ֱ���趨Ϊ500
-    0x09000003:  'ReportRate1000', //ֱ���趨Ϊ1000
-    0x09010000:  'ReportRate+', //�ر��ʵ�λ��
-    0x09020000:  'ReportRate-', //�ر��ʵ�λ��
-    0x09030000:  'ReportRateLoop', //�ر��ʵ�λѭ��
+    //ReportRate�趨
+    0x09000000: 'ReportRate125', //ֱ���趨Ϊ125
+    0x09000001: 'ReportRate250', //ֱ���趨Ϊ250
+    0x09000002: 'ReportRate500', //ֱ���趨Ϊ500
+    0x09000003: 'ReportRate1000', //ֱ���趨Ϊ1000
+    0x09010000: 'ReportRate+', //�ر��ʵ�λ��
+    0x09020000: 'ReportRate-', //�ر��ʵ�λ��
+    0x09030000: 'ReportRateLoop', //�ر��ʵ�λѭ��
 
-    0x0d000000:  'Fn1',
-    0x0d010000:  'Fn2',
-//��Դ��
-    0x10000001:  'Power',
-    0x10000002:  'Sleep',
-    0x10000004:  'WakeUp',
+    0x0d000000: 'Fn1',
+    0x0d010000: 'Fn2',
+    //��Դ��
+    0x10000001: 'Power',
+    0x10000002: 'Sleep',
+    0x10000004: 'WakeUp',
 
-    0x00020035:  '~',
-    0x0002001e:  '!',
-    0x0002001f:  '@',
-    0x00020020:  '#',
-    0x00020021:  '$',
-    0x00020022:  '%',
-    0x00020023:  '^',
-    0x00020024:  '&',
-    0x00020025:  '*',
-    0x00020026:  '(',
-    0x00020027:  ')',
-    0x0002002D:  '_',
-    0x0002002E:  '+',
-    0x0002002F:  '{',
-    0x00020030:  '}',
-    0x00020031:  '|',
-    0x00020033:  ':',
-    0x00020034:  '"',
-    0x00020036:  '<',
-    0x00020037:  '>',
-    0x00020038:  '?',
+    0x00020035: '~',
+    0x0002001e: '!',
+    0x0002001f: '@',
+    0x00020020: '#',
+    0x00020021: '$',
+    0x00020022: '%',
+    0x00020023: '^',
+    0x00020024: '&',
+    0x00020025: '*',
+    0x00020026: '(',
+    0x00020027: ')',
+    0x0002002D: '_',
+    0x0002002E: '+',
+    0x0002002F: '{',
+    0x00020030: '}',
+    0x00020031: '|',
+    0x00020033: ':',
+    0x00020034: '"',
+    0x00020036: '<',
+    0x00020037: '>',
+    0x00020038: '?',
 
-    0x08090400:  'light.menu_4',
-    0x08090500:  'light.menu_5',
-    0x08090600:  'light.menu_6',
-    0x08090700:  'light.menu_7',
-    0x08090800:  'light.menu_8',
-    0x08090900:  'light.menu_9',
-    0x08090A00:  'light.menu_10',
-    0x08090B00:  'light.menu_11',
-    0x08090C00:  'light.menu_12',
-    0x08090D00:  'light.menu_13',
-    0x08090E00:  'light.menu_14',
-    0x08090F00:  'light.menu_15',
-    0x08091000:  'light.menu_16',
-    0x08091100:  'light.menu_17',
-    0x08091200:  'light.menu_18',
-    0x08091300:  'light.menu_19',
+    0x08090400: 'light.menu_4',
+    0x08090500: 'light.menu_5',
+    0x08090600: 'light.menu_6',
+    0x08090700: 'light.menu_7',
+    0x08090800: 'light.menu_8',
+    0x08090900: 'light.menu_9',
+    0x08090A00: 'light.menu_10',
+    0x08090B00: 'light.menu_11',
+    0x08090C00: 'light.menu_12',
+    0x08090D00: 'light.menu_13',
+    0x08090E00: 'light.menu_14',
+    0x08090F00: 'light.menu_15',
+    0x08091000: 'light.menu_16',
+    0x08091100: 'light.menu_17',
+    0x08091200: 'light.menu_18',
+    0x08091300: 'light.menu_19',
 }
 
 export const KeyCodeMap: Record<string, KeyCodeTable> = {
 
-    'Escape':           { key: 'Escape',        hid: 0X29, vk: 0x1B },
-    'F1':               { key: 'F1',            hid: 0X3a, vk: 0x70 }, 
-    'F2':               { key: 'F2',            hid: 0X3b, vk: 0x71 }, 
-    'F3':               { key: 'F3',            hid: 0X3c, vk: 0x72 }, 
-    'F4':               { key: 'F4',            hid: 0X3d, vk: 0x73 }, 
-    'F5':               { key: 'F5',            hid: 0X3e, vk: 0x74 }, 
-    'F6':               { key: 'F6',            hid: 0X3f, vk: 0x75 }, 
-    'F7':               { key: 'F7',            hid: 0X40, vk: 0x76 }, 
-    'F8':               { key: 'F8',            hid: 0X41, vk: 0x77 }, 
-    'F9':               { key: 'F9',            hid: 0X42, vk: 0x78 }, 
-    'F10':              { key: 'F10',           hid: 0X43, vk: 0x79 }, 
-    'F11':              { key: 'F11',           hid: 0X44, vk: 0x7A }, 
-    'F12':              { key: 'F12',           hid: 0X45, vk: 0x7B }, 
-	'Backspace':        { key: 'Backspace',     hid: 0X2a, vk: 0x08 }, 
-    'Tab':              { key: 'Tab',           hid: 0X2b, vk: 0x09 }, 
-	'CapsLock':         { key: 'CapsLock',      hid: 0X39, vk: 0x14 }, 
-	'Enter':            { key: 'Enter',         hid: 0X28, vk: 0x0D }, 
-	'Space':            { key: 'Space',         hid: 0X2c, vk: 0x20 }, 
-    'ScrollLock':       { key: 'ScrollLock',    hid: 0X47, vk: 0x91 }, 
-	'Pause':            { key: 'Pause',         hid: 0X48, vk: 0x13 }, 
-	'Insert':           { key: 'Insert',        hid: 0X49, vk: 0x2D }, 
-	'PrintScreen':      { key: 'PrintScreen',   hid: 0X46, vk: 0x2C }, 
-	'Delete':           { key: 'Delete',        hid: 0X4c, vk: 0x2E }, 
-	'Home':             { key: 'Home',          hid: 0X4a, vk: 0x24 }, 
-	'End':              { key: 'End',           hid: 0X4d, vk: 0x23 }, 
-	'PageUp':           { key: 'PageUp',        hid: 0X4b, vk: 0x21 }, 
-	'PageDown':         { key: 'PageDown',      hid: 0X4e, vk: 0x22 }, 
-	'ArrowLeft':        { key: 'ArrowLeft',     hid: 0X50, vk: 0x25 }, 
-	'ArrowUp':          { key: 'ArrowUp',       hid: 0X52, vk: 0x26 }, 
-	'ArrowRight':       { key: 'ArrowRight',    hid: 0X4f, vk: 0x27 }, 
-	'ArrowDown':        { key: 'ArrowDown',     hid: 0X51, vk: 0x28 }, 
-	'Numpad0':          { key: '0',             hid: 0X62, vk: 0x60 }, 
-    'Numpad1':          { key: '1',             hid: 0X59, vk: 0x61 }, 
-    'Numpad2':          { key: '2',             hid: 0X5a, vk: 0x62 }, 
-    'Numpad3':          { key: '3',             hid: 0X5b, vk: 0x63 }, 
-    'Numpad4':          { key: '4',             hid: 0X5c, vk: 0x64 }, 
-    'Numpad5':          { key: '5',             hid: 0X5d, vk: 0x65 }, 
-    'Numpad6':          { key: '6',             hid: 0X5e, vk: 0x66 }, 
-    'Numpad7':          { key: '7',             hid: 0X5f, vk: 0x67 }, 
-    'Numpad8':          { key: '8',             hid: 0X60, vk: 0x68 }, 
-    'Numpad9':          { key: '9',             hid: 0X61, vk: 0x69 }, 
-	'NumpadAdd ':       { key: '+',             hid: 0X57, vk: 0x6B }, 
-	'NumpadSubtract':   { key: '-',             hid: 0X56, vk: 0x6D }, 
-	'NumpadMultiply':   { key: '*',             hid: 0X55, vk: 0x6A }, 
-	'NumpadDivide':     { key: '/',             hid: 0X54, vk: 0x6F }, 
-	'NumpadDecimal':    { key: '.',             hid: 0X63, vk: 0x6E }, 
-	'NumLock':          { key: 'NumLock',       hid: 0X53, vk: 0x90 }, 
-	'ControlLeft':      { key: 'ControlRight',  hid: 0XE0, vk: 0x11 }, 
-    'ControlRight':     { key: 'ControlRight',  hid: 0XE4, vk: 0x11 },
-    'ShiftLeft':        { key: 'ShiftLeft',     hid: 0XE1, vk: 0x10 }, 
-    'ShiftRight':       { key: 'ShiftRight',    hid: 0XE5, vk: 0x10 }, 
-    'AltLeft':          { key: 'AltLeft',       hid: 0XE2, vk: 0x12 }, 
-    'AltRight':         { key: 'AltRight',      hid: 0XE6, vk: 0x12 }, 
-    'ContextMenu':      { key: 'ContextMenu',   hid: 0x65, vk: 0x5D }, 
-    'LWIN':             { key: 'LWin',          hid: 0xE3, vk: 0x5B }, 
-    'RWIN':             { key: 'RWin',          hid: 0xE7, vk: 0x5C }, 
-    'KeyA':             { key: 'A',             hid: 0X04, vk: 0x41 }, 
-    'KeyB':             { key: 'B',             hid: 0X05, vk: 0x42 }, 
-    'KeyC':             { key: 'C',             hid: 0X06, vk: 0x43 }, 
-    'KeyD':             { key: 'D',             hid: 0X07, vk: 0x44 }, 
-    'KeyE':             { key: 'E',             hid: 0X08, vk: 0x45 }, 
-    'KeyF':             { key: 'F',             hid: 0X09, vk: 0x46 }, 
-    'KeyG':             { key: 'G',             hid: 0X0a, vk: 0x47 }, 
-    'KeyH':             { key: 'H',             hid: 0X0b, vk: 0x48 }, 
-    'KeyI':             { key: 'I',             hid: 0X0c, vk: 0x49 }, 
-    'KeyJ':             { key: 'J',             hid: 0X0d, vk: 0x4A }, 
-    'KeyK':             { key: 'K',             hid: 0X0e, vk: 0x4B }, 
-    'KeyL':             { key: 'L',             hid: 0X0f, vk: 0x4C }, 
-    'KeyM':             { key: 'M',             hid: 0X10, vk: 0x4D }, 
-    'KeyN':             { key: 'N',             hid: 0X11, vk: 0x4E }, 
-    'KeyO':             { key: 'O',             hid: 0X12, vk: 0x4F }, 
-    'KeyP':             { key: 'P',             hid: 0X13, vk: 0x50 }, 
-    'KeyQ':             { key: 'Q',             hid: 0X14, vk: 0x51 }, 
-    'KeyR':             { key: 'R',             hid: 0X15, vk: 0x52 }, 
-    'KeyS':             { key: 'S',             hid: 0X16, vk: 0x53 }, 
-    'KeyT':             { key: 'T',             hid: 0X17, vk: 0x54 }, 
-    'KeyU':             { key: 'U',             hid: 0X18, vk: 0x55 }, 
-    'KeyV':             { key: 'V',             hid: 0X19, vk: 0x56 }, 
-    'KeyW':             { key: 'W',             hid: 0X1a, vk: 0x57 }, 
-    'KeyX':             { key: 'X',             hid: 0X1b, vk: 0x58 }, 
-    'KeyY':             { key: 'Y',             hid: 0X1c, vk: 0x59 }, 
-    'KeyZ':             { key: 'Z',             hid: 0X1d, vk: 0x5A }, 
-    'Digit0':           { key: '0',             hid: 0X27, vk: 0x30 }, 
-    'Digit1':           { key: '1',             hid: 0X1e, vk: 0x31 }, 
-    'Digit2':           { key: '2',             hid: 0X1f, vk: 0x32 }, 
-    'Digit3':           { key: '3',             hid: 0X20, vk: 0x33 }, 
-    'Digit4':           { key: '4',             hid: 0X21, vk: 0x34 }, 
-    'Digit5':           { key: '5',             hid: 0X22, vk: 0x35 }, 
-    'Digit6':           { key: '6',             hid: 0X23, vk: 0x36 }, 
-    'Digit7':           { key: '7',             hid: 0X24, vk: 0x37 }, 
-    'Digit8':           { key: '8',             hid: 0X25, vk: 0x38 }, 
-    'Digit9':           { key: '9',             hid: 0X26, vk: 0x39 },
-    'Minus':            { key: '-',             hid: 0x2d, vk: 0xBD },
-    'Equal':            { key: '=',             hid: 0x2e, vk: 0xBB },
-    'Comma':            { key: ',',             hid: 0x36, vk: 0xBC },
-    'Period':           { key: '.',             hid: 0x37, vk: 0xBE },
-    'Semicolon':        { key: ';',             hid: 0x33, vk: 0xBA },
-    'Backquote':        { key: '`',             hid: 0x35, vk: 0xC0 },
-    'Quote':            { key: '\'',            hid: 0x34, vk: 0xDE },
-    'BracketLeft':      { key: '[',             hid: 0x2f, vk: 0xDB },
-    'BracketRight':     { key: ']',             hid: 0x30, vk: 0xDD },
-    'Backslash':        { key: '\\',            hid: 0x31, vk: 0xDC },
-    'Slash':            { key: '/',             hid: 0x38, vk: 0xBF },
+    'Escape': { key: 'Escape', hid: 0X29, vk: 0x1B },
+    'F1': { key: 'F1', hid: 0X3a, vk: 0x70 },
+    'F2': { key: 'F2', hid: 0X3b, vk: 0x71 },
+    'F3': { key: 'F3', hid: 0X3c, vk: 0x72 },
+    'F4': { key: 'F4', hid: 0X3d, vk: 0x73 },
+    'F5': { key: 'F5', hid: 0X3e, vk: 0x74 },
+    'F6': { key: 'F6', hid: 0X3f, vk: 0x75 },
+    'F7': { key: 'F7', hid: 0X40, vk: 0x76 },
+    'F8': { key: 'F8', hid: 0X41, vk: 0x77 },
+    'F9': { key: 'F9', hid: 0X42, vk: 0x78 },
+    'F10': { key: 'F10', hid: 0X43, vk: 0x79 },
+    'F11': { key: 'F11', hid: 0X44, vk: 0x7A },
+    'F12': { key: 'F12', hid: 0X45, vk: 0x7B },
+    'Backspace': { key: 'Backspace', hid: 0X2a, vk: 0x08 },
+    'Tab': { key: 'Tab', hid: 0X2b, vk: 0x09 },
+    'CapsLock': { key: 'CapsLock', hid: 0X39, vk: 0x14 },
+    'Enter': { key: 'Enter', hid: 0X28, vk: 0x0D },
+    'Space': { key: 'Space', hid: 0X2c, vk: 0x20 },
+    'ScrollLock': { key: 'ScrollLock', hid: 0X47, vk: 0x91 },
+    'Pause': { key: 'Pause', hid: 0X48, vk: 0x13 },
+    'Insert': { key: 'Insert', hid: 0X49, vk: 0x2D },
+    'PrintScreen': { key: 'PrintScreen', hid: 0X46, vk: 0x2C },
+    'Delete': { key: 'Delete', hid: 0X4c, vk: 0x2E },
+    'Home': { key: 'Home', hid: 0X4a, vk: 0x24 },
+    'End': { key: 'End', hid: 0X4d, vk: 0x23 },
+    'PageUp': { key: 'PageUp', hid: 0X4b, vk: 0x21 },
+    'PageDown': { key: 'PageDown', hid: 0X4e, vk: 0x22 },
+    'ArrowLeft': { key: 'ArrowLeft', hid: 0X50, vk: 0x25 },
+    'ArrowUp': { key: 'ArrowUp', hid: 0X52, vk: 0x26 },
+    'ArrowRight': { key: 'ArrowRight', hid: 0X4f, vk: 0x27 },
+    'ArrowDown': { key: 'ArrowDown', hid: 0X51, vk: 0x28 },
+    'Numpad0': { key: '0', hid: 0X62, vk: 0x60 },
+    'Numpad1': { key: '1', hid: 0X59, vk: 0x61 },
+    'Numpad2': { key: '2', hid: 0X5a, vk: 0x62 },
+    'Numpad3': { key: '3', hid: 0X5b, vk: 0x63 },
+    'Numpad4': { key: '4', hid: 0X5c, vk: 0x64 },
+    'Numpad5': { key: '5', hid: 0X5d, vk: 0x65 },
+    'Numpad6': { key: '6', hid: 0X5e, vk: 0x66 },
+    'Numpad7': { key: '7', hid: 0X5f, vk: 0x67 },
+    'Numpad8': { key: '8', hid: 0X60, vk: 0x68 },
+    'Numpad9': { key: '9', hid: 0X61, vk: 0x69 },
+    'NumpadAdd ': { key: '+', hid: 0X57, vk: 0x6B },
+    'NumpadSubtract': { key: '-', hid: 0X56, vk: 0x6D },
+    'NumpadMultiply': { key: '*', hid: 0X55, vk: 0x6A },
+    'NumpadDivide': { key: '/', hid: 0X54, vk: 0x6F },
+    'NumpadDecimal': { key: '.', hid: 0X63, vk: 0x6E },
+    'NumLock': { key: 'NumLock', hid: 0X53, vk: 0x90 },
+    'ControlLeft': { key: 'ControlRight', hid: 0XE0, vk: 0x11 },
+    'ControlRight': { key: 'ControlRight', hid: 0XE4, vk: 0x11 },
+    'ShiftLeft': { key: 'ShiftLeft', hid: 0XE1, vk: 0x10 },
+    'ShiftRight': { key: 'ShiftRight', hid: 0XE5, vk: 0x10 },
+    'AltLeft': { key: 'AltLeft', hid: 0XE2, vk: 0x12 },
+    'AltRight': { key: 'AltRight', hid: 0XE6, vk: 0x12 },
+    'ContextMenu': { key: 'ContextMenu', hid: 0x65, vk: 0x5D },
+    'LWIN': { key: 'LWin', hid: 0xE3, vk: 0x5B },
+    'RWIN': { key: 'RWin', hid: 0xE7, vk: 0x5C },
+    'KeyA': { key: 'A', hid: 0X04, vk: 0x41 },
+    'KeyB': { key: 'B', hid: 0X05, vk: 0x42 },
+    'KeyC': { key: 'C', hid: 0X06, vk: 0x43 },
+    'KeyD': { key: 'D', hid: 0X07, vk: 0x44 },
+    'KeyE': { key: 'E', hid: 0X08, vk: 0x45 },
+    'KeyF': { key: 'F', hid: 0X09, vk: 0x46 },
+    'KeyG': { key: 'G', hid: 0X0a, vk: 0x47 },
+    'KeyH': { key: 'H', hid: 0X0b, vk: 0x48 },
+    'KeyI': { key: 'I', hid: 0X0c, vk: 0x49 },
+    'KeyJ': { key: 'J', hid: 0X0d, vk: 0x4A },
+    'KeyK': { key: 'K', hid: 0X0e, vk: 0x4B },
+    'KeyL': { key: 'L', hid: 0X0f, vk: 0x4C },
+    'KeyM': { key: 'M', hid: 0X10, vk: 0x4D },
+    'KeyN': { key: 'N', hid: 0X11, vk: 0x4E },
+    'KeyO': { key: 'O', hid: 0X12, vk: 0x4F },
+    'KeyP': { key: 'P', hid: 0X13, vk: 0x50 },
+    'KeyQ': { key: 'Q', hid: 0X14, vk: 0x51 },
+    'KeyR': { key: 'R', hid: 0X15, vk: 0x52 },
+    'KeyS': { key: 'S', hid: 0X16, vk: 0x53 },
+    'KeyT': { key: 'T', hid: 0X17, vk: 0x54 },
+    'KeyU': { key: 'U', hid: 0X18, vk: 0x55 },
+    'KeyV': { key: 'V', hid: 0X19, vk: 0x56 },
+    'KeyW': { key: 'W', hid: 0X1a, vk: 0x57 },
+    'KeyX': { key: 'X', hid: 0X1b, vk: 0x58 },
+    'KeyY': { key: 'Y', hid: 0X1c, vk: 0x59 },
+    'KeyZ': { key: 'Z', hid: 0X1d, vk: 0x5A },
+    'Digit0': { key: '0', hid: 0X27, vk: 0x30 },
+    'Digit1': { key: '1', hid: 0X1e, vk: 0x31 },
+    'Digit2': { key: '2', hid: 0X1f, vk: 0x32 },
+    'Digit3': { key: '3', hid: 0X20, vk: 0x33 },
+    'Digit4': { key: '4', hid: 0X21, vk: 0x34 },
+    'Digit5': { key: '5', hid: 0X22, vk: 0x35 },
+    'Digit6': { key: '6', hid: 0X23, vk: 0x36 },
+    'Digit7': { key: '7', hid: 0X24, vk: 0x37 },
+    'Digit8': { key: '8', hid: 0X25, vk: 0x38 },
+    'Digit9': { key: '9', hid: 0X26, vk: 0x39 },
+    'Minus': { key: '-', hid: 0x2d, vk: 0xBD },
+    'Equal': { key: '=', hid: 0x2e, vk: 0xBB },
+    'Comma': { key: ',', hid: 0x36, vk: 0xBC },
+    'Period': { key: '.', hid: 0x37, vk: 0xBE },
+    'Semicolon': { key: ';', hid: 0x33, vk: 0xBA },
+    'Backquote': { key: '`', hid: 0x35, vk: 0xC0 },
+    'Quote': { key: '\'', hid: 0x34, vk: 0xDE },
+    'BracketLeft': { key: '[', hid: 0x2f, vk: 0xDB },
+    'BracketRight': { key: ']', hid: 0x30, vk: 0xDD },
+    'Backslash': { key: '\\', hid: 0x31, vk: 0xDC },
+    'Slash': { key: '/', hid: 0x38, vk: 0xBF },
 }

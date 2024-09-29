@@ -113,6 +113,12 @@ export default {
     tip30: "Capture a partial screen",
     tip31: "Create a new folder in 'Finder'",
     tip32: "Open the pre programmed settings of the front application",
+    tip33: "Decreased brightness",
+    tip34: "Brightness increases",
+    tip35: "Display all currently open windows",
+    tip36: "Open the application launcher",
+    tip37: "Backlight reduction",
+    tip38: "Backlight increase",
 
   },
   macro: {

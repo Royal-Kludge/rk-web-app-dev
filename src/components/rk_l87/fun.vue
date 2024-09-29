@@ -22,17 +22,11 @@
               </div>
             </div>
             <div :class="['d-flex flex-wrap', `${line.style}`]" v-for="line in useKey.state.keyFunList" v-else>
-              <el-tooltip v-if="line.id == useKey.state.funid" v-for="item in line.keys"
-                effect="light"
-                :disabled="item.tip == ''"
-                :content="itemTipText(item)"
-                placement="bottom"
-                popper-class="tip_font"
-              >
+              <el-tooltip v-if="line.id == useKey.state.funid" v-for="item in line.keys" effect="light"
+                :disabled="item.tip == ''" :content="itemTipText(item)" placement="bottom" popper-class="tip_font">
                 <div :class="[`c-p d-flex ai-center jc-center p-3 m-1 bg-grey br-1`, useKey.isFunSelected(item.key)]"
-                     @click="useKey.mapping(item.key, item.type)"
-                     style="min-width: 24px;">
-                  {{ itemText(item) }}
+                  @click="useKey.mapping(item.key, item.type)" style="min-width: 64px;">
+                  <span style="word-wrap: break-word;" v-html="itemText(item)"></span>
                 </div>
               </el-tooltip>
             </div>

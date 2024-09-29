@@ -3,7 +3,8 @@
         <div v-if="isMin" class="fs-big">Not enough space to display keyboard</div>
         <div v-else>
             <div class="keybox d-flex flex-column bg-white p-3" style="border-radius: 15px;position: relative;"
-                @contextmenu.prevent @mousedown="handleMouseDown" v-if="useLight.state.lightProps.light == LightEffectEnum.SelfDefine">
+                @contextmenu.prevent @mousedown="handleMouseDown"
+                v-if="useLight.state.lightProps.light == LightEffectEnum.SelfDefine">
                 <div class="d-flex" v-for="line in useKey.state.keyMatrix" :class="[`${line.style}`]">
                     <div :id="`key${key.index}`" trigger="contextmenu" ref="keyMapping"
                         @visible-change="handleOpen($event, `key${key.index}`)" v-for="key in line.keys"
@@ -12,7 +13,7 @@
                             :class="[`d-flex p-2 pl-3 ${key.style}`, useKey.keyColor(key.keyData), useKey.isSelected(key.index)]">
                             <div :class="[`text-white-1`, keyTextColorClass(key.keyData)]"
                                 :style="`word-wrap: break-word;overflow: hidden;text-align: center;${keyTextColorStyle(key.keyData)}`">
-                                {{ useKey.keyText(key.keyData) }}
+                                <span style="word-wrap: break-word;" v-html="useKey.keyText(key.keyData)"></span>
                             </div>
                         </div>
                     </div>
@@ -21,7 +22,7 @@
                         v-for="key in line.keys" v-else @click="keyClick(key.index)">
                         <div :class="[`text-white-1`, keyTextColorClass(key.keyData)]"
                             :style="`word-wrap: break-word;overflow: hidden;text-align: center;${keyTextColorStyle(key.keyData)}`">
-                            {{ useKey.keyText(key.keyData) }}
+                            <span style="word-wrap: break-word;" v-html="useKey.keyText(key.keyData)"></span>
                         </div>
                     </div>
                     <div :style="'width:' + mask_width + 'left:' + mask_left + 'height:' + mask_height + 'top:' + mask_top"
@@ -38,7 +39,7 @@
                             :class="[`d-flex p-2 pl-3 ${key.style}`, useKey.keyColor(key.keyData), useKey.isSelected(key.index)]">
                             <div :class="[`text-white-1`, keyTextColorClass(key.keyData)]"
                                 :style="`word-wrap: break-word;overflow: hidden;text-align: center;${keyTextColorStyle(key.keyData)}`">
-                                {{ useKey.keyText(key.keyData) }}
+                                <span style="word-wrap: break-word;" v-html="useKey.keyText(key.keyData)"></span>
                             </div>
                         </div>
                     </div>
@@ -47,7 +48,7 @@
                         v-for="key in line.keys" v-else @click="keyClick(key.index)">
                         <div :class="[`text-white-1`, keyTextColorClass(key.keyData)]"
                             :style="`word-wrap: break-word;overflow: hidden;text-align: center;${keyTextColorStyle(key.keyData)}`">
-                            {{ useKey.keyText(key.keyData) }}
+                            <span style="word-wrap: break-word;" v-html="useKey.keyText(key.keyData)"></span>
                         </div>
                     </div>
                     <div :style="'width:' + mask_width + 'left:' + mask_left + 'height:' + mask_height + 'top:' + mask_top"
@@ -147,11 +148,11 @@ const handleMouseDown = (event: any) => {
     positionList.box_screen_top = document.querySelector('.keybox')?.getBoundingClientRect().top as number
     document.body.addEventListener('mousemove', handleMouseMove) // 监听鼠标移动事件
     document.body.addEventListener('mouseup', handleMouseUp) // 监听鼠标抬起事件
-    isMoving.value=false
+    isMoving.value = false
     positionList.is_selected = false;
 }
 const handleMouseMove = (event: any) => {
-    isMoving.value=true
+    isMoving.value = true
     useKey.unSelected()
     positionList.end_x = event.clientX
     positionList.end_y = event.clientY
@@ -162,7 +163,7 @@ const handleMouseUp = async (event: any) => {
     positionList.is_show_mask = false
     await handleDomSelect()
     resSetXY()
-    isMoving.value=false
+    isMoving.value = false
 }
 const handleDomSelect = async () => {
     if (positionList.start_x == positionList.end_x && positionList.start_y == positionList.start_y) {
@@ -240,7 +241,7 @@ const keyClick = async (index: number) => {
         } else {
             useLight.SelfDefineDefault();
         }
-        
+
         await useKey.saveProfile();
     }
 }
