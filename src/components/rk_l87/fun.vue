@@ -25,7 +25,7 @@
               <el-tooltip v-if="line.id == useKey.state.funid" v-for="item in line.keys" effect="light"
                 :disabled="item.tip == ''" :content="itemTipText(item)" placement="bottom" popper-class="tip_font">
                 <div :class="[`c-p d-flex ai-center jc-center p-3 m-1 bg-grey br-1`, useKey.isFunSelected(item.key)]"
-                  @click="useKey.mapping(item.key, item.type)" style="min-width: 64px;">
+                  @click="useKey.mapping(item.key, item.type)" style="min-width: 32px;">
                   <span style="word-wrap: break-word;" v-html="itemText(item)"></span>
                 </div>
               </el-tooltip>

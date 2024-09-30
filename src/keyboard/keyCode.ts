@@ -2168,8 +2168,8 @@ export const KeyText_Mac: Record<number, String> = {
     0x010D0000: 'MS-Y-R',
     //****************************************************************
     //��ý���?
-    0x0200006f: `<img class="keyimg keyimg1" src="/src/assets/images/mac/brightness+.png" />`,
-    0x02000070: `<img class="keyimg" src="/src/assets/images/mac/brightness-.png" />`,
+    0x0200006f: `<img class="keyimg keyimg1" src="/src/assets/images/mac/brightness_i.png" />`,
+    0x02000070: `<img class="keyimg" src="/src/assets/images/mac/brightness_d.png" />`,
     0x02000040: 'IOSBack',//F7
 
     0x020000b5: 'NextTr',//0xE8
@@ -2197,19 +2197,19 @@ export const KeyText_Mac: Record<number, String> = {
     0x020000CF: 'Siri',
     0x0200029F: `<img class="keyimg" src="/src/assets/images/mac/mission.png" />`,
     0x020002A0: `<img class="keyimg" src="/src/assets/images/mac/launchpad.png" />`,
-    0x000A001D: `<img class="keyimg" src="/src/assets/images/mac/shift.png" /> <img class="keyimg" src="/src/assets/images/mac/command.png" /> + Z`,
-    0x000A000A: `<img class="keyimg" src="/src/assets/images/mac/shift.png" /> <img class="keyimg" src="/src/assets/images/mac/command.png" /> + G`,
-    0x000C000B: `<img class="keyimg" src="/src/assets/images/mac/option.png" /> <img class="keyimg" src="/src/assets/images/mac/command.png" /> + H`,
-    0x000C0010: `<img class="keyimg" src="/src/assets/images/mac/option.png" /> <img class="keyimg" src="/src/assets/images/mac/command.png" /> + M`,
-    0x000C001A: `<img class="keyimg" src="/src/assets/images/mac/option.png" /> <img class="keyimg" src="/src/assets/images/mac/command.png" /> + W`,
-    0x000C0029: `<img class="keyimg" src="/src/assets/images/mac/option.png" /> <img class="keyimg" src="/src/assets/images/mac/command.png" /> + ESC`,
-    0x000C002C: `<img class="keyimg" src="/src/assets/images/mac/option.png" /> <img class="keyimg" src="/src/assets/images/mac/command.png" /> + Space`,
-    0x0009002C: `<img class="keyimg" src="/src/assets/images/mac/control.png" /> <img class="keyimg" src="/src/assets/images/mac/command.png" /> + Space`,
-    0x00090009: `<img class="keyimg" src="/src/assets/images/mac/control.png" /> <img class="keyimg" src="/src/assets/images/mac/command.png" /> + F`,
-    0x000A0022: `<img class="keyimg" src="/src/assets/images/mac/shift.png" /> <img class="keyimg" src="/src/assets/images/mac/command.png" /> + 5`,
-    0x000A0020: `<img class="keyimg" src="/src/assets/images/mac/shift.png" /> <img class="keyimg" src="/src/assets/images/mac/command.png" /> + 3`,
-    0x000A0021: `<img class="keyimg" src="/src/assets/images/mac/shift.png" /> <img class="keyimg" src="/src/assets/images/mac/command.png" /> + 4`,
-    0x000A0011: `<img class="keyimg" src="/src/assets/images/mac/shift.png" /> <img class="keyimg" src="/src/assets/images/mac/command.png" /> + N`,
+    0x000A001D: `<img class="keyimg" src="/src/assets/images/mac/shift.png" /> + <img class="keyimg" src="/src/assets/images/mac/command.png" /> + Z`,
+    0x000A000A: `<img class="keyimg" src="/src/assets/images/mac/shift.png" /> + <img class="keyimg" src="/src/assets/images/mac/command.png" /> + G`,
+    0x000C000B: `<img class="keyimg" src="/src/assets/images/mac/option.png" /> + <img class="keyimg" src="/src/assets/images/mac/command.png" /> + H`,
+    0x000C0010: `<img class="keyimg" src="/src/assets/images/mac/option.png" /> + <img class="keyimg" src="/src/assets/images/mac/command.png" /> + M`,
+    0x000C001A: `<img class="keyimg" src="/src/assets/images/mac/option.png" /> + <img class="keyimg" src="/src/assets/images/mac/command.png" /> + W`,
+    0x000C0029: `<img class="keyimg" src="/src/assets/images/mac/option.png" /> + <img class="keyimg" src="/src/assets/images/mac/command.png" /> + ESC`,
+    0x000C002C: `<img class="keyimg" src="/src/assets/images/mac/option.png" /> + <img class="keyimg" src="/src/assets/images/mac/command.png" /> + Space`,
+    0x0009002C: `<img class="keyimg" src="/src/assets/images/mac/control.png" /> + <img class="keyimg" src="/src/assets/images/mac/command.png" /> + Space`,
+    0x00090009: `<img class="keyimg" src="/src/assets/images/mac/control.png" /> + <img class="keyimg" src="/src/assets/images/mac/command.png" /> + F`,
+    0x000A0022: `<img class="keyimg" src="/src/assets/images/mac/shift.png" /> + <img class="keyimg" src="/src/assets/images/mac/command.png" /> + 5`,
+    0x000A0020: `<img class="keyimg" src="/src/assets/images/mac/shift.png" /> + <img class="keyimg" src="/src/assets/images/mac/command.png" /> + 3`,
+    0x000A0021: `<img class="keyimg" src="/src/assets/images/mac/shift.png" /> + <img class="keyimg" src="/src/assets/images/mac/command.png" /> + 4`,
+    0x000A0011: `<img class="keyimg" src="/src/assets/images/mac/shift.png" /> + <img class="keyimg" src="/src/assets/images/mac/command.png" /> + N`,
     //****************************************************************
     //byte3��0x03��ʾ��macro��byte2��������ʾmacro��ѭ����ʽ��byte1��ѭ������  byte0��������ʾmacro���?
     //byte2����ʱ��������
@@ -2283,8 +2283,8 @@ export const KeyText_Mac: Record<number, String> = {
     0x08020000: 'LedColorModeLoop', //ֱ���趨Ϊ��ɫLOOP
 
     //����
-    0x08030100: `<img class="keyimg keyimg1" src="/src/assets/images/mac/backlight+.png" />`, //ֱ���趨Ϊģʽ+
-    0x08030200: `<img class="keyimg" src="/src/assets/images/mac/backlight-.png" />`, //ֱ���趨Ϊģʽ-
+    0x08030100: `<img class="keyimg keyimg1" src="/src/assets/images/mac/backlight_i.png" />`, //ֱ���趨Ϊģʽ+
+    0x08030200: `<img class="keyimg" src="/src/assets/images/mac/backlight_d.png" />`, //ֱ���趨Ϊģʽ-
     0x08030000: 'LedLuminLoop', //ֱ���趨ΪģʽLOOP
 
     //�ٶ�

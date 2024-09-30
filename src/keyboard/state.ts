@@ -2,7 +2,7 @@ import type { LightInfo, KeyboardState, KeyboardDefine  } from './interface'
 import { ConnectionType, ConnectionEventEnum, ConnectionStatusEnum } from "./enum"
 import { RK_L87_USB_DEFINE, RK_L87_DONGLE_DEFINE } from "./rk_l87"
 
-export const VERSION = '1.4.3'
+export const VERSION = '1.4.4'
 
 /**
 * Initial lightInfo
