@@ -73,8 +73,10 @@ const onConnect = async () => {
     keyboard.addEventListener("NotSupport", notSupportCallback);
 
     await keyboard.init()
-    checkProfileVersion();
-
+    if (keyboard.device != null && keyboard.device != undefined) {
+        checkProfileVersion();
+    }
+    
     if (keyboard.device == null || !keyboard.device.opened) {
         keyboard.removeEventListener("connection", connectionEventCallback);
         keyboard.removeEventListener("reported", reportedEventCallback);
