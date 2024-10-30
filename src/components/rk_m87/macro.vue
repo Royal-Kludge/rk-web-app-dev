@@ -218,8 +218,8 @@
 <script setup lang="ts">
 import { reactive, ref, onMounted, onBeforeUnmount, computed } from 'vue';
 import { keyboard } from '../../keyboard/keyboard'
-import { RK_L87, RK_L87_EVENT_DEFINE } from '../../keyboard/rk_l87/rk_l87';
-import { Macro, Macros, Action, ActionType } from '@/keyboard/rk_l87/macros';
+import { RK_M87, RK_M87_EVENT_DEFINE } from '@/keyboard/rk_m87/rk_m87';
+import { Macro, Macros, Action, ActionType } from '@/keyboard/rk_m87/macros';
 import { KeyCodeMap } from '@/keyboard/keyCode'
 import type { DropdownInstance } from 'element-plus'
 import { type KeyCodeTable } from '@/keyboard/interface';
@@ -238,7 +238,7 @@ const useMacro = useMacroStore();
 const { state, macros, actions } = storeToRefs(useMacro);
 
 const actVal = ref(t('macro.menu_1'));
-const rk_l87 = ref<RK_L87>();
+const rk_m87 = ref<RK_M87>();
 //const macros = ref<Macros>();
 
 //const key = ref<string>('');

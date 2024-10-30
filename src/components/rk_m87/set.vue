@@ -71,11 +71,11 @@
 </template>
 <script setup lang="ts">
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
-import { uselightStore } from "@/stores/lightStore";
-import { useSetStore } from "../../stores/setStore";
-import { useKeyStore } from "../../stores/keyStore";
-import { useMacroStore } from "../../stores/macroStore";
-import { useLocaleStore } from "../../stores/locale";
+import { uselightStore } from "@/stores/rk_m87/lightStore";
+import { useSetStore } from "@/stores/setStore";
+import { useKeyStore } from "@/stores/rk_m87/keyStore";
+import { useMacroStore } from "@/stores/rk_m87/macroStore";
+import { useLocaleStore } from "@/stores/locale";
 import { storeToRefs } from "pinia";
 
 import { useI18n } from 'vue-i18n';

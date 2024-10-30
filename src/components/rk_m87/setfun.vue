@@ -19,8 +19,8 @@
 </template>
 <script setup lang="ts">
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
-import { uselightStore } from "@/stores/lightStore";
-import { useKeyStore } from "../../stores/keyStore";
+import { uselightStore } from "@/stores/rk_m87/lightStore";
+import { useKeyStore } from "@/stores/rk_m87/keyStore";
 import { storeToRefs } from "pinia";
 
 import { useI18n } from 'vue-i18n';

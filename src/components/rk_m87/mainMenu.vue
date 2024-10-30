@@ -75,10 +75,10 @@
     </div>
 </template>
 <script setup lang="ts">
-import { useKeyStore } from "@/stores/keyStore";
+import { useKeyStore } from "@/stores/rk_m87/keyStore";
 import type { UploadProps } from 'element-plus'
 import { uselightStore } from "@/stores/lightStore";
-import { Profile } from '@/keyboard/rk_l87/profiles';
+import { Profile } from '@/keyboard/rk_m87/profiles';
 import { storeToRefs } from "pinia";
 
 const useKey = useKeyStore();

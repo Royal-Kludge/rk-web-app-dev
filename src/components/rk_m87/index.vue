@@ -4,6 +4,7 @@
     <Light v-else-if="meunid === 3" />
     <SetFun v-else-if="meunid === 4" />
     <Set v-else-if="meunid === 5" />
+    <TFT v-else-if="meunid === 6" />
     <Main v-else />
   </div>
 </template>
@@ -19,13 +20,14 @@ import SetFun from "./setfun.vue";
 import Macro from "./macro.vue";
 import Set from "./set.vue";
 import Main from "./main.vue"
-import { useMenuStore } from "../../stores/menuStore";
+import TFT from "./tft.vue"
+import { useMenuStore } from "@/stores/rk_m87/menuStore";
 import { storeToRefs } from "pinia";
 
 const useMenu = useMenuStore();
 const { meunid } = storeToRefs(useMenu);
 
-const rk_l87 = ref<RK_M87>();
+const rk_m87 = ref<RK_M87>();
 
 const state = reactive({
   connectState: keyboard.state.ConnectionStatus,
@@ -35,20 +37,20 @@ const state = reactive({
 onMounted(async () => {
   state.connectState = keyboard.state.ConnectionStatus;
   state.connectType = keyboard.state.connectType;
-  rk_l87.value = keyboard.protocol as RK_M87;
-  rk_l87.value.addEventListener(RK_M87_EVENT_DEFINE.OnDongleStatusChanged, dongleStatusChanged, false);
+  rk_m87.value = keyboard.protocol as RK_M87;
+  rk_m87.value.addEventListener(RK_M87_EVENT_DEFINE.OnDongleStatusChanged, dongleStatusChanged, false);
 });
 
 onBeforeUnmount(() => {
-  if (rk_l87.value != undefined) {
-    rk_l87.value.removeEventListener(RK_M87_EVENT_DEFINE.OnDongleStatusChanged, dongleStatusChanged, false);
+  if (rk_m87.value != undefined) {
+    rk_m87.value.removeEventListener(RK_M87_EVENT_DEFINE.OnDongleStatusChanged, dongleStatusChanged, false);
   }
 });
 
 // const isKeyboardConnect = (): boolean => {
 //   let isConnect = false;
-//   if (keyboard.state.connectType == ConnectionType.Dongle && rk_l87.value != undefined) {
-//     isConnect = state.connectState == ConnectionStatusEnum.Connected && rk_l87.value.data.donglePwd == 0x03000000 + 0x0156;
+//   if (keyboard.state.connectType == ConnectionType.Dongle && rk_m87.value != undefined) {
+//     isConnect = state.connectState == ConnectionStatusEnum.Connected && rk_m87.value.data.donglePwd == 0x03000000 + 0x0156;
 //   } else {
 //     isConnect = state.connectState == ConnectionStatusEnum.Connected;
 //   }

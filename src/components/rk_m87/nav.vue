@@ -48,8 +48,8 @@
 </template>
 <script setup lang="ts">
 import { KeyMatrixLayer } from "@/keyboard/enum";
-import { useKeyStore } from "@/stores/keyStore";
-import { uselightStore } from "@/stores/lightStore";
+import { useKeyStore } from "@/stores/rk_m87/keyStore";
+import { uselightStore } from "@/stores/rk_m87/lightStore";
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 
 const useLight = uselightStore();

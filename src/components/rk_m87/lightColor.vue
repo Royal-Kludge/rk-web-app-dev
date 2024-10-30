@@ -14,8 +14,7 @@
                                     <div class="d-flex flex-column">
                                         <div>
                                             <el-slider style="width: 360px" :step="1" :max="20" :min="1"
-                                                v-model="useLight.state.lightProps.brightness"
-                                                @change="ligtChanged" />
+                                                v-model="useLight.state.lightProps.brightness" @change="ligtChanged" />
                                         </div>
                                         <div class="d-flex jc-center">{{ $t('light.title_3') }}</div>
                                     </div>
@@ -26,8 +25,7 @@
                                     <div class="d-flex flex-column">
                                         <div>
                                             <el-slider style="width: 360px" :step="1" :max="4" :min="1"
-                                                v-model="useLight.state.lightProps.speed"
-                                                @change="ligtChanged" />
+                                                v-model="useLight.state.lightProps.speed" @change="ligtChanged" />
                                         </div>
                                         <div class="d-flex jc-center">{{ $t('light.title_4') }}</div>
                                     </div>
@@ -37,8 +35,7 @@
                                     <div class="d-flex flex-column">
                                         <div>
                                             <el-slider style="width: 360px" :step="1" :max="30" :min="0"
-                                                v-model="useLight.state.lightProps.sleep"
-                                                @change="ligtChanged" />
+                                                v-model="useLight.state.lightProps.sleep" @change="ligtChanged" />
                                         </div>
                                         <div class="d-flex jc-center">{{ $t('light.title_5') }}</div>
                                     </div>
@@ -51,7 +48,8 @@
                         </el-scrollbar>
                     </div>
                 </div>
-                <div class="bg-box flex-1" style="border-radius: 0px 0px 10px 0px;" v-if="useLight.state.lightProps.light != 3 && useLight.state.lightProps.light != 17">
+                <div class="bg-box flex-1" style="border-radius: 0px 0px 10px 0px;"
+                    v-if="useLight.state.lightProps.light != 3 && useLight.state.lightProps.light != 17">
                     <div class="w-100" style="height: 28vh">
                         <el-scrollbar>
                             <div class="d-flex flex-column ml-5">
@@ -84,9 +82,9 @@
 </template>
 <script setup lang="ts">
 import Picker from '../picker.vue'
-import { uselightStore } from "@/stores/lightStore";
+import { uselightStore } from "@/stores/rk_m87/lightStore";
 import { LightEffectEnum } from '@/keyboard/enum'
-import { useKeyStore } from "@/stores/keyStore";
+import { useKeyStore } from "@/stores/rk_m87/keyStore";
 import { type KeyState } from '@/keyboard/interface'
 
 const useLight = uselightStore();
