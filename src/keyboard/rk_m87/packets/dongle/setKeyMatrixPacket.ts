@@ -1,4 +1,4 @@
-import { Packet_Dongle_Set } from "@/keyboard/rk_l87/packets/dongle/setPacket";
+import { Packet_Dongle_Set } from "@/keyboard/rk_m87/packets/dongle/setPacket";
 import { KeyMatrixLayer, MatrixTable } from "@/keyboard/enum"
 
 export class SetKeyMatrixPacket extends Packet_Dongle_Set {

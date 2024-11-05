@@ -1,6 +1,6 @@
 import type { IPacket } from "@/keyboard/interface";
-import { Packet_Usb, LED_COLOR_LENGTH, LED_COLOR_COUNT, PACKET_HEAD_LENGTH } from "@/keyboard/rk_l87/packets/packet";
-import { LedColors } from "@/keyboard/rk_l87/ledColors";
+import { Packet_Usb, LED_COLOR_LENGTH, LED_COLOR_COUNT, PACKET_HEAD_LENGTH } from "@/keyboard/rk_m87/packets/packet";
+import { LedColors } from "@/keyboard/rk_m87/ledColors";
 
 export class GetLedColorsPacket extends Packet_Usb {
 

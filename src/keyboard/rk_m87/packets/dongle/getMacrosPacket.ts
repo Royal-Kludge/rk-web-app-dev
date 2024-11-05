@@ -1,5 +1,5 @@
 import type { IPacket } from "@/keyboard/interface";
-import { Packet_Dongle_Get } from "@/keyboard/rk_l87/packets/dongle/getPacket";
+import { Packet_Dongle_Get } from "@/keyboard/rk_m87/packets/dongle/getPacket";
 import { Macros } from "../../macros";
 
 export class GetMacrosPacket extends Packet_Dongle_Get {

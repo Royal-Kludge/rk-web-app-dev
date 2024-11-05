@@ -41,6 +41,7 @@ export class Frames {
 }
 export class Frame {
     url: string;
+    rgb565?: Array<Number>;
     index = 0;
 
     constructor(url: string) {

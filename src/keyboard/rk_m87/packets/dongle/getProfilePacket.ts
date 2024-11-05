@@ -1,6 +1,6 @@
 import type { IPacket } from "@/keyboard/interface";
-import { PROFILE_LENGTH } from "@/keyboard/rk_l87/packets/packet";
-import { Packet_Dongle_Get } from "@/keyboard/rk_l87/packets/dongle/getPacket";
+import { PROFILE_LENGTH } from "@/keyboard/rk_m87/packets/packet";
+import { Packet_Dongle_Get } from "@/keyboard/rk_m87/packets/dongle/getPacket";
 import { BoardProfile } from "../../boardProfile";
 
 export class GetProfilePacket extends Packet_Dongle_Get {

@@ -1,5 +1,5 @@
 import type { IPacket } from "@/keyboard/interface";
-import { Packet_Usb, MACRO_PER_BLOCK_LENGTH,  PACKET_HEAD_LENGTH } from "@/keyboard/rk_l87/packets/packet";
+import { Packet_Usb, MACRO_PER_BLOCK_LENGTH,  PACKET_HEAD_LENGTH } from "@/keyboard/rk_m87/packets/packet";
 import { Macros } from "../../macros";
 
 export class GetMacrosPacket extends Packet_Usb {

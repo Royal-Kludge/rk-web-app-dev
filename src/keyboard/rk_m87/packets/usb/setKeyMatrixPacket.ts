@@ -1,5 +1,5 @@
 import type { IPacket } from "@/keyboard/interface";
-import { Packet_Usb, KEY_MAXTRIX_LINE, KEY_MAXTRIX_COLOUMN, PACKET_HEAD_LENGTH } from "@/keyboard/rk_l87/packets/packet";
+import { Packet_Usb, KEY_MAXTRIX_LINE, KEY_MAXTRIX_COLOUMN, PACKET_HEAD_LENGTH } from "@/keyboard/rk_m87/packets/packet";
 import { KeyMatrixLayer, MatrixTable } from "@/keyboard/enum"
 
 export class SetKeyMatrixPacket extends Packet_Usb {

@@ -79,7 +79,7 @@
                     </div>
                 </div>
             </div>
-            <div class="d-flex flex-column" style="height: 360px;">
+            <div class="d-flex flex-column" style="height: 360px;margin-bottom: 32px;">
                 <div class="d-flex flex-column">
                     <div class="d-flex jc-between bg-white p-2"
                         style="border-radius: 10px 10px 0px 0px;line-height: 30px;">
@@ -97,7 +97,7 @@
                     </div>
                     <div class="d-flex flex-column flex-1 bg-white-1" style="border-radius: 0px 0px 10px 10px;">
                         <div class="d-flex flex-1 warn-1">
-                            <div style="height: 31vh;width: 100%;">
+                            <div style="height: 25vh;width: 100%;">
                                 <el-scrollbar>
                                     <div class="d-flex" style="width: 100vh;">
                                         <div v-for="item in frames?.get()">
@@ -108,7 +108,7 @@
                                                 </div>
                                                 <div
                                                     :class="['d-flex frame bg-black jc-center ai-center', useTft.selecteFrame(item)]">
-                                                    <img :src="item.url" v-if="item.url !== ''"
+                                                    <img :id="`frame${item.index}`" ref="images" :src="item.url" v-if="item.url !== ''"
                                                         style="max-width: 100%; max-height: 100%; width: auto;  height: auto;" />
                                                 </div>
                                             </div>
@@ -118,7 +118,7 @@
                             </div>
                         </div>
                         <div class="d-flex bg-white p-2 jc-center" style="border-radius: 0px 0px 10px 10px">
-                            <div class="py-1 px-5 but-green text-white c-p but text-center" @click="useTft.saveFrames">
+                            <div class="py-1 px-5 but-green text-white c-p but text-center" @click="saveFrames">
                                 {{ $t('macro.but_7') }}
                             </div>
                         </div>
@@ -131,13 +131,16 @@
 
 <script setup lang="ts">
 import Vue3DraggableResizable from 'vue3-draggable-resizable'
-import { ref, reactive, onMounted } from 'vue';
+import { ref, reactive, onMounted, onBeforeUnmount } from 'vue';
 import { useI18n } from 'vue-i18n';
 import type { UploadProps } from 'element-plus'
 import { ElMessageBox, ElMessage } from 'element-plus'
 import Cropper from '@/components/cropper.vue'
 import { useTftStore } from "../../stores/rk_m87/tftStore";
 import { storeToRefs } from "pinia";
+import { RK_M87, RK_M87_EVENT_DEFINE } from "../../keyboard/rk_m87/rk_m87";
+import { keyboard } from "../../keyboard/keyboard";
+import { log } from 'console';
 
 const useTft = useTftStore();
 const { state, frames } = storeToRefs(useTft);
@@ -161,6 +164,8 @@ const cropOption = reactive({
 const imageUrl = ref<any>('')
 const addUrl = ref<any>('')
 const addElement = ref<HTMLImageElement>();
+const images = ref<Array<HTMLImageElement>>()
+const rk_m87 = ref<RK_M87>();
 
 // 解构出t方法
 const { t } = useI18n();
@@ -170,6 +175,17 @@ const dialogVisible = ref(false)
 
 onMounted(async () => {
     await useTft.init();
+    rk_m87.value = keyboard.protocol as RK_M87;
+    rk_m87.value.addEventListener(RK_M87_EVENT_DEFINE.OnTftSetEvent, tftPicSetted, false);
+    if (useTft.frames != undefined) {
+        delay.value = useTft.frames?.delay;
+    }
+});
+
+onBeforeUnmount(() => {
+  if (rk_m87.value != undefined) {
+    rk_m87.value.removeEventListener(RK_M87_EVENT_DEFINE.OnTftSetEvent, tftPicSetted, false);
+  }
 });
 
 const print = (val: any) => {
@@ -304,6 +320,16 @@ const saveImg = () => {
     //document.body.appendChild(Imgcanvas);
 }
 
+const saveFrames = () => {
+    if (useTft.frames != undefined) {
+        useTft.frames.delay = delay.value;
+    }
+    useTft.saveFrames();
+}
+
+const tftPicSetted = (event: any) => {
+    console.log('TFT picture setting: ',`frameIndex[${event.detail.frameIndex}] | frameNum[${event.detail.frameNum}] | packageIndex[${event.detail.packageIndex}] | packageNum[${event.detail.packageNum}]`);
+};
 </script>
 <style lang="scss" scoped>
 .active-class {

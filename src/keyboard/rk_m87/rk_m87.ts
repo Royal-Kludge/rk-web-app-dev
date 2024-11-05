@@ -19,6 +19,7 @@ export const RK_M87_EVENT_DEFINE: {
     OnSetFactorySuccess: string;
     OnReportFinish: string;
     OnReportStart: string;
+    OnTftSetEvent: string;
 } = {
     OnDongleStatusChanged: 'OnDongleStatusChanged',
     OnPasswordGotten: 'OnPasswordGotten',
@@ -30,6 +31,7 @@ export const RK_M87_EVENT_DEFINE: {
     OnSetFactorySuccess: 'OnSetFactorySuccess',
     OnReportFinish: 'OnReportFinish',
     OnReportStart: 'OnReportStart',
+    OnTftSetEvent: 'OnTftSetEvent'
 }
 
 export const COMMAND_ID: {
@@ -86,6 +88,7 @@ export abstract class RK_M87 extends Protocol {
     abstract getLedColors(board: number): Promise<void>;
     abstract setLedColors(board: number): Promise<void>;
     abstract setFactory(): Promise<void>;
+    abstract setTftPic(buffers: Array<Uint16Array>, delay: number): Promise<void>;
     
     abstract onGetReport(reportId: number, data: DataView): Promise<void>;
 

@@ -21,16 +21,23 @@ import { SetLedColorsPacket } from './packets/usb/setLedColorsPacket';
 import { GetPasswordPacket } from './packets/usb/getPasswordPacket';
 import { SetFactoryPacket } from './packets/usb/setFactoryPacket';
 
+import { SetTftPicPacket } from './packets/usb/setTftPicPacket';
+
 import { Macros } from './macros';
 import { RK_M87_USB_DEFINE } from '.';
+import { SetTftPretreatmentPacket } from './packets/usb/setTftPretreatmentPacket';
 
 const worker = new Worker(new URL('./communication.ts', import.meta.url));
 
 export class RK_M87_Usb extends RK_M87 {
 
+    pktSetTftPicPacket: SetTftPicPacket;
+
     constructor(state: KeyboardState, device: HIDDevice) {
         super(state, device);
         state.connectType = ConnectionType.USB;
+
+        this.pktSetTftPicPacket = new SetTftPicPacket();
     }
 
     static async create(state: KeyboardState, device: HIDDevice) {
@@ -58,6 +65,50 @@ export class RK_M87_Usb extends RK_M87 {
 
     async onGetReport(reportId: number, data: DataView): Promise<void> {
 
+        try {
+            let cmdId = data.getUint8(0x01);
+
+            switch (cmdId) {
+                case 0x06:
+                    if (this.pktSetTftPicPacket.isDuring) {
+                        let val = data.getUint8(0x02);
+                        // val = 1 success, val = 0 fail
+                        if (val == 1) {
+                            this.pktSetTftPicPacket.packageIndex = this.pktSetTftPicPacket.packageIndex + 1;
+                            if (this.pktSetTftPicPacket.packageIndex >= this.pktSetTftPicPacket.packageNum) {
+                                this.pktSetTftPicPacket.packageIndex = 0;
+                                this.pktSetTftPicPacket.frameIndex = this.pktSetTftPicPacket.frameIndex + 1;
+                                if (this.pktSetTftPicPacket.frameIndex >= this.pktSetTftPicPacket.buffers.length) {
+                                    this.pktSetTftPicPacket.isDuring = false;
+                                    let packet = new SetTftPretreatmentPacket();
+                                    packet.setPayload(this.pktSetTftPicPacket.buffers.length, 0x00, 0);
+                                    worker.postMessage(packet.setReport);
+                                }
+                            }
+                            
+                            if (this.pktSetTftPicPacket.isDuring) {
+                                this.pktSetTftPicPacket.setPayload();
+                                worker.postMessage(this.pktSetTftPicPacket.setReport);
+                            }
+
+                            this.dispatchEvent(new CustomEvent(RK_M87_EVENT_DEFINE.OnTftSetEvent, 
+                                { detail: 
+                                    { 
+                                        frameIndex: this.pktSetTftPicPacket.frameIndex, 
+                                        frameNum: this.pktSetTftPicPacket.buffers.length, 
+                                        packageIndex: this.pktSetTftPicPacket.packageIndex, 
+                                        packageNum: this.pktSetTftPicPacket.packageNum, 
+                                    } 
+                                }));
+                        } else {
+                            worker.postMessage(this.pktSetTftPicPacket.setReport);
+                        }
+                    }
+                    break;
+            }
+        } catch (e: any) {
+            console.log(`Analysis report data is error: ${e.message}`);
+        }
     }
 
     async getProfile(board: number): Promise<void> {
@@ -209,5 +260,23 @@ export class RK_M87_Usb extends RK_M87 {
         let packet = new SetFactoryPacket();
         //await this.setFeature(REPORT_ID_USB, packet.setReport);
         worker.postMessage(packet.setReport);
+    }
+
+    async setTftPic(buffers: Array<Uint16Array>, delay: number): Promise<void> {
+        if (buffers != undefined && buffers.length > 0) {
+            this.pktSetTftPicPacket.buffers.splice(0, this.pktSetTftPicPacket.buffers.length);
+            let index: number = 0;
+            for (index = 0; index < buffers.length; index++) {
+                this.pktSetTftPicPacket.buffers.push(new Uint8Array(buffers[index].buffer));
+            }
+            this.pktSetTftPicPacket.packageIndex = -1;
+            this.pktSetTftPicPacket.frameIndex = 0;
+            this.pktSetTftPicPacket.setPayload();
+            this.pktSetTftPicPacket.isDuring = true;
+
+            let packet = new SetTftPretreatmentPacket();
+            packet.setPayload(buffers.length, 0x01, delay);
+            worker.postMessage(packet.setReport);
+        }
     }
 }

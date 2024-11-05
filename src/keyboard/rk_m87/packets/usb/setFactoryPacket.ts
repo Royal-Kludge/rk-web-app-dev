@@ -1,5 +1,5 @@
 import type { IPacket } from "@/keyboard/interface";
-import { Packet_Usb } from "@/keyboard/rk_l87/packets/packet";
+import { Packet_Usb } from "@/keyboard/rk_m87/packets/packet";
 
 export class SetFactoryPacket extends Packet_Usb {
 

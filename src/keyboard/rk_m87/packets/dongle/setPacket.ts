@@ -1,5 +1,5 @@
 import type { IPacket } from "@/keyboard/interface";
-import { Packet_Dongle, REPORT_PAYLOAD_LENGTH, MACRO_PER_BLOCK_LENGTH, REPORT_MAX_RETRY } from "@/keyboard/rk_l87/packets/packet";
+import { Packet_Dongle, REPORT_PAYLOAD_LENGTH, MACRO_PER_BLOCK_LENGTH, REPORT_MAX_RETRY } from "@/keyboard/rk_m87/packets/packet";
 
 export class Packet_Dongle_Set extends Packet_Dongle {
     buffer?: Uint8Array;

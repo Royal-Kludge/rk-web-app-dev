@@ -1,6 +1,6 @@
 import type { IPacket } from "@/keyboard/interface";
-import { Packet_Usb, PROFILE_LENGTH, PACKET_HEAD_LENGTH } from "@/keyboard/rk_l87/packets/packet";
-import { BoardProfile } from "@/keyboard/rk_l87/boardProfile";
+import { Packet_Usb, PROFILE_LENGTH, PACKET_HEAD_LENGTH } from "@/keyboard/rk_m87/packets/packet";
+import { BoardProfile } from "@/keyboard/rk_m87/boardProfile";
 
 export class GetProfilePacket extends Packet_Usb {
 

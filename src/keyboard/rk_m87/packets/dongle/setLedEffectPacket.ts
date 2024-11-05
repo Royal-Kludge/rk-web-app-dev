@@ -1,4 +1,4 @@
-import { Packet_Dongle_Set } from "@/keyboard/rk_l87/packets/dongle/setPacket";
+import { Packet_Dongle_Set } from "@/keyboard/rk_m87/packets/dongle/setPacket";
 
 export class SetLedEffectPacket extends Packet_Dongle_Set {
 

@@ -322,6 +322,10 @@ export class RK_M87_Dongle extends RK_M87 {
         this.dispatchEvent(new CustomEvent(RK_M87_EVENT_DEFINE.OnSetFactorySuccess, { detail: true }));
     }
 
+    async setTftPic(buffers: Array<Uint16Array>, delay: number): Promise<void> {
+        
+    }
+
     private async nextReport(event: any) {
         let pkt = event.detail as Packet_Dongle;
         this.dispatchEvent(new CustomEvent(RK_M87_EVENT_DEFINE.OnReportStart, { detail: true }));

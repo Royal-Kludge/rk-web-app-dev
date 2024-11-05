@@ -1,6 +1,6 @@
 import type { IPacket } from "@/keyboard/interface";
-import { KEY_MAXTRIX_LINE, KEY_MAXTRIX_COLOUMN } from "@/keyboard/rk_l87/packets/packet";
-import { Packet_Dongle_Get } from "@/keyboard/rk_l87/packets/dongle/getPacket";
+import { KEY_MAXTRIX_LINE, KEY_MAXTRIX_COLOUMN } from "@/keyboard/rk_m87/packets/packet";
+import { Packet_Dongle_Get } from "@/keyboard/rk_m87/packets/dongle/getPacket";
 import { KeyMatrix } from "../../keyMatrix";
 import { KeyMatrixLayer, MatrixTable } from "@/keyboard/enum"
 

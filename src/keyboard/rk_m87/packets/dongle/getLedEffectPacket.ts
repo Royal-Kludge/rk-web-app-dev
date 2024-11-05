@@ -1,6 +1,6 @@
 import type { IPacket } from "@/keyboard/interface";
-import { LED_COLOR_LENGTH, LED_EFFECT_COLOR_COUNT, LED_EFFECT_COUNT } from "@/keyboard/rk_l87/packets/packet";
-import { Packet_Dongle_Get } from "@/keyboard/rk_l87/packets/dongle/getPacket";
+import { LED_COLOR_LENGTH, LED_EFFECT_COLOR_COUNT, LED_EFFECT_COUNT } from "@/keyboard/rk_m87/packets/packet";
+import { Packet_Dongle_Get } from "@/keyboard/rk_m87/packets/dongle/getPacket";
 import { LedEffect } from "../../ledEffect";
 
 export class GetLedEffectPacket extends Packet_Dongle_Get {
