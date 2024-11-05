@@ -108,7 +108,8 @@
                                                 </div>
                                                 <div
                                                     :class="['d-flex frame bg-black jc-center ai-center', useTft.selecteFrame(item)]">
-                                                    <img :id="`frame${item.index}`" ref="images" :src="item.url" v-if="item.url !== ''"
+                                                    <img :id="`frame${item.index}`" ref="images" :src="item.url"
+                                                        v-if="item.url !== ''"
                                                         style="max-width: 100%; max-height: 100%; width: auto;  height: auto;" />
                                                 </div>
                                             </div>
@@ -125,6 +126,11 @@
                     </div>
                 </div>
             </div>
+            <el-dialog v-model="saveShow" :show-close="false" width="500" :close-on-click-modal="false"
+                :close-on-press-escape="false">
+                <div class="text-center pb-4">保存中...</div>
+                <el-progress :percentage="percentage" :stroke-width="15" striped striped-flow :duration="10" />
+            </el-dialog>
         </div>
     </div>
 </template>
@@ -143,6 +149,8 @@ import { keyboard } from "../../keyboard/keyboard";
 import { log } from 'console';
 
 const useTft = useTftStore();
+const saveShow = ref(false);
+const percentage = ref(0)
 const { state, frames } = storeToRefs(useTft);
 const imgOption = reactive({
     x: 0,
@@ -183,9 +191,9 @@ onMounted(async () => {
 });
 
 onBeforeUnmount(() => {
-  if (rk_m87.value != undefined) {
-    rk_m87.value.removeEventListener(RK_M87_EVENT_DEFINE.OnTftSetEvent, tftPicSetted, false);
-  }
+    if (rk_m87.value != undefined) {
+        rk_m87.value.removeEventListener(RK_M87_EVENT_DEFINE.OnTftSetEvent, tftPicSetted, false);
+    }
 });
 
 const print = (val: any) => {
@@ -325,10 +333,33 @@ const saveFrames = () => {
         useTft.frames.delay = delay.value;
     }
     useTft.saveFrames();
+    saveShow.value = true
+    Saving()
+}
+
+let intervalId: any = null;
+let count: number = 0;
+const Saving = () => {
+    intervalId = setInterval(() => {
+        count++
+        if (count > 15) {
+            count = 0
+            saveShow.value = false
+            if (intervalId) {
+                clearInterval(intervalId);
+                intervalId = null;
+            }
+        }
+    }, 1000);
 }
 
 const tftPicSetted = (event: any) => {
-    console.log('TFT picture setting: ',`frameIndex[${event.detail.frameIndex}] | frameNum[${event.detail.frameNum}] | packageIndex[${event.detail.packageIndex}] | packageNum[${event.detail.packageNum}]`);
+    console.log('TFT picture setting: ', `frameIndex[${event.detail.frameIndex}] | frameNum[${event.detail.frameNum}] | packageIndex[${event.detail.packageIndex}] | packageNum[${event.detail.packageNum}]`);
+    percentage.value = Math.floor(event.detail.packageIndex / event.detail.packageNum * 100)
+    percentage.value = percentage.value >= 100 ? 100 : percentage.value;
+    if (percentage.value >= 100) {
+        saveShow.value = false
+    }
 };
 </script>
 <style lang="scss" scoped>
