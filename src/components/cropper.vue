@@ -42,8 +42,8 @@
             </div>
         </div>
         <div class="button">
-            <el-button class="sureBtn" @click="clickSure" type="primary">确 定</el-button>
-            <el-button class="closeBtn" @click="closeShow">取 消</el-button>
+            <el-button class="sureBtn" @click="clickSure" type="primary">Confirm</el-button>
+            <el-button class="closeBtn" @click="closeShow">Cancel</el-button>
         </div>
     </div>
 </template>
