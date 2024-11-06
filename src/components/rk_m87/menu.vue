@@ -6,7 +6,7 @@
       </div>
       <div v-for="item in menuList" class="box p-4" :class="{ active: item.id === meunid }"
         @click="onMenuClick(item.id)">
-        <img :src="item.src" />
+        <img :src="item.src" v-if="item.id != 6 || (item.id == 6 && isShowTFT)"/>
       </div>
     </div>
     <div>
@@ -19,18 +19,23 @@
 <script setup lang="ts">
 import { useMenuStore } from "@/stores/rk_m87/menuStore";
 import { storeToRefs } from "pinia";
-import { onMounted } from "vue";
+import { onMounted, ref } from "vue";
 import { useKeyStore } from "@/stores/rk_m87/keyStore";
 import { keyboard } from "@/keyboard/keyboard";
 import { uselightStore } from "@/stores/rk_m87/lightStore";
+import { ConnectionType } from "@/keyboard/enum";
 
 const useKey = useKeyStore();
 const useMenu = useMenuStore();
 const useLight = uselightStore();
 const { meunid, menuList } = storeToRefs(useMenu);
+
+const isShowTFT = ref(false);
+
 // 页面加载时
 onMounted(() => {
   useMenu.setMeunid(meunid.value);
+  isShowTFT.value = keyboard.state.connectType == ConnectionType.USB;
 });
 
 const onMenuClick = async (id: any) => {

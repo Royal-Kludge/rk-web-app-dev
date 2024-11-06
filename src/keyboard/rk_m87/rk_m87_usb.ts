@@ -27,7 +27,7 @@ import { Macros } from './macros';
 import { RK_M87_USB_DEFINE } from '.';
 import { SetTftPretreatmentPacket } from './packets/usb/setTftPretreatmentPacket';
 
-const worker = new Worker(new URL('./communication.ts', import.meta.url));
+const worker = new Worker(new URL('./..//communication.ts', import.meta.url));
 
 export class RK_M87_Usb extends RK_M87 {
 
@@ -81,7 +81,7 @@ export class RK_M87_Usb extends RK_M87 {
                                 if (this.pktSetTftPicPacket.frameIndex >= this.pktSetTftPicPacket.buffers.length) {
                                     this.pktSetTftPicPacket.isDuring = false;
                                     let packet = new SetTftPretreatmentPacket();
-                                    packet.setPayload(this.pktSetTftPicPacket.buffers.length, 0x00, 0);
+                                    packet.setPayload(this.pktSetTftPicPacket.buffers.length, 0x00, this.pktSetTftPicPacket.delay);
                                     worker.postMessage(packet.setReport);
                                 }
                             }
@@ -273,6 +273,7 @@ export class RK_M87_Usb extends RK_M87 {
             this.pktSetTftPicPacket.frameIndex = 0;
             this.pktSetTftPicPacket.setPayload();
             this.pktSetTftPicPacket.isDuring = true;
+            this.pktSetTftPicPacket.delay = delay;
 
             let packet = new SetTftPretreatmentPacket();
             packet.setPayload(buffers.length, 0x01, delay);

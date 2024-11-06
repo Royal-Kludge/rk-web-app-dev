@@ -339,6 +339,7 @@ const saveFrames = () => {
 
 let intervalId: any = null;
 let count: number = 0;
+
 const Saving = () => {
     intervalId = setInterval(() => {
         count++
@@ -355,8 +356,11 @@ const Saving = () => {
 
 const tftPicSetted = (event: any) => {
     console.log('TFT picture setting: ', `frameIndex[${event.detail.frameIndex}] | frameNum[${event.detail.frameNum}] | packageIndex[${event.detail.packageIndex}] | packageNum[${event.detail.packageNum}]`);
-    percentage.value = Math.floor(event.detail.packageIndex / event.detail.packageNum * 100)
+    let totalPkg = event.detail.frameNum * 127;
+    let curPkg = event.detail.frameIndex * 127 + event.detail.packageIndex;
+    percentage.value = Math.floor(curPkg / totalPkg * 100)
     percentage.value = percentage.value >= 100 ? 100 : percentage.value;
+    count = 0;
     if (percentage.value >= 100) {
         saveShow.value = false
     }

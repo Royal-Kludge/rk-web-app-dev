@@ -42,8 +42,8 @@ export const RK_M87_USB_DEFINE: KeyboardDefine = {
 
 export const RK_M87_DONGLE_DEFINE: KeyboardDefine = {
     name: "RK-M87PRO",
-    vendorId: 0x3554,
-    productId: 0xFA09,
+    vendorId: 0x258A,
+    productId: 0x0150,
     usagePage: 0xFF02,
     usage: 0x0002,
     keyText: KeyText,

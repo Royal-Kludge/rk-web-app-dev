@@ -24,7 +24,7 @@ import { SetFactoryPacket } from './packets/usb/setFactoryPacket';
 import { Macros } from './macros';
 import { RK_L87_USB_DEFINE } from '.';
 
-const worker = new Worker(new URL('./communication.ts', import.meta.url));
+const worker = new Worker(new URL('./..//communication.ts', import.meta.url));
 
 export class RK_L87_Usb extends RK_L87 {
 

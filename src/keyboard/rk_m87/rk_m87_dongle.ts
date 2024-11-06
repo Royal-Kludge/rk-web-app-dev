@@ -26,7 +26,7 @@ import { SetKeyMatrixPacket } from './packets/dongle/setKeyMatrixPacket';
 import { SetMacrosPacket } from './packets/dongle/setMacrosPacket';
 import { SetFactoryPacket } from './packets/dongle/setFactoryPacket';
 
-const dongleWorker = new Worker(new URL('./dongleCommunication.ts', import.meta.url));
+const dongleWorker = new Worker(new URL('./../dongleCommunication.ts', import.meta.url));
 
 export class RK_M87_Dongle extends RK_M87 {
 

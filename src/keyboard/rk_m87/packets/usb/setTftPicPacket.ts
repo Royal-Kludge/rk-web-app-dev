@@ -8,11 +8,13 @@ export class SetTftPicPacket extends Packet_Usb {
     isDuring: boolean;
     setReport: Uint8Array;
     frameIndex: number;
+    delay: number;
     buffers: Array<Uint8Array>
 
     constructor() {
         super(0x0c);
         this.frameIndex = 0x00;
+        this.delay = 0x00;
         this.isDuring = false;
         this.buffers = new Array<Uint8Array>();
         this.setReport = new Uint8Array(519);
