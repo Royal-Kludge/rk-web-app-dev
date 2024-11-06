@@ -264,5 +264,20 @@ export default {
   Stop: "停止",
   PrevTr: "上一首",
   NextTr: "下一首",
-  Battery: "电量"
+  Battery: "电量",
+  tft: {
+    title_1: "屏幕预览",
+    title_2: "加载图片",
+    title_3: "添加图层",
+    title_4: "帧列表",
+    title_5: "帧",
+    title_6: "保存中...",
+    but_1: "保存修改",
+    but_2: "撤销修改",
+    but_3: "播放",
+    but_4: "暂停",
+    desc_1: "左键拖动图层，滚轮缩放图层",
+    desc_2: "应用到所有帧",
+    desc_3: "播放问隔(毫秒)",
+  }
 };

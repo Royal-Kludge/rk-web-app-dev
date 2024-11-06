@@ -265,5 +265,20 @@ export default {
   Stop: "Stop",
   PrevTr: "Prev track",
   NextTr: "Next track",
-  Battery: "Battery"
+  Battery: "Battery",
+  tft: {
+    title_1: "Screen Preview",
+    title_2: "Load image",
+    title_3: "Add Layer",
+    title_4: "Frame List",
+    title_5: "frame",
+    title_6: "Saving...",
+    but_1: "Save modify",
+    but_2: "Revoke modify",
+    but_3: "Play",
+    but_4: "Pause",
+    desc_1: "Left click to drag the layer, scroll to zoom in and out of the layer",
+    desc_2: "Apply to all frames",
+    desc_3: "Play interval (milliseconds)",
+  }
 };

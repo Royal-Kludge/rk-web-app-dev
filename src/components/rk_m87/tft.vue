@@ -4,7 +4,7 @@
             <div class="d-flex flex-column flex-1">
                 <div class="d-flex jc-between bg-white p-2" style="border-radius: 10px 10px 0px 0px;line-height: 30px;">
                     <div>
-                        屏幕预览
+                        {{ $t("tft.title_1") }}
                     </div>
                 </div>
                 <div class="d-flex ai-center m-4">
@@ -32,48 +32,48 @@
                             </el-dialog>
                             <el-upload :on-change='handleChangeUpload' :show-file-list="false" :auto-upload="false">
                                 <div class="py-1 px-4 but-blue text-white mx-3 c-p but text-center">
-                                    加载图片
+                                    {{ $t("tft.title_2") }}
                                 </div>
                             </el-upload>
                         </div>
                         <div class="d-flex my-3">
                             <el-upload :before-upload='handleBeforeUpload' :show-file-list="false" :auto-upload="true">
                                 <div class="py-1 px-4 but-blue text-white mx-3 c-p but text-center">
-                                    添加图层
+                                    {{ $t("tft.title_3") }}
                                 </div>
                             </el-upload>
-                            <div>左键拖动图层，滚轮缩放图层</div>
+                            <div>{{ $t("tft.desc_1") }}</div>
                         </div>
                         <div class="d-flex my-3">
                             <div class="py-1 px-4 but-blue text-white mx-3 c-p but text-center" @click="saveImg">
-                                保存修改
+                                {{ $t("tft.but_1") }}
                             </div>
                             <div>
                                 <el-checkbox v-model="frame" :label="$t('set.layer_1')">
-                                    应用到所有帧
+                                    {{ $t("tft.desc_2") }}
                                 </el-checkbox>
                             </div>
                         </div>
                         <div class="d-flex my-3">
                             <div class="py-1 px-4 but-blue text-white mx-3 c-p but text-center"
                                 @click="useTft.undoFrame">
-                                撤销修改
+                                {{ $t("tft.but_2") }}
                             </div>
                         </div>
                         <div class="d-flex my-3">
                             <div class="py-1 px-4 but-blue text-white mx-3 c-p but text-center"
                                 @click="useTft.playFrame()" v-if="!state.play">
-                                播放
+                                {{ $t("tft.but_3") }}
                             </div>
                             <div class="py-1 px-4 but-red text-white mx-3 c-p but text-center"
                                 @click="useTft.stopFrame()" v-else>
-                                暂停
+                                {{ $t("tft.but_4") }}
                             </div>
                             <div>
                                 <span>
                                     <el-input-number style="width: 120px" v-model="delay"
                                         aria-placeholder="Please input delay" type="number" />
-                                </span>播放问隔(毫秒)
+                                </span>{{ $t("tft.but_5") }}
                             </div>
                         </div>
                     </div>
@@ -84,7 +84,7 @@
                     <div class="d-flex jc-between bg-white p-2"
                         style="border-radius: 10px 10px 0px 0px;line-height: 30px;">
                         <div>
-                            帧列表({{ frames?.list.length }}帧)
+                            {{ $t("tft.title_4") }}({{ frames?.list.length }}{{ $t("tft.title_4") }})
                         </div>
                         <div class="d-flex">
                             <div class="mx-2 c-p"><img src="../../assets/images/title/add.png" class="img-title"
@@ -128,7 +128,7 @@
             </div>
             <el-dialog v-model="saveShow" :show-close="false" width="500" :close-on-click-modal="false"
                 :close-on-press-escape="false">
-                <div class="text-center pb-4">保存中...</div>
+                <div class="text-center pb-4">{{ $t("tft.title_6") }}</div>
                 <el-progress :percentage="percentage" :stroke-width="15" striped striped-flow :duration="10" />
             </el-dialog>
         </div>

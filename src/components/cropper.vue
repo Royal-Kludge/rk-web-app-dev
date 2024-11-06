@@ -56,7 +56,7 @@ const props = defineProps(['imageUrl', 'cropOption'])
 const emit = defineEmits(['closeShow', 'clickSure'])
 const cropper = ref(VueCropper)
 
-let previews = ref({})  // 即时预览
+let previews = ref<any>({})  // 即时预览
 
 const option = reactive({
     img: '',  // 上传图片地址
