@@ -108,7 +108,7 @@ const disconnect = () => {
 const isKeyboardConnect = (): boolean => {
     let isConnect = false;
     if (keyboard.state.connectType == ConnectionType.Dongle) {
-        isConnect = state.connectState == ConnectionStatusEnum.Connected && state.password == 0x03000000 + 0x0156;
+        isConnect = state.connectState == ConnectionStatusEnum.Connected && state.password == 0x06000000 + 0x2A;
     } else {
         isConnect = state.connectState == ConnectionStatusEnum.Connected;
     }

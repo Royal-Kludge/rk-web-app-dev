@@ -73,7 +73,7 @@
                                 <span>
                                     <el-input-number style="width: 120px" v-model="delay"
                                         aria-placeholder="Please input delay" type="number" />
-                                </span>{{ $t("tft.but_5") }}
+                                </span>{{ $t("tft.desc_3") }}
                             </div>
                         </div>
                     </div>
@@ -372,7 +372,7 @@ const tftPicSetted = (event: any) => {
 }
 
 .but {
-    min-width: 75px;
+    min-width: 110px;
 }
 
 .selected {
