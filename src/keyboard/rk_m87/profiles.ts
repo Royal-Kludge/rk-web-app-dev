@@ -125,7 +125,7 @@ export class Profiles {
 
     init(defaultName: string) {
         this.list.splice(0, this.list.length);
-        let tmp = storage.get('profile') as Profiles;
+        let tmp = storage.get(`${keyboard.keyboardDefine?.name}_profile`) as Profiles;
 
         if (tmp != null && tmp.list.length > 0 && tmp.version != undefined && tmp.version == VERSION) {
             for (let m of tmp.list) {
@@ -171,7 +171,7 @@ export class Profiles {
         }
     }
     save() {
-        storage.set('profile', this);
+        storage.set(`${keyboard.keyboardDefine?.name}_profile`, this);
     }
 }
 

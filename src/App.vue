@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
-import { useMenuStore } from "./stores/menuStore";
-import { useSetStore } from "./stores/setStore";
-import { useLocaleStore } from "./stores/locale";
+import { RouterView } from 'vue-router'
+//import { useMenuStore } from "@/stores/menuStore";
+import { useSetStore } from "@/stores/setStore";
+import { useLocaleStore } from "@/stores/locale";
 import { storeToRefs } from "pinia";
 
 const useLocale = useLocaleStore();
@@ -10,8 +10,8 @@ const { locale } = storeToRefs(useLocale);
 const setStore = useSetStore();
 const { langList } = storeToRefs(setStore);
 
-const useMenu = useMenuStore();
-const { name } = storeToRefs(useMenu);
+//const useMenu = useMenuStore();
+const name = '<img src="/src/assets/images/logo@1x.png" style="width: 130px" />';
 </script>
 
 <template>

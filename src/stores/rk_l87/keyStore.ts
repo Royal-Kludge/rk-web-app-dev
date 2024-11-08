@@ -1,10 +1,10 @@
 import { defineStore } from "pinia";
 import { reactive, ref } from 'vue';
-import { keyboard } from '../keyboard/keyboard'
-import { RK_L87, RK_L87_EVENT_DEFINE } from '../keyboard/rk_l87/rk_l87';
-import { KeyCodeEnum, KeyDefineEnum, KeyText, KeyText_Mac } from '../keyboard/keyCode'
-import { type KeyMappingData, type KeyTableData, type KeyState } from '../keyboard/interface'
-import { ConnectionEventEnum, ConnectionStatusEnum, KeyMappingType, KeyMatrixLayer, MatrixTable } from '../keyboard/enum'
+import { keyboard } from '@/keyboard/keyboard'
+import { RK_L87, RK_L87_EVENT_DEFINE } from '@/keyboard/rk_l87/rk_l87';
+import { KeyCodeEnum, KeyDefineEnum, KeyText, KeyText_Mac } from '@/keyboard/keyCode'
+import { type KeyMappingData, type KeyTableData, type KeyState } from '@/keyboard/interface'
+import { ConnectionEventEnum, ConnectionStatusEnum, KeyMappingType, KeyMatrixLayer, MatrixTable } from '@/keyboard/enum'
 import { KeyMatrix } from '@/keyboard/rk_l87/keyMatrix';
 import { Action, Macro, Macros } from '@/keyboard/rk_l87/macros';
 import { Profile, ps } from '@/keyboard/rk_l87/profiles';

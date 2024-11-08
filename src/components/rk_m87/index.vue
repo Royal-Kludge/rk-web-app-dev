@@ -11,11 +11,10 @@
 
 <script setup lang="ts">
 import { reactive, ref, onMounted, onBeforeUnmount } from "vue";
-import { keyboard } from "../../keyboard/keyboard";
-import { RK_M87, RK_M87_EVENT_DEFINE } from "../../keyboard/rk_m87/rk_m87";
-import { ConnectionStatusEnum, ConnectionType } from "../../keyboard/enum";
+import { keyboard } from "@/keyboard/keyboard";
+import { RK_M87, RK_M87_EVENT_DEFINE } from "@/keyboard/rk_m87/rk_m87";
+import { ConnectionStatusEnum, ConnectionType } from "@/keyboard/enum";
 import Light from "./light.vue";
-import LightCustom from "./lightCustom.vue";
 import SetFun from "./setfun.vue";
 import Macro from "./macro.vue";
 import Set from "./set.vue";

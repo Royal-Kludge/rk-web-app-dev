@@ -84,9 +84,9 @@
 </template>
 <script setup lang="ts">
 import Picker from '../picker.vue'
-import { uselightStore } from "@/stores/lightStore";
+import { uselightStore } from "@/stores/rk_l87/lightStore";
 import { LightEffectEnum } from '@/keyboard/enum'
-import { useKeyStore } from "@/stores/keyStore";
+import { useKeyStore } from "@/stores/rk_l87/keyStore";
 import { type KeyState } from '@/keyboard/interface'
 
 const useLight = uselightStore();

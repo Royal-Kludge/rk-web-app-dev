@@ -10,16 +10,15 @@
 
 <script setup lang="ts">
 import { reactive, ref, onMounted, onBeforeUnmount } from "vue";
-import { keyboard } from "../../keyboard/keyboard";
-import { RK_L87, RK_L87_EVENT_DEFINE } from "../../keyboard/rk_l87/rk_l87";
-import { ConnectionStatusEnum, ConnectionType } from "../../keyboard/enum";
+import { keyboard } from "@/keyboard/keyboard";
+import { RK_L87, RK_L87_EVENT_DEFINE } from "@/keyboard/rk_l87/rk_l87";
+import { ConnectionStatusEnum } from "@/keyboard/enum";
 import Light from "./light.vue";
-import LightCustom from "./lightCustom.vue";
 import SetFun from "./setfun.vue";
 import Macro from "./macro.vue";
 import Set from "./set.vue";
 import Main from "./main.vue"
-import { useMenuStore } from "../../stores/menuStore";
+import { useMenuStore } from "@/stores/rk_l87/menuStore";
 import { storeToRefs } from "pinia";
 
 const useMenu = useMenuStore();

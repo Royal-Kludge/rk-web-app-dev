@@ -1,8 +1,8 @@
 import { defineStore } from "pinia";
 import { reactive, ref } from 'vue';
 import { Macro, Macros, Action, ActionType } from '@/keyboard/rk_l87/macros';
-import { RK_L87, RK_L87_EVENT_DEFINE } from '../keyboard/rk_l87/rk_l87';
-import { keyboard } from '../keyboard/keyboard'
+import { RK_L87, RK_L87_EVENT_DEFINE } from '@/keyboard/rk_l87/rk_l87';
+import { keyboard } from '@/keyboard/keyboard'
 import { storage } from '@/keyboard/storage';
 import { ConnectionEventEnum, ConnectionStatusEnum } from "@/keyboard/enum";
 import fileSaver from "file-saver";
@@ -54,7 +54,7 @@ export const useMacroStore = defineStore("macrostore", () => {
     if (rk_l87.value != undefined && !isInited.value) {
       rk_l87.value.addEventListener(RK_L87_EVENT_DEFINE.OnMacrosGotten, macroGotten, false);
 
-      let tmp = storage.get('macro') as Macros;
+      let tmp = storage.get(`${keyboard.keyboardDefine?.name}_macro`) as Macros;
       if (tmp != null) {
         let ms = new Macros();
         for (let m of tmp.macroList) {

@@ -1,11 +1,11 @@
 import { defineStore } from "pinia";
 import { reactive, ref } from 'vue';
-import { keyboard } from '../keyboard/keyboard'
-import { RK_L87, RK_L87_EVENT_DEFINE } from '../keyboard/rk_l87/rk_l87';
-import { BoardProfile, FieldEnum } from '../keyboard/rk_l87/boardProfile';
-import { LedEffect } from '../keyboard/rk_l87/ledEffect';
-import { LedColors } from '../keyboard/rk_l87/ledColors';
-import { LightEffectEnum, KeyMatrixLayer, ConnectionType, ConnectionStatusEnum, ConnectionEventEnum, MatrixTable } from '../keyboard/enum'
+import { keyboard } from '@/keyboard/keyboard'
+import { RK_L87, RK_L87_EVENT_DEFINE } from '@/keyboard/rk_l87/rk_l87';
+import { BoardProfile, FieldEnum } from '@/keyboard/rk_l87/boardProfile';
+import { LedEffect } from '@/keyboard/rk_l87/ledEffect';
+import { LedColors } from '@/keyboard/rk_l87/ledColors';
+import { LightEffectEnum, KeyMatrixLayer, ConnectionType, ConnectionStatusEnum, ConnectionEventEnum, MatrixTable } from '@/keyboard/enum'
 import { type LedColor } from '@/keyboard/interface';
 import { KeyDefineEnum } from '@/keyboard/keyCode';
 import { type KeyTableData } from '@/keyboard/interface'

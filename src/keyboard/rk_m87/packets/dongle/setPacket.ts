@@ -19,7 +19,7 @@ export class Packet_Dongle_Set extends Packet_Dongle {
         super.command();
 
         if (this.buffer != undefined) {
-            this.packageNum = this.buffer.length / REPORT_PAYLOAD_LENGTH + ((this.buffer.length % REPORT_PAYLOAD_LENGTH) > 0 ? 1 : 0);
+            this.packageNum = Math.floor(this.buffer.length / REPORT_PAYLOAD_LENGTH) + ((this.buffer.length % REPORT_PAYLOAD_LENGTH) > 0 ? 1 : 0);
             this.dataLength = (this.packageIndex + 1) * REPORT_PAYLOAD_LENGTH > this.buffer.length ? this.buffer.length - (this.packageIndex * REPORT_PAYLOAD_LENGTH) : REPORT_PAYLOAD_LENGTH;
             let i: any;
             for (i = 0; i < this.dataLength; i++) {

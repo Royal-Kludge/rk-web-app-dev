@@ -66,8 +66,8 @@
 <script setup lang="ts">
 import Key from "./key.vue";
 import LightColor from "./lightColor.vue";
-import { uselightStore } from "@/stores/lightStore";
-import { useKeyStore } from "@/stores/keyStore";
+import { uselightStore } from "@/stores/rk_l87/lightStore";
+import { useKeyStore } from "@/stores/rk_l87/keyStore";
 import { onMounted, onBeforeUnmount } from "vue";
 
 const useKey = useKeyStore();

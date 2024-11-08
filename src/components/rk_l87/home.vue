@@ -37,15 +37,14 @@
 </template>
 
 <script setup lang="ts">
-import { useMenuStore } from "@/stores/menuStore";
-import { Keyboard, keyboard } from '@/keyboard/keyboard'
+import { useMenuStore } from "@/stores/rk_l87/menuStore";
+import { keyboard } from '@/keyboard/keyboard'
 import RK_L87_Page from '@/components/rk_l87/index.vue'
 import { RK_L87, RK_L87_EVENT_DEFINE } from "@/keyboard/rk_l87/rk_l87";
-import Meun from "@/components/menu.vue";
-import { ElMessage } from 'element-plus'
+import Meun from "@/components/rk_l87/menu.vue";
 import { reactive, ref, onMounted, onBeforeUnmount } from 'vue';
 import { storeToRefs } from "pinia";
-import { ConnectionEventEnum, ConnectionStatusEnum, ConnectionType } from "@/keyboard/enum";
+import { ConnectionStatusEnum, ConnectionType } from "@/keyboard/enum";
 
 const useMenu = useMenuStore();
 const { meunid } = storeToRefs(useMenu);

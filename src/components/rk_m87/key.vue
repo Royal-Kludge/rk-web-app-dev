@@ -65,17 +65,15 @@
     </div>
 </template>
 <script setup lang="ts">
-import { useKeyStore } from "@/stores/keyStore";
-import { useMenuStore } from "../../stores/menuStore";
-import { uselightStore } from "@/stores/lightStore";
+import { useKeyStore } from "@/stores/rk_m87/keyStore";
+import { useMenuStore } from "@/stores/rk_m87/menuStore";
+import { uselightStore } from "@/stores/rk_m87/lightStore";
 import { ref, onMounted, onBeforeUnmount, watch, reactive, computed } from 'vue';
 import type { DropdownInstance } from 'element-plus'
 import { storeToRefs } from "pinia";
 import type { KeyState, KeyTableData } from "@/keyboard/interface";
 import { LightEffectEnum } from '@/keyboard/enum'
-import type { NativePropType } from "element-plus/es/utils/index.mjs";
-import { lightInfo } from "@/keyboard/state";
-import { useMacroStore } from "../../stores/macroStore";
+import { useMacroStore } from "@/stores/rk_m87/macroStore";
 
 const useMacro = useMacroStore();
 const useMenu = useMenuStore();

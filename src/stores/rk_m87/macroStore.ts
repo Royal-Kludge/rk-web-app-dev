@@ -54,7 +54,7 @@ export const useMacroStore = defineStore("macrostore_rk_m87", () => {
     if (rk_m87.value != undefined && !isInited.value) {
       rk_m87.value.addEventListener(RK_M87_EVENT_DEFINE.OnMacrosGotten, macroGotten, false);
 
-      let tmp = storage.get('macro') as Macros;
+      let tmp = storage.get(`${keyboard.keyboardDefine?.name}_macro`) as Macros;
       if (tmp != null) {
         let ms = new Macros();
         for (let m of tmp.macroList) {

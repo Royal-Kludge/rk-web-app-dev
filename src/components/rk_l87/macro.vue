@@ -216,21 +216,20 @@
 </style>
 
 <script setup lang="ts">
-import { reactive, ref, onMounted, onBeforeUnmount, computed } from 'vue';
-import { keyboard } from '../../keyboard/keyboard'
-import { RK_L87, RK_L87_EVENT_DEFINE } from '../../keyboard/rk_l87/rk_l87';
-import { Macro, Macros, Action, ActionType } from '@/keyboard/rk_l87/macros';
+import { ref, onMounted, onBeforeUnmount } from 'vue';
+import { RK_L87 } from '@/keyboard/rk_l87/rk_l87';
+import { Macro, Action, ActionType } from '@/keyboard/rk_l87/macros';
 import { KeyCodeMap } from '@/keyboard/keyCode'
-import type { DropdownInstance } from 'element-plus'
 import { type KeyCodeTable } from '@/keyboard/interface';
 import { storage } from '@/keyboard/storage';
-import { useMacroStore } from "../../stores/macroStore";
+import { useMacroStore } from "@/stores/rk_l87/macroStore";
 import { storeToRefs } from "pinia";
 import { useI18n } from 'vue-i18n';
-import { KeyDefineEnum } from '../../keyboard/keyCode'
+import { KeyDefineEnum } from '@/keyboard/keyCode'
 import { ElMessageBox, ElMessage } from 'element-plus'
 import type { Action as ElAction } from 'element-plus';
 import type { UploadProps } from 'element-plus'
+import { keyboard } from '@/keyboard/keyboard';
 
 // 解构出t方法
 const { t } = useI18n();
@@ -549,7 +548,7 @@ const isSelected = (obj: Macro): string => {
 const saveMacro = async () => {
     isPlaying(async () => {
         if (macros.value != undefined && state.value.macro != undefined) {
-            storage.set('macro', macros.value);
+            storage.set(`${keyboard.keyboardDefine?.name}_macro`, macros.value);
             await useMacro.setMacroData();
             ElMessage({
                 type: 'info',

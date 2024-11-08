@@ -85,7 +85,7 @@ const onConnect = async () => {
 };
 
 const checkProfileVersion = () => {
-    let tmp = storage.get('profile') as Profiles;
+    let tmp = storage.get(`${keyboard.keyboardDefine?.name}_profile`) as Profiles;
     if (tmp != null && (tmp.version == undefined || tmp.version != VERSION)) {
         ElMessageBox.confirm(
             t('home.profile'),

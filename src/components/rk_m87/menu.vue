@@ -2,7 +2,7 @@
   <div class="d-flex flex-column bg-white jc-between ai-center h-100">
     <div class="d-flex flex-column">
       <div class="box p-4 cur" @click="home" :class="{ active: 0 === meunid }">
-        <img src="../../assets/images/menu/home.png" />
+        <img src="@/assets/images/menu/home.png" />
       </div>
       <div class="box p-4" v-for="item in menuList" :class="{ active: item.id === meunid }">
         <img class="cur" :src="item.src" v-if="(item.id != 6 || (item.id == 6 && isShowTFT)) && isKeyboardConnect()" @click="onMenuClick(item.id)"/>
@@ -10,7 +10,7 @@
     </div>
     <div>
       <div class="box p-4" :class="{ active: 5 === meunid }" @click="onMenuClick(5)">
-        <img src="../../assets/images/menu/exit.png" />
+        <img src="@/assets/images/menu/exit.png" />
       </div>
     </div>
   </div>

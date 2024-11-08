@@ -41,7 +41,7 @@ import Key from "./key.vue";
 import LightColor from "./lightColor.vue";
 import { uselightStore } from "@/stores/rk_m87/lightStore";
 import { useKeyStore } from "@/stores/rk_m87/keyStore";
-import { onMounted, onBeforeUnmount } from "vue";
+import { onMounted } from "vue";
 
 const useKey = useKeyStore();
 const useLight = uselightStore();

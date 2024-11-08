@@ -37,7 +37,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { useKeyStore } from "@/stores/keyStore";
+import { useKeyStore } from "@/stores/rk_l87/keyStore";
 import { onMounted, onBeforeUnmount } from 'vue';
 import { Macro } from '@/keyboard/rk_l87/macros';
 import { useI18n } from "vue-i18n";

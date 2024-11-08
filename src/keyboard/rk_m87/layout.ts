@@ -10,15 +10,15 @@ export const KeyMap_Normal_Win: Array<KeyDefineEnum> = [
 	//-------------------------------------------------------------------------------------------------------------2
 	KeyDefineEnum.KEY_F2,           KeyDefineEnum.KEY_2,            KeyDefineEnum.KEY_W,            KeyDefineEnum.KEY_S,            KeyDefineEnum.KEY_X,                KeyDefineEnum.KEY_L_ALT, 
 	//-------------------------------------------------------------------------------------------------------------3
-	KeyDefineEnum.KEY_F3,           KeyDefineEnum.KEY_3,            KeyDefineEnum.KEY_E,            KeyDefineEnum.KEY_D,            KeyDefineEnum.KEY_C,                KeyDefineEnum.NONE,    					   
+	KeyDefineEnum.KEY_F3,           KeyDefineEnum.KEY_3,            KeyDefineEnum.KEY_E,            KeyDefineEnum.KEY_D,            KeyDefineEnum.KEY_C,                KeyDefineEnum.KEY_END,    					   
 	//-------------------------------------------------------------------------------------------------------------4
 	KeyDefineEnum.KEY_F4,           KeyDefineEnum.KEY_4,            KeyDefineEnum.KEY_R,            KeyDefineEnum.KEY_F,            KeyDefineEnum.KEY_V,                KeyDefineEnum.NONE,							  						 						
 	//-------------------------------------------------------------------------------------------------------------5	
 	KeyDefineEnum.KEY_F5,           KeyDefineEnum.KEY_5,            KeyDefineEnum.KEY_T,            KeyDefineEnum.KEY_G,            KeyDefineEnum.KEY_B,                KeyDefineEnum.KEY_SPACEBAR,		 			 			    
 	//-------------------------------------------------------------------------------------------------------------6
-	KeyDefineEnum.KEY_F6,           KeyDefineEnum.KEY_6,            KeyDefineEnum.KEY_Y,            KeyDefineEnum.KEY_H,            KeyDefineEnum.KEY_N,                KeyDefineEnum.NONE,		
+	KeyDefineEnum.KEY_F6,           KeyDefineEnum.KEY_6,            KeyDefineEnum.KEY_Y,            KeyDefineEnum.KEY_H,            KeyDefineEnum.KEY_N,                KeyDefineEnum.KEY_PGDN,		
 	//-------------------------------------------------------------------------------------------------------------7
-	KeyDefineEnum.KEY_F7,           KeyDefineEnum.KEY_7,            KeyDefineEnum.KEY_U,            KeyDefineEnum.KEY_J,            KeyDefineEnum.KEY_M,                KeyDefineEnum.NONE,
+	KeyDefineEnum.KEY_F7,           KeyDefineEnum.KEY_7,            KeyDefineEnum.KEY_U,            KeyDefineEnum.KEY_J,            KeyDefineEnum.KEY_M,                KeyDefineEnum.KEY_LeftArrow,
 	//-------------------------------------------------------------------------------------------------------------8
 	KeyDefineEnum.KEY_F8,           KeyDefineEnum.KEY_8,            KeyDefineEnum.KEY_I,            KeyDefineEnum.KEY_K,            KeyDefineEnum.KEY_COMMA,            KeyDefineEnum.KEY_R_ALT,
 	//-------------------------------------------------------------------------------------------------------------9
@@ -28,25 +28,25 @@ export const KeyMap_Normal_Win: Array<KeyDefineEnum> = [
 	//-------------------------------------------------------------------------------------------------------------11
 	KeyDefineEnum.KEY_F11,          KeyDefineEnum.KEY_Underscore,   KeyDefineEnum.KEY_L_Brackets,   KeyDefineEnum.KEY_Quotation,    KeyDefineEnum.KEY_CODE56,    	  	KeyDefineEnum.NONE,			 
 	//------- -----------------------------------------------------------------------------------------------------12
-	KeyDefineEnum.KEY_F12,          KeyDefineEnum.KEY_EqualSign,    KeyDefineEnum.KEY_R_Brackets,   KeyDefineEnum.KEY_CODE42,       KeyDefineEnum.KEY_CODE45,           KeyDefineEnum.NONE,		    
+	KeyDefineEnum.KEY_F12,          KeyDefineEnum.KEY_EqualSign,    KeyDefineEnum.KEY_R_Brackets,   KeyDefineEnum.NONE,             KeyDefineEnum.NONE,                 KeyDefineEnum.NONE,		    
 	//-------------------------------------------------------------------------------------------------------------13
 	KeyDefineEnum.KEY_Calculator,   KeyDefineEnum.KEY_Backspace,    KeyDefineEnum.KEY_CODE29,       KeyDefineEnum.KEY_ENTER,        KeyDefineEnum.KEY_R_SHIFT,          KeyDefineEnum.KEY_R_CTRL,
 	//-------------------------------------------------------------------------------------------------------------14
 	
 	KeyDefineEnum.KEY_PRINT,        KeyDefineEnum.KEY_INS,          KeyDefineEnum.KEY_DEL,          KeyDefineEnum.NONE,             KeyDefineEnum.NONE,                 KeyDefineEnum.KEY_LeftArrow,     	         
 	//-------------------------------------------------------------------------------------------------------------15
-	KeyDefineEnum.KEY_SCRLOCK,      KeyDefineEnum.KEY_HOME,         KeyDefineEnum.KEY_END,          KeyDefineEnum.NONE,             KeyDefineEnum.KEY_UpArrow,          KeyDefineEnum.KEY_DownArrow,	 												   
+	KeyDefineEnum.KEY_SCRLOCK,      KeyDefineEnum.KEY_HOME,         KeyDefineEnum.KEY_END,          KeyDefineEnum.SP_WinMacMode,    KeyDefineEnum.KEY_UpArrow,          KeyDefineEnum.KEY_DownArrow,	 												   
 	//-------------------------------------------------------------------------------------------------------------16
-	KeyDefineEnum.KEY_PAUSE,        KeyDefineEnum.KEY_PGUP,         KeyDefineEnum.KEY_PGDN,         KeyDefineEnum.NONE,             KeyDefineEnum.KEY_Mute,             KeyDefineEnum.KEY_RightArrow,							 
+	KeyDefineEnum.KEY_PAUSE,        KeyDefineEnum.KEY_PGUP,         KeyDefineEnum.KEY_PGDN,         KeyDefineEnum.KEY_Calculator,   KeyDefineEnum.NONE,                 KeyDefineEnum.KEY_RightArrow,
 	
 	//-------------------------------------------------------------------------------------------------------------17
-	KeyDefineEnum.KEY_VolumD,       KeyDefineEnum.KEY_NUMLOCK,      KeyDefineEnum.KEY_NUM_7,        KeyDefineEnum.KEY_NUM_4,        KeyDefineEnum.KEY_NUM_1,            KeyDefineEnum.KEY_NUM_0,
+	KeyDefineEnum.NONE,             KeyDefineEnum.NONE,             KeyDefineEnum.NONE,             KeyDefineEnum.NONE,             KeyDefineEnum.NONE,                 KeyDefineEnum.NONE,
 	//-------------------------------------------------------------------------------------------------------------18
-	KeyDefineEnum.KEY_VolumI,       KeyDefineEnum.KEY_NUM_DIV,      KeyDefineEnum.KEY_NUM_8,        KeyDefineEnum.KEY_NUM_5,        KeyDefineEnum.KEY_NUM_2,            KeyDefineEnum.NONE,	
+	KeyDefineEnum.NONE,             KeyDefineEnum.NONE,             KeyDefineEnum.NONE,             KeyDefineEnum.NONE,             KeyDefineEnum.NONE,                 KeyDefineEnum.NONE,	
 	//-------------------------------------------------------------------------------------------------------------19
-	KeyDefineEnum.KEY_Mute,         KeyDefineEnum.KEY_NUM_MUL,      KeyDefineEnum.KEY_NUM_9,        KeyDefineEnum.KEY_NUM_6,        KeyDefineEnum.KEY_NUM_3,            KeyDefineEnum.KEY_NUM_DOT,
+	KeyDefineEnum.NONE,             KeyDefineEnum.NONE,             KeyDefineEnum.NONE,             KeyDefineEnum.NONE,             KeyDefineEnum.NONE,                 KeyDefineEnum.NONE,
 	//-------------------------------------------------------------------------------------------------------------20			
-	KeyDefineEnum.KEY_Calculator,   KeyDefineEnum.KEY_NUM_MINUS,    KeyDefineEnum.KEY_NUM_PLUS,     KeyDefineEnum.KEY_CODE107,      KeyDefineEnum.KEY_NUM_ENTER,        KeyDefineEnum.NONE,	
+	KeyDefineEnum.NONE,             KeyDefineEnum.NONE,             KeyDefineEnum.NONE,             KeyDefineEnum.NONE,             KeyDefineEnum.NONE,                 KeyDefineEnum.NONE,	
 	//===============
 	//KeyDefineEnum.NONE,				KeyDefineEnum.NONE
 ]
