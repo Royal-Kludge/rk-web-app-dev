@@ -26,9 +26,10 @@
                     </div>
                     <div class="d-flex flex-column ml-3 flex-1">
                         <div class="d-flex my-3">
-                            <el-dialog v-model="dialogVisible" top="30vh" width="780px" :lock-scroll="true">
+                            <el-dialog v-model="dialogVisible" top="20vh" width="780px" :lock-scroll="true">
                                 <Cropper @closeShow="closeShow" @clickSure="clickSure" :imageUrl="imageUrl"
-                                    :cropOption="cropOption" />
+                                    :cropOption="cropOption" :img_list="img_list" :index="index" :loading="loading"
+                                    @clickFrame="clickFrame" />
                             </el-dialog>
                             <el-upload :on-change='handleChangeUpload' :show-file-list="false" :auto-upload="false">
                                 <div class="py-1 px-4 but-blue text-white mx-3 c-p but text-center">
@@ -147,6 +148,7 @@ import { storeToRefs } from "pinia";
 import { RK_M87, RK_M87_EVENT_DEFINE } from "../../keyboard/rk_m87/rk_m87";
 import { keyboard } from "../../keyboard/keyboard";
 import { log } from 'console';
+import { SuperGif } from '../../assets/js/libgif.js'
 
 const useTft = useTftStore();
 const saveShow = ref(false);
@@ -174,6 +176,9 @@ const addUrl = ref<any>('')
 const addElement = ref<HTMLImageElement>();
 const images = ref<Array<HTMLImageElement>>()
 const rk_m87 = ref<RK_M87>();
+const img_list = ref<any>([]);
+const index = ref(0)
+const loading = ref(false)
 
 // 解构出t方法
 const { t } = useI18n();
@@ -196,6 +201,49 @@ onBeforeUnmount(() => {
     }
 });
 
+const dataURLtoFile = (dataurl: any, filename: any) => {
+    const arr = dataurl.split(',');
+    const mime = arr[0].match(/:(.*?);/)[1];
+    const bstr = atob(arr[1]);
+    var n = bstr.length;
+    const u8arr = new Uint8Array(n);
+    while (n--) {
+        u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new File([u8arr], filename, { type: mime });
+}
+// 将canvas转换成file对象
+const convertCanvasToImage = (canvas: any, filename: any) => {
+    return dataURLtoFile(canvas.toDataURL('image/png'), filename);
+}
+const pre_load_gif = (gif_source: any) => {
+    loading.value = true;
+    const gifImg = document.createElement('gifImg');
+    // gif库需要img标签配置下面两个属性
+    gifImg?.setAttribute('rel:animated_src', URL.createObjectURL(gif_source))
+    gifImg?.setAttribute('rel:auto_play', '0')
+    // 新建gif实例
+    var rub = new (SuperGif as any)({ gif: gifImg });
+    rub.load(() => {
+        for (let i = 1; i <= rub.get_length(); i++) {
+            // 遍历gif实例的每一帧
+            rub.move_to(i);
+            // 将每一帧的canvas转换成file对象
+            let cur_file = convertCanvasToImage(rub.get_canvas(), gif_source.name.replace('.gif', '') + `-${i}`)
+            img_list.value.push({
+                file_name: cur_file.name,
+                url: URL.createObjectURL(cur_file),
+                file: cur_file,
+                index: i,
+            })
+        }
+        loading.value = false;
+    });
+}
+
+const clickFrame = (i: any) => {
+    index.value = i
+}
 const print = (val: any) => {
     console.log(val)
 }
@@ -216,7 +264,7 @@ const onWheel = (event: any) => {
     imgOption.h = Math.max(imgOption.h, 0);
 }
 const handleChangeUpload: UploadProps['onChange'] = (file) => {
-    if (file.raw?.type !== 'image/jpeg' && file.raw?.type !== 'image/png' && file.raw?.type !== 'image/jpg') {
+    if (file.raw?.type !== 'image/jpeg' && file.raw?.type !== 'image/png' && file.raw?.type !== 'image/jpg' && file.raw?.type !== 'image/gif') {
         ElMessage.error('Format error!')
         return false
     } else if (file.size != undefined && file.size / 1024 / 1024 > 2) {
@@ -225,6 +273,11 @@ const handleChangeUpload: UploadProps['onChange'] = (file) => {
     }
     dialogVisible.value = true
     imageUrl.value = URL.createObjectURL(file.raw)
+    index.value = 0;
+    img_list.value = [];
+    if (file.raw?.type == 'image/gif') {
+        pre_load_gif(file.raw)
+    }
     return true
 }
 const handleBeforeUpload: UploadProps['beforeUpload'] = (rawFile) => {
@@ -266,29 +319,78 @@ const handleBeforeUpload: UploadProps['beforeUpload'] = (rawFile) => {
 const closeShow = () => {
     dialogVisible.value = false
 }
-const clickSure = (data: any) => {
-    const Img = new Image();
-    Img.src = window.URL.createObjectURL(data);
-    Img.onload = () => {
-        //1，创建画布
-        let canvas = document.createElement('canvas');
-        //2，创建画笔
-        const context = canvas.getContext('2d');
-        //3，设置背景的宽高
-        canvas.width = cropOption.autoCropWidth * 2;
-        canvas.height = cropOption.autoCropHeight * 2;
+const clickSure = (data: any, cropper: any) => {
+    if (img_list.value.length > 0) {
+        for (let i = index.value; i < img_list.value.length; i++) {
+            //for (let i = index.value; i < 1; i++) {
+            const Img = new Image();
+            Img.src = img_list.value[i].url;
+            Img.onload = () => {
+                //1，创建画布
+                let canvas = document.createElement('canvas');
+                //2，创建画笔
+                const context = canvas.getContext('2d');
+                //3，设置背景的宽高
+                canvas.width = Img.width * cropper.scale;
+                canvas.height = Img.height * cropper.scale;
+                // 将变换原点设置为canvas的中心
+                context?.translate(canvas.width / 2, canvas.height / 2);
+                // 旋转
+                context?.rotate(cropper.rotate * Math.PI / 2);
+                // 将图像绘制到canvas上，旋转后的图像位于中心位置，需要向上移动一半的宽度，向左移动一半的高度
+                context?.drawImage(Img, -canvas.width / 2, -canvas.height / 2, canvas.width, canvas.height);
+                //裁剪
+                const myImage = new Image();
+                myImage.src = canvas.toDataURL("image/png");
+                
+                myImage.onload = () => {
+                    //1，创建画布
+                    let Imgcanvas = document.createElement('canvas');
+                    //2，创建画笔
+                    const Imgcontext = Imgcanvas.getContext('2d');
+                    //3，设置背景的宽高
+                    Imgcanvas.width = cropOption.autoCropWidth * 2;
+                    Imgcanvas.height = cropOption.autoCropHeight * 2;
 
-        let imgX = (canvas.width - Img.width) / 2;
-        let imgY = (canvas.height - Img.height) / 2;
-        context?.clearRect(0, 0, canvas.width, canvas.height);
-        context?.drawImage(
-            Img, //规定要使用的图像、画布或视频。
-            0, 0, //开始剪切的 x 坐标位置。
-            Img.width, Img.height,  //被剪切图像的高度。
-            imgX, imgY,//在画布上放置图像的 x 、y坐标位置。
-            Img.width, Img.height  //要使用的图像的宽度、高度
-        );
-        useTft.newFrame(canvas.toDataURL("image/png"))
+                    let imgX = cropper.cropOffsertX - cropper.x - (cropper.trueWidth - myImage.width) / 2;
+                    let imgY = cropper.cropOffsertY - cropper.y - (cropper.trueHeight - myImage.height) / 2;
+                    Imgcontext?.clearRect(0, 0, Imgcanvas.width, Imgcanvas.height);
+                    Imgcontext?.drawImage(
+                        myImage, //规定要使用的图像、画布或视频。
+                        imgX, imgY, //开始剪切的 x 坐标位置。
+                        cropper.cropW, cropper.cropH,  //被剪切图像的高度。
+                        0, 0,//在画布上放置图像的 x 、y坐标位置。
+                        Imgcanvas.width, Imgcanvas.height  //要使用的图像的宽度、高度
+                    );
+                    useTft.newFrame(Imgcanvas.toDataURL("image/png"))
+                }
+            }
+        }
+    }
+    else {
+        const Img = new Image();
+        Img.src = window.URL.createObjectURL(data);
+        Img.onload = () => {
+            //1，创建画布
+            let canvas = document.createElement('canvas');
+            //2，创建画笔
+            const context = canvas.getContext('2d');
+            //3，设置背景的宽高
+            canvas.width = cropOption.autoCropWidth * 2;
+            canvas.height = cropOption.autoCropHeight * 2;
+
+            let imgX = (canvas.width - Img.width) / 2;
+            let imgY = (canvas.height - Img.height) / 2;
+            context?.clearRect(0, 0, canvas.width, canvas.height);
+            context?.drawImage(
+                Img, //规定要使用的图像、画布或视频。
+                0, 0, //开始剪切的 x 坐标位置。
+                Img.width, Img.height,  //被剪切图像的高度。
+                imgX, imgY,//在画布上放置图像的 x 、y坐标位置。
+                Img.width, Img.height  //要使用的图像的宽度、高度
+            );
+            useTft.newFrame(canvas.toDataURL("image/png"))
+        }
     }
     dialogVisible.value = false
 }

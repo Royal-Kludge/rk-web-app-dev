@@ -12,8 +12,8 @@
                     @real-time="realTime">
                 </vue-cropper>
             </div>
-            <div
-                :style="{ 'width': previews.w + 'px', 'height': previews.h + 'px', 'overflow': 'hidden', 'margin-left': '5px' }">
+            <div :style="{ 'width': previews.w + 'px', 'height': previews.h + 'px', 'overflow': 'hidden', 'margin-left': '5px' }"
+                v-if="img_list.length <= 0">
                 <div :style="previews.div">
                     <img :src="previews.url" :style="previews.img" alt="">
                 </div>
@@ -41,7 +41,25 @@
                 </el-icon>
             </div>
         </div>
-        <div class="button">
+        <div>
+            <el-scrollbar>
+                <div class="d-flex" style="width: 100vh;">
+                    <div v-for="item in img_list">
+                        <div class="d-flex flex-column ai-center jc-center c-p" @click="clickFrame(item.index)">
+                            <div>
+                                {{ (item.index) }}
+                            </div>
+                            <div :class="['d-flex frame bg-black jc-center ai-center']">
+                                <div :class="[selectFrame(item.index)]"></div>
+                                <img :id="`frame${item.index}`" ref="images" :src="item.url" v-if="item.url !== ''"
+                                    style="max-width: 100%; max-height: 100%; width: auto;  height: auto;" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </el-scrollbar>
+        </div>
+        <div class="button" v-loading="loading">
             <el-button class="sureBtn" @click="clickSure" type="primary">Confirm</el-button>
             <el-button class="closeBtn" @click="closeShow">Cancel</el-button>
         </div>
@@ -50,10 +68,10 @@
 <script setup lang="ts">
 import { VueCropper } from "vue-cropper"
 import { Plus, ZoomIn, ZoomOut, RefreshRight, RefreshLeft, Delete } from '@element-plus/icons-vue'
-import { ref, reactive, computed } from 'vue'
+import { ref, reactive, computed, watch } from 'vue'
 
-const props = defineProps(['imageUrl', 'cropOption'])
-const emit = defineEmits(['closeShow', 'clickSure'])
+const props = defineProps(['imageUrl', 'cropOption', 'img_list', 'index', 'loading'])
+const emit = defineEmits(['closeShow', 'clickSure', 'clickFrame'])
 const cropper = ref(VueCropper)
 
 let previews = ref<any>({})  // 即时预览
@@ -80,7 +98,26 @@ const option = reactive({
 const fixed = ref(false)  // 是否开启截图框固定宽高
 const imageUrl = computed(() => props.imageUrl) // 图片地址
 const fixedNumber = ref([240, 135])  // 截图框固定宽高
+const loading = computed(() => props.loading)
+const index = computed(() => props.index)
+const img_list = computed(() => props.img_list) // gif图片地址
 
+watch(() => props.img_list, (newValue, oldValue) => {
+    if (img_list.value.length <= 0) {
+        return
+    }
+    var element = document.querySelector(".cropper-box-canvas > img");
+    element?.setAttribute('src', imageUrl.value);
+    var elementBox = document.querySelector(".cropper-view-box > img");
+    elementBox?.setAttribute('src', imageUrl.value);
+}, { deep: true, immediate: true });
+
+const clickFrame = (i: any) => {
+    emit('clickFrame', i)
+}
+const selectFrame = (i: any) => {
+    return index.value >= i ? 'frameno' : '';
+}
 /**
 * 关闭弹窗
 */
@@ -130,11 +167,26 @@ const clickSure = () => {
 
         // const formData = new FormData();
         // formData.append('file', blobData, 'filename.png');
-        emit('clickSure', data)
+        emit('clickSure', data, cropper.value)
     })
 }
 </script>
-<style scoped>
+<style lang="scss" scoped>
+.frame {
+    width: 240px;
+    height: 135px;
+    margin: 10px;
+    flex-shrink: 0;
+    position: relative;
+}
+
+.frameno {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background: rgba(0, 0, 0, 0.75);
+}
+
 * {
     margin: 0;
     padding: 0;
