@@ -41,6 +41,7 @@ import { useKeyStore } from "@/stores/rk_l87/keyStore";
 import { onMounted, onBeforeUnmount } from 'vue';
 import { Macro } from '@/keyboard/rk_l87/macros';
 import { useI18n } from "vue-i18n";
+import { MatrixTable } from "@/keyboard/enum";
 
 const { t } = useI18n();
 
@@ -60,6 +61,7 @@ const clickMacro = (obj: Macro) => {
 }
 
 const itemText = (item: any) => {
+  if (item.type == MatrixTable.MAC) return item.text;
   if (item.tip != '') return t(item.text as string);
   if ((item.key >> 24) == 8) return t(item.text as string);
   return item.text;

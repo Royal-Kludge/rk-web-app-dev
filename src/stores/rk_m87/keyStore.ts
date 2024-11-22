@@ -237,8 +237,8 @@ export const useKeyStore = defineStore('keyinfo_rk_m87', () => {
         { key: KeyDefineEnum.KEY_LessSign, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_LessSign], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
         { key: KeyDefineEnum.KEY_GreaterSign, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_GreaterSign], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
         { key: KeyDefineEnum.KEY_Question, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Question], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
-        { key: KeyDefineEnum.KEY_Power, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Power], style: "key", selected: false, tip: 'tip.power', type: MatrixTable.WIN },
-        { key: KeyDefineEnum.KEY_Sleep, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Sleep], style: "key", selected: false, tip: 'tip.sleep', type: MatrixTable.WIN },
+        //{ key: KeyDefineEnum.KEY_Power, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Power], style: "key", selected: false, tip: 'tip.power', type: MatrixTable.WIN },
+        //{ key: KeyDefineEnum.KEY_Sleep, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Sleep], style: "key", selected: false, tip: 'tip.sleep', type: MatrixTable.WIN },
         { key: KeyDefineEnum.KEY_Calculator, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Calculator], style: "key", selected: false, tip: 'tip.calc', type: MatrixTable.WIN },
         { key: KeyDefineEnum.KEY_Email, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Email], style: "key", selected: false, tip: 'tip.mail', type: MatrixTable.WIN },
         { key: KeyDefineEnum.KEY_MyComputer, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_MyComputer], style: "key", selected: false, tip: 'tip.computer', type: MatrixTable.WIN },
@@ -248,7 +248,7 @@ export const useKeyStore = defineStore('keyinfo_rk_m87', () => {
         { key: KeyDefineEnum.KEY_Refresh, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Refresh], style: "key", selected: false, tip: 'tip.refresh', type: MatrixTable.WIN },
         { key: KeyDefineEnum.KEY_Favorites, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Favorites], style: "key", selected: false, tip: 'tip.favorites', type: MatrixTable.WIN },
         { key: KeyDefineEnum.KEY_Search, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Search], style: "key", selected: false, tip: 'tip.search', type: MatrixTable.WIN },
-        { key: KeyDefineEnum.SP_BatView, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.SP_BatView], style: "key", selected: false, tip: 'tip.bat', type: MatrixTable.WIN },
+        //{ key: KeyDefineEnum.SP_BatView, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.SP_BatView], style: "key", selected: false, tip: 'tip.bat', type: MatrixTable.WIN },
       ],
     },
     {
@@ -271,10 +271,10 @@ export const useKeyStore = defineStore('keyinfo_rk_m87', () => {
         { key: KeyDefineEnum.KEY_LED_MODE13, text: "light.menu_13", style: "key", selected: false, tip: '', type: MatrixTable.WIN },
         { key: KeyDefineEnum.KEY_LED_MODE17, text: "light.menu_17", style: "key", selected: false, tip: '', type: MatrixTable.WIN },
         { key: KeyDefineEnum.KEY_LED_MODE18, text: "light.menu_18", style: "key", selected: false, tip: '', type: MatrixTable.WIN },
-        { key: KeyDefineEnum.KEY_LED_LUMINI, text: "light.fun_3", style: "key", selected: false, tip: 'tip.brightI', type: MatrixTable.WIN },
-        { key: KeyDefineEnum.KEY_LED_LUMIND, text: "light.fun_4", style: "key", selected: false, tip: 'tip.brightD', type: MatrixTable.WIN },
-        { key: KeyDefineEnum.KEY_LED_BREATHI, text: "light.fun_1", style: "key", selected: false, tip: 'tip.speedI', type: MatrixTable.WIN },
-        { key: KeyDefineEnum.KEY_LED_BREATHD, text: "light.fun_2", style: "key", selected: false, tip: 'tip.speedD', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_LED_LUMINI, text: "light.fun_1", style: "key", selected: false, tip: 'tip.brightI', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_LED_LUMIND, text: "light.fun_2", style: "key", selected: false, tip: 'tip.brightD', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_LED_BREATHI, text: "light.fun_3", style: "key", selected: false, tip: 'tip.speedI', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_LED_BREATHD, text: "light.fun_4", style: "key", selected: false, tip: 'tip.speedD', type: MatrixTable.WIN },
       ],
     },
     {
@@ -588,6 +588,10 @@ export const useKeyStore = defineStore('keyinfo_rk_m87', () => {
 
   const setFunid = (id: number) => {
     state.funid = id;
+    let keyCode = getSelectedFun();
+    if (keyCode != undefined) {
+      setUnselected(keyCode);
+    }
   }
 
   const init = async () => {
@@ -938,7 +942,7 @@ export const useKeyStore = defineStore('keyinfo_rk_m87', () => {
   const getSelectedFun = (): KeyDefineEnum | undefined => {
     for (var i = 0; i < state.keyFunList.length; i++) {
       for (var j = 0; j < state.keyFunList[i].keys.length; j++) {
-        if (state.keyFunList[i].keys[j].selected) {
+        if (state.keyFunList[i].keys[j].selected && state.funid  == state.keyFunList[i].id) {
           return state.keyFunList[i].keys[j].key;
         }
       }
@@ -946,6 +950,16 @@ export const useKeyStore = defineStore('keyinfo_rk_m87', () => {
     return undefined;
   }
 
+  const getSelectedTable = (): MatrixTable => {
+    for (var i = 0; i < state.keyFunList.length; i++) {
+      for (var j = 0; j < state.keyFunList[i].keys.length; j++) {
+        if (state.keyFunList[i].keys[j].selected && state.funid  == state.keyFunList[i].id) {
+          return state.keyFunList[i].keys[j].type;
+        }
+      }
+    }
+    return MatrixTable.WIN;
+  }
   // const initFunState = () => {
   //   for (var i = 0; i < state.keyFunList.length; i++) {
   //     for (var j = 0; j < state.keyFunList[i].keys.length; j++) {
@@ -1073,6 +1087,7 @@ export const useKeyStore = defineStore('keyinfo_rk_m87', () => {
       case KeyMappingType.ProfileSwitch:
       case KeyMappingType.SpecialFun:
       case KeyMappingType.LightSwitch:
+      case KeyMappingType.Pc:
         if (keyText[mapping.keyRaw] != undefined) {
           //if (mapping.keyMappingPara == 0x09) {
           mapping.keyStr = t(keyText[mapping.keyRaw].valueOf());
@@ -1154,7 +1169,12 @@ export const useKeyStore = defineStore('keyinfo_rk_m87', () => {
       key.KeyData.keyMappingData.keyMappingType = keyCode >> 24;
       key.KeyData.keyMappingData.keyMappingPara = (keyCode >> 16) & 0xFF;
       if (keyboard.keyboardDefine != undefined) {
-        key.KeyData.keyMappingData.keyStr = keyboard.keyboardDefine.keyText[keyCode];
+        //key.KeyData.keyMappingData.keyStr = keyboard.keyboardDefine.keyText[keyCode];
+        let table = getSelectedTable();
+        if (profile.value != undefined) {
+          profile.value.keyTypes[keyMatrixTable.value][keyMatrixLayer.value][key.index] = table;
+        }
+        keySetStr(key.KeyData);
       }
       KeyMatrixData.value[keyMatrixTable.value][keyMatrixLayer.value]?.setKeyMapping(key.index, key.KeyData.keyMappingData);
       rk_m87.value?.setKeyMatrix(keyMatrixLayer.value, keyMatrixTable.value, 0);

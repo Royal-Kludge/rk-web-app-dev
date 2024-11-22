@@ -45,7 +45,8 @@ export enum KeyMappingType {
     SnipeKey = 0x0A,
     PressGun = 0x0B,
     FnKey = 0x0D,
-    LodKey = 0x0F
+    LodKey = 0x0F,
+    Pc = 0x10
 }
 
 export enum KeyMatrixLayer {

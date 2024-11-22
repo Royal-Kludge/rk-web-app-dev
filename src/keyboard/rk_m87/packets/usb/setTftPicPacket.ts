@@ -34,8 +34,8 @@ export class SetTftPicPacket extends Packet_Usb {
 
         // The max length per package is 512, so if it's last package, then calculate the package length.
         let packageLen = (this.packageIndex < this.packageNum - 1) ? maxPlayload : this.buffers[this.frameIndex].length % maxPlayload;
-        this.setReport[index++] = this.packageIndex & 0x00FF;
-        this.setReport[index++] = this.packageIndex >> 8;
+        this.setReport[index++] = packageLen & 0x00FF;
+        this.setReport[index++] = packageLen >> 8;
 
         // Calculate crc = 0xFF & (package[0]~package[N])
         let start = this.packageIndex * maxPlayload;

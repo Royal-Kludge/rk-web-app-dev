@@ -24,7 +24,6 @@ import { SetFactoryPacket } from './packets/usb/setFactoryPacket';
 import { SetTftPicPacket } from './packets/usb/setTftPicPacket';
 
 import { Macros } from './macros';
-import { RK_M87_USB_DEFINE } from '.';
 import { SetTftPretreatmentPacket } from './packets/usb/setTftPretreatmentPacket';
 
 const worker = new Worker(new URL('./..//communication.ts', import.meta.url));
@@ -267,7 +266,14 @@ export class RK_M87_Usb extends RK_M87 {
             this.pktSetTftPicPacket.buffers.splice(0, this.pktSetTftPicPacket.buffers.length);
             let index: number = 0;
             for (index = 0; index < buffers.length; index++) {
-                this.pktSetTftPicPacket.buffers.push(new Uint8Array(buffers[index].buffer));
+                let j: number = 0;
+                let buff = new Uint8Array(buffers[index].length * 2)
+                // The device is use big-endian per byte, so need reverse the pix data
+                for (j = 0; j < buffers[index].length; j++) {
+                    buff[j * 2] = buffers[index][j] >> 8;
+                    buff[(j * 2) + 1] = buffers[index][j] & 0x00FF;
+                }
+                this.pktSetTftPicPacket.buffers.push(buff);
             }
             this.pktSetTftPicPacket.packageIndex = -1;
             this.pktSetTftPicPacket.frameIndex = 0;
@@ -279,5 +285,11 @@ export class RK_M87_Usb extends RK_M87 {
             packet.setPayload(buffers.length, 0x01, delay);
             worker.postMessage(packet.setReport);
         }
+    }
+
+    async stopTFTPicDownload(): Promise<void> {
+        let packet = new SetTftPretreatmentPacket();
+        packet.setPayload(0, 0x02, 0);
+        worker.postMessage(packet.setReport);
     }
 }

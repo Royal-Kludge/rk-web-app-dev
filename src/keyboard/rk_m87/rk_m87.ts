@@ -89,6 +89,7 @@ export abstract class RK_M87 extends Protocol {
     abstract setLedColors(board: number): Promise<void>;
     abstract setFactory(): Promise<void>;
     abstract setTftPic(buffers: Array<Uint16Array>, delay: number): Promise<void>;
+    abstract stopTFTPicDownload(): Promise<void>;
     
     abstract onGetReport(reportId: number, data: DataView): Promise<void>;
 

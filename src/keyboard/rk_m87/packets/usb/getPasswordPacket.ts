@@ -22,7 +22,7 @@ export class GetPasswordPacket extends Packet_Usb {
         super.fromReportData(buffer);
         this.getReport = new DataView(buffer.buffer.slice(1, this.dataLength + PACKET_HEAD_LENGTH + 1));
         if (this.getReport.byteLength >= 10 + PACKET_HEAD_LENGTH) {
-            this.fwVersion = `${this.getReport.getUint8(15).toString(16).padStart(2, '0')}${this.getReport.getUint8(16).toString(16).padStart(2, '0')}`
+            this.fwVersion = `${this.getReport.getUint8(13).toString(14).padStart(2, '0')}${this.getReport.getUint8(14).toString(16).padStart(2, '0')}`
         }
         return this;
     }

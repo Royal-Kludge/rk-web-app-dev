@@ -182,10 +182,10 @@ export default {
     menu_17: "Blossoming",
     menu_18: "SelfDefine",
     menu_0: "OFF",
-    fun_1: "Speed+",
-    fun_2: "Speed-",
-    fun_3: "Bright+",
-    fun_4: "Bright-",
+    fun_1: "Bright+",
+    fun_2: "Bright-",
+    fun_3: "Speed+",
+    fun_4: "Speed-",
   },
   set: {
     title: "Settings",
@@ -280,5 +280,9 @@ export default {
     desc_1: "Left click to drag the layer, scroll to zoom in and out of the layer",
     desc_2: "Apply to all frames",
     desc_3: "Play interval (milliseconds)",
+    error_1: "Image data is out of stroge space, please remove some frame to retry!",
+    error_2: "Data out of stroge",
+    error_3: "TFT data download to device failed, please retry again!",
+    error_4: "Download TFT data error"
   }
 };

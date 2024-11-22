@@ -326,6 +326,10 @@ export class RK_M87_Dongle extends RK_M87 {
         
     }
 
+    async stopTFTPicDownload(): Promise<void> {
+        
+    }
+
     private async nextReport(event: any) {
         let pkt = event.detail as Packet_Dongle;
         this.dispatchEvent(new CustomEvent(RK_M87_EVENT_DEFINE.OnReportStart, { detail: true }));

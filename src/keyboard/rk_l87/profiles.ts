@@ -78,6 +78,7 @@ export class Profiles {
 
     constructor() {
         this.list = new Array<Profile>();
+        this.version = VERSION;
         this.curIndex = 0;
     }
 

@@ -39,10 +39,11 @@
                             {{ $t("set.but_3") }}
                         </div> -->
                         <div class="py-3 my-3 w-100 bg-warn-1 text-grey-1 text-center br-2 b-grey c-p but"
-                            @click="checkVer(true)">
+                            @click="checkVer(true)"
+                            v-if="keyboard.state.connectType == ConnectionType.USB">
                             {{ $t("set.but_4") }}(<span>{{ VerTips }}</span>)
                         </div>
-                        <div class="w-100 text-grey-1 text-center">
+                        <div class="w-100 text-grey-1 text-center" v-if="keyboard.state.connectType == ConnectionType.USB">
                             Version:{{ ver }}
                         </div>
                     </div>
@@ -110,15 +111,31 @@ const VerTips = computed(() => (ver.value !== version.value ? t('set.title_3') +
 const getVer = () => {
     // if (useLight.connectType !== ConnectionType.USB)
     //     return
-    axios.get('/down/work/RKWEB/firmware/R87PRO/firmware.json').then(response => {
-        // 请求成功处理
-        version.value = response.data.version
-        url.value = response.data.url
-        checkVer()
-    }).catch(error => {
-        // 请求失败处理   
-        console.error(error);
-    });
+    let pid = keyboard.keyboardDefine?.productId;
+    if (pid != undefined) {
+        if (pid == 0x01A2) {
+            axios.get('/down/work/RKWEB/firmware/M87/M87_firmware_en.json').then(response => {
+                // 请求成功处理
+                version.value = response.data.version
+                url.value = response.data.url
+                checkVer()
+            }).catch(error => {
+                // 请求失败处理   
+                console.error(error);
+            });
+        } else if (pid == 0x01F5) {
+            axios.get('/down/work/RKWEB/firmware/M87/M87_firmware_jp.json').then(response => {
+                // 请求成功处理
+                version.value = response.data.version
+                url.value = response.data.url
+                checkVer()
+            }).catch(error => {
+                // 请求失败处理   
+                console.error(error);
+            });
+        }
+    }
+
 }
 const checkVer = (flag: boolean = false) => {
     if (useLight.connectType !== ConnectionType.USB && flag == true) {

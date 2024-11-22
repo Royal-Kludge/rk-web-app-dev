@@ -17,7 +17,7 @@ onMounted(async () => {
       case 'RK-R87PRO':
         productId.value = 1
         break;
-      case 'RK-M87PRO':
+      case 'RK-M87':
         productId.value = 2
         break;
     }

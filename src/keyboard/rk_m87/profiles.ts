@@ -78,6 +78,7 @@ export class Profiles {
 
     constructor() {
         this.list = new Array<Profile>();
+        this.version = VERSION;
         this.curIndex = 0;
     }
 
@@ -139,6 +140,7 @@ export class Profiles {
                 this.add(tm);
             }
             this.curIndex = tmp.curIndex;
+            this.version = VERSION;
         }
         else {
             // for (let i = 0; i < 3; i++) {

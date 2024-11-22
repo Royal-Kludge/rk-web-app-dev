@@ -127,7 +127,7 @@
                     </div>
                 </div>
             </div>
-            <el-dialog v-model="saveShow" :show-close="false" width="500" :close-on-click-modal="false"
+            <el-dialog v-model="saveShow.isShow" :show-close="false" width="500" :close-on-click-modal="false"
                 :close-on-press-escape="false">
                 <div class="text-center pb-4">{{ $t("tft.title_6") }}</div>
                 <el-progress :percentage="percentage" :stroke-width="15" striped striped-flow :duration="10" />
@@ -151,7 +151,10 @@ import { log } from 'console';
 import { SuperGif } from '../../assets/js/libgif.js'
 
 const useTft = useTftStore();
-const saveShow = ref(false);
+const saveShow = ref({
+    isShow: false,
+    isSuccess: false
+});
 const percentage = ref(0)
 const { state, frames } = storeToRefs(useTft);
 const imgOption = reactive({
@@ -434,9 +437,20 @@ const saveFrames = () => {
     if (useTft.frames != undefined) {
         useTft.frames.delay = delay.value;
     }
-    useTft.saveFrames();
-    saveShow.value = true
-    Saving()
+    saveShow.value.isShow = useTft.saveFrames();
+    if (saveShow.value.isShow) {
+        saveShow.value.isSuccess = false;
+        Saving();
+    } else {
+        ElMessageBox.alert(
+            t('tft.error_1'),
+            t('tft.error_2'),
+            {
+                cancelButtonText: 'ok',
+                customClass: 'set-to-default',
+            }
+        );
+    }
 }
 
 let intervalId: any = null;
@@ -447,10 +461,22 @@ const Saving = () => {
         count++
         if (count > 15) {
             count = 0
-            saveShow.value = false
+            saveShow.value.isShow = false
             if (intervalId) {
                 clearInterval(intervalId);
                 intervalId = null;
+            }
+
+            if (!saveShow.value.isSuccess) {
+                rk_m87.value?.stopTFTPicDownload();
+                ElMessageBox.alert(
+                    t('tft.error_3'),
+                    t('tft.error_4'),
+                    {
+                        cancelButtonText: 'ok',
+                        customClass: 'set-to-default',
+                    }
+                );
             }
         }
     }, 1000);
@@ -464,7 +490,8 @@ const tftPicSetted = (event: any) => {
     percentage.value = percentage.value >= 100 ? 100 : percentage.value;
     count = 0;
     if (percentage.value >= 100) {
-        saveShow.value = false
+        saveShow.value.isShow = false;
+        saveShow.value.isSuccess = true;
     }
 };
 </script>
