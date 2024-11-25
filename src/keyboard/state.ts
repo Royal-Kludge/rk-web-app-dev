@@ -3,7 +3,7 @@ import { ConnectionType, ConnectionEventEnum, ConnectionStatusEnum } from "./enu
 import { RK_L87_USB_DEFINE, RK_L87_DONGLE_DEFINE } from "./rk_l87"
 import { RK_M87_USB_EN_DEFINE, RK_M87_USB_JP_DEFINE, RK_M87_DONGLE_DEFINE } from "./rk_m87"
 
-export const VERSION = '1.4.4'
+export const VERSION = '1.5.0'
 
 /**
 * Initial lightInfo

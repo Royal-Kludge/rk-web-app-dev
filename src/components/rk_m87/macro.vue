@@ -1,5 +1,5 @@
 <template>
-    <div style="min-width: 210px;width: 240px;">
+    <div style="min-width: 210px;width: 260px;">
         <div class="bg-grey d-flex flex-column jc-between h-100">
             <div class="d-flex flex-column flex-1">
                 <div class="d-flex flex-column h-100">
