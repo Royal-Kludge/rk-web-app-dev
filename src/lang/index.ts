@@ -2,6 +2,7 @@ import { createI18n } from "vue-i18n";
 import EN from "./en";
 import CN from "./zh-cn";
 import TW from "./zh-tw";
+import JA from "./ja";
 
 // 获取浏览器界面语言，默认语言
 let currentLanguage = navigator.language.toLowerCase();
@@ -20,6 +21,9 @@ const messages = {
   },
   tw: {
     ...TW,
+  },
+  ja: {
+    ...JA,
   },
 };
 let lang = 'en';
