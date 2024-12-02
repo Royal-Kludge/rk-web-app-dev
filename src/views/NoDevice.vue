@@ -19,6 +19,10 @@
       </div>
       <div class="mt-5" style="font-weight: bold;font-family:'Microsoft YaHei';" @click="openSite">{{
         $t("home.title_6") }}<span class="site c-p"> www.rkgaming.com</span></div>
+        <div class="d-flex flex-column ai-center mt-3 bg-white p-3 br-2">
+          <div><img src="../assets/images/wx.jpg" style="width: 210px;"/></div>
+          <div>{{ $t("home.title_7") }}</div>
+        </div>
     </div>
   </div>
 </template>

@@ -7,6 +7,7 @@ export default {
     title_4: "After completing the configuration, there is no need to leave it in the background, just save, close, and enjoy it.",
     title_5: "Supports Chrome/EDGE/Opera browsers, more devices are being adapted",
     title_6: "Official Website:",
+    title_7: "Scan WeChat to add me as a friend",
     title_tip: "Enter product driver.",
     but_1: "Connect",
     but_2: "Select device",

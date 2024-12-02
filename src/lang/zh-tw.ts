@@ -7,6 +7,7 @@ export default {
     title_4: "當完成配寘之後，後臺都不用留，只需要保存、關閉、享受即可。",
     title_5: "支持chrome/EDGE/opera三種瀏覽器，更多設備正在適配中…",
     title_6: "官網：",
+    title_7: "微信掃一掃 加我為好友",
     title_tip: "進入產品驅動。",
     but_1: "連接",
     but_2: "選擇設備",
