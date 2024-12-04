@@ -1,6 +1,6 @@
 <template>
   <div class="d-flex ai-center jc-center h-100">
-    <div class="d-flex flex-column ai-center">
+    <div class="d-flex flex-column ai-center mb-5">
       <div class="d-flex text-black my-4" style="font-size: 96px; font-weight: bold;font-family:'Microsoft YaHei';">
         {{ $t("home.title_2") }}
       </div>
@@ -9,7 +9,7 @@
         <div>{{ $t("home.title_4") }}</div>
         <div>{{ $t("home.title_5") }}</div>
       </div>
-      <div class="d-flex jc-center text-white py-3 px-5 c-p mt-5 mb-5"
+      <div class="d-flex jc-center text-white py-3 px-5 c-p mt-4 mb-3"
         style="border-radius: 10px;background-color: #B4B4C8;width: max-content;" @click="connect"
         v-if="isHidAvailable">
         {{ $t("home.but_2") }}
@@ -17,9 +17,9 @@
       <div class="text-blue" v-else>
         <h1>{{ $t("home.title") }}</h1>
       </div>
-      <div class="mt-5" style="font-weight: bold;font-family:'Microsoft YaHei';" @click="openSite">{{
+      <div class="mt-4" style="font-weight: bold;font-family:'Microsoft YaHei';" @click="openSite">{{
         $t("home.title_6") }}<span class="site c-p"> www.rkgaming.com</span></div>
-        <div class="d-flex flex-column ai-center mt-3 bg-white p-3 br-2">
+        <div class="d-flex flex-column ai-center mt-5 bg-white p-3 br-2">
           <div><img src="../assets/images/wx.jpg" style="width: 210px;"/></div>
           <div>{{ $t("home.title_7") }}</div>
         </div>

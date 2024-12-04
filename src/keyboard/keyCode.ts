@@ -1111,6 +1111,9 @@ export enum KeyDefineEnum {
     KEY_CTRL_DN = 0x00010000 | KEY_DownArrow,
     KEY_CTRL_C = 0x00010000 | KEY_C,
     KEY_CTRL_V = 0x00010000 | KEY_V,
+    KEY_CTRL_A = 0x00010000 | KEY_A,
+    KEY_CTRL_Z = 0x00010000 | KEY_Z,
+    KEY_CTRL_X = 0x00010000 | KEY_X,
     KEY_ALT_TAB = 0x0004002B,
     //****************************************************************
     //BYTE1:1�����?2�Ҽ���3�м���4ǰ������5���˼���6��ڡ�?7�Ұڡ�8�Ϲ��֡�9�¹��֡�10X����11X���ҡ�12Y���ϡ�13Y����
@@ -1233,7 +1236,7 @@ export enum KeyDefineEnum {
     SP_KB_Mode = 0x07000010,
     SP_O_Mode = 0x07000022,      //����Mac
     SP_L_Mode = 0x07000023,      //����Mac
-
+    SP_Touch_Mode = 0x07000024,
     //****************************************************************
     //byte0���̶�0x08
     //byte1��0��Ч�л���1��Ч����2��ɫ�л���3�����л���4�ٶ��л���5������Ϸ����¼�ƣ�6��Ϸ���ֱ��棬7¼��/���棬8��λ��9��Чģʽָ��
@@ -1361,6 +1364,8 @@ export enum KeyDefineEnum {
     KEY_LessSign = 0x00020036,
     KEY_GreaterSign = 0x00020037,
     KEY_Question = 0x00020038,
+
+    KEY_RK_WWW = 0x0A000000
 }
 
 export const KeyText: Record<number, String> = {
@@ -1619,6 +1624,7 @@ export const KeyText: Record<number, String> = {
     0x07000010: 'Unknow',
     0x07000022: 'Mac',      //����Mac
     0x07000023: 'Mac',      //����Mac
+    0x07000024: 'TouchMode',
     //****************************************************************
     //byte0���̶�0x08
     //byte1��0��Ч�л���1��Ч����2��ɫ�л���3�����л���4�ٶ��л���5������Ϸ����¼�ƣ�6��Ϸ���ֱ��棬7¼��/���棬8��λ��9��Чģʽָ��
@@ -1743,6 +1749,8 @@ export const KeyText: Record<number, String> = {
     0x08091100: 'light.menu_17',
     0x08091200: 'light.menu_18',
     0x08091300: 'light.menu_19',
+
+    0x0A000000: 'RK WWW',
 }
 
 export const KeyText_2: Record<number, String> = {
@@ -2249,6 +2257,7 @@ export const KeyText_Mac: Record<number, String> = {
     0x07000010: 'Unknow',
     0x07000022: 'Mac',      //����Mac
     0x07000023: 'Mac',      //����Mac
+    0x07000024: 'TouchMode',
     //****************************************************************
     //byte0���̶�0x08
     //byte1��0��Ч�л���1��Ч����2��ɫ�л���3�����л���4�ٶ��л���5������Ϸ����¼�ƣ�6��Ϸ���ֱ��棬7¼��/���棬8��λ��9��Чģʽָ��
@@ -2373,6 +2382,8 @@ export const KeyText_Mac: Record<number, String> = {
     0x08091100: 'light.menu_17',
     0x08091200: 'light.menu_18',
     0x08091300: 'light.menu_19',
+
+    0x0A000000: 'RK WWW',
 }
 
 export const KeyCodeMap: Record<string, KeyCodeTable> = {

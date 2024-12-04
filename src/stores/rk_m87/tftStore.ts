@@ -71,7 +71,7 @@ export const useTftStore = defineStore("tftinfo_rk_m87", () => {
         let ret = false;
         if (frames.value != undefined) {
             try {
-                storage.set(`${keyboard.keyboardDefine?.name}_frame`, frames.value);
+                storage.set(`TFT_frame`, frames.value);
                 let buffers = new Array<Uint16Array>();
                 let index: number;
                 for (index = 0; index < frames.value.list.length; index++) {
