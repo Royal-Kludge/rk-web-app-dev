@@ -19,7 +19,7 @@
                     <div class="my-4 c-p" @click="setMeunid();">
                         <el-tooltip effect="light" :content="$t('home.title_tip')" placement="top"
                             popper-class="tip_font2">
-                            <img src="../../assets/images/keyboard.png" />
+                            <img src="../../assets/images/keyboard_rk-l75.png" />
                         </el-tooltip>
                     </div>
                     <div class="d-flex my-4">

@@ -313,6 +313,10 @@ const mediaStrKey = (key: string | undefined) => {
     }
 }
 
+.round {
+    border-radius: 50% !important;
+}
+
 .key_remapped {
     color: #07072A;
 }
@@ -349,11 +353,11 @@ const mediaStrKey = (key: string | undefined) => {
 }
 
 .key4 {
-    width: 142px;
+    width: 136px;
 }
 
 .key5 {
-    width: 321px;
+    width: 350px;
 }
 
 .key6 {
@@ -361,15 +365,15 @@ const mediaStrKey = (key: string | undefined) => {
 }
 
 .space-l {
-    margin-left: 18px;
+    margin-left: 28px;
 }
 
 .space-l2 {
-    margin-left: 40px;
+    margin-left: 35px;
 }
 
 .space-l3 {
-    margin-left: 82px;
+    margin-left: 10px;
 }
 
 .space-t {
@@ -382,26 +386,26 @@ const mediaStrKey = (key: string | undefined) => {
 
 .key-up {
     position: absolute;
-    right: 110px;
-    top: 20px;
+    right: 61px;
+    top: 8px;
 }
 
 .key-left {
     position: absolute;
-    right: 181px;
-    top: 20px;
+    right: 124px;
+    top: 8px;
 }
 
 .key-down {
     position: absolute;
-    right: 110px;
-    top: 20px;
+    right: 61px;
+    top: 8px;
 }
 
 .key-right {
     position: absolute;
-    right: 39px;
-    top: 20px;
+    right: -1px;
+    top: 8px;
 }
 
 @media screen and (max-width: 1600px) {
@@ -434,11 +438,11 @@ const mediaStrKey = (key: string | undefined) => {
     }
 
     .key4 {
-        width: 117px;
+        width: 112px;
     }
 
     .key5 {
-        width: 321px;
+        width: 314px;
     }
 
     .key6 {
@@ -454,7 +458,7 @@ const mediaStrKey = (key: string | undefined) => {
     }
 
     .space-l3 {
-        margin-left: 69px;
+        margin-left: 8px;
     }
 
     .space-t {
@@ -466,23 +470,27 @@ const mediaStrKey = (key: string | undefined) => {
     }
 
     .key-up {
-        right: 70px;
-        top: 10px;
+        position: absolute;
+        right: 53px;
+        top: 8px;
     }
 
     .key-left {
-        right: 123px;
-        top: 10px;
+        position: absolute;
+        right: 106px;
+        top: 8px;
     }
 
     .key-down {
-        right: 70px;
-        top: 10px;
+        position: absolute;
+        right: 53px;
+        top: 8px;
     }
 
     .key-right {
-        right: 17px;
-        top: 10px;
+        position: absolute;
+        right: 0px;
+        top: 8px;
     }
 }
 
@@ -516,11 +524,11 @@ const mediaStrKey = (key: string | undefined) => {
     }
 
     .key4 {
-        width: 89px;
+        width: 88px;
     }
 
     .key5 {
-        width: 232px;
+        width: 241px;
     }
 
     .key6 {
@@ -528,7 +536,7 @@ const mediaStrKey = (key: string | undefined) => {
     }
 
     .space-l {
-        margin-left: 11px;
+        margin-left: 18px;
     }
 
     .space-l2 {
@@ -536,7 +544,7 @@ const mediaStrKey = (key: string | undefined) => {
     }
 
     .space-l3 {
-        margin-left: 53px;
+        margin-left: 7px;
     }
 
     .space-t {
@@ -549,25 +557,25 @@ const mediaStrKey = (key: string | undefined) => {
 
     .key-up {
         position: absolute;
-        right: 66px;
+        right: 44px;
         top: 8px;
     }
 
     .key-left {
         position: absolute;
-        right: 109px;
+        right: 87px;
         top: 8px;
     }
 
     .key-down {
         position: absolute;
-        right: 66px;
+        right: 44px;
         top: 8px;
     }
 
     .key-right {
         position: absolute;
-        right: 23px;
+        right: 1px;
         top: 8px;
     }
 }
