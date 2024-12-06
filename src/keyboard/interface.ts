@@ -6,6 +6,7 @@ export interface KeyState {
     selected: boolean,
     KeyData: KeyTableData
   }
+  
 /**
  * Keyboard State
  * 
@@ -26,18 +27,22 @@ export interface KeyboardState {
     lightInfo: LightInfo
 }
 
-export interface KeyboardDefine {
-    name: String,
-    vendorId: number,
-    productId: number,
-    usagePage: number,
-    usage: number,
+export interface KeyboardDefine extends HidDeviceDefine {
     keyText: Record<number, String>,
     keyMatrixLayer: Array<KeyMatrixLayer>,
     keyMatrixTable: Array<MatrixTable>,
     keyLayout: Record<number, Record<number, Array<KeyDefineEnum>>>,
     lightEffects: Array<LightEffect>,
     protocol: (state: KeyboardState, device: HIDDevice) => Promise<IProtocol>
+}
+
+export interface HidDeviceDefine {
+    name: String,
+    vendorId: number,
+    productId: number,
+    usagePage: number,
+    usage: number,
+    connectType: ConnectionType
 }
 
 export interface KeyMappingData {

@@ -38,7 +38,8 @@ const onConnect = async () => {
     const connectionEventCallback = async (event: Event) => {
         let keyboard = event.currentTarget as Keyboard
         console.log(`Keyboard [${keyboard.state.deviceName}] is ${keyboard.state.connectionEvent}`)
-        switch (keyboard.state.connectionEvent) {
+        try {
+            switch (keyboard.state.connectionEvent) {
             case ConnectionEventEnum.Open:
                 await keyboard.protocol?.init();
                 isConnected.value = true;
@@ -52,7 +53,11 @@ const onConnect = async () => {
                 keyboard.removeEventListener("connection", connectionEventCallback);
                 keyboard.removeEventListener("reported", reportedEventCallback);
                 break;
+            }
+        } catch (e) {
+            await keyboard.close();
         }
+
     };
 
     const reportedEventCallback = async (event: Event) => {

@@ -41,10 +41,12 @@ import { useMenuStore } from "@/stores/rk_l75/menuStore";
 import { keyboard } from '@/keyboard/keyboard'
 import RK_L75_Page from '@/components/rk_l75/index.vue'
 import { RK_L75, RK_L75_EVENT_DEFINE } from "@/keyboard/rk_l75/rk_l75";
+import { RK_L75_Usb } from "@/keyboard/rk_l75/rk_l75_usb";
 import Meun from "@/components/rk_l75/menu.vue";
 import { reactive, ref, onMounted, onBeforeUnmount } from 'vue';
 import { storeToRefs } from "pinia";
 import { ConnectionStatusEnum, ConnectionType } from "@/keyboard/enum";
+import { stat } from "fs";
 
 const useMenu = useMenuStore();
 const { meunid } = storeToRefs(useMenu);
@@ -98,11 +100,9 @@ const reportFinish = async (event: any) => {
     if (event != undefined && event.detail != undefined) {
         if (event.detail == 'finish') {
             loading.value = false
-            //ElMessage.info('Report finish!');
         }
         if (event.detail == 'timeout') {
             loading.value = false;
-            //ElMessage.error('Report timeout!');
         }
     }
 };

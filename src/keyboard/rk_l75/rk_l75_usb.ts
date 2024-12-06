@@ -70,10 +70,15 @@ export class RK_L75_Usb extends RK_L75 {
         this.dispatchEvent(new CustomEvent(RK_L75_EVENT_DEFINE.OnProfileGotten, { detail: this.data.boardProfile }));
     }
 
+    async sleep(ms: number): Promise<void> {
+        return new Promise(resolve => setTimeout(resolve, ms));
+      }
+
     async getPassword(): Promise<void> {
         let packet = new GetPasswordPacket();
 
         await this.setFeature(REPORT_ID_USB, packet.setReport);
+        await this.sleep(500);
         packet.fromReportData(await this.getFeature(REPORT_ID_USB));
 
         this.state.fwVersion = packet.fwVersion;

@@ -19,6 +19,7 @@ export class GetPasswordPacket extends Packet_Usb {
     }
 
     fromReportData(buffer: DataView) : IPacket {
+        console.log(`Password data received from device.`);
         super.fromReportData(buffer);
         this.getReport = new DataView(buffer.buffer.slice(1, this.dataLength + PACKET_HEAD_LENGTH + 1));
         if (this.getReport.byteLength >= 10 + PACKET_HEAD_LENGTH) {

@@ -368,6 +368,10 @@ const mediaStrKey = (key: string | undefined) => {
     margin-left: 28px;
 }
 
+.space-l1 {
+    margin-left: 92px;
+}
+
 .space-l2 {
     margin-left: 35px;
 }
@@ -451,6 +455,10 @@ const mediaStrKey = (key: string | undefined) => {
 
     .space-l {
         margin-left: 15px;
+    }
+
+    .space-l1 {
+        margin-left: 69px;
     }
 
     .space-l2 {
@@ -537,6 +545,10 @@ const mediaStrKey = (key: string | undefined) => {
 
     .space-l {
         margin-left: 18px;
+    }
+
+    .space-l1 {
+        margin-left: 61px;
     }
 
     .space-l2 {

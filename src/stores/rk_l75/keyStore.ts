@@ -329,8 +329,8 @@ export const useKeyStore = defineStore('keyinfo', () => {
         line: 1,
         style: "space-t",
         keys: [
-          { key: KeyDefineEnum.NONE, style: 'key round', index: getIndex(0, 14), keyData: getKeyData(getIndex(0, 14)) },
-          { key: KeyDefineEnum.KEY_ESC, style: 'key space-l', index: getIndex(0, 1), keyData: getKeyData(getIndex(0, 1)) },
+          //{ key: KeyDefineEnum.NONE, style: 'key round', index: getIndex(0, 0), keyData: getKeyData(getIndex(0, 0)) },
+          { key: KeyDefineEnum.KEY_ESC, style: 'key space-l1', index: getIndex(0, 1), keyData: getKeyData(getIndex(0, 1)) },
           { key: KeyDefineEnum.KEY_F1, style: 'key space-l', index: getIndex(0, 2), keyData: getKeyData(getIndex(0, 2)) },
           { key: KeyDefineEnum.KEY_F2, style: 'key', index: getIndex(0, 3), keyData: getKeyData(getIndex(0, 3)) },
           { key: KeyDefineEnum.KEY_F3, style: 'key', index: getIndex(0, 4), keyData: getKeyData(getIndex(0, 4)) },
