@@ -1,12 +1,13 @@
 <template>
-    <div v-if="isKeyboardConnect()">
+    <div v-if="isKeyboardConnect()" class="h-100">
         <RK_L87_Page v-if="productId == 1" />
         <RK_M87_Page v-else-if="productId == 2" />
         <RK_L75_Page v-else-if="productId == 3" />
     </div>
-    <div class="d-flex h-100" v-else>
+    <div class="d-flex flex-column ai-center h-100" v-else>
         <div class="p-5 fs-big m-5 mb-4">No keyboard connected to dongle</div>
-        <div class="bg-dark text-white py-3 px-5 mx-4 c-p mt-4" style="border-radius: 10px;height: 24px;" @click="disconnect"> {{ $t("home.but_4") }}</div>
+        <div class="bg-dark text-white py-3 px-5 mx-4 c-p mt-4" style="border-radius: 10px;height: 24px;"
+            @click="disconnect"> {{ $t("home.but_4") }}</div>
     </div>
 </template>
 
@@ -43,7 +44,7 @@ const state = reactive({
 });
 
 onMounted(async () => {
-    if (keyboard != undefined && keyboard.device != undefined && keyboard.device != null ) {
+    if (keyboard != undefined && keyboard.device != undefined && keyboard.device != null) {
         var item: any;
 
         if (keyboard.state.connectType == ConnectionType.USB) {
@@ -87,14 +88,14 @@ onMounted(async () => {
             keyboard.device.addEventListener("inputreport", keyboard.callback);
             await keyboard.getDongleStatus();
         }
-  }
+    }
 });
 
 onBeforeUnmount(() => {
     if (keyboard != undefined) {
         keyboard.removeEventListener(RK_DONGLE_EVENT_DEFINE.OnDongleStatusChanged, dongleStatusChanged, false);
         keyboard.removeEventListener(RK_DONGLE_EVENT_DEFINE.OnPasswordGotten, passwordGotten, false);
-        
+
         if (keyboard.protocol != undefined) {
             (keyboard.protocol as Protocol).removeEventListener(RK_DONGLE_EVENT_DEFINE.OnDongleStatusChanged, dongleStatusChanged, false);
             //(keyboard.protocol as Protocol).removeEventListener(RK_DONGLE_EVENT_DEFINE.OnPasswordGotten, passwordGotten, false);
@@ -139,7 +140,7 @@ const dongleStatusChanged = async (event: any) => {
 
 const passwordGotten = async (event: any) => {
     let pwd = event.detail as number;
-    var item: any; 
+    var item: any;
 
     for (item in DonglePwdDefineList) {
         if (pwd == item) {
@@ -147,7 +148,7 @@ const passwordGotten = async (event: any) => {
             break;
         }
     }
-    
+
     if (keyboard.keyboardDefine != null && keyboard.keyboardDefine != undefined && keyboard.device != undefined) {
         keyboard.protocol = await keyboard.keyboardDefine.protocol(keyboard.state, keyboard.device);
         keyboard.device.removeEventListener("inputreport", keyboard.callback);
