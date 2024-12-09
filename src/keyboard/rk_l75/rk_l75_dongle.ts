@@ -102,8 +102,6 @@ export class RK_L75_Dongle extends RK_L75 {
         }).bind(this);
         
         dongleWorker.postMessage('start');
-
-        await this.getDongleStatus();
     }
 
     async onGetReport(reportId: number, data: DataView): Promise<void> {
@@ -342,6 +340,8 @@ export class RK_L75_Dongle extends RK_L75 {
 
     async destroy(): Promise<void> {
         super.destroy();
+        dongleWorker.onmessage = null;
+        dongleWorker.postMessage('stop');
         this.pktGetDongleStatus.destroy();
         this.pktGetProfile.destroy();
     }

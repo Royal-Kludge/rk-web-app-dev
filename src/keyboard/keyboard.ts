@@ -1,6 +1,28 @@
 import type { IProtocol, KeyTableData, LightEffect, LightInfo, KeyboardDefine } from './interface'
 import { ConnectionType, ConnectionEventEnum, KeyMappingType, ConnectionStatusEnum } from './enum'
-import { defaultState, KeyboardDefineList } from './state'
+import { defaultState, DeviceDefineList } from './state'
+import { GetDongleStatusPacket } from './packets/getDongleStatusPacket';
+import { GetPasswordPacket } from './packets/getPasswordPacket';
+
+const REPORT_ID_DONGLE: number = 0x13;
+
+const COMMAND_ID: {
+    ActivelyReport: number;
+    GetDongleStatus: number;
+    GetPassword: number;
+} = {
+    ActivelyReport: 0x0A,
+    GetDongleStatus: 0x07,
+    GetPassword: 0x05,
+}
+
+export const RK_DONGLE_EVENT_DEFINE: {
+    OnDongleStatusChanged: string;
+    OnPasswordGotten: string;
+} = {
+    OnDongleStatusChanged: 'OnDongleStatusChanged',
+    OnPasswordGotten: 'OnPasswordGotten',
+}
 
 /**
  * Main class.
@@ -25,6 +47,11 @@ export class Keyboard extends EventTarget {
 
     keyboardDefine?: KeyboardDefine;
 
+    pktGetDongleStatus: GetDongleStatusPacket;
+    pktGetPassword: GetPasswordPacket;
+
+    callback = (e: HIDInputReportEvent) => this.onReport(e);
+
     constructor() {
         super();
         
@@ -37,6 +64,9 @@ export class Keyboard extends EventTarget {
             this.hid = navigator.hid;
             this.isHidAvailable = true;
         }
+
+        this.pktGetDongleStatus = new GetDongleStatusPacket(this.dongleStatusReport.bind(this));
+        this.pktGetPassword = new GetPasswordPacket(this.passwordReport.bind(this));
     }
 
     /**
@@ -54,12 +84,12 @@ export class Keyboard extends EventTarget {
 
         var option: HIDDeviceRequestOptions = { filters: []};
         var item: any;
-        for (item in KeyboardDefineList) {
+        for (item in DeviceDefineList) {
             let keyboard: HIDDeviceFilter = { 
-                vendorId: KeyboardDefineList[item].vendorId, 
-                productId: KeyboardDefineList[item].productId,
-                usagePage: KeyboardDefineList[item].usagePage, 
-                usage: KeyboardDefineList[item].usage 
+                vendorId: DeviceDefineList[item].vendorId, 
+                productId: DeviceDefineList[item].productId,
+                usagePage: DeviceDefineList[item].usagePage, 
+                usage: DeviceDefineList[item].usage 
             };
             option.filters.push(keyboard);
         }
@@ -84,25 +114,36 @@ export class Keyboard extends EventTarget {
                     this.state.connectionEvent = ConnectionEventEnum.Open;
                     this.state.productId = this.device.productId;
 
-                    for (item in KeyboardDefineList) {
-                        if (this.device.vendorId == KeyboardDefineList[item].vendorId && 
-                            this.device.productId == KeyboardDefineList[item].productId) {
-                            this.keyboardDefine = KeyboardDefineList[item];
+                    for (item in DeviceDefineList) {
+                        if (this.device.vendorId == DeviceDefineList[item].vendorId && 
+                            this.device.productId == DeviceDefineList[item].productId) {
+                            this.state.connectType = DeviceDefineList[item].connectType;
                             break;
                         }
                     }
 
-                    if (this.keyboardDefine == null || this.keyboardDefine == undefined) {
-                        await this.close();
-                        this.dispatchEvent(new KeyboardEvent("NotSupport", this));
-                        return;
-                    }
+                    // for (item in KeyboardDefineList) {
+                    //     if (this.device.vendorId == KeyboardDefineList[item].vendorId && 
+                    //         this.device.productId == KeyboardDefineList[item].productId) {
+                    //         this.keyboardDefine = KeyboardDefineList[item];
+                    //         break;
+                    //     }
+                    // }
 
-                    this.protocol = await this.keyboardDefine.protocol(this.state, this.device);
+                    // if (this.keyboardDefine == null || this.keyboardDefine == undefined) {
+                    //     await this.close();
+                    //     this.dispatchEvent(new KeyboardEvent("NotSupport", this));
+                    //     return;
+                    // }
 
-                    this.loadDefaultValue(this.state.keyTableData, this.state.lightInfo);
+                    // this.protocol = await this.keyboardDefine.protocol(this.state, this.device);
+
+                    // this.loadDefaultValue(this.state.keyTableData, this.state.lightInfo);
                     
                     const connectionEventCallback = (event: HIDConnectionEvent) => {
+                        if (this.device != undefined) {
+                            this.device.removeEventListener("inputreport", this.callback);
+                        }
                         event.device.close();
                         this.protocol?.destroy();
                         this.state.ConnectionStatus = ConnectionStatusEnum.Disconnected;
@@ -125,6 +166,7 @@ export class Keyboard extends EventTarget {
      */
     async close() {
         if (this.device && this.device.opened) {
+            this.device.removeEventListener("inputreport", this.callback);
             await this.device.close();
             await this.device.forget();
             this.protocol?.destroy();
@@ -191,6 +233,80 @@ export class Keyboard extends EventTarget {
                 lightInfo.lightEffects.push(tmp);
             }
         }
+    }
+
+    async onReport(report: HIDInputReportEvent) {
+        let reportId = report.reportId;
+        const { data } = report;
+
+        try {
+            let u8 = new Uint8Array(data.buffer, 0, data.buffer.byteLength);
+            console.log(`GetReport [${data.byteLength}] bytes -> ${u8.toString()}`);
+    
+            if (data.byteLength == 19 && reportId == REPORT_ID_DONGLE) {
+                let cmd = data.getUint8(0);
+                //let packet: Packet_Dongle | null = null;
+                switch (cmd) {
+                    case COMMAND_ID.ActivelyReport:
+                        await this.activelyReport(data);
+                        break;
+                    case COMMAND_ID.GetDongleStatus:
+                        this.pktGetDongleStatus.fromReportData(data);
+                        break;
+                    case COMMAND_ID.GetPassword:
+                        this.pktGetPassword.fromReportData(data);
+                        break;
+                }
+            }
+        } catch (e) {
+
+        }
+    };
+
+    async activelyReport(data: DataView): Promise<void> {
+        let id = data.getUint8(4);
+        let val = data.getUint8(5);
+        switch (id) {
+            case 0x02:
+                this.state.ConnectionStatus = val == 1 ? ConnectionStatusEnum.Connected : ConnectionStatusEnum.Disconnected;
+                if (this.state.ConnectionStatus == ConnectionStatusEnum.Connected) {
+                    setTimeout(this.getPassword.bind(this), 1000);
+                }
+                this.dispatchEvent(new CustomEvent(RK_DONGLE_EVENT_DEFINE.OnDongleStatusChanged, { detail: this.state.ConnectionStatus }));
+                break;
+        }
+    }
+
+    async getDongleStatus(): Promise<void> {
+        if (this.device != undefined) {
+            let data = this.pktGetDongleStatus.command();
+            await this.device.sendReport(REPORT_ID_DONGLE, data);
+            console.log(`SetReport [${data.byteLength}] bytes -> ${data.toString()}`);
+        }
+    }
+
+    async getPassword() {
+        if (this.device != undefined) {
+            let data = this.pktGetPassword.command();
+            await this.device.sendReport(REPORT_ID_DONGLE, data);
+            console.log(`SetReport [${data.byteLength}] bytes -> ${data.toString()}`);
+        }
+    }
+
+    private dongleStatusReport(event: any) {
+        let status = event.detail as boolean ? ConnectionStatusEnum.Connected : ConnectionStatusEnum.Disconnected;
+        this.state.ConnectionStatus = status;
+        this.dispatchEvent(new CustomEvent(RK_DONGLE_EVENT_DEFINE.OnDongleStatusChanged, { detail: status }));
+        if (status == ConnectionStatusEnum.Connected) {
+            this.getPassword();
+        }
+    }
+
+    private passwordReport(event: any) {
+        let password = event.detail.pwd as number;
+        let version = event.detail.version as string;
+        this.state.fwVersion = version;
+        this.dispatchEvent(new CustomEvent(RK_DONGLE_EVENT_DEFINE.OnPasswordGotten, { detail: password }));
     }
 }
 

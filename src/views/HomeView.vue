@@ -9,21 +9,9 @@ import WebApp from './WebApp.vue'
 import Nodevice from './NoDevice.vue'
 import { Keyboard, keyboard } from '../keyboard/keyboard'
 import { ConnectionEventEnum, ConnectionStatusEnum } from '../keyboard/enum'
-import { ElMessage, ElMessageBox } from 'element-plus'
-import { storage } from '@/keyboard/storage';
-import type { Profiles } from '@/keyboard/rk_l87/profiles';
-import { VERSION } from '@/keyboard/state';
-import { useI18n } from "vue-i18n";
-
-const { t } = useI18n();
+import { ElMessage } from 'element-plus'
 
 const isConnected = ref(false);
-const data = ref(
-    {
-        fwVersion: '',
-        deviceName: '',
-    }
-);
 
 const onConnect = async () => {
     if (keyboard == undefined) {
@@ -41,10 +29,10 @@ const onConnect = async () => {
         try {
             switch (keyboard.state.connectionEvent) {
             case ConnectionEventEnum.Open:
-                await keyboard.protocol?.init();
+                //await keyboard.protocol?.init();
                 isConnected.value = true;
-                if (keyboard.state.fwVersion != undefined) data.value.fwVersion = keyboard.state.fwVersion.valueOf();
-                if (keyboard.state.deviceName != undefined) data.value.deviceName = keyboard.state.deviceName.valueOf();
+                //if (keyboard.state.fwVersion != undefined) data.value.fwVersion = keyboard.state.fwVersion.valueOf();
+                //if (keyboard.state.deviceName != undefined) data.value.deviceName = keyboard.state.deviceName.valueOf();
                 break;
             case ConnectionEventEnum.Disconnect:
             case ConnectionEventEnum.Close:
@@ -78,31 +66,11 @@ const onConnect = async () => {
     keyboard.addEventListener("NotSupport", notSupportCallback);
 
     await keyboard.init()
-    if (keyboard.device != null && keyboard.device != undefined) {
-        checkProfileVersion();
-    }
     
     if (keyboard.device == null || !keyboard.device.opened) {
         keyboard.removeEventListener("connection", connectionEventCallback);
         keyboard.removeEventListener("reported", reportedEventCallback);
         keyboard.removeEventListener("NotSupport", notSupportCallback);
-    }
-};
-
-const checkProfileVersion = () => {
-    let tmp = storage.get(`${keyboard.keyboardDefine?.name}_profile`) as Profiles;
-    if (tmp != null && (tmp.version == undefined || tmp.version != VERSION)) {
-        ElMessageBox.confirm(
-            t('home.profile'),
-            t('home.profile_out'),
-            {
-                confirmButtonText: t('home.profile_reset'),
-                cancelButtonText: t('home.profile_goon'),
-                customClass: 'set-to-default',
-            }
-        ).then(async () => {
-            storage.clear();
-        });
     }
 };
 </script>

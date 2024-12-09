@@ -103,7 +103,7 @@ export class RK_L87_Dongle extends RK_L87 {
         
         dongleWorker.postMessage('start');
 
-        await this.getDongleStatus();
+        //await this.getDongleStatus();
     }
 
     async onGetReport(reportId: number, data: DataView): Promise<void> {
@@ -342,6 +342,8 @@ export class RK_L87_Dongle extends RK_L87 {
 
     async destroy(): Promise<void> {
         super.destroy();
+        dongleWorker.onmessage = null;
+        dongleWorker.postMessage('stop');
         this.pktGetDongleStatus.destroy();
         this.pktGetProfile.destroy();
     }

@@ -2,11 +2,17 @@ const donglePkgQueue = new Array<any>();
 const dongleLastTime = new Date();
 const dongleMsgInterval = 1400;
 
+let interval: any = null;
+
 let dongleIsWaitPkgFinish = false;
 
 self.addEventListener('message', (event) => {
     if (event.data === 'start') {
         dongleStartLoop();
+    } else if (event.data === 'stop') {
+        if (interval != null) {
+            clearInterval(interval);
+        }
     } else if (event.data === 'finish') {
         dongleIsWaitPkgFinish = false;
         if (donglePkgQueue.length <= 0) self.postMessage('finish');
@@ -17,7 +23,7 @@ self.addEventListener('message', (event) => {
 });
 
 function dongleStartLoop() {
-    setInterval(() => {
+    interval = setInterval(() => {
         const currentTime = new Date();
         let elapsedTime = currentTime.getTime() - dongleLastTime.getTime();
         if (elapsedTime > dongleMsgInterval && dongleIsWaitPkgFinish)
