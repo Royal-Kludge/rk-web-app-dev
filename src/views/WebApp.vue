@@ -47,7 +47,10 @@ onMounted(async () => {
     if (keyboard != undefined && keyboard.device != undefined && keyboard.device != null) {
         var item: any;
 
+        state.connectState = ConnectionStatusEnum.Connected;
+
         if (keyboard.state.connectType == ConnectionType.USB) {
+            
             for (item in KeyboardDefineList) {
                 if (keyboard.device.vendorId == KeyboardDefineList[item].vendorId && keyboard.device.productId == KeyboardDefineList[item].productId) {
                     keyboard.keyboardDefine = KeyboardDefineList[item];
@@ -67,7 +70,9 @@ onMounted(async () => {
             await keyboard.protocol?.init();
 
             if (keyboard.state.fwVersion != undefined) data.value.fwVersion = keyboard.state.fwVersion.valueOf();
-            if (keyboard.state.deviceName != undefined) data.value.deviceName = keyboard.state.deviceName.valueOf();
+            if (keyboard.state.deviceName != undefined
+                
+            ) data.value.deviceName = keyboard.state.deviceName.valueOf();
 
             switch (keyboard.keyboardDefine.name.valueOf()) {
                 case 'RK-R87PRO':
@@ -104,6 +109,7 @@ onBeforeUnmount(() => {
 });
 
 const disconnect = () => {
+    state.connectState = ConnectionStatusEnum.Disconnected;
     keyboard.close();
 };
 
