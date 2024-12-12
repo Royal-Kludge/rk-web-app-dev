@@ -343,6 +343,7 @@ export const useKeyStore = defineStore('keyinfo', () => {
           { key: KeyDefineEnum.KEY_F10, style: 'key', index: getIndex(0, 11), keyData: getKeyData(getIndex(0, 11)) },
           { key: KeyDefineEnum.KEY_F11, style: 'key', index: getIndex(0, 12), keyData: getKeyData(getIndex(0, 12)) },
           { key: KeyDefineEnum.KEY_F12, style: 'key', index: getIndex(0, 13), keyData: getKeyData(getIndex(0, 13)) },
+          { key: KeyDefineEnum.NONE, style: 'key key7 space-l', index: getIndex(0, 14), keyData: getKeyData(getIndex(0, 14)), img: '<img src="/src/assets/images/logo@1x.png" style="overflow: auto;"/>' },
         ]
       },
       {
@@ -940,7 +941,7 @@ export const useKeyStore = defineStore('keyinfo', () => {
   const getSelectedFun = (): KeyDefineEnum | undefined => {
     for (var i = 0; i < state.keyFunList.length; i++) {
       for (var j = 0; j < state.keyFunList[i].keys.length; j++) {
-        if (state.keyFunList[i].keys[j].selected && state.funid  == state.keyFunList[i].id) {
+        if (state.keyFunList[i].keys[j].selected && state.funid == state.keyFunList[i].id) {
           return state.keyFunList[i].keys[j].key;
         }
       }
@@ -951,7 +952,7 @@ export const useKeyStore = defineStore('keyinfo', () => {
   const getSelectedTable = (): MatrixTable => {
     for (var i = 0; i < state.keyFunList.length; i++) {
       for (var j = 0; j < state.keyFunList[i].keys.length; j++) {
-        if (state.keyFunList[i].keys[j].selected && state.funid  == state.keyFunList[i].id) {
+        if (state.keyFunList[i].keys[j].selected && state.funid == state.keyFunList[i].id) {
           return state.keyFunList[i].keys[j].type;
         }
       }
