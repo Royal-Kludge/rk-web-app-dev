@@ -39,14 +39,19 @@
             </template>
           </el-popover>
         </div>
-        <div class="ml-1 px-3" v-if="isLayer">
-          <el-slider style="width: 360px" v-model="layer" :min="1" :max="127" @change="setLayer" />
+        <div class="ml-2 px-3" v-if="isLayer">
+          <el-slider style="width: 180px" v-model="layer" :min="1" :max="127" @change="setLayer" />
+        </div>
+        <div class="ml-4">
+          <el-switch v-model="isTouchPad" inline-prompt active-text="On" inactive-text="Off" @change="touchPadChanged"/>
+          <span class="ml-1" style="text-align: center">{{ $t('set.tocuh_pad') }}</span>
         </div>
       </div>
     </div>
   </div>
 </template>
 <script setup lang="ts">
+import { KeyDefineEnum } from "@/keyboard/keyCode";
 import { useKeyStore } from "@/stores/rk_l75/keyStore";
 import { uselightStore } from "@/stores/rk_l75/lightStore";
 import { ref, onMounted, onBeforeUnmount } from 'vue';
@@ -54,6 +59,7 @@ import { ref, onMounted, onBeforeUnmount } from 'vue';
 const useLight = uselightStore();
 const useKey = useKeyStore();
 const isLayer = ref(false);
+const isTouchPad = ref(true);
 const layer = ref(0);
 const isLayoutTableSupport = ref(false);
 
@@ -69,6 +75,11 @@ const LayerChanged = () => {
 const setLayer = () => {
   useLight.setLayer(layer.value);
   useKey.saveProfile();
+}
+
+const touchPadChanged = () => {
+  let index = useKey.getIndex(0, 18);
+  useKey.setKeyCode(index, isTouchPad.value ? KeyDefineEnum.KEY_RK_WWW : KeyDefineEnum.NONE);
 }
 
 onMounted(async () => {

@@ -110,7 +110,7 @@ const VerTips = computed(() => (ver.value !== version.value ? t('set.title_3') +
 const getVer = () => {
     // if (useLight.connectType !== ConnectionType.USB)
     //     return
-    axios.get('/down/work/RKWEB/firmware/L75/firmware.json').then(response => {
+    axios.get('/down/work/RKWEB/firmware/R87PRO/firmware.json').then(response => {
         // 请求成功处理
         version.value = response.data.version
         url.value = response.data.url

@@ -206,6 +206,7 @@ export default {
     title_4: "下载中",
     title_5: "请到有线模式下更新",
     title_6: "功能设置",
+    tocuh_pad: "开启触摸面板（MAC系统下请手动打开浏览器）",
   },
   mediaKey: {
     Media: "媒体",
@@ -246,6 +247,7 @@ export default {
     tape1: "打开tape层开关后，短按tape层自定义按键，触发tape层按键值；",
     tape2: "长按tape层按键，触发默认层按键值；",
     tape3: "滑块调节长按触发按键的延迟。",
+    rkweb: "打开RK官网",
   },
   Power: "电源",
   Sleep: "睡眠",

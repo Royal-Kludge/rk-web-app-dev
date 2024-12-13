@@ -1750,7 +1750,7 @@ export const KeyText: Record<number, String> = {
     0x08091200: 'light.menu_18',
     0x08091300: 'light.menu_19',
 
-    0x0A000000: 'RK WWW',
+    0x0A000000: 'RK Web',
 }
 
 export const KeyText_2: Record<number, String> = {
@@ -1985,7 +1985,9 @@ export const KeyText_2: Record<number, String> = {
     0x04000002: 'Define2',
     //****************************************************************
     0x0d000000: 'Fn1',
-    0x0d010000: 'Fn2'
+    0x0d010000: 'Fn2',
+
+    0x0A000000: 'RK Web'
 }
 
 export const KeyText_Mac: Record<number, String> = {
@@ -2383,7 +2385,7 @@ export const KeyText_Mac: Record<number, String> = {
     0x08091200: 'light.menu_18',
     0x08091300: 'light.menu_19',
 
-    0x0A000000: 'RK WWW',
+    0x0A000000: 'RK Web'
 }
 
 export const KeyCodeMap: Record<string, KeyCodeTable> = {

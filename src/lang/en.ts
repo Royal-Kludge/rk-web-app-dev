@@ -207,6 +207,7 @@ export default {
     title_4: "Downloading",
     title_5: "Please update in wired mode",
     title_6: "Function settings",
+    tocuh_pad: "Open the touch panel (please manually open the browser under MAC system)",
   },
   mediaKey: {
     Media: "Media",
@@ -247,6 +248,7 @@ export default {
     tape1: "After turning on the tape layer switch, short press the tape layer custom button to trigger the tape layer button value;",
     tape2: "Long press the tape layer button to trigger the default layer button value; ",
     tape3: "Adjust the delay of the slider by long pressing the trigger button.",
+    rkweb: "Open RK website",
   },
   Power: "power",
   Sleep: "sleep",

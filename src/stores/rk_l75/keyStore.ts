@@ -249,6 +249,7 @@ export const useKeyStore = defineStore('keyinfo', () => {
         { key: KeyDefineEnum.KEY_Favorites, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Favorites], style: "key", selected: false, tip: 'tip.favorites', type: MatrixTable.WIN },
         { key: KeyDefineEnum.KEY_Search, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Search], style: "key", selected: false, tip: 'tip.search', type: MatrixTable.WIN },
         { key: KeyDefineEnum.SP_BatView, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.SP_BatView], style: "key", selected: false, tip: 'tip.bat', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_RK_WWW, text: '<img class="keyimg2" src="/src/assets/images/logo@1x.png" style="overflow: auto;"/>', style: "key", selected: false, tip: 'tip.rkweb', type: MatrixTable.WIN },
       ],
     },
     {
@@ -343,7 +344,7 @@ export const useKeyStore = defineStore('keyinfo', () => {
           { key: KeyDefineEnum.KEY_F10, style: 'key', index: getIndex(0, 11), keyData: getKeyData(getIndex(0, 11)) },
           { key: KeyDefineEnum.KEY_F11, style: 'key', index: getIndex(0, 12), keyData: getKeyData(getIndex(0, 12)) },
           { key: KeyDefineEnum.KEY_F12, style: 'key', index: getIndex(0, 13), keyData: getKeyData(getIndex(0, 13)) },
-          { key: KeyDefineEnum.NONE, style: 'key key7 space-l', index: getIndex(0, 14), keyData: getKeyData(getIndex(0, 14)), img: '<img src="/src/assets/images/logo@1x.png" style="overflow: auto;"/>' },
+          { key: KeyDefineEnum.KEY_RK_WWW, style: 'key key7 space-l', index: getIndex(0, 18), keyData: getKeyData(getIndex(0, 18)), img: '<img src="/src/assets/images/logo@1x.png" style="overflow: auto;"/>' },
         ]
       },
       {
@@ -1113,7 +1114,11 @@ export const useKeyStore = defineStore('keyinfo', () => {
         }
         break;
       default:
-        mapping.keyStr = `Unknow`;
+        if (keyText[mapping.keyRaw] != undefined) {
+          mapping.keyStr = `${keyText[mapping.keyRaw]}`;
+        } else {
+          mapping.keyStr = 'Unknow';
+        }
         break;
     }
   };
@@ -1182,6 +1187,28 @@ export const useKeyStore = defineStore('keyinfo', () => {
       unSelected();
       setUnselected(keyCode);
     }
+  }
+
+  const setKeyCode = (index: number, keyCode: KeyDefineEnum) => {
+    if (state.keyState.length <= 0 || index >= 999) return '';
+    let key = (state.keyState as Array<KeyState>)[index];
+
+    key.KeyData.keyMappingData.keyRaw = keyCode;
+    key.KeyData.keyMappingData.keyCode = keyCode & 0x0000FFFF;
+    key.KeyData.keyMappingData.keyMappingType = keyCode >> 24;
+    key.KeyData.keyMappingData.keyMappingPara = (keyCode >> 16) & 0xFF;
+    if (keyboard.keyboardDefine != undefined) {
+      //key.KeyData.keyMappingData.keyStr = keyboard.keyboardDefine.keyText[keyCode];
+      let table = getSelectedTable();
+      if (profile.value != undefined) {
+        profile.value.keyTypes[keyMatrixTable.value][keyMatrixLayer.value][key.index] = table;
+      }
+      keySetStr(key.KeyData);
+    }
+    KeyMatrixData.value[keyMatrixTable.value][keyMatrixLayer.value]?.setKeyMapping(key.index, key.KeyData.keyMappingData);
+    rk_l75.value?.setKeyMatrix(keyMatrixLayer.value, keyMatrixTable.value, 0);
+
+    saveProfile();
   }
 
   const unSelected = (): void => {
@@ -1394,5 +1421,5 @@ export const useKeyStore = defineStore('keyinfo', () => {
 
     state.mediaKeyDialogShow = false;
   }
-  return { profile, state, keyMatrixLayer, keyMatrixTable, keyClick, keyColor, isSelected, keybgColor, keyText, keySetToDefault, keySetMacro, mapping, isFunSelected, isMacroSelected, clickMacro, confirmSetMacro, setCombineKey, confirmMediaKey, setMediaKey, confirmSetCombineKey, getKeyMatrix, clickProfile, deleteProfile, onKeyDown, newProfile, handleEditClose, renameProfile, exportProfile, importProfile, init, destroy, getKeyMatrixNomal, saveProfile, keySetToDefaultAll, refresh, refreshKeyMatrixData, setToFactory, unSelected, renameSaveProfile, setFunid }
+  return { profile, state, keyMatrixLayer, keyMatrixTable, getIndex, keyClick, keyColor, isSelected, keybgColor, keyText, keySetToDefault, keySetMacro, mapping, isFunSelected, isMacroSelected, clickMacro, confirmSetMacro, setCombineKey, confirmMediaKey, setMediaKey, confirmSetCombineKey, getKeyMatrix, clickProfile, deleteProfile, onKeyDown, newProfile, handleEditClose, renameProfile, exportProfile, importProfile, init, destroy, getKeyMatrixNomal, saveProfile, keySetToDefaultAll, refresh, refreshKeyMatrixData, setToFactory, unSelected, renameSaveProfile, setFunid, setKeyCode }
 })
