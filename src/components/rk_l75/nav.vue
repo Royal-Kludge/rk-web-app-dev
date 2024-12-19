@@ -44,18 +44,21 @@
         </div>
         <div class="ml-4 d-flex ai-center ">
           <el-switch v-model="isTouchPad" inline-prompt active-text="On" inactive-text="Off" @change="touchPadChanged"/>
-          <span class="ml-1 px-3" style="text-align: center">{{ $t('set.tocuh_pad') }}</span>
+          <span class="ml-1 px-3" style="text-align: left">{{ $t('set.tocuh_pad') }}</span>
           <el-tooltip effect="light" :content="$t('set.website_input_tip')" placement="top" popper-class="tip_font">
                 <div class="py-1 px-3 but-green text-white mx-3 c-p" @click="openWebSiteInput" v-if="isTouchPad" style="width:96px; text-align: center;">
                 {{ $t('set.set_website') }}
               </div>
           </el-tooltip>
-          <el-dialog v-model="isSetWebSite" top="30vh" width="680px" :lock-scroll="true">
+          <el-dialog v-model="isSetWebSite" top="30vh" width="720px" :lock-scroll="true">
               <div class="d-flex ai-center">
                 <el-input v-model="www" placeholder="Please input" maxlength="80" />
               </div>
+              <div class="d-flex jc-start">
+                <span class="mt-2 px-3" style="text-align: left">{{ $t('set.tocuh_pad_mac') }}</span>
+              </div>
               <div class="d-flex jc-end">
-                <div class="d-flex jc-between c-p mt-4">
+                <div class="d-flex jc-between c-p mt-2">
                   <div class="py-1 px-4 but-red text-white " @click="isSetWebSite = false">{{ $t('set.cancel') }}</div>
                   <div class="ml-4 py-1 px-4 but-green text-white" @click="setWebSite">{{ $t('set.confirm') }}</div>
                 </div>
