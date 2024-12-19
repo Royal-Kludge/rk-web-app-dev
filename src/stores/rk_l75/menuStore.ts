@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 
-export const useMenuStore = defineStore("menustore", {
+export const useMenuStore = defineStore("menustore_rk_l75", {
   state: () => ({
     meunid: 0,
     moduleid: 0,

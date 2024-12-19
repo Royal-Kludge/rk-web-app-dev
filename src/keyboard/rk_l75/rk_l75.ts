@@ -46,6 +46,7 @@ export const COMMAND_ID: {
     SetLedColors: number;
     SetKeyMatrix: number;
     SetMacros: number;
+    SetWebKeyTab: number;
 } = {
     ActivelyReport: 0x0A,
     GetDongleStatus: 0x07,
@@ -59,7 +60,8 @@ export const COMMAND_ID: {
     SetLedEffect: 0x09,
     SetLedColors: 0x02,
     SetKeyMatrix: 0x01,
-    SetMacros: 0x03
+    SetMacros: 0x03,
+    SetWebKeyTab: 0x12
 }
 
 export class RK_L75_Data {
@@ -86,6 +88,7 @@ export abstract class RK_L75 extends Protocol {
     abstract getLedColors(board: number): Promise<void>;
     abstract setLedColors(board: number): Promise<void>;
     abstract setFactory(): Promise<void>;
+    abstract setWebKeyTab(web: string): Promise<void>;
     
     abstract onGetReport(reportId: number, data: DataView): Promise<void>;
 
@@ -114,8 +117,8 @@ export abstract class RK_L75 extends Protocol {
     }
 
     async setReport(reportId: number, data: Uint8Array): Promise<void> {
-        await this.device.sendReport(reportId, data);
         console.log(`SetReport [${data.byteLength}] bytes -> ${data.toString()}`);
+        await this.device.sendReport(reportId, data);
     }
 
     private async processKeyboardReport(report: HIDInputReportEvent) {

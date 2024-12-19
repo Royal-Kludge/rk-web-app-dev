@@ -18,7 +18,7 @@ import { LedEffect } from '@/keyboard/rk_l75/ledEffect';
 import { LedColors } from '@/keyboard/rk_l75/ledColors';
 import { useI18n } from 'vue-i18n';
 
-export const useKeyStore = defineStore('keyinfo', () => {
+export const useKeyStore = defineStore('keyinfo_rk_l75', () => {
   const rk_l75 = ref<RK_L75>();
 
   const { t } = useI18n();
@@ -1253,7 +1253,7 @@ export const useKeyStore = defineStore('keyinfo', () => {
     saveProfile()
   }
 
-  const keySetToDefaultAll = () => {
+  const keySetToDefaultAll = async () => {
     let index: any;
     for (index in state.keyState) {
       let kState = state.keyState[index] as KeyState;
@@ -1268,9 +1268,14 @@ export const useKeyStore = defineStore('keyinfo', () => {
       kState.KeyData = key
       kState.selected = false;
       KeyMatrixData.value[keyMatrixTable.value][keyMatrixLayer.value]?.setKeyMapping(index, kState.KeyData.keyMappingData);
-
+      if (profile.value != undefined) {
+        profile.value.keyTypes[keyMatrixTable.value][keyMatrixLayer.value][key.index] = MatrixTable.WIN;
+      }
     }
-    rk_l75.value?.setKeyMatrix(keyMatrixLayer.value, keyMatrixTable.value, 0);
+
+    await rk_l75.value?.setKeyMatrix(keyMatrixLayer.value, keyMatrixTable.value, 0);
+    await rk_l75.value?.setWebKeyTab('https://drive.rkgaming.com/');
+
     saveProfile()
   }
 
@@ -1421,5 +1426,10 @@ export const useKeyStore = defineStore('keyinfo', () => {
 
     state.mediaKeyDialogShow = false;
   }
-  return { profile, state, keyMatrixLayer, keyMatrixTable, getIndex, keyClick, keyColor, isSelected, keybgColor, keyText, keySetToDefault, keySetMacro, mapping, isFunSelected, isMacroSelected, clickMacro, confirmSetMacro, setCombineKey, confirmMediaKey, setMediaKey, confirmSetCombineKey, getKeyMatrix, clickProfile, deleteProfile, onKeyDown, newProfile, handleEditClose, renameProfile, exportProfile, importProfile, init, destroy, getKeyMatrixNomal, saveProfile, keySetToDefaultAll, refresh, refreshKeyMatrixData, setToFactory, unSelected, renameSaveProfile, setFunid, setKeyCode }
+
+  const setWebsite = async (web: string) => {
+    await rk_l75.value?.setWebKeyTab(web);
+  }
+
+  return { profile, state, keyMatrixLayer, keyMatrixTable, getIndex, keyClick, keyColor, isSelected, keybgColor, keyText, keySetToDefault, keySetMacro, mapping, isFunSelected, isMacroSelected, clickMacro, confirmSetMacro, setCombineKey, confirmMediaKey, setMediaKey, confirmSetCombineKey, getKeyMatrix, clickProfile, deleteProfile, onKeyDown, newProfile, handleEditClose, renameProfile, exportProfile, importProfile, init, destroy, getKeyMatrixNomal, saveProfile, keySetToDefaultAll, refresh, refreshKeyMatrixData, setToFactory, unSelected, renameSaveProfile, setFunid, setKeyCode, setWebsite }
 })

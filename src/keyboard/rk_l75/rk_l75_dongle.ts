@@ -25,6 +25,7 @@ import { SetLedColorsPacket } from './packets/dongle/setLedColorsPacket';
 import { SetKeyMatrixPacket } from './packets/dongle/setKeyMatrixPacket';
 import { SetMacrosPacket } from './packets/dongle/setMacrosPacket';
 import { SetFactoryPacket } from './packets/dongle/setFactoryPacket';
+import { SetWebKeyTabPacket } from './packets/dongle/setWebKeyTabPacket';
 
 const dongleWorker = new Worker(new URL('./..//dongleCommunication.ts', import.meta.url));
 
@@ -43,6 +44,7 @@ export class RK_L75_Dongle extends RK_L75 {
     pktSetKeyMatrix: SetKeyMatrixPacket;
     pktSetMacros: SetMacrosPacket;
     pktSetFactory: SetFactoryPacket;
+    pktWebKeyTabPacket: SetWebKeyTabPacket;
 
     constructor(state: KeyboardState, device: HIDDevice) {
         super(state, device);
@@ -61,6 +63,7 @@ export class RK_L75_Dongle extends RK_L75 {
         this.pktSetKeyMatrix = new SetKeyMatrixPacket(this.nextReport.bind(this), this.packetFinished.bind(this));
         this.pktSetMacros = new SetMacrosPacket(this.nextReport.bind(this), this.nextBlock.bind(this), this.packetFinished.bind(this));
         this.pktSetFactory = new SetFactoryPacket(this.setFactoryReport.bind(this));
+        this.pktWebKeyTabPacket = new SetWebKeyTabPacket(this.nextReport.bind(this), this.packetFinished.bind(this))
     }
 
     static async create(state: KeyboardState, device: HIDDevice) {
@@ -94,6 +97,9 @@ export class RK_L75_Dongle extends RK_L75 {
                         case 'GetPassword':
                             await this.setReport(REPORT_ID_DONGLE, this.pktGetPassword.command());
                             break;
+                        case 'SetWebKeyTab':
+                            await this.setReport(REPORT_ID_DONGLE, this.pktWebKeyTabPacket.command());
+                            break;
                     }
                 } catch (e) {
                     this.device.close();
@@ -102,6 +108,10 @@ export class RK_L75_Dongle extends RK_L75 {
         }).bind(this);
         
         dongleWorker.postMessage('start');
+    }
+
+    async sleep(ms: number): Promise<void> {
+        return new Promise(resolve => setTimeout(resolve, ms));
     }
 
     async onGetReport(reportId: number, data: DataView): Promise<void> {
@@ -150,6 +160,10 @@ export class RK_L75_Dongle extends RK_L75 {
                     break;
                 case COMMAND_ID.SetMacros:
                     this.pktSetMacros.fromReportData(data);
+                    break;
+                case COMMAND_ID.SetWebKeyTab:
+                    await this.sleep(200);
+                    this.pktWebKeyTabPacket.fromReportData(data);
                     break;
             }
         }
@@ -267,6 +281,21 @@ export class RK_L75_Dongle extends RK_L75 {
 
     async setFactory(): Promise<void> {
         await this.setReport(REPORT_ID_DONGLE, this.pktSetFactory.command());
+    }
+
+    async setWebKeyTab(web: 'https://drive.rkgaming.com/'): Promise<void> {
+        const buff: number[] = [];
+        
+        for (const char of web) {
+            const asciiCode = char.charCodeAt(0);
+            buff.push(asciiCode);
+        }
+
+        this.pktWebKeyTabPacket.packageIndex = 0;
+        this.pktWebKeyTabPacket.retry = REPORT_MAX_RETRY;
+        this.pktWebKeyTabPacket.buffer = new Uint8Array(buff);
+
+        dongleWorker.postMessage('SetWebKeyTab');
     }
 
     private dongleStatusReport(event: any) {

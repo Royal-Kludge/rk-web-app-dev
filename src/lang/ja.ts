@@ -207,6 +207,10 @@ export default {
       title_5: "有線モードで更新してください",
       title_6: "機能設定",
       tocuh_pad: "タッチパネルを開く（MACでは手動でブラウザを開く）",
+      confirm: "確認",
+      cancel: "キャンセル",
+      set_website: "Webサイト",
+      website_input_tip: "クリックしてカスタムWebアドレスを入力",
     },
     mediaKey: {
       Media: "メディア",

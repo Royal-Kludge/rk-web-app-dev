@@ -5,7 +5,7 @@ import { RK_M87_USB_EN_DEFINE, RK_M87_USB_JP_DEFINE, RK_M87_DONGLE_DEFINE } from
 import { RK_L75_USB_DEFINE, RK_L75_DONGLE_DEFINE } from "./rk_l75"
 import { RK_L75_WIRE_DEFINE, RK_L87_WIRE_DEFINE, RK_L_24G_DEFINE, RK_M87_EN_WIRE_DEFINE, RK_M87_JP_WIRE_DEFINE, RK_M_24G_DEFINE } from './device'
 
-export const VERSION = '1.5.0'
+export const VERSION = '1.6.0'
 
 /**
 * Initial lightInfo

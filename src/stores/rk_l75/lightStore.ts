@@ -11,7 +11,7 @@ import { KeyDefineEnum } from '@/keyboard/keyCode';
 import { type KeyTableData } from '@/keyboard/interface'
 import { ps } from '@/keyboard/rk_l75/profiles';
 
-export const uselightStore = defineStore('lightinfo', () => {
+export const uselightStore = defineStore('lightinfo_rk_l75', () => {
     const rgb = ref({ r: 0, g: 0, b: 0, color: '#000000' });
     const boardProfile = ref<BoardProfile>();
     const ledEffect = ref<LedEffect>();

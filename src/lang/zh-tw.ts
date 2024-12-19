@@ -206,7 +206,11 @@ export default {
     title_4: "下載中",
     title_5: "請到有線模式下更新",
     title_6: "功能設置",
-    tocuh_pad: "開啟觸摸面板（MAC系統下請手動打開瀏覽器）"
+    tocuh_pad: "開啟觸摸面板（MAC系統下請手動打開瀏覽器）",
+    confirm: "確定",
+    cancel: "取消",
+    set_website: "網址",
+    website_input_tip: "點擊輸入自定義網址",
   },
   mediaKey: {
     Media: "媒體",

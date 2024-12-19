@@ -41,6 +41,8 @@ export class Packet_Dongle_Set extends Packet_Dongle {
 
         let success = buffer.getUint8(1) >> 7;
 
+        if (buffer.getUint8(2) < this.packageIndex) return this;
+
         if (success == 0) {
             this.packageIndex += 1;
         } else {

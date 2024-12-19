@@ -207,7 +207,11 @@ export default {
     title_4: "Downloading",
     title_5: "Please update in wired mode",
     title_6: "Function settings",
-    tocuh_pad: "Open the touch panel (please manually open the browser under MAC system)",
+    tocuh_pad: "Open the touch panel",
+    confirm: "confirm",
+    cancel: "cancel",
+    set_website: "WebSite",
+    website_input_tip: "Click to enter custom website",
   },
   mediaKey: {
     Media: "Media",

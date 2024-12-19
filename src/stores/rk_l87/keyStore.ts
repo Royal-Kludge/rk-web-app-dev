@@ -1242,7 +1242,9 @@ export const useKeyStore = defineStore('keyinfo', () => {
       kState.KeyData = key
       kState.selected = false;
       KeyMatrixData.value[keyMatrixTable.value][keyMatrixLayer.value]?.setKeyMapping(index, kState.KeyData.keyMappingData);
-
+      if (profile.value != undefined) {
+        profile.value.keyTypes[keyMatrixTable.value][keyMatrixLayer.value][key.index] = MatrixTable.WIN;
+      }
     }
     rk_l87.value?.setKeyMatrix(keyMatrixLayer.value, keyMatrixTable.value, 0);
     saveProfile()

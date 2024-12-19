@@ -8,7 +8,7 @@ import { ConnectionEventEnum, ConnectionStatusEnum } from "@/keyboard/enum";
 import fileSaver from "file-saver";
 import { ElMessage } from 'element-plus'
 
-export const useMacroStore = defineStore("macrostore", () => {
+export const useMacroStore = defineStore("macrostore_rk_l75", () => {
   const rk_l75 = ref<RK_L75>();
   const macros = ref<Macros>();
   const macro = ref<Macro>();

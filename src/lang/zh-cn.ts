@@ -207,6 +207,10 @@ export default {
     title_5: "请到有线模式下更新",
     title_6: "功能设置",
     tocuh_pad: "开启触摸面板（MAC系统下请手动打开浏览器）",
+    confirm: "确定",
+    cancel: "取消",
+    set_website: "网址",
+    website_input_tip: "点击输入自定义网址",
   },
   mediaKey: {
     Media: "媒体",

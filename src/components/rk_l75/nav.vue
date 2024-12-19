@@ -42,9 +42,25 @@
         <div class="ml-2 px-3" v-if="isLayer">
           <el-slider style="width: 180px" v-model="layer" :min="1" :max="127" @change="setLayer" />
         </div>
-        <div class="ml-4">
+        <div class="ml-4 d-flex ai-center ">
           <el-switch v-model="isTouchPad" inline-prompt active-text="On" inactive-text="Off" @change="touchPadChanged"/>
-          <span class="ml-1" style="text-align: center">{{ $t('set.tocuh_pad') }}</span>
+          <span class="ml-1 px-3" style="text-align: center">{{ $t('set.tocuh_pad') }}</span>
+          <el-tooltip effect="light" :content="$t('set.website_input_tip')" placement="top" popper-class="tip_font">
+                <div class="py-1 px-3 but-green text-white mx-3 c-p" @click="openWebSiteInput" v-if="isTouchPad" style="width:96px; text-align: center;">
+                {{ $t('set.set_website') }}
+              </div>
+          </el-tooltip>
+          <el-dialog v-model="isSetWebSite" top="30vh" width="680px" :lock-scroll="true">
+              <div class="d-flex ai-center">
+                <el-input v-model="www" placeholder="Please input" maxlength="80" />
+              </div>
+              <div class="d-flex jc-end">
+                <div class="d-flex jc-between c-p mt-4">
+                  <div class="py-1 px-4 but-red text-white " @click="isSetWebSite = false">{{ $t('set.cancel') }}</div>
+                  <div class="ml-4 py-1 px-4 but-green text-white" @click="setWebSite">{{ $t('set.confirm') }}</div>
+                </div>
+              </div>
+          </el-dialog>
         </div>
       </div>
     </div>
@@ -62,6 +78,8 @@ const isLayer = ref(false);
 const isTouchPad = ref(true);
 const layer = ref(0);
 const isLayoutTableSupport = ref(false);
+const www = ref('')
+const isSetWebSite = ref<boolean>(false);
 
 const LayerChanged = () => {
   if (!isLayer.value) {
@@ -80,6 +98,16 @@ const setLayer = () => {
 const touchPadChanged = () => {
   let index = useKey.getIndex(0, 18);
   useKey.setKeyCode(index, isTouchPad.value ? KeyDefineEnum.KEY_RK_WWW : KeyDefineEnum.NONE);
+}
+
+const openWebSiteInput = () => {
+  www.value = '';
+  isSetWebSite.value = true;
+}
+
+const setWebSite = async () => {
+  await useKey.setWebsite(www.value);
+  isSetWebSite.value = false;
 }
 
 onMounted(async () => {

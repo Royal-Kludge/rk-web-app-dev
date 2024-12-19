@@ -5,7 +5,7 @@
         <img src="@/assets/images/menu/home.png" />
       </div>
       <div class="box p-4" v-for="item in menuList" :class="{ active: item.id === meunid }">
-        <img class="cur" :src="item.src" v-if="(item.id != 6 || (item.id == 6 && isShowTFT)) && isKeyboardConnect()" @click="onMenuClick(item.id)"/>
+        <img class="cur" :src="item.src" v-if="(item.id != 6 || (item.id == 6 && isShowTFT))" @click="onMenuClick(item.id)"/>
       </div>
     </div>
     <div>
