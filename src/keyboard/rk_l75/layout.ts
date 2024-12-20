@@ -1,4 +1,4 @@
-import { KeyDefineEnum } from '../keyCode'
+import { KeyDefineEnum } from '@/common/keyCode'
 import { LightEffectEnum } from '../enum'
 import type { LightEffect } from '../interface'
 

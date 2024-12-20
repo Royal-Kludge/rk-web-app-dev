@@ -5,9 +5,10 @@ import { RK_M87, RK_M87_EVENT_DEFINE } from '@/keyboard/rk_m87/rk_m87';
 import { BoardProfile, FieldEnum } from '@/keyboard/rk_m87/boardProfile';
 import { LedEffect } from '@/keyboard/rk_m87/ledEffect';
 import { LedColors } from '@/keyboard/rk_m87/ledColors';
-import { LightEffectEnum, KeyMatrixLayer, ConnectionType, ConnectionStatusEnum, ConnectionEventEnum, MatrixTable } from '@/keyboard/enum'
+import { LightEffectEnum, KeyMatrixLayer, MatrixTable } from '@/keyboard/enum'
+import { ConnectionType, ConnectionEventEnum, ConnectionStatusEnum } from '@/device/enum'
 import { type LedColor } from '@/keyboard/interface';
-import { KeyDefineEnum } from '@/keyboard/keyCode';
+import { KeyDefineEnum } from '@/common/keyCode';
 import { type KeyTableData } from '@/keyboard/interface'
 import { ps } from '@/keyboard/rk_m87/profiles';
 

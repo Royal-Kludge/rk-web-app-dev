@@ -1,9 +1,10 @@
 import type { KeyboardDefine  } from '../interface'
-import { ConnectionType, KeyMatrixLayer, MatrixTable } from '../enum'
+import { KeyMatrixLayer, MatrixTable } from '../enum'
 import { KeyMap_FN1_Win, KeyMap_FN2_Win, KeyMap_Normal_Win, KeyMap_Tap_Win, KeyMap_FN1_Mac, KeyMap_FN2_Mac, KeyMap_Normal_Mac, KeyMap_Tap_Mac, LightEffects  } from './layout'
-import { KeyText } from "../keyCode"
+import { KeyText } from "@/common/keyCode"
 import { RK_L75_Dongle } from './rk_l75_dongle'
 import { RK_L75_Usb } from './rk_l75_usb'
+import { ConnectionType, DeviceType } from '@/device/enum'
 
 export const RK_L75_USB_DEFINE: KeyboardDefine = {
     name: "RK-L75",
@@ -12,6 +13,7 @@ export const RK_L75_USB_DEFINE: KeyboardDefine = {
     usagePage: 0xFF00,
     usage: 0x0001,
     connectType: ConnectionType.USB,
+    deviceType: DeviceType.Keyboard,
     keyText: KeyText,
     keyMatrixLayer: [
         KeyMatrixLayer.Nomal,
@@ -48,6 +50,7 @@ export const RK_L75_DONGLE_DEFINE: KeyboardDefine = {
     usagePage: 0xFF02,
     usage: 0x0002,
     connectType: ConnectionType.Dongle,
+    deviceType: DeviceType.Keyboard,
     keyText: KeyText,
     keyMatrixLayer: [
         KeyMatrixLayer.Nomal,

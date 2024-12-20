@@ -1,9 +1,10 @@
 import type { KeyboardDefine  } from '../interface'
-import { ConnectionType, KeyMatrixLayer, MatrixTable } from '../enum'
+import { KeyMatrixLayer, MatrixTable } from '../enum'
 import { KeyMap_FN1_Win, KeyMap_FN2_Win, KeyMap_Normal_Win, KeyMap_Tap_Win, KeyMap_FN1_Mac, KeyMap_FN2_Mac, KeyMap_Normal_Mac, KeyMap_Tap_Mac, LightEffects  } from './layout'
-import { KeyText } from "../keyCode"
+import { KeyText } from "@/common/keyCode"
 import { RK_M87_Dongle } from './rk_m87_dongle'
 import { RK_M87_Usb } from './rk_m87_usb'
+import { ConnectionType, DeviceType } from '@/device/enum'
 
 export const RK_M87_USB_EN_DEFINE: KeyboardDefine = {
     name: "RK-M87",
@@ -12,6 +13,7 @@ export const RK_M87_USB_EN_DEFINE: KeyboardDefine = {
     usagePage: 0xFF00,
     usage: 0x0001,
     connectType: ConnectionType.USB,
+    deviceType: DeviceType.Keyboard,
     keyText: KeyText,
     keyMatrixLayer: [
         KeyMatrixLayer.Nomal,
@@ -48,6 +50,7 @@ export const RK_M87_USB_JP_DEFINE: KeyboardDefine = {
     usagePage: 0xFF00,
     usage: 0x0001,
     connectType: ConnectionType.USB,
+    deviceType: DeviceType.Keyboard,
     keyText: KeyText,
     keyMatrixLayer: [
         KeyMatrixLayer.Nomal,
@@ -84,6 +87,7 @@ export const RK_M87_DONGLE_DEFINE: KeyboardDefine = {
     usagePage: 0xFF02,
     usage: 0x0002,
     connectType: ConnectionType.Dongle,
+    deviceType: DeviceType.Keyboard,
     keyText: KeyText,
     keyMatrixLayer: [
         KeyMatrixLayer.Nomal,

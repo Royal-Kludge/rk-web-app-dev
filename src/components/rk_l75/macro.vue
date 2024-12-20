@@ -219,13 +219,13 @@
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 import { RK_L75 } from '@/keyboard/rk_l75/rk_l75';
 import { Macro, Action, ActionType } from '@/keyboard/rk_l75/macros';
-import { KeyCodeMap } from '@/keyboard/keyCode'
+import { KeyCodeMap } from '@/common/keyCode'
 import { type KeyCodeTable } from '@/keyboard/interface';
-import { storage } from '@/keyboard/storage';
+import { storage } from '@/common/storage';
 import { useMacroStore } from "@/stores/rk_l75/macroStore";
 import { storeToRefs } from "pinia";
 import { useI18n } from 'vue-i18n';
-import { KeyDefineEnum } from '@/keyboard/keyCode'
+import { KeyDefineEnum } from '@/common/keyCode'
 import { ElMessageBox, ElMessage } from 'element-plus'
 import type { Action as ElAction } from 'element-plus';
 import type { UploadProps } from 'element-plus'

@@ -1,5 +1,5 @@
 import { KeyMatrixLayer, MatrixTable } from '@/keyboard/enum';
-import { storage } from '@/keyboard/storage';
+import { storage } from '@/common/storage';
 import { keyboard } from '@/keyboard/keyboard'
 import { KeyMatrix } from '@/keyboard/rk_l87/keyMatrix';
 import { PROFILE_DEFAULT_DATA } from './boardProfile';

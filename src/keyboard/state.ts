@@ -1,9 +1,8 @@
-import type { LightInfo, KeyboardState, KeyboardDefine, HidDeviceDefine  } from './interface'
-import { ConnectionType, ConnectionEventEnum, ConnectionStatusEnum } from "./enum"
+import type { LightInfo, KeyboardState, KeyboardDefine  } from './interface'
+import { ConnectionType, ConnectionEventEnum, ConnectionStatusEnum } from "../device/enum"
 import { RK_L87_USB_DEFINE, RK_L87_DONGLE_DEFINE } from "./rk_l87"
 import { RK_M87_USB_EN_DEFINE, RK_M87_USB_JP_DEFINE, RK_M87_DONGLE_DEFINE } from "./rk_m87"
 import { RK_L75_USB_DEFINE, RK_L75_DONGLE_DEFINE } from "./rk_l75"
-import { RK_L75_WIRE_DEFINE, RK_L87_WIRE_DEFINE, RK_L_24G_DEFINE, RK_M87_EN_WIRE_DEFINE, RK_M87_JP_WIRE_DEFINE, RK_M_24G_DEFINE } from './device'
 
 export const VERSION = '1.6.1'
 
@@ -52,15 +51,3 @@ export const DonglePwdDefineList: Record<number, string> = {
     0x0600002A: "rk m87 24G",
     0x030001FC: "rk l75 24G",
 }
-
-/**
-* Device define list
-*/
-export const DeviceDefineList: Array<HidDeviceDefine> = [
-    RK_L_24G_DEFINE,
-    RK_M_24G_DEFINE,
-    RK_L75_WIRE_DEFINE,
-    RK_L87_WIRE_DEFINE,
-    RK_M87_EN_WIRE_DEFINE,
-    RK_M87_JP_WIRE_DEFINE
-]

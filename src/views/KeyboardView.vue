@@ -18,8 +18,8 @@ import RK_M87_Page from '@/components/rk_m87/home.vue'
 import RK_L75_Page from '@/components/rk_l75/home.vue'
 import { reactive, ref, onMounted, onBeforeUnmount } from 'vue';
 import { DonglePwdDefineList, KeyboardDefineList } from '@/keyboard/state';
-import { ConnectionStatusEnum, ConnectionType } from '@/keyboard/enum';
-import { storage } from '@/keyboard/storage';
+import { ConnectionStatusEnum, ConnectionType } from '@/device/enum';
+import { storage } from '@/common/storage';
 import type { Profiles } from '@/keyboard/rk_l87/profiles';
 import { VERSION } from '@/keyboard/state';
 import { ElMessageBox } from 'element-plus'

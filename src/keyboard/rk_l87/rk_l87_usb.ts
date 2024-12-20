@@ -1,6 +1,7 @@
 import type { KeyboardState } from '../interface'
 import { REPORT_ID_USB, MACRO_PER_BLOCK_LENGTH, MACRO_MAX_LENGTH } from './packets/packet';
-import { ConnectionStatusEnum, ConnectionType, KeyMatrixLayer, MatrixTable } from '../enum';
+import { ConnectionStatusEnum, ConnectionType } from '../../device/enum';
+import { KeyMatrixLayer, MatrixTable } from '../enum';
 import { RK_L87, RK_L87_EVENT_DEFINE } from './rk_l87';
 
 import { GetProfilePacket } from './packets/usb/getProfilePacket';
@@ -24,7 +25,7 @@ import { SetFactoryPacket } from './packets/usb/setFactoryPacket';
 import { Macros } from './macros';
 import { RK_L87_USB_DEFINE } from '.';
 
-const worker = new Worker(new URL('./..//communication.ts', import.meta.url));
+const worker = new Worker(new URL('@/common/communication.ts', import.meta.url));
 
 export class RK_L87_Usb extends RK_L87 {
 

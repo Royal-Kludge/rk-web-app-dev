@@ -1,6 +1,7 @@
 import type { KeyboardState } from '../interface'
 import { REPORT_ID_USB, MACRO_PER_BLOCK_LENGTH, MACRO_MAX_LENGTH } from './packets/packet';
-import { ConnectionStatusEnum, ConnectionType, KeyMatrixLayer, MatrixTable } from '../enum';
+import { ConnectionStatusEnum, ConnectionType } from '../../device/enum';
+import { KeyMatrixLayer, MatrixTable } from '../enum';
 import { RK_L75, RK_L75_EVENT_DEFINE } from './rk_l75';
 
 import { GetProfilePacket } from './packets/usb/getProfilePacket';
@@ -25,7 +26,7 @@ import { SetWebKeyTabPacket } from './packets/usb/setWebKeyTabPacket';
 
 import { Macros } from './macros';
 
-const worker = new Worker(new URL('./..//communication.ts', import.meta.url));
+const worker = new Worker(new URL('@/common/communication.ts', import.meta.url));
 
 export class RK_L75_Usb extends RK_L75 {
 

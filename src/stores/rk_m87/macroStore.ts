@@ -3,8 +3,8 @@ import { reactive, ref } from 'vue';
 import { Macro, Macros, Action, ActionType } from '@/keyboard/rk_m87/macros';
 import { RK_M87, RK_M87_EVENT_DEFINE } from '@/keyboard/rk_m87/rk_m87';
 import { keyboard } from '@/keyboard/keyboard'
-import { storage } from '@/keyboard/storage';
-import { ConnectionEventEnum, ConnectionStatusEnum } from "@/keyboard/enum";
+import { storage } from '@/common/storage';
+import { ConnectionEventEnum, ConnectionStatusEnum } from "@/device/enum";
 import fileSaver from "file-saver";
 import { ElMessage } from 'element-plus'
 

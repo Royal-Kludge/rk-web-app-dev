@@ -29,7 +29,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, nextTick } from 'vue';
-import { keyboard } from '../keyboard/keyboard'
+import { hidConnection } from '@/device/hidConnection'
 import { ElMessage } from 'element-plus'
 
 const isHidAvailable = ref(false);
@@ -40,8 +40,8 @@ const emits = defineEmits<{
 
 onMounted(() => {
   nextTick(() => {
-    isHidAvailable.value = keyboard.isHidAvailable;
-    if (!keyboard.isHidAvailable) {
+    isHidAvailable.value = hidConnection.isHidAvailable;
+    if (!hidConnection.isHidAvailable) {
       ElMessage({
         showClose: true,
         message: 'WebHID not supported by browser or not available.',

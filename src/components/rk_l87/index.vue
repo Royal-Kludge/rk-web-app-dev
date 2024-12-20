@@ -12,7 +12,7 @@
 import { reactive, ref, onMounted, onBeforeUnmount } from "vue";
 import { keyboard } from "@/keyboard/keyboard";
 import { RK_L87, RK_L87_EVENT_DEFINE } from "@/keyboard/rk_l87/rk_l87";
-import { ConnectionStatusEnum } from "@/keyboard/enum";
+import { ConnectionStatusEnum } from "@/device/enum";
 import Light from "./light.vue";
 import SetFun from "./setfun.vue";
 import Macro from "./macro.vue";

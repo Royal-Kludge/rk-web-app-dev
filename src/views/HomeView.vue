@@ -1,56 +1,52 @@
 <template>
-    <WebApp v-if="isConnected" />
+    <KeyboardView v-if="isKeyboardConnect()" />
+    <MouseView v-else-if="isMouseConnect()" />
     <Nodevice v-else @on-connect="onConnect" />
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import WebApp from './WebApp.vue'
+import KeyboardView from './KeyboardView.vue'
+import MouseView from './MouseView.vue'
 import Nodevice from './NoDevice.vue'
-import { Keyboard, keyboard } from '../keyboard/keyboard'
-import { ConnectionEventEnum, ConnectionStatusEnum } from '../keyboard/enum'
+import { hidConnection } from '@/device/hidConnection'
+import { ConnectionEventEnum, ConnectionStatusEnum, DeviceType } from '@/device/enum'
 import { ElMessage } from 'element-plus'
+import type { Device } from '@/device/device';
 
 const isConnected = ref(false);
 
 const onConnect = async () => {
-    if (keyboard == undefined) {
+    if (hidConnection == undefined) {
         return;
     }
 
-    if (keyboard.device != undefined && keyboard.device.opened) {
+    if (hidConnection.device != undefined && hidConnection.device.opened) {
         isConnected.value = true;
         return;
     }
 
     const connectionEventCallback = async (event: Event) => {
-        let keyboard = event.currentTarget as Keyboard
-        console.log(`Keyboard [${keyboard.state.deviceName}] is ${keyboard.state.connectionEvent}`)
+        let device = event.currentTarget as Device;
+        if (device != undefined && device.deviceState != undefined) {
+            console.log(`Keyboard [${device.deviceState.deviceName}] is ${device.deviceState.connectionEvent}`)
         try {
-            switch (keyboard.state.connectionEvent) {
+            switch (device.deviceState.connectionEvent) {
             case ConnectionEventEnum.Open:
-                //await keyboard.protocol?.init();
                 isConnected.value = true;
-                //if (keyboard.state.fwVersion != undefined) data.value.fwVersion = keyboard.state.fwVersion.valueOf();
-                //if (keyboard.state.deviceName != undefined) data.value.deviceName = keyboard.state.deviceName.valueOf();
                 break;
             case ConnectionEventEnum.Disconnect:
             case ConnectionEventEnum.Close:
                 isConnected.value = false;
-                keyboard.state.ConnectionStatus = ConnectionStatusEnum.Disconnected;
-                keyboard.removeEventListener("connection", connectionEventCallback);
-                keyboard.removeEventListener("reported", reportedEventCallback);
+                device.deviceState.ConnectionStatus = ConnectionStatusEnum.Disconnected;
+                device.removeEventListener("connection", connectionEventCallback);
+                device.removeEventListener("NotSupport", notSupportCallback);
                 break;
             }
         } catch (e) {
-            await keyboard.close();
+            await device.close();
         }
-
-    };
-
-    const reportedEventCallback = async (event: Event) => {
-        if (event.currentTarget == null) return;
-        let keyboard = event.currentTarget as Keyboard;
+        }
     };
 
     const notSupportCallback = async (event: Event) => {
@@ -61,16 +57,26 @@ const onConnect = async () => {
         });
     };
 
-    keyboard.addEventListener("connection", connectionEventCallback);
-    keyboard.addEventListener("reported", reportedEventCallback);
-    keyboard.addEventListener("NotSupport", notSupportCallback);
+    await hidConnection.init();
 
-    await keyboard.init()
-    
-    if (keyboard.device == null || !keyboard.device.opened) {
-        keyboard.removeEventListener("connection", connectionEventCallback);
-        keyboard.removeEventListener("reported", reportedEventCallback);
-        keyboard.removeEventListener("NotSupport", notSupportCallback);
+    if (hidConnection.hidDevice != undefined && hidConnection.hidDevideDefine) {
+        hidConnection.hidDevice.addEventListener("connection", connectionEventCallback);
+        hidConnection.hidDevice.addEventListener("NotSupport", notSupportCallback);
+
+        await hidConnection.hidDevice.init(hidConnection.hidDevideDefine)
+        
+        if (hidConnection.hidDevice.device == null || !hidConnection.hidDevice.device.opened) {
+            hidConnection.hidDevice.removeEventListener("connection", connectionEventCallback);
+            hidConnection.hidDevice.removeEventListener("NotSupport", notSupportCallback);
+        }
     }
 };
+
+const isKeyboardConnect = (): boolean => {
+    return isConnected.value && hidConnection.hidDevideDefine != undefined && hidConnection.hidDevideDefine.deviceType == DeviceType.Keyboard;
+}
+
+const isMouseConnect = (): boolean => {
+    return isConnected.value && hidConnection.hidDevideDefine != undefined && hidConnection.hidDevideDefine.deviceType == DeviceType.Mouse;
+}
 </script>

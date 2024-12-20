@@ -5,9 +5,10 @@ import { RK_L75, RK_L75_EVENT_DEFINE } from '@/keyboard/rk_l75/rk_l75';
 import { BoardProfile, FieldEnum } from '@/keyboard/rk_l75/boardProfile';
 import { LedEffect } from '@/keyboard/rk_l75/ledEffect';
 import { LedColors } from '@/keyboard/rk_l75/ledColors';
-import { LightEffectEnum, KeyMatrixLayer, ConnectionType, ConnectionStatusEnum, ConnectionEventEnum, MatrixTable } from '@/keyboard/enum'
+import { LightEffectEnum, KeyMatrixLayer, MatrixTable } from '@/keyboard/enum'
+import { ConnectionEventEnum, ConnectionStatusEnum, ConnectionType} from '@/device/enum'
 import { type LedColor } from '@/keyboard/interface';
-import { KeyDefineEnum } from '@/keyboard/keyCode';
+import { KeyDefineEnum } from '@/common/keyCode';
 import { type KeyTableData } from '@/keyboard/interface'
 import { ps } from '@/keyboard/rk_l75/profiles';
 

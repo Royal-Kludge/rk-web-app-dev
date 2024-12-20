@@ -70,7 +70,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { KeyDefineEnum } from "@/keyboard/keyCode";
+import { KeyDefineEnum } from "@/common/keyCode";
 import { useKeyStore } from "@/stores/rk_l75/keyStore";
 import { uselightStore } from "@/stores/rk_l75/lightStore";
 import { ref, onMounted, onBeforeUnmount } from 'vue';

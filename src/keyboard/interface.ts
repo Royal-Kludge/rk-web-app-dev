@@ -1,5 +1,8 @@
-import { KeyDefineEnum } from "./keyCode"
-import { ConnectionType, ConnectionEventEnum, ConnectionStatusEnum, KeyMappingType, KeyMatrixLayer, MatrixTable } from "./enum"
+import { KeyDefineEnum } from "@/common/keyCode"
+import { KeyMatrixLayer, MatrixTable } from "./enum"
+import { KeyMappingType } from "@/common/enum"
+import type { HidDeviceDefine } from "../device/interface"
+import type { State } from "@/device/state"
 
 export interface KeyState {
     index: number,
@@ -12,13 +15,7 @@ export interface KeyState {
  * 
  * Stores information about the current Keyboard state, and its components.
  */
-export interface KeyboardState {
-    /** Interface used for communication (USB/Bluetooth) */
-    connectType: ConnectionType,
-    connectionEvent: ConnectionEventEnum,
-    ConnectionStatus: ConnectionStatusEnum,
-    productId?: number,
-    deviceName?: String,
+export interface KeyboardState extends State {
     fwVersion?: String,
     serialNo?: String,
     commandId: number,
@@ -34,15 +31,6 @@ export interface KeyboardDefine extends HidDeviceDefine {
     keyLayout: Record<number, Record<number, Array<KeyDefineEnum>>>,
     lightEffects: Array<LightEffect>,
     protocol: (state: KeyboardState, device: HIDDevice) => Promise<IProtocol>
-}
-
-export interface HidDeviceDefine {
-    name: String,
-    vendorId: number,
-    productId: number,
-    usagePage: number,
-    usage: number,
-    connectType: ConnectionType
 }
 
 export interface KeyMappingData {
@@ -92,10 +80,4 @@ export interface IProtocol {
 
 export interface IPacket {
     fromReportData(buffer: DataView) : IPacket;
-}
-
-export interface KeyCodeTable {
-    key: string,
-    hid: number,
-    vk: number
 }

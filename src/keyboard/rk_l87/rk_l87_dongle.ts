@@ -1,5 +1,6 @@
 import type { KeyboardState } from '../interface'
-import { ConnectionStatusEnum, ConnectionType, KeyMatrixLayer, MatrixTable } from '../enum';
+import { ConnectionStatusEnum, ConnectionType } from '../../device/enum';
+import { KeyMatrixLayer, MatrixTable } from '../enum';
 import { Packet_Dongle, REPORT_ID_DONGLE, REPORT_MAX_RETRY, MACRO_PER_BLOCK_LENGTH, MACRO_MAX_LENGTH } from './packets/packet';
 import { Packet_Dongle_Block_Set } from './packets/dongle/setPacket';
 
@@ -26,7 +27,7 @@ import { SetKeyMatrixPacket } from './packets/dongle/setKeyMatrixPacket';
 import { SetMacrosPacket } from './packets/dongle/setMacrosPacket';
 import { SetFactoryPacket } from './packets/dongle/setFactoryPacket';
 
-const dongleWorker = new Worker(new URL('./..//dongleCommunication.ts', import.meta.url));
+const dongleWorker = new Worker(new URL('@/common/dongleCommunication.ts', import.meta.url));
 
 export class RK_L87_Dongle extends RK_L87 {
 

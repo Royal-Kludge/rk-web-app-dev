@@ -1,0 +1,64 @@
+<template>
+    <div class="d-flex h-100" v-loading="loading" :element-loading-text="$t('home.title_1')"
+        element-loading-background="rgba(0, 0, 0, 0.7)">
+        <div class="flex-1">
+            <div class="d-flex flex-column jc-center ai-center">
+                <div class="d-flex flex-column jc-center ai-center">
+                    <div class="text-black my-4" style="font-size: 120px; font-weight: bold">
+                        RK-M300
+                    </div>
+                    <div class="d-flex my-4">
+                        <div class="bg-dark text-white py-3 px-5 mx-4 c-p" style="border-radius: 10px;"
+                            @click="disconnect"> {{
+                                $t("home.but_2") }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script setup lang="ts">
+import { mouse } from '@/mouse/mouse'
+import { RK_L75, RK_L75_EVENT_DEFINE } from "@/keyboard/rk_l75/rk_l75";
+import { ref, onMounted, onBeforeUnmount } from 'vue';
+import { storeToRefs } from "pinia";
+import type { RK_M300 } from '@/mouse/rk_m300/m300';
+
+const loading = ref(false)
+const rk_m300 = ref<RK_M300>();
+
+onMounted(async () => {
+    rk_m300.value = mouse.protocol as RK_M300;
+    rk_m300.value.addEventListener(RK_L75_EVENT_DEFINE.OnReportStart, reportStart, false);
+    rk_m300.value.addEventListener(RK_L75_EVENT_DEFINE.OnReportFinish, reportFinish, false);
+});
+
+onBeforeUnmount(() => {
+    if (rk_m300.value != undefined) {
+        rk_m300.value.removeEventListener(RK_L75_EVENT_DEFINE.OnReportFinish, reportFinish, false);
+        rk_m300.value.removeEventListener(RK_L75_EVENT_DEFINE.OnReportStart, reportStart, false);
+    }
+});
+
+const reportStart = async (event: any) => {
+    if (event != undefined && event.detail != undefined) {
+        loading.value = true
+    }
+};
+
+const reportFinish = async (event: any) => {
+    if (event != undefined && event.detail != undefined) {
+        if (event.detail == 'finish') {
+            loading.value = false
+        }
+        if (event.detail == 'timeout') {
+            loading.value = false;
+        }
+    }
+};
+
+const disconnect = () => {
+    mouse.close();
+};
+</script>

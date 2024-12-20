@@ -80,10 +80,10 @@ import { storeToRefs } from "pinia";
 
 import { useI18n } from 'vue-i18n';
 import axios from 'axios'
-import { ConnectionType } from '@/keyboard/enum'
 import { keyboard } from '@/keyboard/keyboard'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import type { Action } from 'element-plus'
+import { ConnectionType } from '@/device/enum';
 
 // 解构出t方法
 const { t } = useI18n();

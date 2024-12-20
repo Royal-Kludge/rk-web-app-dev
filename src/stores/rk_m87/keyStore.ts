@@ -2,17 +2,19 @@ import { defineStore } from "pinia";
 import { reactive, ref } from 'vue';
 import { keyboard } from '@/keyboard/keyboard'
 import { RK_M87, RK_M87_EVENT_DEFINE } from '@/keyboard/rk_m87/rk_m87';
-import { KeyCodeEnum, KeyDefineEnum, KeyText, KeyText_Mac } from '@/keyboard/keyCode'
+import { KeyCodeEnum, KeyDefineEnum, KeyText, KeyText_Mac } from '@/common/keyCode'
 import { type KeyMappingData, type KeyTableData, type KeyState } from '@/keyboard/interface'
-import { ConnectionEventEnum, ConnectionStatusEnum, KeyMappingType, KeyMatrixLayer, MatrixTable } from '@/keyboard/enum'
+import { KeyMatrixLayer, MatrixTable } from '@/keyboard/enum'
+import { KeyMappingType } from '@/common/enum'
+import { ConnectionEventEnum, ConnectionStatusEnum } from '@/device/enum'
 import { KeyMatrix } from '@/keyboard/rk_m87/keyMatrix';
 import { Action, Macro, Macros } from '@/keyboard/rk_m87/macros';
 import { Profile, ps } from '@/keyboard/rk_m87/profiles';
-import { KeyCodeMap } from '@/keyboard/keyCode'
+import { KeyCodeMap } from '@/common/keyCode'
 import fileSaver from "file-saver";
 import { ElMessage } from 'element-plus'
 
-import { storage } from '@/keyboard/storage';
+import { storage } from '@/common/storage';
 import { BoardProfile, FieldEnum, PROFILE_DEFAULT_DATA } from '@/keyboard/rk_m87/boardProfile';
 import { LedEffect } from '@/keyboard/rk_m87/ledEffect';
 import { LedColors } from '@/keyboard/rk_m87/ledColors';

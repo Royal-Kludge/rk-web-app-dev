@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { reactive, ref } from 'vue';
 import { Frame, Frames } from '@/keyboard/rk_m87/frames';
-import { storage } from '@/keyboard/storage';
+import { storage } from '@/common/storage';
 import { keyboard } from '@/keyboard/keyboard'
 import { RK_M87, RK_M87_EVENT_DEFINE } from '@/keyboard/rk_m87/rk_m87';
 

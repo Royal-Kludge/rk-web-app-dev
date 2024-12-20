@@ -1,8 +1,11 @@
 import type { IProtocol, KeyTableData, LightEffect, LightInfo, KeyboardDefine } from './interface'
-import { ConnectionType, ConnectionEventEnum, KeyMappingType, ConnectionStatusEnum } from './enum'
-import { defaultState, DeviceDefineList } from './state'
+import { KeyMappingType } from '@/common/enum'
+import { ConnectionType, ConnectionEventEnum, ConnectionStatusEnum } from '../device/enum'
+import { defaultState } from './state'
 import { GetDongleStatusPacket } from './packets/getDongleStatusPacket';
 import { GetPasswordPacket } from './packets/getPasswordPacket';
+import type { HidDeviceDefine, IHidDevice } from '@/device/interface';
+import { Device } from '@/device/device';
 
 const REPORT_ID_DONGLE: number = 0x13;
 
@@ -27,20 +30,10 @@ export const RK_DONGLE_EVENT_DEFINE: {
 /**
  * Main class.
  */
-export class Keyboard extends EventTarget {
-    devices: Array<HIDDevice>
-
-    /** Internal WebHID device */
-    device?: HIDDevice;
+export class Keyboard extends Device {
 
     /** Device protocol */
     protocol?: IProtocol;
-
-    /** WebHid object */
-    hid?: HID;
-
-    /** Is the hid feature available */
-    isHidAvailable: boolean;
 
     /** Current keyboard state */
     state = defaultState;
@@ -54,109 +47,48 @@ export class Keyboard extends EventTarget {
 
     constructor() {
         super();
-        
-        this.devices = new Array<HIDDevice>();
 
-        if (!navigator.hid || !navigator.hid.requestDevice) {
-            this.isHidAvailable = false;
-            //throw new Error('WebHID not supported by browser or not available.')
-        } else {
-            this.hid = navigator.hid;
-            this.isHidAvailable = true;
-        }
-
+        this.deviceState = this.state;
         this.pktGetDongleStatus = new GetDongleStatusPacket(this.dongleStatusReport.bind(this));
         this.pktGetPassword = new GetPasswordPacket(this.passwordReport.bind(this));
     }
 
-    /**
-     * Initializes the WebHID API and requests access to the device.
-     * 
-     * This function must be called in the context of user interaction
-     * (i.e in a click event handler), otherwise it might not work.
-     */
-    async init() {
-        if (this.device && this.device.opened)
-        {
-            this.device.close();
-            return;
-        }
+    async init(deviceDefine: HidDeviceDefine) {
+        if (this.device != undefined) {
+            
+            if (!this.device.opened) {
+                await this.device.open();
+            }
 
-        var option: HIDDeviceRequestOptions = { filters: []};
-        var item: any;
-        for (item in DeviceDefineList) {
-            let keyboard: HIDDeviceFilter = { 
-                vendorId: DeviceDefineList[item].vendorId, 
-                productId: DeviceDefineList[item].productId,
-                usagePage: DeviceDefineList[item].usagePage, 
-                usage: DeviceDefineList[item].usage 
-            };
-            option.filters.push(keyboard);
-        }
+            if (this.device.opened) {
+                this.state.deviceName = this.device.productName;
+                this.state.connectType = ConnectionType.USB;
+                this.state.connectionEvent = ConnectionEventEnum.Open;
+                this.state.productId = this.device.productId;
 
-        if (this.hid == null) {
-            return;
-        }
+                this.state.connectType = deviceDefine.connectType;
 
-        const devices = await this.hid.requestDevice(option);
+                // if (this.hid != undefined) {
+                //     const connectionEventCallback = (event: HIDConnectionEvent) => {
 
-        if (devices.length > 0) {
-            this.device = devices[0];
-            if (this.device != undefined) {
+                //         if (this.device != undefined) {
+                //             this.device.removeEventListener("inputreport", this.callback);
+                //         }
 
-                if (!this.device.opened) {
-                    await this.device.open();
-                }
+                //         event.device.close();
+                //         this.protocol?.destroy();
+                //         this.state.ConnectionStatus = ConnectionStatusEnum.Disconnected;
+                //         this.state.connectionEvent = ConnectionEventEnum.Disconnect;
+                //         this.dispatchEvent(new KeyboardEvent("connection", this));
+                //         this.hid?.removeEventListener("disconnect", connectionEventCallback, false);
+                //         this.device = undefined;
+                //         this.protocol = undefined;
+                //     };
 
-                if (this.device.opened) {
-                    this.state.deviceName = this.device.productName;
-                    this.state.connectType = ConnectionType.USB;
-                    this.state.connectionEvent = ConnectionEventEnum.Open;
-                    this.state.productId = this.device.productId;
-
-                    for (item in DeviceDefineList) {
-                        if (this.device.vendorId == DeviceDefineList[item].vendorId && 
-                            this.device.productId == DeviceDefineList[item].productId) {
-                            this.state.connectType = DeviceDefineList[item].connectType;
-                            break;
-                        }
-                    }
-
-                    // for (item in KeyboardDefineList) {
-                    //     if (this.device.vendorId == KeyboardDefineList[item].vendorId && 
-                    //         this.device.productId == KeyboardDefineList[item].productId) {
-                    //         this.keyboardDefine = KeyboardDefineList[item];
-                    //         break;
-                    //     }
-                    // }
-
-                    // if (this.keyboardDefine == null || this.keyboardDefine == undefined) {
-                    //     await this.close();
-                    //     this.dispatchEvent(new KeyboardEvent("NotSupport", this));
-                    //     return;
-                    // }
-
-                    // this.protocol = await this.keyboardDefine.protocol(this.state, this.device);
-
-                    // this.loadDefaultValue(this.state.keyTableData, this.state.lightInfo);
-                    
-                    const connectionEventCallback = (event: HIDConnectionEvent) => {
-                        if (this.device != undefined) {
-                            this.device.removeEventListener("inputreport", this.callback);
-                        }
-                        event.device.close();
-                        this.protocol?.destroy();
-                        this.state.ConnectionStatus = ConnectionStatusEnum.Disconnected;
-                        this.state.connectionEvent = ConnectionEventEnum.Disconnect;
-                        this.dispatchEvent(new KeyboardEvent("connection", this));
-                        this.hid?.removeEventListener("disconnect", connectionEventCallback, false);
-                        this.device = undefined;
-                        this.protocol = undefined;
-                    };
-
-                    this.hid.addEventListener("disconnect", connectionEventCallback, false);
-                    this.dispatchEvent(new KeyboardEvent("connection", this));
-                }
+                //     this.hid.addEventListener("disconnect", connectionEventCallback, false);
+                // }
+                
+                this.dispatchEvent(new KeyboardEvent("connection", this));
             }
         }
     }
@@ -167,14 +99,20 @@ export class Keyboard extends EventTarget {
     async close() {
         if (this.device && this.device.opened) {
             this.device.removeEventListener("inputreport", this.callback);
+
             await this.device.close();
             await this.device.forget();
+
             this.protocol?.destroy();
+
             this.state.connectionEvent = ConnectionEventEnum.Close;
+            this.state.ConnectionStatus = ConnectionStatusEnum.Disconnected;
+
             this.keyboardDefine = undefined;
             this.device = undefined;
             this.protocol = undefined;
-            this.dispatchEvent(new KeyboardEvent("connection", this)); 
+
+            this.dispatchEvent(new KeyboardEvent("connection", this));
         }
     }
 

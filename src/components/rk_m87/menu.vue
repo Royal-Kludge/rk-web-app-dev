@@ -22,7 +22,7 @@ import { onMounted, onBeforeUnmount, ref, reactive } from "vue";
 import { useKeyStore } from "@/stores/rk_m87/keyStore";
 import { keyboard } from "@/keyboard/keyboard";
 import { uselightStore } from "@/stores/rk_m87/lightStore";
-import { ConnectionType, ConnectionStatusEnum } from "@/keyboard/enum";
+import { ConnectionType, ConnectionStatusEnum } from "@/device/enum";
 import { RK_M87, RK_M87_EVENT_DEFINE } from "@/keyboard/rk_m87/rk_m87";
 
 const useKey = useKeyStore();
