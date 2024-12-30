@@ -14,7 +14,7 @@
                 </div> -->
                 <div class="d-flex flex-column jc-center ai-center">
                     <div class="text-black my-4" style="font-size: 120px; font-weight: bold">
-                        RK-M87
+                        {{keyboard.keyboardDefine?.name}}
                     </div>
                     <div class="my-4 c-p" @click="setMeunid();">
                         <el-tooltip effect="light" :content="$t('home.title_tip')" placement="top"

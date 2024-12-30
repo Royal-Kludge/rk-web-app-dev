@@ -220,7 +220,7 @@ import { ref, onMounted, onBeforeUnmount } from 'vue';
 import { RK_L75 } from '@/keyboard/rk_l75/rk_l75';
 import { Macro, Action, ActionType } from '@/keyboard/rk_l75/macros';
 import { KeyCodeMap } from '@/common/keyCode'
-import { type KeyCodeTable } from '@/keyboard/interface';
+import { type KeyCodeTable } from '@/common/interface';
 import { storage } from '@/common/storage';
 import { useMacroStore } from "@/stores/rk_l75/macroStore";
 import { storeToRefs } from "pinia";

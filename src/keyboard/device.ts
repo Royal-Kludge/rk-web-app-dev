@@ -11,6 +11,16 @@ export const RK_L75_WIRE_DEFINE: HidDeviceDefine = {
     deviceType: DeviceType.Keyboard,
 }
 
+export const RK_L75_UK_WIRE_DEFINE: HidDeviceDefine = {
+    name: "rk l75 wire",
+    vendorId: 0x258A,
+    productId: 0x0201,
+    usagePage: 0xFF00,
+    usage: 0x0001,
+    connectType: ConnectionType.USB,
+    deviceType: DeviceType.Keyboard,
+}
+
 export const RK_L87_WIRE_DEFINE: HidDeviceDefine = {
     name: "rk l87 wire",
     vendorId: 0x258A,

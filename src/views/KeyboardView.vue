@@ -82,6 +82,7 @@ onMounted(async () => {
                     productId.value = 2
                     break;
                 case 'RK-L75':
+                case 'RK-L75 UK':
                     productId.value = 3
                     break;
             }
@@ -176,6 +177,7 @@ const passwordGotten = async (event: any) => {
                 productId.value = 2
                 break;
             case 'RK-L75':
+            case 'RK-L75 UK':
                 productId.value = 3
                 break;
         }

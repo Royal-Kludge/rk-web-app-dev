@@ -8,6 +8,7 @@ import { ConnectionType, DeviceType } from '@/device/enum'
 
 export const RK_L87_USB_DEFINE: KeyboardDefine = {
     name: "RK-R87PRO",
+    image: "keyboard.png",
     vendorId: 0x258A,
     productId: 0x019F,
     usagePage: 0xFF00,
@@ -45,6 +46,7 @@ export const RK_L87_USB_DEFINE: KeyboardDefine = {
 
 export const RK_L87_DONGLE_DEFINE: KeyboardDefine = {
     name: "RK-R87PRO",
+    image: "keyboard.png",
     vendorId: 0x3554,
     productId: 0xFA09,
     usagePage: 0xFF02,

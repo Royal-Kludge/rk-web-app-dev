@@ -25,6 +25,7 @@ export interface KeyboardState extends State {
 }
 
 export interface KeyboardDefine extends HidDeviceDefine {
+    image: string,
     keyText: Record<number, String>,
     keyMatrixLayer: Array<KeyMatrixLayer>,
     keyMatrixTable: Array<MatrixTable>,
@@ -80,4 +81,18 @@ export interface IProtocol {
 
 export interface IPacket {
     fromReportData(buffer: DataView) : IPacket;
+}
+
+export interface Key {
+    key: KeyDefineEnum, 
+    style: string, 
+    index: number, 
+    keyData: KeyTableData | undefined,
+    img?: string
+}
+
+export interface KeyLine {
+    line: number,
+    style: string,
+    keys: Array<Key>
 }
