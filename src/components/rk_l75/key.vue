@@ -9,21 +9,21 @@
                     <div :id="`key${key.index}`" trigger="contextmenu" ref="keyMapping"
                         @visible-change="handleOpen($event, `key${key.index}`)" v-for="key in line.keys"
                         v-if="meunid == 1">
-                        <div @click="keyClick(key.index)" class="d-flex ai-center jc-center c-p"
+                        <div @click="keyClick(key.index)" class="d-flex ai-center jc-center c-p p-r"
                             :class="[`d-flex p-2 pl-3 ${key.style}`, useKey.keyColor(key.keyData), useKey.isSelected(key.index)]">
                             <div :class="[`text-white-1`, keyTextColorClass(key.keyData)]"
-                                :style="`word-wrap: break-word;overflow: hidden;text-align: center;${keyTextColorStyle(key.keyData)}`">
+                                :style="`z-index:1;word-wrap: break-word;overflow: hidden;text-align: center;${keyTextColorStyle(key.keyData)}`">
                                 <span style="word-wrap: break-word;" v-html="useKey.keyText(key.keyData)"
                                     v-if="key.img == undefined"></span>
                                 <span v-else v-html="key.img" class="d-flex"></span>
                             </div>
                         </div>
                     </div>
-                    <div :i="key.index" class="item d-flex ai-center jc-center c-p"
+                    <div :i="key.index" class="item d-flex ai-center jc-center c-p p-r"
                         :class="[`d-flex p-2 pl-3 ${key.style}`, useKey.keyColor(key.keyData), useKey.isSelected(key.index)]"
                         v-for="key in line.keys" v-else @click="keyClick(key.index)">
                         <div :class="[`text-white-1`, keyTextColorClass(key.keyData)]"
-                            :style="`word-wrap: break-word;overflow: hidden;text-align: center;${keyTextColorStyle(key.keyData)}`">
+                            :style="`z-index:1;word-wrap: break-word;overflow: hidden;text-align: center;${keyTextColorStyle(key.keyData)}`">
                             <span style="word-wrap: break-word;" v-html="useKey.keyText(key.keyData)"
                                 v-if="key.img == undefined"></span>
                             <span v-else v-html="key.img" class="d-flex"></span>
@@ -39,21 +39,21 @@
                     <div :id="`key${key.index}`" trigger="contextmenu" ref="keyMapping"
                         @visible-change="handleOpen($event, `key${key.index}`)" v-for="key in line.keys"
                         v-if="meunid == 1">
-                        <div @click="keyClick(key.index)" class="d-flex ai-center jc-center c-p"
+                        <div @click="keyClick(key.index)" class="d-flex ai-center jc-center c-p p-r"
                             :class="[`d-flex p-2 pl-3 ${key.style}`, useKey.keyColor(key.keyData), useKey.isSelected(key.index)]">
                             <div :class="[`text-white-1`, keyTextColorClass(key.keyData)]"
-                                :style="`word-wrap: break-word;overflow: hidden;text-align: center;${keyTextColorStyle(key.keyData)}`">
+                                :style="`z-index:1;word-wrap: break-word;overflow: hidden;text-align: center;${keyTextColorStyle(key.keyData)}`">
                                 <span style="word-wrap: break-word;" v-html="useKey.keyText(key.keyData)"
                                     v-if="key.img == undefined"></span>
                                 <span v-else v-html="key.img" class="d-flex"></span>
                             </div>
                         </div>
                     </div>
-                    <div :i="key.index" class="item d-flex ai-center jc-center c-p"
+                    <div :i="key.index" class="item d-flex ai-center jc-center c-p p-r"
                         :class="[`d-flex p-2 pl-3 ${key.style}`, useKey.keyColor(key.keyData), useKey.isSelected(key.index)]"
                         v-for="key in line.keys" v-else @click="keyClick(key.index)">
                         <div :class="[`text-white-1`, keyTextColorClass(key.keyData)]"
-                            :style="`word-wrap: break-word;overflow: hidden;text-align: center;${keyTextColorStyle(key.keyData)}`">
+                            :style="`z-index:1;word-wrap: break-word;overflow: hidden;text-align: center;${keyTextColorStyle(key.keyData)}`">
                             <span style="word-wrap: break-word;" v-html="useKey.keyText(key.keyData)"
                                 v-if="key.img == undefined"></span>
                             <span v-else v-html="key.img" class="d-flex"></span>
@@ -424,6 +424,24 @@ const mediaStrKey = (key: string | undefined) => {
     top: 8px;
 }
 
+.key-right2 {
+    position: absolute;
+    right: -1px;
+}
+
+.key_enter {
+    &::before {
+        content: "";
+        position: absolute;
+        top: 0px;
+        right: 0;
+        bottom: -59px;
+        width: 60px;
+        background: inherit;
+        border-radius: 3px;
+    }
+}
+
 @media screen and (max-width: 1600px) {
     .bg {
         width: 886px;
@@ -466,7 +484,7 @@ const mediaStrKey = (key: string | undefined) => {
     }
 
     .key7 {
-        width: 102px;
+        width: 85px;
     }
 
     .space-l {
@@ -515,6 +533,24 @@ const mediaStrKey = (key: string | undefined) => {
         position: absolute;
         right: 0px;
         top: 8px;
+    }
+
+    .key-right2 {
+        position: absolute;
+        right: 0px;
+    }
+
+    .key_enter {
+        &::before {
+            content: "";
+            position: absolute;
+            top: 0px;
+            right: 0;
+            bottom: -48px;
+            width: 50px;
+            background: inherit;
+            border-radius: 3px;
+        }
     }
 }
 
@@ -609,6 +645,24 @@ const mediaStrKey = (key: string | undefined) => {
         position: absolute;
         right: 1px;
         top: 8px;
+    }
+
+    .key-right2 {
+        position: absolute;
+        right: 0px;
+    }
+
+    .key_enter {
+        &::before {
+            content: "";
+            position: absolute;
+            top: 0px;
+            right: 0;
+            bottom: -38px;
+            width: 41px;
+            background: inherit;
+            border-radius: 3px;
+        }
     }
 }
 </style>

@@ -86,7 +86,7 @@ export const RK_L75_DONGLE_DEFINE: KeyboardDefine = {
 
 export const RK_L75_UK_USB_DEFINE: KeyboardDefine = {
     name: "RK-L75 UK",
-    image: "keyboard_rk-l75.png",
+    image: "keyboard_rk-l75uk.png",
     vendorId: 0x258A,
     productId: 0x0201,
     usagePage: 0xFF00,
@@ -124,7 +124,7 @@ export const RK_L75_UK_USB_DEFINE: KeyboardDefine = {
 
 export const RK_L75_UK_DONGLE_DEFINE: KeyboardDefine = {
     name: "RK-L75 UK",
-    image: "keyboard_rk-l75.png",
+    image: "keyboard_rk-l75uk.png",
     vendorId: 0x3554,
     productId: 0xFA09,
     usagePage: 0xFF02,
