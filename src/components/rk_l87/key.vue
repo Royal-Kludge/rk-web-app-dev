@@ -5,7 +5,7 @@
             <div class="keybox d-flex flex-column bg-white p-3" style="border-radius: 15px;position: relative;"
                 @contextmenu.prevent @mousedown="handleMouseDown"
                 v-if="useLight.state.lightProps.light == LightEffectEnum.SelfDefine">
-                <div class="d-flex" v-for="line in useKey.state.keyMatrix" :class="[`${line.style}`]">
+                <div class="d-flex" v-for="line in useKey.state.keyMatrix as Array<KeyLine>" :class="[`${line.style}`]">
                     <div :id="`key${key.index}`" trigger="contextmenu" ref="keyMapping"
                         @visible-change="handleOpen($event, `key${key.index}`)" v-for="key in line.keys"
                         v-if="meunid == 1">
@@ -31,7 +31,7 @@
                 </div>
             </div>
             <div class="keybox d-flex flex-column bg-white p-3" style="border-radius: 15px;position: relative;" v-else>
-                <div class="d-flex" v-for="line in useKey.state.keyMatrix" :class="[`${line.style}`]">
+                <div class="d-flex" v-for="line in useKey.state.keyMatrix as Array<KeyLine>" :class="[`${line.style}`]">
                     <div :id="`key${key.index}`" trigger="contextmenu" ref="keyMapping"
                         @visible-change="handleOpen($event, `key${key.index}`)" v-for="key in line.keys"
                         v-if="meunid == 1">
@@ -71,7 +71,7 @@ import { uselightStore } from "@/stores/rk_l87/lightStore";
 import { ref, onMounted, onBeforeUnmount, watch, reactive, computed } from 'vue';
 import type { DropdownInstance } from 'element-plus'
 import { storeToRefs } from "pinia";
-import type { KeyState, KeyTableData } from "@/keyboard/interface";
+import type { KeyLine, KeyState, KeyTableData } from "@/keyboard/interface";
 import { LightEffectEnum } from '@/keyboard/enum'
 import { useMacroStore } from "@/stores/rk_l87/macroStore";
 
