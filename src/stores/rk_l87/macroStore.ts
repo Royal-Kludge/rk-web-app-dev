@@ -75,6 +75,7 @@ export const useMacroStore = defineStore("macrostore", () => {
         ms.add(new Macro("Default Macro"));
         rk_l87.value.data.macros = ms;
         macros.value = rk_l87.value.data.macros;
+        macro.value = macros.value.get()[0];
         //await rk_l87.value.getMacros();
       }
 
