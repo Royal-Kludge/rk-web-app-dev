@@ -1479,7 +1479,7 @@ export const KeyText: Record<number, String> = {
 
     //0x31: '',
     0x32: '',
-    0x64: '',
+    0x64: '|\\',
     0x65: 'App',
     0x85: '',
     0x87: '',
