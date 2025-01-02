@@ -1,10 +1,12 @@
 import type { LightInfo, KeyboardState, KeyboardDefine  } from './interface'
 import { ConnectionType, ConnectionEventEnum, ConnectionStatusEnum } from "../device/enum"
-import { RK_L87_USB_DEFINE, RK_L87_DONGLE_DEFINE } from "./rk_l87"
+import { RK_R87_USB_DEFINE, RK_R87_DONGLE_DEFINE, RK_R87_LOW_DELAY_USB_DEFINE, RK_R87_LOW_DELAY_DONGLE_DEFINE } from "./rk_r87"
 import { RK_M87_USB_EN_DEFINE, RK_M87_USB_JP_DEFINE, RK_M87_DONGLE_DEFINE } from "./rk_m87"
 import { RK_L75_USB_DEFINE, RK_L75_DONGLE_DEFINE, RK_L75_UK_DONGLE_DEFINE, RK_L75_UK_USB_DEFINE } from "./rk_l75"
 
-export const VERSION = '1.6.1'
+export const VERSION = '1.7.0'
+
+//20250102 v1.7.0 Add L75 uk support
 
 /**
 * Initial lightInfo
@@ -34,8 +36,10 @@ export const defaultState: KeyboardState = {
 * Keyboard list
 */
 export const KeyboardDefineList: Record<string, KeyboardDefine> = {
-    "rk l87 wire": RK_L87_USB_DEFINE,
-    "rk l87 24G": RK_L87_DONGLE_DEFINE,
+    "rk r87 wire": RK_R87_USB_DEFINE,
+    "rk r87 24G": RK_R87_DONGLE_DEFINE,
+    "rk r87 low delay wire": RK_R87_LOW_DELAY_USB_DEFINE,
+    "rk r87 low delay 24G": RK_R87_LOW_DELAY_DONGLE_DEFINE,
     "rk m87 en wire": RK_M87_USB_EN_DEFINE,
     "rk m87 jp wire": RK_M87_USB_JP_DEFINE,
     "rk m87 24G": RK_M87_DONGLE_DEFINE,
@@ -49,7 +53,8 @@ export const KeyboardDefineList: Record<string, KeyboardDefine> = {
 * Dongle password list
 */
 export const DonglePwdDefineList: Record<number, string> = {
-    0x03000156: "rk l87 24G",
+    0x03000156: "rk r87 24G",
+    0x0A000004: "rk r87 low delay 24G",
     0x0600002A: "rk m87 24G",
     0x030001FC: "rk l75 24G",
     0x03000311: "rk l75 uk 24G",

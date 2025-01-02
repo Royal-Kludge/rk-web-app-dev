@@ -1,7 +1,7 @@
 import { KeyMatrixLayer, MatrixTable } from '@/keyboard/enum';
 import { storage } from '@/common/storage';
 import { keyboard } from '@/keyboard/keyboard'
-import { KeyMatrix } from '@/keyboard/rk_m87/keyMatrix';
+import { KeyMatrix } from '@/keyboard/rk_r87/keyMatrix';
 import { PROFILE_DEFAULT_DATA } from './boardProfile';
 import { LED_EFFECT_DEFAULT_DATA } from './ledEffect';
 import { VERSION } from '../state';
@@ -140,7 +140,6 @@ export class Profiles {
                 this.add(tm);
             }
             this.curIndex = tmp.curIndex;
-            this.version = VERSION;
         }
         else {
             // for (let i = 0; i < 3; i++) {

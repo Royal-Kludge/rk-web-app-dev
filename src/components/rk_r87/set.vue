@@ -71,19 +71,19 @@
 </template>
 <script setup lang="ts">
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
-import { uselightStore } from "@/stores/rk_l75/lightStore";
+import { uselightStore } from "@/stores/rk_r87/lightStore";
 import { useSetStore } from "@/stores/setStore";
-import { useKeyStore } from "@/stores/rk_l75/keyStore";
-import { useMacroStore } from "@/stores/rk_l75/macroStore";
+import { useKeyStore } from "@/stores/rk_r87/keyStore";
+import { useMacroStore } from "@/stores/rk_r87/macroStore";
 import { useLocaleStore } from "@/stores/locale";
 import { storeToRefs } from "pinia";
 
 import { useI18n } from 'vue-i18n';
 import axios from 'axios'
+import { ConnectionType } from '@/device/enum';
 import { keyboard } from '@/keyboard/keyboard'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import type { Action } from 'element-plus'
-import { ConnectionType } from '@/device/enum';
 
 // 解构出t方法
 const { t } = useI18n();
@@ -108,30 +108,18 @@ const isDown = computed(() => (useLight.connectType == ConnectionType.USB))
 const VerTips = computed(() => (ver.value !== version.value ? t('set.title_3') + ':' + version.value : t('set.title_2')))
 
 const getVer = () => {
-    let pid = keyboard.keyboardDefine?.productId;
-    if (pid == 0x01E5) {
-        axios.get('/down/work/RKWEB/firmware/L75/L75_firmware.json').then(response => {
-            // 请求成功处理
-            version.value = response.data.version
-            url.value = response.data.url
-            checkVer()
-        }).catch(error => {
-            // 请求失败处理   
-            console.error(error);
-        });
-    } else if (pid == 0x0201) {
-        axios.get('/down/work/RKWEB/firmware/L75/L75_firmware_uk.json').then(response => {
-            // 请求成功处理
-            version.value = response.data.version
-            url.value = response.data.url
-            checkVer()
-        }).catch(error => {
-            // 请求失败处理   
-            console.error(error);
-        });
-    }
+    // if (useLight.connectType !== ConnectionType.USB)
+    //     return
+    axios.get('/down/work/RKWEB/firmware/R87PRO/firmware.json').then(response => {
+        // 请求成功处理
+        version.value = response.data.version
+        url.value = response.data.url
+        checkVer()
+    }).catch(error => {
+        // 请求失败处理   
+        console.error(error);
+    });
 }
-
 const checkVer = (flag: boolean = false) => {
     if (useLight.connectType !== ConnectionType.USB && flag == true) {
         ElMessage({

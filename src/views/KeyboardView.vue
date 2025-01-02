@@ -1,6 +1,6 @@
 <template>
     <div v-if="isKeyboardConnect()" class="h-100">
-        <RK_L87_Page v-if="productId == 1" />
+        <RK_R87_Page v-if="productId == 1" />
         <RK_M87_Page v-else-if="productId == 2" />
         <RK_L75_Page v-else-if="productId == 3" />
     </div>
@@ -13,14 +13,14 @@
 
 <script setup lang="ts">
 import { keyboard, RK_DONGLE_EVENT_DEFINE } from '@/keyboard/keyboard'
-import RK_L87_Page from '@/components/rk_l87/home.vue'
+import RK_R87_Page from '@/components/rk_r87/home.vue'
 import RK_M87_Page from '@/components/rk_m87/home.vue'
 import RK_L75_Page from '@/components/rk_l75/home.vue'
 import { reactive, ref, onMounted, onBeforeUnmount } from 'vue';
 import { DonglePwdDefineList, KeyboardDefineList } from '@/keyboard/state';
 import { ConnectionStatusEnum, ConnectionType } from '@/device/enum';
 import { storage } from '@/common/storage';
-import type { Profiles } from '@/keyboard/rk_l87/profiles';
+import type { Profiles } from '@/keyboard/rk_r87/profiles';
 import { VERSION } from '@/keyboard/state';
 import { ElMessageBox } from 'element-plus'
 import { useI18n } from "vue-i18n";
@@ -76,6 +76,7 @@ onMounted(async () => {
 
             switch (keyboard.keyboardDefine.name.valueOf()) {
                 case 'RK-R87PRO':
+                case 'RK-R87PRO Low delay':
                     productId.value = 1
                     break;
                 case 'RK-M87':
@@ -171,6 +172,7 @@ const passwordGotten = async (event: any) => {
 
         switch (keyboard.keyboardDefine.name.valueOf()) {
             case 'RK-R87PRO':
+            case 'RK-R87PRO Low delay':
                 productId.value = 1
                 break;
             case 'RK-M87':

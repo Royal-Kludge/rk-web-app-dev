@@ -2,7 +2,7 @@ import type { KeyboardState } from '../interface'
 import { REPORT_ID_USB, MACRO_PER_BLOCK_LENGTH, MACRO_MAX_LENGTH } from './packets/packet';
 import { ConnectionStatusEnum, ConnectionType } from '../../device/enum';
 import { KeyMatrixLayer, MatrixTable } from '../enum';
-import { RK_M87, RK_M87_EVENT_DEFINE } from './rk_m87';
+import { RK_R87, RK_R87_EVENT_DEFINE } from './rk_r87';
 
 import { GetProfilePacket } from './packets/usb/getProfilePacket';
 import { SetProfilePacket } from './packets/usb/setProfilePacket';
@@ -22,26 +22,20 @@ import { SetLedColorsPacket } from './packets/usb/setLedColorsPacket';
 import { GetPasswordPacket } from './packets/usb/getPasswordPacket';
 import { SetFactoryPacket } from './packets/usb/setFactoryPacket';
 
-import { SetTftPicPacket } from './packets/usb/setTftPicPacket';
-
 import { Macros } from './macros';
-import { SetTftPretreatmentPacket } from './packets/usb/setTftPretreatmentPacket';
+import { RK_R87_USB_DEFINE } from '.';
 
 const worker = new Worker(new URL('@/common/communication.ts', import.meta.url));
 
-export class RK_M87_Usb extends RK_M87 {
-
-    pktSetTftPicPacket: SetTftPicPacket;
+export class RK_R87_Usb extends RK_R87 {
 
     constructor(state: KeyboardState, device: HIDDevice) {
         super(state, device);
         state.connectType = ConnectionType.USB;
-
-        this.pktSetTftPicPacket = new SetTftPicPacket();
     }
 
     static async create(state: KeyboardState, device: HIDDevice) {
-        return new RK_M87_Usb(state, device);
+        return new RK_R87_Usb(state, device);
     }
 
     async init(): Promise<void> {
@@ -65,50 +59,6 @@ export class RK_M87_Usb extends RK_M87 {
 
     async onGetReport(reportId: number, data: DataView): Promise<void> {
 
-        try {
-            let cmdId = data.getUint8(0x01);
-
-            switch (cmdId) {
-                case 0x06:
-                    if (this.pktSetTftPicPacket.isDuring) {
-                        let val = data.getUint8(0x02);
-                        // val = 1 success, val = 0 fail
-                        if (val == 1) {
-                            this.pktSetTftPicPacket.packageIndex = this.pktSetTftPicPacket.packageIndex + 1;
-                            if (this.pktSetTftPicPacket.packageIndex >= this.pktSetTftPicPacket.packageNum) {
-                                this.pktSetTftPicPacket.packageIndex = 0;
-                                this.pktSetTftPicPacket.frameIndex = this.pktSetTftPicPacket.frameIndex + 1;
-                                if (this.pktSetTftPicPacket.frameIndex >= this.pktSetTftPicPacket.buffers.length) {
-                                    this.pktSetTftPicPacket.isDuring = false;
-                                    let packet = new SetTftPretreatmentPacket();
-                                    packet.setPayload(this.pktSetTftPicPacket.buffers.length, 0x00, this.pktSetTftPicPacket.delay);
-                                    worker.postMessage(packet.setReport);
-                                }
-                            }
-                            
-                            if (this.pktSetTftPicPacket.isDuring) {
-                                this.pktSetTftPicPacket.setPayload();
-                                worker.postMessage(this.pktSetTftPicPacket.setReport);
-                            }
-
-                            this.dispatchEvent(new CustomEvent(RK_M87_EVENT_DEFINE.OnTftSetEvent, 
-                                { detail: 
-                                    { 
-                                        frameIndex: this.pktSetTftPicPacket.frameIndex, 
-                                        frameNum: this.pktSetTftPicPacket.buffers.length, 
-                                        packageIndex: this.pktSetTftPicPacket.packageIndex, 
-                                        packageNum: this.pktSetTftPicPacket.packageNum, 
-                                    } 
-                                }));
-                        } else {
-                            worker.postMessage(this.pktSetTftPicPacket.setReport);
-                        }
-                    }
-                    break;
-            }
-        } catch (e: any) {
-            console.log(`Analysis report data is error: ${e.message}`);
-        }
     }
 
     async getProfile(board: number): Promise<void> {
@@ -118,7 +68,7 @@ export class RK_M87_Usb extends RK_M87 {
         packet.fromReportData(await this.getFeature(REPORT_ID_USB));
 
         this.data.boardProfile = packet.boardProfile;
-        this.dispatchEvent(new CustomEvent(RK_M87_EVENT_DEFINE.OnProfileGotten, { detail: this.data.boardProfile }));
+        this.dispatchEvent(new CustomEvent(RK_R87_EVENT_DEFINE.OnProfileGotten, { detail: this.data.boardProfile }));
     }
 
     async getPassword(): Promise<void> {
@@ -148,7 +98,7 @@ export class RK_M87_Usb extends RK_M87 {
         packet.fromReportData(await this.getFeature(REPORT_ID_USB));
 
         this.data.ledEffect = packet.ledEffect;
-        this.dispatchEvent(new CustomEvent(RK_M87_EVENT_DEFINE.OnLedEffectGotten, { detail: this.data.ledEffect }));
+        this.dispatchEvent(new CustomEvent(RK_R87_EVENT_DEFINE.OnLedEffectGotten, { detail: this.data.ledEffect }));
     }
 
     async setLedEffect(board: number): Promise<void> {
@@ -170,7 +120,7 @@ export class RK_M87_Usb extends RK_M87 {
         if (this.data.keyMatrixs != undefined && packet.keyMatrix != undefined) {
             this.data.keyMatrixs[table][layer] = packet.keyMatrix;
         }
-        this.dispatchEvent(new CustomEvent(RK_M87_EVENT_DEFINE.OnKeyMatrixGotten, { detail: this.data.keyMatrixs }));
+        this.dispatchEvent(new CustomEvent(RK_R87_EVENT_DEFINE.OnKeyMatrixGotten, { detail: this.data.keyMatrixs }));
     }
 
     async setKeyMatrix(layer: KeyMatrixLayer, table: MatrixTable, board: number): Promise<void> {
@@ -198,7 +148,7 @@ export class RK_M87_Usb extends RK_M87 {
         }
 
         this.data.macros = Macros.deserialize(new DataView(u8.buffer));
-        this.dispatchEvent(new CustomEvent(RK_M87_EVENT_DEFINE.OnMacrosGotten, { detail: this.data.macros }));
+        this.dispatchEvent(new CustomEvent(RK_R87_EVENT_DEFINE.OnMacrosGotten, { detail: this.data.macros }));
     }
 
     async setMacros(): Promise<void> {
@@ -242,7 +192,7 @@ export class RK_M87_Usb extends RK_M87 {
         packet.fromReportData(await this.getFeature(REPORT_ID_USB));
 
         this.data.ledColors = packet.ledColors;
-        this.dispatchEvent(new CustomEvent(RK_M87_EVENT_DEFINE.OnLedColorsGotten, { detail: this.data.ledColors }));
+        this.dispatchEvent(new CustomEvent(RK_R87_EVENT_DEFINE.OnLedColorsGotten, { detail: this.data.ledColors }));
     }
 
 
@@ -259,38 +209,6 @@ export class RK_M87_Usb extends RK_M87 {
     async setFactory(): Promise<void> {
         let packet = new SetFactoryPacket();
         //await this.setFeature(REPORT_ID_USB, packet.setReport);
-        worker.postMessage(packet.setReport);
-    }
-
-    async setTftPic(buffers: Array<Uint16Array>, delay: number): Promise<void> {
-        if (buffers != undefined && buffers.length > 0) {
-            this.pktSetTftPicPacket.buffers.splice(0, this.pktSetTftPicPacket.buffers.length);
-            let index: number = 0;
-            for (index = 0; index < buffers.length; index++) {
-                let j: number = 0;
-                let buff = new Uint8Array(buffers[index].length * 2)
-                // The device is use big-endian per byte, so need reverse the pix data
-                for (j = 0; j < buffers[index].length; j++) {
-                    buff[j * 2] = buffers[index][j] >> 8;
-                    buff[(j * 2) + 1] = buffers[index][j] & 0x00FF;
-                }
-                this.pktSetTftPicPacket.buffers.push(buff);
-            }
-            this.pktSetTftPicPacket.packageIndex = -1;
-            this.pktSetTftPicPacket.frameIndex = 0;
-            this.pktSetTftPicPacket.setPayload();
-            this.pktSetTftPicPacket.isDuring = true;
-            this.pktSetTftPicPacket.delay = delay;
-
-            let packet = new SetTftPretreatmentPacket();
-            packet.setPayload(buffers.length, 0x01, delay);
-            worker.postMessage(packet.setReport);
-        }
-    }
-
-    async stopTFTPicDownload(): Promise<void> {
-        let packet = new SetTftPretreatmentPacket();
-        packet.setPayload(0, 0x02, 0);
         worker.postMessage(packet.setReport);
     }
 }

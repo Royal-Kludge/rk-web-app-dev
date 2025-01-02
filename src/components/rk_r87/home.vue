@@ -5,7 +5,7 @@
             <Meun />
         </div>
         <div class="flex-1">
-            <RK_L75_Page v-if="meunid > 0" />
+            <RK_R87_Page v-if="meunid > 0" />
             <div v-else class="d-flex flex-column jc-center ai-center">
                 <!-- <div class="d-flex flex-column jc-center ai-center" v-if="!isKeyboardConnect()">
                     <div class="p-5 fs-big m-5 mb-4">No keyboard connected to dongle</div>
@@ -14,12 +14,12 @@
                 </div> -->
                 <div class="d-flex flex-column jc-center ai-center">
                     <div class="text-black my-4" style="font-size: 120px; font-weight: bold">
-                       RK-L75
+                        RK-R87PRO
                     </div>
                     <div class="my-4 c-p" @click="setMeunid();">
                         <el-tooltip effect="light" :content="$t('home.title_tip')" placement="top"
                             popper-class="tip_font2">
-                            <img :src="`../../src/assets/images/${keyboard.keyboardDefine?.image}`" />
+                            <img src="../../assets/images/keyboard.png" />
                         </el-tooltip>
                     </div>
                     <div class="d-flex my-4">
@@ -37,11 +37,11 @@
 </template>
 
 <script setup lang="ts">
-import { useMenuStore } from "@/stores/rk_l75/menuStore";
+import { useMenuStore } from "@/stores/rk_r87/menuStore";
 import { keyboard } from '@/keyboard/keyboard'
-import RK_L75_Page from '@/components/rk_l75/index.vue'
-import { RK_L75, RK_L75_EVENT_DEFINE } from "@/keyboard/rk_l75/rk_l75";
-import Meun from "@/components/rk_l75/menu.vue";
+import RK_R87_Page from '@/components/rk_r87/index.vue'
+import { RK_R87, RK_R87_EVENT_DEFINE } from "@/keyboard/rk_r87/rk_r87";
+import Meun from "@/components/rk_r87/menu.vue";
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 import { storeToRefs } from "pinia";
 
@@ -59,19 +59,20 @@ const setMeunid = () => {
 
 onMounted(async () => {
     console.log("meunid:" + meunid.value)
-    rk_l75.value = keyboard.protocol as RK_L75;
-    rk_l75.value.addEventListener(RK_L75_EVENT_DEFINE.OnReportStart, reportStart, false);
-    rk_l75.value.addEventListener(RK_L75_EVENT_DEFINE.OnReportFinish, reportFinish, false);
+
+    rk_r87.value = keyboard.protocol as RK_R87;
+    rk_r87.value.addEventListener(RK_R87_EVENT_DEFINE.OnReportStart, reportStart, false);
+    rk_r87.value.addEventListener(RK_R87_EVENT_DEFINE.OnReportFinish, reportFinish, false);
 });
 
 onBeforeUnmount(() => {
-    if (rk_l75.value != undefined) {
-        rk_l75.value.removeEventListener(RK_L75_EVENT_DEFINE.OnReportFinish, reportFinish, false);
-        rk_l75.value.removeEventListener(RK_L75_EVENT_DEFINE.OnReportStart, reportStart, false);
+    if (rk_r87.value != undefined) {
+        rk_r87.value.removeEventListener(RK_R87_EVENT_DEFINE.OnReportFinish, reportFinish, false);
+        rk_r87.value.removeEventListener(RK_R87_EVENT_DEFINE.OnReportStart, reportStart, false);
     }
 });
 
-const rk_l75 = ref<RK_L75>();
+const rk_r87 = ref<RK_R87>();
 
 const reportStart = async (event: any) => {
     if (event != undefined && event.detail != undefined) {
@@ -83,9 +84,11 @@ const reportFinish = async (event: any) => {
     if (event != undefined && event.detail != undefined) {
         if (event.detail == 'finish') {
             loading.value = false
+            //ElMessage.info('Report finish!');
         }
         if (event.detail == 'timeout') {
             loading.value = false;
+            //ElMessage.error('Report timeout!');
         }
     }
 };
