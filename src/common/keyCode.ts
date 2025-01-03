@@ -1237,6 +1237,9 @@ export enum KeyDefineEnum {
     SP_O_Mode = 0x07000022,      //����Mac
     SP_L_Mode = 0x07000023,      //����Mac
     SP_Touch_Mode = 0x07000024,
+    SP_BATT_IND_ENTER = 0x07000030,      //电量显示
+    SP_BATT_IND_EXIT = 0x07000031,      //电量显示
+    SP_KB_REC_Reset = 0x08ff0000,
     //****************************************************************
     //byte0���̶�0x08
     //byte1��0��Ч�л���1��Ч����2��ɫ�л���3�����л���4�ٶ��л���5������Ϸ����¼�ƣ�6��Ϸ���ֱ��棬7¼��/���棬8��λ��9��Чģʽָ��
@@ -1267,6 +1270,8 @@ export enum KeyDefineEnum {
     KEY_LED_MODE20 = 0x08092000, //ֱ���趨Ϊģʽ20
     KEY_LED_MODE21 = 0x08092100, //ֱ���趨Ϊģʽ21
     KEY_LED_MODE22 = 0x08092200, //ֱ���趨Ϊģʽ22
+    KEY_LED_MODE31 = 0x08091F00, //ֱ���趨Ϊģʽ31
+    KEY_LED_MODE32 = 0x08092000, //ֱ���趨Ϊģʽ32
     //��Ч�л�
     KEY_LED_MODEL = 0x08000000, //ֱ���趨Ϊģʽ+
     KEY_LED_MODEI = 0x08000100, //ֱ���趨Ϊģʽ-
@@ -1286,6 +1291,16 @@ export enum KeyDefineEnum {
     KEY_LED_COLOR_MODEI = 0x08020100, //ֱ���趨Ϊ��ɫ+
     KEY_LED_COLOR_MODED = 0x08020200, //ֱ���趨Ϊ��ɫ-
     KEY_LED_COLOR_MODEL = 0x08020000, //ֱ���趨Ϊ��ɫLOOP
+
+    //��ɫ�л�
+    KEY_LED_COLOR_LOGOI = 0x08020101, //ֱ���趨Ϊ��ɫ+
+    KEY_LED_COLOR_LOGOD = 0x08020201, //ֱ���趨Ϊ��ɫ-
+    KEY_LED_COLOR_LOGOL = 0x08020001, //ֱ���趨Ϊ��ɫLOOP
+
+    //��ɫ�л�
+    KEY_LED_COLOR_SIDEI = 0x08020102, //ֱ���趨Ϊ��ɫ+
+    KEY_LED_COLOR_SIDED = 0x08020202, //ֱ���趨Ϊ��ɫ-
+    KEY_LED_COLOR_SIDEL = 0x08020002, //ֱ���趨Ϊ��ɫLOOP
 
     //����
     KEY_LED_LUMINI = 0x08030100, //ֱ���趨Ϊģʽ+
@@ -1365,7 +1380,8 @@ export enum KeyDefineEnum {
     KEY_GreaterSign = 0x00020037,
     KEY_Question = 0x00020038,
 
-    KEY_RK_WWW = 0x0A000000
+    KEY_RK_WWW = 0x0A000000,
+    KEY_Fn_Ctrl  = 0x16000000,
 }
 
 export const KeyText: Record<number, String> = {

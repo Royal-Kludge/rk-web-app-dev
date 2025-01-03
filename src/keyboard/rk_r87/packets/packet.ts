@@ -12,6 +12,7 @@ export const MACRO_PER_BLOCK_LENGTH: number = 512;
 export const MACRO_MAX_LENGTH: number = 4096;
 export const REPORT_ID_LENGTH: number = 1;
 export const REPORT_ID_USB: number = 0x06;
+export const REPORT_ID_USB_09: number = 0x09;
 export const REPORT_ID_DONGLE: number = 0x13;
 export const REPORT_PAYLOAD_LENGTH: number = 0x0E;
 export const REPORT_MAX_RETRY: number = 0x0A;

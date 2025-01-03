@@ -1,5 +1,5 @@
 import type { KeyboardState } from '../interface'
-import { REPORT_ID_USB, MACRO_PER_BLOCK_LENGTH, MACRO_MAX_LENGTH } from './packets/packet';
+import { REPORT_ID_USB, MACRO_PER_BLOCK_LENGTH, MACRO_MAX_LENGTH, REPORT_ID_USB_09 } from './packets/packet';
 import { ConnectionStatusEnum, ConnectionType } from '../../device/enum';
 import { KeyMatrixLayer, MatrixTable } from '../enum';
 import { RK_R87, RK_R87_EVENT_DEFINE } from './rk_r87';
@@ -23,15 +23,19 @@ import { GetPasswordPacket } from './packets/usb/getPasswordPacket';
 import { SetFactoryPacket } from './packets/usb/setFactoryPacket';
 
 import { Macros } from './macros';
-import { RK_R87_USB_DEFINE } from '.';
 
 const worker = new Worker(new URL('@/common/communication.ts', import.meta.url));
 
 export class RK_R87_Usb extends RK_R87 {
 
+    reportId: number;
+
     constructor(state: KeyboardState, device: HIDDevice) {
         super(state, device);
         state.connectType = ConnectionType.USB;
+
+        this.reportId = REPORT_ID_USB;
+        if (device.productId == 0x01CB) this.reportId = REPORT_ID_USB_09;
     }
 
     static async create(state: KeyboardState, device: HIDDevice) {
@@ -46,7 +50,7 @@ export class RK_R87_Usb extends RK_R87 {
             if (event.data == 'heartbeat') {
             } else {
                 try {
-                    await this.setFeature(REPORT_ID_USB, event.data as Uint8Array);
+                    await this.setFeature(this.reportId, event.data as Uint8Array);
                 } catch (e) {
                     this.device.close();
                 }
@@ -64,8 +68,8 @@ export class RK_R87_Usb extends RK_R87 {
     async getProfile(board: number): Promise<void> {
         let packet = new GetProfilePacket(board);
 
-        await this.setFeature(REPORT_ID_USB, packet.setReport);
-        packet.fromReportData(await this.getFeature(REPORT_ID_USB));
+        await this.setFeature(this.reportId, packet.setReport);
+        packet.fromReportData(await this.getFeature(this.reportId));
 
         this.data.boardProfile = packet.boardProfile;
         this.dispatchEvent(new CustomEvent(RK_R87_EVENT_DEFINE.OnProfileGotten, { detail: this.data.boardProfile }));
@@ -74,8 +78,8 @@ export class RK_R87_Usb extends RK_R87 {
     async getPassword(): Promise<void> {
         let packet = new GetPasswordPacket();
 
-        await this.setFeature(REPORT_ID_USB, packet.setReport);
-        packet.fromReportData(await this.getFeature(REPORT_ID_USB));
+        await this.setFeature(this.reportId, packet.setReport);
+        packet.fromReportData(await this.getFeature(this.reportId));
 
         this.state.fwVersion = packet.fwVersion;
         //this.dispatchEvent(new CustomEvent(RK_R87_EVENT_DEFINE.OnProfileGotten, { detail: this.data.profile }));
@@ -85,7 +89,7 @@ export class RK_R87_Usb extends RK_R87 {
         if (this.data.boardProfile != undefined) {
             let packet = new SetProfilePacket(board);
             packet.setPayload(this.data.boardProfile.buffer);
-            //await this.setFeature(REPORT_ID_USB, packet.setReport);
+            //await this.setFeature(this.reportId, packet.setReport);
             worker.postMessage(packet.setReport);
             console.log(`Push profile data to queue.`);
         }
@@ -94,8 +98,8 @@ export class RK_R87_Usb extends RK_R87 {
     async getLedEffect(board: number): Promise<void> {
         let packet = new GetLedEffectPacket(board);
 
-        await this.setFeature(REPORT_ID_USB, packet.setReport);
-        packet.fromReportData(await this.getFeature(REPORT_ID_USB));
+        await this.setFeature(this.reportId, packet.setReport);
+        packet.fromReportData(await this.getFeature(this.reportId));
 
         this.data.ledEffect = packet.ledEffect;
         this.dispatchEvent(new CustomEvent(RK_R87_EVENT_DEFINE.OnLedEffectGotten, { detail: this.data.ledEffect }));
@@ -105,7 +109,7 @@ export class RK_R87_Usb extends RK_R87 {
         if (this.data.ledEffect != undefined) {
             let packet = new SetLedEffectPacket(board);
             packet.setPayload(this.data.ledEffect.buffer);
-            //await this.setFeature(REPORT_ID_USB, packet.setReport);
+            //await this.setFeature(this.reportId, packet.setReport);
             worker.postMessage(packet.setReport);
             console.log(`Push led effect data to queue.`);
         }
@@ -114,8 +118,8 @@ export class RK_R87_Usb extends RK_R87 {
     async getKeyMatrix(layer: KeyMatrixLayer, table: MatrixTable, board: number): Promise<void> {
         let packet = new GetKeyMatrixPacket(layer, table, board);
 
-        await this.setFeature(REPORT_ID_USB, packet.setReport);
-        packet.fromReportData(await this.getFeature(REPORT_ID_USB));
+        await this.setFeature(this.reportId, packet.setReport);
+        packet.fromReportData(await this.getFeature(this.reportId));
 
         if (this.data.keyMatrixs != undefined && packet.keyMatrix != undefined) {
             this.data.keyMatrixs[table][layer] = packet.keyMatrix;
@@ -127,7 +131,7 @@ export class RK_R87_Usb extends RK_R87 {
         if (this.data.keyMatrixs != undefined) {
             let packet = new SetKeyMatrixPacket(layer, table, board);
             packet.setPayload(this.data.keyMatrixs[table][layer].buffer);
-            //await this.setFeature(REPORT_ID_USB, packet.setReport);
+            //await this.setFeature(this.reportId, packet.setReport);
             worker.postMessage(packet.setReport);
             console.log(`Push layer [${layer}] key matrix data to queue.`);
         }
@@ -140,8 +144,8 @@ export class RK_R87_Usb extends RK_R87 {
 
         for (block = 0; block < blockCount; block++) {
             let packet = new GetMacrosPacket(block, blockCount);
-            await this.setFeature(REPORT_ID_USB, packet.setReport);
-            packet.fromReportData(await this.getFeature(REPORT_ID_USB));
+            await this.setFeature(this.reportId, packet.setReport);
+            packet.fromReportData(await this.getFeature(this.reportId));
             if (packet.buffer != undefined) {
                 u8.set(packet.buffer, block * MACRO_PER_BLOCK_LENGTH);
             }
@@ -164,7 +168,7 @@ export class RK_R87_Usb extends RK_R87 {
                 let end = begin + ((block + 1) * MACRO_PER_BLOCK_LENGTH > u8.length ? u8.length - (block * MACRO_PER_BLOCK_LENGTH) : MACRO_PER_BLOCK_LENGTH);
                 let tmp = u8.slice(begin, end);
                 packet.setPayload(new DataView(tmp.buffer));
-                await this.setFeature(REPORT_ID_USB, packet.setReport);
+                await this.setFeature(this.reportId, packet.setReport);
             }
 
             // let pkgs = new Array<DataView>();
@@ -180,7 +184,7 @@ export class RK_R87_Usb extends RK_R87 {
             // for (let pkg of pkgs) {
             //     packet.packageIndex = index;
             //     packet.setPayload(pkg);
-            //     await this.setFeature(REPORT_ID_USB, packet.setReport);
+            //     await this.setFeature(this.reportId, packet.setReport);
             // }
         }
     }
@@ -188,8 +192,8 @@ export class RK_R87_Usb extends RK_R87 {
     async getLedColors(board: number): Promise<void> {
         let packet = new GetLedColorsPacket(board);
 
-        await this.setFeature(REPORT_ID_USB, packet.setReport);
-        packet.fromReportData(await this.getFeature(REPORT_ID_USB));
+        await this.setFeature(this.reportId, packet.setReport);
+        packet.fromReportData(await this.getFeature(this.reportId));
 
         this.data.ledColors = packet.ledColors;
         this.dispatchEvent(new CustomEvent(RK_R87_EVENT_DEFINE.OnLedColorsGotten, { detail: this.data.ledColors }));
@@ -200,7 +204,7 @@ export class RK_R87_Usb extends RK_R87 {
         if (this.data.ledColors != undefined) {
             let packet = new SetLedColorsPacket(board);
             packet.setPayload(this.data.ledColors.buffer);
-            //await this.setFeature(REPORT_ID_USB, packet.setReport);
+            //await this.setFeature(this.reportId, packet.setReport);
             worker.postMessage(packet.setReport);
             console.log(`Push led colors data to queue.`);
         }
@@ -208,7 +212,7 @@ export class RK_R87_Usb extends RK_R87 {
 
     async setFactory(): Promise<void> {
         let packet = new SetFactoryPacket();
-        //await this.setFeature(REPORT_ID_USB, packet.setReport);
+        //await this.setFeature(this.reportId, packet.setReport);
         worker.postMessage(packet.setReport);
     }
 }

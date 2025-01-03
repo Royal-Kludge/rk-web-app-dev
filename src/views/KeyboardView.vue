@@ -70,13 +70,11 @@ onMounted(async () => {
             await keyboard.protocol?.init();
 
             if (keyboard.state.fwVersion != undefined) data.value.fwVersion = keyboard.state.fwVersion.valueOf();
-            if (keyboard.state.deviceName != undefined
-                
-            ) data.value.deviceName = keyboard.state.deviceName.valueOf();
+            if (keyboard.state.deviceName != undefined) data.value.deviceName = keyboard.state.deviceName.valueOf();
 
             switch (keyboard.keyboardDefine.name.valueOf()) {
                 case 'RK-R87PRO':
-                case 'RK-R87PRO Low delay':
+                case 'RK-R87PRO RF':
                     productId.value = 1
                     break;
                 case 'RK-M87':
@@ -172,7 +170,7 @@ const passwordGotten = async (event: any) => {
 
         switch (keyboard.keyboardDefine.name.valueOf()) {
             case 'RK-R87PRO':
-            case 'RK-R87PRO Low delay':
+            case 'RK-R87PRO RF':
                 productId.value = 1
                 break;
             case 'RK-M87':

@@ -108,17 +108,28 @@ const isDown = computed(() => (useLight.connectType == ConnectionType.USB))
 const VerTips = computed(() => (ver.value !== version.value ? t('set.title_3') + ':' + version.value : t('set.title_2')))
 
 const getVer = () => {
-    // if (useLight.connectType !== ConnectionType.USB)
-    //     return
-    axios.get('/down/work/RKWEB/firmware/R87PRO/firmware.json').then(response => {
-        // 请求成功处理
-        version.value = response.data.version
-        url.value = response.data.url
-        checkVer()
-    }).catch(error => {
-        // 请求失败处理   
-        console.error(error);
-    });
+    let pid = keyboard.keyboardDefine?.productId;
+    if (pid == 0x019F) {
+        axios.get('/down/work/RKWEB/firmware/R87PRO/firmware.json').then(response => {
+            // 请求成功处理
+            version.value = response.data.version
+            url.value = response.data.url
+            checkVer()
+        }).catch(error => {
+            // 请求失败处理   
+            console.error(error);
+        });
+    } else if (pid == 0x01CB) {
+        axios.get('/down/work/RKWEB/firmware/R87PRO/R87pro(773)_RF_firmware.json').then(response => {
+            // 请求成功处理
+            version.value = response.data.version
+            url.value = response.data.url
+            checkVer()
+        }).catch(error => {
+            // 请求失败处理   
+            console.error(error);
+        });
+    }
 }
 const checkVer = (flag: boolean = false) => {
     if (useLight.connectType !== ConnectionType.USB && flag == true) {

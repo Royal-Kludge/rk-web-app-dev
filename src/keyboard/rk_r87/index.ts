@@ -1,6 +1,24 @@
 import type { KeyboardDefine  } from '../interface'
 import { KeyMatrixLayer, MatrixTable } from '../enum'
-import { KeyMap_FN1_Win, KeyMap_FN2_Win, KeyMap_Normal_Win, KeyMap_Tap_Win, KeyMap_FN1_Mac, KeyMap_FN2_Mac, KeyMap_Normal_Mac, KeyMap_Tap_Mac, LightEffects  } from './layout'
+import { 
+    KeyMap_FN1_Win, 
+    KeyMap_FN2_Win, 
+    KeyMap_Normal_Win, 
+    KeyMap_Tap_Win, 
+    KeyMap_FN1_Mac, 
+    KeyMap_FN2_Mac, 
+    KeyMap_Normal_Mac, 
+    KeyMap_Tap_Mac,
+    KeyMap_FN1_RF_Win, 
+    KeyMap_FN2_RF_Win, 
+    KeyMap_Normal_RF_Win, 
+    KeyMap_Tap_RF_Win, 
+    KeyMap_FN1_RF_Mac, 
+    KeyMap_FN2_RF_Mac, 
+    KeyMap_Normal_RF_Mac, 
+    KeyMap_Tap_RF_Mac
+} from './layout'
+import { LightEffects } from './layout'
 import { KeyText } from "@/common/keyCode"
 import { RK_R87_Dongle } from './rk_r87_dongle'
 import { RK_R87_Usb } from './rk_r87_usb'
@@ -66,7 +84,7 @@ export const RK_R87_DONGLE_DEFINE: KeyboardDefine = {
     ],
     keyLayout: { 
         0x00: {
-            0x00: KeyMap_Normal_Win,
+            0x00: KeyMap_Normal_RF_Win,
             0x01: KeyMap_FN1_Win,
             0x02: KeyMap_FN2_Win,
             0x03: KeyMap_Tap_Win,
@@ -82,8 +100,8 @@ export const RK_R87_DONGLE_DEFINE: KeyboardDefine = {
     protocol: RK_R87_Dongle.create
 }
 
-export const RK_R87_LOW_DELAY_USB_DEFINE: KeyboardDefine = {
-    name: "RK-R87PRO Low delay",
+export const RK_R87_RF_USB_DEFINE: KeyboardDefine = {
+    name: "RK-R87PRO RF",
     image: "keyboard.png",
     vendorId: 0x258A,
     productId: 0x01CB,
@@ -104,24 +122,24 @@ export const RK_R87_LOW_DELAY_USB_DEFINE: KeyboardDefine = {
     ],
     keyLayout: { 
         0x00: {
-            0x00: KeyMap_Normal_Win,
-            0x01: KeyMap_FN1_Win,
-            0x02: KeyMap_FN2_Win,
-            0x03: KeyMap_Tap_Win,
+            0x00: KeyMap_Normal_RF_Win,
+            0x01: KeyMap_FN1_RF_Win,
+            0x02: KeyMap_FN2_RF_Win,
+            0x03: KeyMap_Tap_RF_Win,
         },
         0x01: {
-            0x00: KeyMap_Normal_Mac,
-            0x01: KeyMap_FN1_Mac,
-            0x02: KeyMap_FN2_Mac,
-            0x03: KeyMap_Tap_Mac,
+            0x00: KeyMap_Normal_RF_Mac,
+            0x01: KeyMap_FN1_RF_Mac,
+            0x02: KeyMap_FN2_RF_Mac,
+            0x03: KeyMap_Tap_RF_Mac,
         }
     },
     lightEffects: LightEffects,
     protocol: RK_R87_Usb.create
 }
 
-export const RK_R87_LOW_DELAY_DONGLE_DEFINE: KeyboardDefine = {
-    name: "RK-R87PRO Low delay",
+export const RK_R87_RF_DONGLE_DEFINE: KeyboardDefine = {
+    name: "RK-R87PRO RF",
     image: "keyboard.png",
     vendorId: 0x258A,
     productId: 0x01BB,
@@ -142,16 +160,16 @@ export const RK_R87_LOW_DELAY_DONGLE_DEFINE: KeyboardDefine = {
     ],
     keyLayout: { 
         0x00: {
-            0x00: KeyMap_Normal_Win,
-            0x01: KeyMap_FN1_Win,
-            0x02: KeyMap_FN2_Win,
-            0x03: KeyMap_Tap_Win,
+            0x00: KeyMap_Normal_RF_Win,
+            0x01: KeyMap_FN1_RF_Win,
+            0x02: KeyMap_FN2_RF_Win,
+            0x03: KeyMap_Tap_RF_Win,
         },
         0x01: {
-            0x00: KeyMap_Normal_Mac,
-            0x01: KeyMap_FN1_Mac,
-            0x02: KeyMap_FN2_Mac,
-            0x03: KeyMap_Tap_Mac,
+            0x00: KeyMap_Normal_RF_Mac,
+            0x01: KeyMap_FN1_RF_Mac,
+            0x02: KeyMap_FN2_RF_Mac,
+            0x03: KeyMap_Tap_RF_Mac,
         }
     },
     lightEffects: LightEffects,

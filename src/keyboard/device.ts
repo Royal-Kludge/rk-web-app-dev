@@ -31,7 +31,7 @@ export const RK_R87_WIRE_DEFINE: HidDeviceDefine = {
     deviceType: DeviceType.Keyboard,
 }
 
-export const RK_R87_LOW_DELAY_WIRE_DEFINE: HidDeviceDefine = {
+export const RK_R87_RF_WIRE_DEFINE: HidDeviceDefine = {
     name: "rk r87 low delay wire",
     vendorId: 0x258A,
     productId: 0x01CB,
