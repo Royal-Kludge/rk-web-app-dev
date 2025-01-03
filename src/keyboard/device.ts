@@ -32,7 +32,7 @@ export const RK_R87_WIRE_DEFINE: HidDeviceDefine = {
 }
 
 export const RK_R87_RF_WIRE_DEFINE: HidDeviceDefine = {
-    name: "rk r87 low delay wire",
+    name: "rk r87 rf wire",
     vendorId: 0x258A,
     productId: 0x01CB,
     usagePage: 0xFF00,
@@ -41,8 +41,8 @@ export const RK_R87_RF_WIRE_DEFINE: HidDeviceDefine = {
     deviceType: DeviceType.Keyboard,
 }
 
-export const RK_M87_EN_WIRE_DEFINE: HidDeviceDefine = {
-    name: "rk m87 en wire",
+export const RK_M87_WIRE_DEFINE: HidDeviceDefine = {
+    name: "rk m87 wire",
     vendorId: 0x258A,
     productId: 0x01A2,
     usagePage: 0xFF00,
@@ -55,6 +55,16 @@ export const RK_M87_JP_WIRE_DEFINE: HidDeviceDefine = {
     name: "rk m87 jp wire",
     vendorId: 0x258A,
     productId: 0x01F5,
+    usagePage: 0xFF00,
+    usage: 0x0001,
+    connectType: ConnectionType.USB,
+    deviceType: DeviceType.Keyboard,
+}
+
+export const RK_M87_UK_WIRE_DEFINE: HidDeviceDefine = {
+    name: "rk m87 uk wire",
+    vendorId: 0x258A,
+    productId: 0x01D6,
     usagePage: 0xFF00,
     usage: 0x0001,
     connectType: ConnectionType.USB,

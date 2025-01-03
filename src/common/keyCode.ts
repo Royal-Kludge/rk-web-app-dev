@@ -1232,6 +1232,7 @@ export enum KeyDefineEnum {
     SP_Power_Mode = 0x0700000c,      //电量显示  
     SP_WinMacMode = 0x0700000d,
     SP_Windows_Mode = 0x0700000e,      //����Windows
+    SP_Save_Time = 0x07000022,		//
     SP_Mac_Mode = 0x0700000f,      //����Mac   
     SP_KB_Mode = 0x07000010,
     SP_O_Mode = 0x07000022,      //����Mac
@@ -1494,17 +1495,17 @@ export const KeyText: Record<number, String> = {
     0x62: '0',
 
     //0x31: '',
-    0x32: '',
+    0x32: 'K42',
     0x64: '|\\',
     0x65: 'App',
-    0x85: '',
-    0x87: '',
-    0x88: '',
-    0x89: '',
-    0x8a: '',
-    0x8b: '',
-    0x90: '',   //key_Hangul
-    0x91: '',   //Key_Hanja
+    0x85: 'K107',
+    0x87: 'K56',
+    0x88: 'K133',
+    0x89: 'K14',
+    0x8a: 'K132',
+    0x8b: 'K131',
+    0x90: 'K151',   //key_Hangul
+    0x91: 'K150',   //Key_Hanja
 
     //****************************************************************
     //Modify key
@@ -1879,17 +1880,17 @@ export const KeyText_2: Record<number, String> = {
     0x62: '0',
 
     //0x31: '',
-    0x32: '',
-    0x64: '',
-    0x65: 'App',
-    0x85: '',
-    0x87: '',
-    0x88: '',
-    0x89: '',
-    0x8a: '',
-    0x8b: '',
-    0x90: '',   //key_Hangul
-    0x91: '',   //Key_Hanja
+    0x32: 'K42',  
+    0x64: '|\\',  
+    0x65: 'App',  
+    0x85: 'K107',  
+    0x87: 'K56',  
+    0x88: 'K133',  
+    0x89: 'K14',  
+    0x8a: 'K132',  
+    0x8b: 'K131',  
+    0x90: 'K151',  //key_Hangul
+    0x91: 'K150',  //Key_Hanja
 
     //****************************************************************
     //Modify key
@@ -2116,17 +2117,17 @@ export const KeyText_Mac: Record<number, String> = {
     0x62: '0',
 
     //0x31: '',
-    0x32: '',
-    0x64: '',
+    0x32: 'K42',
+    0x64: '|\\',
     0x65: 'App',
-    0x85: '',
-    0x87: '',
-    0x88: '',
-    0x89: '',
-    0x8a: '',
-    0x8b: '',
-    0x90: '',   //key_Hangul
-    0x91: '',   //Key_Hanja
+    0x85: 'K107',
+    0x87: 'K56',
+    0x88: 'K133',
+    0x89: 'K14',
+    0x8a: 'K132',
+    0x8b: 'K131',
+    0x90: 'K151',//key_Hangul
+    0x91: 'K150',//Key_Hanja
 
     //****************************************************************
     //Modify key
