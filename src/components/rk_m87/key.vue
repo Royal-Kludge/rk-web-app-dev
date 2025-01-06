@@ -12,8 +12,10 @@
                         <div @click="keyClick(key.index)" class="d-flex ai-center jc-center c-p"
                             :class="[`d-flex p-2 pl-3 ${key.style}`, useKey.keyColor(key.keyData), useKey.isSelected(key.index)]">
                             <div :class="[`text-white-1`, keyTextColorClass(key.keyData)]"
-                                :style="`word-wrap: break-word;overflow: hidden;text-align: center;${keyTextColorStyle(key.keyData)}`">
-                                <span style="word-wrap: break-word;" v-html="useKey.keyText(key.keyData)"></span>
+                                :style="`z-index:1;word-wrap: break-word;overflow: hidden;text-align: center;${keyTextColorStyle(key.keyData)}`">
+                                <span style="word-wrap: break-word;" v-html="useKey.keyText(key.keyData)"
+                                    v-if="key.img == undefined"></span>
+                                <span v-else v-html="key.img" class="d-flex"></span>
                             </div>
                         </div>
                     </div>
@@ -21,8 +23,10 @@
                         :class="[`d-flex p-2 pl-3 ${key.style}`, useKey.keyColor(key.keyData), useKey.isSelected(key.index)]"
                         v-for="key in (line as KeyLine).keys" v-else @click="keyClick(key.index)">
                         <div :class="[`text-white-1`, keyTextColorClass(key.keyData)]"
-                            :style="`word-wrap: break-word;overflow: hidden;text-align: center;${keyTextColorStyle(key.keyData)}`">
-                            <span style="word-wrap: break-word;" v-html="useKey.keyText(key.keyData)"></span>
+                            :style="`z-index:1;word-wrap: break-word;overflow: hidden;text-align: center;${keyTextColorStyle(key.keyData)}`">
+                            <span style="word-wrap: break-word;" v-html="useKey.keyText(key.keyData)"
+                                v-if="key.img == undefined"></span>
+                            <span v-else v-html="key.img" class="d-flex"></span>
                         </div>
                     </div>
                     <div :style="'width:' + mask_width + 'left:' + mask_left + 'height:' + mask_height + 'top:' + mask_top"
@@ -38,8 +42,10 @@
                         <div @click="keyClick(key.index)" class="d-flex ai-center jc-center c-p"
                             :class="[`d-flex p-2 pl-3 ${key.style}`, useKey.keyColor(key.keyData), useKey.isSelected(key.index)]">
                             <div :class="[`text-white-1`, keyTextColorClass(key.keyData)]"
-                                :style="`word-wrap: break-word;overflow: hidden;text-align: center;${keyTextColorStyle(key.keyData)}`">
-                                <span style="word-wrap: break-word;" v-html="useKey.keyText(key.keyData)"></span>
+                                :style="`z-index:1;word-wrap: break-word;overflow: hidden;text-align: center;${keyTextColorStyle(key.keyData)}`">
+                                <span style="word-wrap: break-word;" v-html="useKey.keyText(key.keyData)"
+                                    v-if="key.img == undefined"></span>
+                                <span v-else v-html="key.img" class="d-flex"></span>
                             </div>
                         </div>
                     </div>
@@ -47,8 +53,10 @@
                         :class="[`d-flex p-2 pl-3 ${key.style}`, useKey.keyColor(key.keyData), useKey.isSelected(key.index)]"
                         v-for="key in line.keys" v-else @click="keyClick(key.index)">
                         <div :class="[`text-white-1`, keyTextColorClass(key.keyData)]"
-                            :style="`word-wrap: break-word;overflow: hidden;text-align: center;${keyTextColorStyle(key.keyData)}`">
-                            <span style="word-wrap: break-word;" v-html="useKey.keyText(key.keyData)"></span>
+                            :style="`z-index:1;word-wrap: break-word;overflow: hidden;text-align: center;${keyTextColorStyle(key.keyData)}`">
+                            <span style="word-wrap: break-word;" v-html="useKey.keyText(key.keyData)"
+                                v-if="key.img == undefined"></span>
+                            <span v-else v-html="key.img" class="d-flex"></span>
                         </div>
                     </div>
                     <div :style="'width:' + mask_width + 'left:' + mask_left + 'height:' + mask_height + 'top:' + mask_top"
@@ -404,6 +412,46 @@ const mediaStrKey = (key: string | undefined) => {
     top: 20px;
 }
 
+.key5_jp {
+    width: 164px;
+}
+
+.key6_jp {
+    width: 65px;
+}
+
+.key7 {
+    width: 356px;
+}
+
+.key-right1 {
+    position: absolute;
+    right: 130px;
+}
+
+.key-right2 {
+    position: absolute;
+    right: 66px;
+}
+
+.key-right3 {
+    position: absolute;
+    right: 1px;
+}
+
+.key_enter {
+    &::before {
+        content: "";
+        position: absolute;
+        top: 0px;
+        right: 0;
+        bottom: -59px;
+        width: 61px;
+        background: inherit;
+        border-radius: 3px;
+    }
+}
+
 @media screen and (max-width: 1600px) {
     .bg {
         width: 886px;
@@ -483,6 +531,46 @@ const mediaStrKey = (key: string | undefined) => {
     .key-right {
         right: 17px;
         top: 10px;
+    }
+
+    .key5_jp {
+        width: 160px;
+    }
+
+    .key6_jp {
+        width: 49px;
+    }
+
+    .key7 {
+        width: 321px;
+    }
+
+    .key-right1 {
+        position: absolute;
+        right: 109px;
+    }
+
+    .key-right2 {
+        position: absolute;
+        right: 55px;
+    }
+
+    .key-right3 {
+        position: absolute;
+        right: 1px;
+    }
+
+    .key_enter {
+        &::before {
+            content: "";
+            position: absolute;
+            top: 0px;
+            right: 0;
+            bottom: -48px;
+            width: 51px;
+            background: inherit;
+            border-radius: 3px;
+        }
     }
 }
 
@@ -569,6 +657,46 @@ const mediaStrKey = (key: string | undefined) => {
         position: absolute;
         right: 23px;
         top: 8px;
+    }
+
+    .key5_jp {
+        width: 105px;
+    }
+
+    .key6_jp {
+        width: 39px;
+    }
+
+    .key7 {
+        width: 233px;
+    }
+
+    .key-right1 {
+        position: absolute;
+        right: 86px;
+    }
+
+    .key-right2 {
+        position: absolute;
+        right: 43px;
+    }
+
+    .key-right3 {
+        position: absolute;
+        right: 0px;
+    }
+
+    .key_enter {
+        &::before {
+            content: "";
+            position: absolute;
+            top: 0px;
+            right: 0;
+            bottom: -37px;
+            width: 41px;
+            background: inherit;
+            border-radius: 3px;
+        }
     }
 }
 </style>
