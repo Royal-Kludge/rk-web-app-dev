@@ -23,21 +23,21 @@ import { mouse } from '@/mouse/mouse'
 import { RK_L75, RK_L75_EVENT_DEFINE } from "@/keyboard/rk_l75/rk_l75";
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 import { storeToRefs } from "pinia";
-import type { RK_M300 } from '@/mouse/rk_m300/m300';
+import type { RK_M300 } from '@/mouse/rk_k3/rk_k3';
 
 const loading = ref(false)
-const rk_m300 = ref<RK_M300>();
+const rk_k3 = ref<RK_M300>();
 
 onMounted(async () => {
-    rk_m300.value = mouse.protocol as RK_M300;
-    rk_m300.value.addEventListener(RK_L75_EVENT_DEFINE.OnReportStart, reportStart, false);
-    rk_m300.value.addEventListener(RK_L75_EVENT_DEFINE.OnReportFinish, reportFinish, false);
+    rk_k3.value = mouse.protocol as RK_M300;
+    rk_k3.value.addEventListener(RK_L75_EVENT_DEFINE.OnReportStart, reportStart, false);
+    rk_k3.value.addEventListener(RK_L75_EVENT_DEFINE.OnReportFinish, reportFinish, false);
 });
 
 onBeforeUnmount(() => {
-    if (rk_m300.value != undefined) {
-        rk_m300.value.removeEventListener(RK_L75_EVENT_DEFINE.OnReportFinish, reportFinish, false);
-        rk_m300.value.removeEventListener(RK_L75_EVENT_DEFINE.OnReportStart, reportStart, false);
+    if (rk_k3.value != undefined) {
+        rk_k3.value.removeEventListener(RK_L75_EVENT_DEFINE.OnReportFinish, reportFinish, false);
+        rk_k3.value.removeEventListener(RK_L75_EVENT_DEFINE.OnReportStart, reportStart, false);
     }
 });
 

@@ -1,7 +1,7 @@
 import type { MouseDefine  } from '../interface'
 import { KeyText } from "@/common/keyCode"
 import { ConnectionType, DeviceType } from '@/device/enum'
-import { RK_M300_Usb } from './m300_usb'
+import { RK_M300_Usb } from './rk_k3_usb'
 
 export const RK_M300_USB_DEFINE: MouseDefine = {
     name: "RK-M300",

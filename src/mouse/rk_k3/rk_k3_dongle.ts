@@ -3,7 +3,7 @@ import { ConnectionStatusEnum, ConnectionType } from '../../device/enum';
 import { Packet_Dongle, REPORT_ID_DONGLE, REPORT_MAX_RETRY, MACRO_PER_BLOCK_LENGTH, MACRO_MAX_LENGTH } from './packets/packet';
 import { Packet_Dongle_Block_Set } from './packets/dongle/setPacket';
 
-import { COMMAND_ID, RK_M300, RK_M300_EVENT_DEFINE } from './m300';
+import { COMMAND_ID, RK_M300, RK_M300_EVENT_DEFINE } from './rk_k3';
 
 const dongleWorker = new Worker(new URL('@/common/dongleCommunication.ts', import.meta.url));
 

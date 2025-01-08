@@ -1,5 +1,5 @@
 import type { MouseState } from '../interface';
-import { RK_M300 } from './m300';
+import { RK_M300 } from './rk_k3';
 import { REPORT_ID_USB } from './packets/packet';
 import { ConnectionStatusEnum, ConnectionType } from '@/device/enum';
 
