@@ -1,6 +1,6 @@
 import { Protocol } from '@/mouse/protocol'
 
-export const RK_M300_EVENT_DEFINE: {
+export const RK_K3_EVENT_DEFINE: {
     OnReportFinish: string;
     OnReportStart: string;
 } = {
@@ -14,13 +14,13 @@ export const COMMAND_ID: {
     ActivelyReport: 0x0A,
 }
 
-export class RK_M300_Data {
+export class RK_K3_Data {
     donglePwd: number = 0;
 }
 
-export abstract class RK_M300 extends Protocol {
+export abstract class RK_K3 extends Protocol {
 
-    data: RK_M300_Data = new RK_M300_Data();
+    data: RK_K3_Data = new RK_K3_Data();
     
     abstract onGetReport(reportId: number, data: DataView): Promise<void>;
 

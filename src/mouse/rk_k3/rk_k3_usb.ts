@@ -1,11 +1,11 @@
 import type { MouseState } from '../interface';
-import { RK_M300 } from './rk_k3';
+import { RK_K3 } from './rk_k3';
 import { REPORT_ID_USB } from './packets/packet';
 import { ConnectionStatusEnum, ConnectionType } from '@/device/enum';
 
 const worker = new Worker(new URL('@/common/communication.ts', import.meta.url));
 
-export class RK_M300_Usb extends RK_M300 {
+export class RK_K3_Usb extends RK_K3 {
 
     constructor(state: MouseState, device: HIDDevice) {
         super(state, device);
@@ -13,7 +13,7 @@ export class RK_M300_Usb extends RK_M300 {
     }
 
     static async create(state: MouseState, device: HIDDevice) {
-        return new RK_M300_Usb(state, device);
+        return new RK_K3_Usb(state, device);
     }
 
     async init(): Promise<void> {

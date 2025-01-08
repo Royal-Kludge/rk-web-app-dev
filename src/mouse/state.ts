@@ -1,6 +1,6 @@
 import type { MouseState, MouseDefine  } from './interface'
 import { ConnectionType, ConnectionEventEnum, ConnectionStatusEnum } from "../device/enum"
-import { RK_M300_USB_DEFINE } from "./rk_k3"
+import { RK_K3_USB_DEFINE } from "./rk_k3"
 
 export const VERSION = '1.6.1'
 
@@ -21,7 +21,7 @@ export const defaultState: MouseState = {
 * Mouse list
 */
 export const MouseDefineList: Record<string, MouseDefine> = {
-    "rk k3 wire": RK_M300_USB_DEFINE,
+    "rk k3 wire": RK_K3_USB_DEFINE,
 }
 
 /**

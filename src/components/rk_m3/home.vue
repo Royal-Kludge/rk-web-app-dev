@@ -23,13 +23,13 @@ import { mouse } from '@/mouse/mouse'
 import { RK_L75, RK_L75_EVENT_DEFINE } from "@/keyboard/rk_l75/rk_l75";
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 import { storeToRefs } from "pinia";
-import type { RK_M300 } from '@/mouse/rk_k3/rk_k3';
+import type { RK_K3 } from '@/mouse/rk_k3/rk_k3';
 
 const loading = ref(false)
-const rk_k3 = ref<RK_M300>();
+const rk_k3 = ref<RK_K3>();
 
 onMounted(async () => {
-    rk_k3.value = mouse.protocol as RK_M300;
+    rk_k3.value = mouse.protocol as RK_K3;
     rk_k3.value.addEventListener(RK_L75_EVENT_DEFINE.OnReportStart, reportStart, false);
     rk_k3.value.addEventListener(RK_L75_EVENT_DEFINE.OnReportFinish, reportFinish, false);
 });

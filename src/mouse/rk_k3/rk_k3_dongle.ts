@@ -3,11 +3,11 @@ import { ConnectionStatusEnum, ConnectionType } from '../../device/enum';
 import { Packet_Dongle, REPORT_ID_DONGLE, REPORT_MAX_RETRY, MACRO_PER_BLOCK_LENGTH, MACRO_MAX_LENGTH } from './packets/packet';
 import { Packet_Dongle_Block_Set } from './packets/dongle/setPacket';
 
-import { COMMAND_ID, RK_M300, RK_M300_EVENT_DEFINE } from './rk_k3';
+import { COMMAND_ID, RK_K3, RK_K3_EVENT_DEFINE } from './rk_k3';
 
 const dongleWorker = new Worker(new URL('@/common/dongleCommunication.ts', import.meta.url));
 
-export class RK_M300_Dongle extends RK_M300 {
+export class RK_K3_Dongle extends RK_K3 {
 
     constructor(state: MouseState, device: HIDDevice) {
         super(state, device);
@@ -15,7 +15,7 @@ export class RK_M300_Dongle extends RK_M300 {
     }
 
     static async create(state: MouseState, device: HIDDevice) {
-        return new RK_M300_Dongle(state, device);
+        return new RK_K3_Dongle(state, device);
     }
 
     async init(): Promise<void> {
@@ -23,7 +23,7 @@ export class RK_M300_Dongle extends RK_M300 {
 
         dongleWorker.onmessage = (async (event: any) => {
             if (event.data == 'finish' || event.data == 'timeout') {
-                this.dispatchEvent(new CustomEvent(RK_M300_EVENT_DEFINE.OnReportFinish, { detail: event.data }));
+                this.dispatchEvent(new CustomEvent(RK_K3_EVENT_DEFINE.OnReportFinish, { detail: event.data }));
             } else {
                 
             }
@@ -59,14 +59,14 @@ export class RK_M300_Dongle extends RK_M300 {
                 } else {
                     this.data.donglePwd = 0;
                 }
-                //this.dispatchEvent(new CustomEvent(RK_M300_EVENT_DEFINE.OnDongleStatusChanged, { detail: this.state.ConnectionStatus }));
+                //this.dispatchEvent(new CustomEvent(RK_K3_EVENT_DEFINE.OnDongleStatusChanged, { detail: this.state.ConnectionStatus }));
                 break;
         }
     }
 
     private async nextReport(event: any) {
         let pkt = event.detail as Packet_Dongle;
-        this.dispatchEvent(new CustomEvent(RK_M300_EVENT_DEFINE.OnReportStart, { detail: true }));
+        this.dispatchEvent(new CustomEvent(RK_K3_EVENT_DEFINE.OnReportStart, { detail: true }));
         await this.setReport(REPORT_ID_DONGLE, pkt.command());
     }
 
