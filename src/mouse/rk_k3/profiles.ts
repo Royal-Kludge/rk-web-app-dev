@@ -2,8 +2,8 @@ import { KeyMatrixLayer, MatrixTable } from '@/keyboard/enum';
 import { storage } from '@/common/storage';
 import { keyboard } from '@/keyboard/keyboard'
 import { KeyMatrix } from '@/keyboard/rk_l75/keyMatrix';
-import { PROFILE_DEFAULT_DATA } from './boardProfile';
-import { LED_EFFECT_DEFAULT_DATA } from './ledEffect';
+// import { PROFILE_DEFAULT_DATA } from './boardProfile';
+// import { LED_EFFECT_DEFAULT_DATA } from './ledEffect';
 import { VERSION } from '../state';
 
 export class Profile {
@@ -46,10 +46,10 @@ export class Profile {
                 }
             }
         }
-        
+
         this.ledColors = new Uint8Array(512);
-        this.profile = new Uint8Array(PROFILE_DEFAULT_DATA.buffer, 0, PROFILE_DEFAULT_DATA.buffer.byteLength);
-        this.ledEffect = new Uint8Array(LED_EFFECT_DEFAULT_DATA.buffer, 0, LED_EFFECT_DEFAULT_DATA.buffer.byteLength);
+        // this.profile = new Uint8Array(PROFILE_DEFAULT_DATA.buffer, 0, PROFILE_DEFAULT_DATA.buffer.byteLength);
+        // this.ledEffect = new Uint8Array(LED_EFFECT_DEFAULT_DATA.buffer, 0, LED_EFFECT_DEFAULT_DATA.buffer.byteLength);
     }
     get(table: MatrixTable | number, layer: KeyMatrixLayer | number): Uint8Array {
         return this.layers[table][layer];

@@ -1,6 +1,6 @@
 <template>
     <div v-if="isMouseConnect()" class="h-100">
-        <RK_M3_Page v-if="productId == 1" />
+        <RK_K3_Page v-if="productId == 1" />
     </div>
     <div class="d-flex flex-column ai-center h-100" v-else>
         <div class="p-5 fs-big m-5 mb-4">No keyboard connected to dongle</div>
@@ -12,7 +12,7 @@
 <script setup lang="ts">
 import { mouse } from '@/mouse/mouse'
 import { reactive, ref, onMounted, onBeforeUnmount } from 'vue';
-import RK_M3_Page from '@/components/rk_m3/home.vue'
+import RK_K3_Page from '@/components/rk_k3/home.vue'
 import { DonglePwdDefineList, MouseDefineList } from '@/mouse/state';
 import { ConnectionStatusEnum, ConnectionType } from '@/device/enum';
 import { storage } from '@/common/storage';

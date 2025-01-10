@@ -1,11 +1,14 @@
 import { Protocol } from '@/mouse/protocol'
+import type { Macros } from './macros';
 
 export const RK_K3_EVENT_DEFINE: {
     OnReportFinish: string;
     OnReportStart: string;
+    OnMacrosGotten: string;
 } = {
     OnReportFinish: 'OnReportFinish',
     OnReportStart: 'OnReportStart',
+    OnMacrosGotten: 'OnMacrosGotten',
 }
 
 export const COMMAND_ID: {
@@ -16,13 +19,16 @@ export const COMMAND_ID: {
 
 export class RK_K3_Data {
     donglePwd: number = 0;
+    macros?: Macros;
 }
 
 export abstract class RK_K3 extends Protocol {
 
     data: RK_K3_Data = new RK_K3_Data();
-    
+
     abstract onGetReport(reportId: number, data: DataView): Promise<void>;
+    abstract getMacros(): Promise<void>;
+    abstract setMacros(): Promise<void>;
 
     callback = (e: HIDInputReportEvent) => this.processKeyboardReport(e);
 
@@ -60,7 +66,7 @@ export abstract class RK_K3 extends Protocol {
         try {
             let u8 = new Uint8Array(data.buffer, 0, data.buffer.byteLength);
             console.log(`GetReport [${data.byteLength}] bytes -> ${u8.toString()}`);
-    
+
             if (this.onGetReport != null) {
                 await this.onGetReport(reportId, data);
             }

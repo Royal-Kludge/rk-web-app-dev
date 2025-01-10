@@ -33,6 +33,15 @@ const name = '<img src="/src/assets/images/logo@1x.png" style="width: 130px" />'
   </el-container>
 </template>
 <style>
+.tooltip {
+  margin-bottom: 50px;
+}
+
+:root {
+  --el-color-primary: #4743A7 !important;
+  --el-fill-color-blank: #F0F0FC !important;
+}
+
 .el-header {
   --el-header-padding: 0px !important;
 }
