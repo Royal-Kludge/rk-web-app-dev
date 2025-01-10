@@ -291,6 +291,7 @@ export default {
     error_1: "Image data is out of stroge space, please remove some frame to retry!",
     error_2: "Data out of stroge",
     error_3: "TFT data download to device failed, please retry again!",
-    error_4: "Download TFT data error"
+    error_4: "Download TFT data error",
+    error_5: "Supports up to 100 frames of images!"
   }
 };

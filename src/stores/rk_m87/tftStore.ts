@@ -14,6 +14,7 @@ export const useTftStore = defineStore("tftinfo_rk_m87", () => {
     const state = reactive({
         frame: frame,
         play: false,
+        delay: 0,
         frameBack: frameBack,
     });
 
@@ -59,7 +60,7 @@ export const useTftStore = defineStore("tftinfo_rk_m87", () => {
                 clickFrame(m)
                 index.value += 1
             }
-        }, frames.value.delay);
+        }, state.delay);
     };
 
     const stopFrame = () => {
@@ -106,7 +107,9 @@ export const useTftStore = defineStore("tftinfo_rk_m87", () => {
     }
     const saveFrame = () => {
         if (frames.value != undefined && frame.value != undefined) {
-            frames.value.add(frame.value);
+            if (frames.value.list.length < 100) {
+                frames.value.add(frame.value);
+            }
         }
     }
     const backFrame = () => {
@@ -158,7 +161,7 @@ export const useTftStore = defineStore("tftinfo_rk_m87", () => {
         }
     }
     const newFrame = (url: string = '') => {
-        if (frames.value != undefined) {
+        if (frames.value != undefined && frames.value.list.length < 100) {
             let tm = new Frame(url);
             frames.value.add(tm);
             frame.value = tm;
