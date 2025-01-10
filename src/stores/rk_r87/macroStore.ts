@@ -59,6 +59,7 @@ export const useMacroStore = defineStore("macrostore", () => {
         let ms = new Macros();
         for (let m of tmp.macroList) {
           let tm = new Macro(m.name);
+          tm.repeat = m.repeat;
           for (let a of m.actions) {
             let ta = new Action(a.key, a.delay, a.action, a.type);
             tm.add(ta);

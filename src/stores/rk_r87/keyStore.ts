@@ -1452,6 +1452,8 @@ export const useKeyStore = defineStore('keyinfo', () => {
 
   const clickMacro = (obj: Macro) => {
     macro.value = obj;
+    state.cycleType = 1;
+    state.cycleCount = macro.value.repeat;
   }
 
   const confirmSetMacro = () => {

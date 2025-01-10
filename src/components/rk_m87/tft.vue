@@ -72,7 +72,7 @@
                             </div>
                             <div>
                                 <span>
-                                    <el-input-number style="width: 120px" v-model="delay"
+                                    <el-input-number style="width: 120px" v-model="state.delay"
                                         aria-placeholder="Please input delay" type="number" />
                                 </span>{{ $t("tft.desc_3") }}
                             </div>
@@ -186,7 +186,6 @@ const loading = ref(false)
 // 解构出t方法
 const { t } = useI18n();
 const frame = ref(false);
-const delay = ref(0);
 const dialogVisible = ref(false)
 
 onMounted(async () => {
@@ -194,7 +193,7 @@ onMounted(async () => {
     rk_m87.value = keyboard.protocol as RK_M87;
     rk_m87.value.addEventListener(RK_M87_EVENT_DEFINE.OnTftSetEvent, tftPicSetted, false);
     if (useTft.frames != undefined) {
-        delay.value = useTft.frames?.delay;
+        state.value.delay = useTft.frames?.delay;
     }
 });
 
@@ -323,79 +322,90 @@ const closeShow = () => {
     dialogVisible.value = false
 }
 const clickSure = (data: any, cropper: any) => {
-    if (img_list.value.length > 0) {
-        for (let i = index.value; i < img_list.value.length; i++) {
-            //for (let i = index.value; i < 1; i++) {
+
+    if (frames.value != undefined && (frames.value.list.length + img_list.value.length) > 100) {
+        ElMessageBox.alert(
+            t('tft.error_5'),
+            t('tft.error_2'),
+            {
+                cancelButtonText: 'ok',
+                customClass: 'set-to-default',
+            }
+        );
+    } else {
+        if (img_list.value.length > 0) {
+            for (let i = index.value; i < img_list.value.length; i++) {
+                //for (let i = index.value; i < 1; i++) {
+                const Img = new Image();
+                Img.src = img_list.value[i].url;
+                Img.onload = () => {
+                    //1，创建画布
+                    let canvas = document.createElement('canvas');
+                    //2，创建画笔
+                    const context = canvas.getContext('2d');
+                    //3，设置背景的宽高
+                    canvas.width = Img.width * cropper.scale;
+                    canvas.height = Img.height * cropper.scale;
+                    // 将变换原点设置为canvas的中心
+                    context?.translate(canvas.width / 2, canvas.height / 2);
+                    // 旋转
+                    context?.rotate(cropper.rotate * Math.PI / 2);
+                    // 将图像绘制到canvas上，旋转后的图像位于中心位置，需要向上移动一半的宽度，向左移动一半的高度
+                    context?.drawImage(Img, -canvas.width / 2, -canvas.height / 2, canvas.width, canvas.height);
+                    //裁剪
+                    const myImage = new Image();
+                    myImage.src = canvas.toDataURL("image/png");
+                    
+                    myImage.onload = () => {
+                        //1，创建画布
+                        let Imgcanvas = document.createElement('canvas');
+                        //2，创建画笔
+                        const Imgcontext = Imgcanvas.getContext('2d');
+                        //3，设置背景的宽高
+                        Imgcanvas.width = cropOption.autoCropWidth * 2;
+                        Imgcanvas.height = cropOption.autoCropHeight * 2;
+
+                        let imgX = cropper.cropOffsertX - cropper.x - (cropper.trueWidth - myImage.width) / 2;
+                        let imgY = cropper.cropOffsertY - cropper.y - (cropper.trueHeight - myImage.height) / 2;
+                        Imgcontext?.clearRect(0, 0, Imgcanvas.width, Imgcanvas.height);
+                        Imgcontext?.drawImage(
+                            myImage, //规定要使用的图像、画布或视频。
+                            imgX, imgY, //开始剪切的 x 坐标位置。
+                            cropper.cropW, cropper.cropH,  //被剪切图像的高度。
+                            0, 0,//在画布上放置图像的 x 、y坐标位置。
+                            Imgcanvas.width, Imgcanvas.height  //要使用的图像的宽度、高度
+                        );
+                        useTft.newFrame(Imgcanvas.toDataURL("image/png"))
+                    }
+                }
+            }
+        } else {
             const Img = new Image();
-            Img.src = img_list.value[i].url;
+            Img.src = window.URL.createObjectURL(data);
             Img.onload = () => {
                 //1，创建画布
                 let canvas = document.createElement('canvas');
                 //2，创建画笔
                 const context = canvas.getContext('2d');
                 //3，设置背景的宽高
-                canvas.width = Img.width * cropper.scale;
-                canvas.height = Img.height * cropper.scale;
-                // 将变换原点设置为canvas的中心
-                context?.translate(canvas.width / 2, canvas.height / 2);
-                // 旋转
-                context?.rotate(cropper.rotate * Math.PI / 2);
-                // 将图像绘制到canvas上，旋转后的图像位于中心位置，需要向上移动一半的宽度，向左移动一半的高度
-                context?.drawImage(Img, -canvas.width / 2, -canvas.height / 2, canvas.width, canvas.height);
-                //裁剪
-                const myImage = new Image();
-                myImage.src = canvas.toDataURL("image/png");
-                
-                myImage.onload = () => {
-                    //1，创建画布
-                    let Imgcanvas = document.createElement('canvas');
-                    //2，创建画笔
-                    const Imgcontext = Imgcanvas.getContext('2d');
-                    //3，设置背景的宽高
-                    Imgcanvas.width = cropOption.autoCropWidth * 2;
-                    Imgcanvas.height = cropOption.autoCropHeight * 2;
+                canvas.width = cropOption.autoCropWidth * 2;
+                canvas.height = cropOption.autoCropHeight * 2;
 
-                    let imgX = cropper.cropOffsertX - cropper.x - (cropper.trueWidth - myImage.width) / 2;
-                    let imgY = cropper.cropOffsertY - cropper.y - (cropper.trueHeight - myImage.height) / 2;
-                    Imgcontext?.clearRect(0, 0, Imgcanvas.width, Imgcanvas.height);
-                    Imgcontext?.drawImage(
-                        myImage, //规定要使用的图像、画布或视频。
-                        imgX, imgY, //开始剪切的 x 坐标位置。
-                        cropper.cropW, cropper.cropH,  //被剪切图像的高度。
-                        0, 0,//在画布上放置图像的 x 、y坐标位置。
-                        Imgcanvas.width, Imgcanvas.height  //要使用的图像的宽度、高度
-                    );
-                    useTft.newFrame(Imgcanvas.toDataURL("image/png"))
-                }
+                let imgX = (canvas.width - Img.width) / 2;
+                let imgY = (canvas.height - Img.height) / 2;
+                context?.clearRect(0, 0, canvas.width, canvas.height);
+                context?.drawImage(
+                    Img, //规定要使用的图像、画布或视频。
+                    0, 0, //开始剪切的 x 坐标位置。
+                    Img.width, Img.height,  //被剪切图像的高度。
+                    imgX, imgY,//在画布上放置图像的 x 、y坐标位置。
+                    Img.width, Img.height  //要使用的图像的宽度、高度
+                );
+                useTft.newFrame(canvas.toDataURL("image/png"))
             }
         }
+        dialogVisible.value = false
     }
-    else {
-        const Img = new Image();
-        Img.src = window.URL.createObjectURL(data);
-        Img.onload = () => {
-            //1，创建画布
-            let canvas = document.createElement('canvas');
-            //2，创建画笔
-            const context = canvas.getContext('2d');
-            //3，设置背景的宽高
-            canvas.width = cropOption.autoCropWidth * 2;
-            canvas.height = cropOption.autoCropHeight * 2;
-
-            let imgX = (canvas.width - Img.width) / 2;
-            let imgY = (canvas.height - Img.height) / 2;
-            context?.clearRect(0, 0, canvas.width, canvas.height);
-            context?.drawImage(
-                Img, //规定要使用的图像、画布或视频。
-                0, 0, //开始剪切的 x 坐标位置。
-                Img.width, Img.height,  //被剪切图像的高度。
-                imgX, imgY,//在画布上放置图像的 x 、y坐标位置。
-                Img.width, Img.height  //要使用的图像的宽度、高度
-            );
-            useTft.newFrame(canvas.toDataURL("image/png"))
-        }
-    }
-    dialogVisible.value = false
 }
 
 const saveImg = () => {
@@ -435,8 +445,9 @@ const saveImg = () => {
 
 const saveFrames = () => {
     if (useTft.frames != undefined) {
-        useTft.frames.delay = delay.value;
+        useTft.frames.delay = state.value.delay;
     }
+    
     saveShow.value.isShow = useTft.saveFrames();
     if (saveShow.value.isShow) {
         saveShow.value.isSuccess = false;
