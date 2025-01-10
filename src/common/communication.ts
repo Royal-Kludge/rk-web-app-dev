@@ -36,5 +36,5 @@ function startLoop() {
 
             isWaitReport = true;
         }
-    }, 50);
+    }, 20);
 }

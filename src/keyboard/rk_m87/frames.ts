@@ -4,7 +4,7 @@ export class Frames {
 
     constructor() {
         this.list = new Array<Frame>();
-        this.delay = 1000
+        this.delay = 0
     }
 
     add(frame: Frame) {

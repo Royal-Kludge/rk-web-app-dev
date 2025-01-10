@@ -19,7 +19,7 @@
                             </div>
                         </div>
                     </div>
-                    <div :i="key.index" class="item d-flex ai-center jc-center c-p"
+                    <div :i="key.index" class="item d-flex ai-center jc-center c-p p-r"
                         :class="[`d-flex p-2 pl-3 ${key.style}`, useKey.keyColor(key.keyData), useKey.isSelected(key.index)]"
                         v-for="key in (line as KeyLine).keys" v-else @click="keyClick(key.index)">
                         <div :class="[`text-white-1`, keyTextColorClass(key.keyData)]"
@@ -49,7 +49,7 @@
                             </div>
                         </div>
                     </div>
-                    <div :i="key.index" class="item d-flex ai-center jc-center c-p"
+                    <div :i="key.index" class="item d-flex ai-center jc-center c-p p-r"
                         :class="[`d-flex p-2 pl-3 ${key.style}`, useKey.keyColor(key.keyData), useKey.isSelected(key.index)]"
                         v-for="key in line.keys" v-else @click="keyClick(key.index)">
                         <div :class="[`text-white-1`, keyTextColorClass(key.keyData)]"

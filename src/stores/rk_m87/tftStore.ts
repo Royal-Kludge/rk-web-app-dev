@@ -29,17 +29,20 @@ export const useTftStore = defineStore("tftinfo_rk_m87", () => {
             rk_m87.value = (keyboard.protocol as RK_M87);
         }
 
-        let tmp = storage.get(`${keyboard.keyboardDefine?.name}_frame`) as Frames;
-        let ms = new Frames();
-        if (tmp != null) {
-            for (let m of tmp.list) {
-                let tm = new Frame(m.url);
-                //tm.rgb565 = m.rgb565;
-                ms.add(tm);
-            }
-            ms.delay = tmp.delay;
-        }
-        frames.value = ms;
+        // let tmp = storage.get(`${keyboard.keyboardDefine?.name}_frame`) as Frames;
+        // let ms = new Frames();
+        // if (tmp != null) {
+        //     for (let m of tmp.list) {
+        //         let tm = new Frame(m.url);
+        //         //tm.rgb565 = m.rgb565;
+        //         ms.add(tm);
+        //     }
+        //     ms.delay = tmp.delay;
+        // }
+        // frames.value = ms;
+        // frame.value = frames.value.get()[0];
+        frames.value = new Frames();
+        frames.value.delay
         frame.value = frames.value.get()[0];
     }
 
@@ -71,7 +74,7 @@ export const useTftStore = defineStore("tftinfo_rk_m87", () => {
         let ret = false;
         if (frames.value != undefined) {
             try {
-                storage.set(`TFT_frame`, frames.value);
+                //storage.set(`TFT_frame`, frames.value);
                 let buffers = new Array<Uint16Array>();
                 let index: number;
                 for (index = 0; index < frames.value.list.length; index++) {
@@ -92,7 +95,7 @@ export const useTftStore = defineStore("tftinfo_rk_m87", () => {
                     }
                 }
                 ret = true;
-                rk_m87.value?.setTftPic(buffers, frames.value.delay);
+                rk_m87.value?.setTftPic(buffers, frames.value.delay >= 25 ? frames.value.delay - 25 : frames.value.delay);
             }
             catch {
                 console.log("save frames error");
@@ -116,43 +119,43 @@ export const useTftStore = defineStore("tftinfo_rk_m87", () => {
         }
     }
     const saveCanvas = (url: any, frame: Frame) => {
-        // //1，获取画布
-        // let canvas = <HTMLCanvasElement>document.getElementById("imgCanvas");
-        // //2，创建画笔
-        // const context = canvas?.getContext('2d');
-        // context?.clearRect(0, 0, canvas.width, canvas.height);
+        //1，获取画布
+        let canvas = <HTMLCanvasElement>document.getElementById("imgCanvas");
+        //2，创建画笔
+        const context = canvas?.getContext('2d');
+        context?.clearRect(0, 0, canvas.width, canvas.height);
 
-        // const Img = new Image();
-        // Img.src = url;
-        // Img.onload = () => {
-        //     context?.drawImage(Img, 0, 0, canvas.width, canvas.height);
+        const Img = new Image();
+        Img.src = url;
+        Img.onload = () => {
+            context?.drawImage(Img, 0, 0, canvas.width, canvas.height);
 
-        //     //1，创建画布
-        //     let Imgcanvas = document.createElement('canvas');
-        //     //2，创建画笔
-        //     const Imgcontext2 = Imgcanvas.getContext('2d');
+            //1，创建画布
+            let Imgcanvas = document.createElement('canvas');
+            //2，创建画笔
+            const Imgcontext2 = Imgcanvas.getContext('2d');
 
-        //     //3，设置背景的宽高
-        //     Imgcanvas.width = 240;
-        //     Imgcanvas.height = 135;
+            //3，设置背景的宽高
+            Imgcanvas.width = 240;
+            Imgcanvas.height = 135;
             
-        //     const Img2 = new Image();
-        //     Img2.src = canvas.toDataURL("image/png");
-        //     Img2.onload = () => {
-        //         Imgcontext2?.drawImage(Img2, 0, 0, Imgcanvas.width, Imgcanvas.height);
-        //         if (Imgcontext2 != undefined) {
-        //             const imageData = Imgcontext2.getImageData(0, 0, Imgcanvas.width, Imgcanvas.height);
-        //             //frame.rgb565 = Array.from(convertToRgb565(imageData.data));
-        //             let rgb565 = rgb256_cache.find(p => p.index == frame.index);
-        //             if (rgb565 != undefined) {
-        //                 rgb565.value = Array.from(convertToRgb565(imageData.data));
-        //             } else {
-        //                 rgb256_cache.push({index: frame.index, value: Array.from(convertToRgb565(imageData.data))});
-        //             }
-        //             rgb256_cache.push({ index: frame.index, value: undefined})
-        //         }
-        //     }
-        // }
+            const Img2 = new Image();
+            Img2.src = canvas.toDataURL("image/png");
+            Img2.onload = () => {
+                Imgcontext2?.drawImage(Img2, 0, 0, Imgcanvas.width, Imgcanvas.height);
+                // if (Imgcontext2 != undefined) {
+                //     const imageData = Imgcontext2.getImageData(0, 0, Imgcanvas.width, Imgcanvas.height);
+                //     //frame.rgb565 = Array.from(convertToRgb565(imageData.data));
+                //     let rgb565 = rgb256_cache.find(p => p.index == frame.index);
+                //     if (rgb565 != undefined) {
+                //         rgb565.value = Array.from(convertToRgb565(imageData.data));
+                //     } else {
+                //         rgb256_cache.push({index: frame.index, value: Array.from(convertToRgb565(imageData.data))});
+                //     }
+                //     rgb256_cache.push({ index: frame.index, value: undefined})
+                // }
+            }
+        }
     }
     const newFrame = (url: string = '') => {
         if (frames.value != undefined) {

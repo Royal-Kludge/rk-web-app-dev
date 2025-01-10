@@ -132,6 +132,7 @@ export class Macro {
     name: string;
     actions: Array<Action>;
     index = 0;
+    repeat = 1;
 
     constructor(name: string) {
         this.name = name;

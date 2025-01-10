@@ -312,6 +312,8 @@ onMounted(async () => {
     await useMacro.init();
     document.addEventListener('keydown', onKeyDown, false);
     document.addEventListener('keyup', onKeyUp, false);
+
+    repeat.value = state.value.macro != undefined ? state.value.macro.repeat : 1;
 });
 
 onBeforeUnmount(() => {
@@ -485,7 +487,8 @@ const deleteMacro = (obj: Macro) => {
 const clickMacro = (obj: Macro) => {
     isPlaying(() => {
         state.value.macro = obj;
-    })
+        repeat.value = state.value.macro.repeat;
+    });
 }
 
 const renameMacro = (obj: Macro) => {
@@ -524,7 +527,7 @@ const insert = () => {
                 if (state.value.eventVal == 2) {
                     index = index < 0 ? state.value.macro.actions.length : index + 1;
                 } else {
-                    index = 0;
+                    index = index < 0 ? 0 : index;
                 }
 
                 if (actVal.value === t('macro.menu_1')) {
@@ -548,6 +551,7 @@ const isSelected = (obj: Macro): string => {
 const saveMacro = async () => {
     isPlaying(async () => {
         if (macros.value != undefined && state.value.macro != undefined) {
+            state.value.macro.repeat = repeat.value;
             storage.set(`${keyboard.keyboardDefine?.name}_macro`, macros.value);
             await useMacro.setMacroData();
             ElMessage({

@@ -133,6 +133,16 @@ const getVer = () => {
                 // 请求失败处理   
                 console.error(error);
             });
+        } else if (pid == 0x01D6) {
+            axios.get('/down/work/RKWEB/firmware/M87/M87_firmware_uk.json').then(response => {
+                // 请求成功处理
+                version.value = response.data.version
+                url.value = response.data.url
+                checkVer()
+            }).catch(error => {
+                // 请求失败处理   
+                console.error(error);
+            });
         }
     }
 
