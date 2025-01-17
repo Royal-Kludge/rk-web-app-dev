@@ -69,7 +69,7 @@ onMounted(async () => {
             ) data.value.deviceName = mouse.state.deviceName.valueOf();
 
             switch (mouse.mouseDefine.name.valueOf()) {
-                case 'RK-M300':
+                case 'RK-K3':
                     productId.value = 1
                     break;
             }

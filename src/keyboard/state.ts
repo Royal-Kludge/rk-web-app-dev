@@ -1,13 +1,15 @@
 import type { LightInfo, KeyboardState, KeyboardDefine  } from './interface'
 import { ConnectionType, ConnectionEventEnum, ConnectionStatusEnum } from "../device/enum"
-import { RK_R87_USB_DEFINE, RK_R87_DONGLE_DEFINE, RK_R87_RF_USB_DEFINE, RK_R87_RF_DONGLE_DEFINE } from "./rk_r87"
+import { RK_R87_USB_DEFINE, RK_R87_DONGLE_DEFINE } from "./rk_r87"
+import { RK_R87_RF_USB_DEFINE, RK_R87_RF_DONGLE_DEFINE } from "./rk_r87_rf"
 import { RK_M87_USB_DEFINE, RK_M87_DONGLE_DEFINE, RK_M87_JP_USB_DEFINE, RK_M87_JP_DONGLE_DEFINE, RK_M87_UK_USB_DEFINE, RK_M87_UK_DONGLE_DEFINE } from "./rk_m87"
 import { RK_L75_USB_DEFINE, RK_L75_DONGLE_DEFINE, RK_L75_UK_USB_DEFINE, RK_L75_UK_DONGLE_DEFINE } from "./rk_l75"
 
-export const VERSION = '1.8.0'
+export const VERSION = '1.8.2'
 
 //20250102 v1.7.0 Add L75 uk support
 //20250110 v1.8.0 Add M87 jp & uk support
+//20250115 v1.8.0 Fix some dongle issue
 
 /**
 * Initial lightInfo

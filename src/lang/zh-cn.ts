@@ -41,7 +41,7 @@ export default {
     key_5: "特殊按键",
     key_6: "灯光按键",
     key_7: "Mac按键",
-    but_1: "新键",
+    but_1: "新建",
     but_2: "导入",
     but_3: "确认",
     but_4: "编辑",

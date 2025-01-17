@@ -363,7 +363,7 @@ const onKeyUp = async (event: KeyboardEvent) => {
             }
 
             state.value.macro.refresh();
-            elActionScrollbar.value.setScrollTop(2000);
+            elActionScrollbar.value.setScrollTop(50000);
         }
     }
 
@@ -427,7 +427,7 @@ const onKeyDown = (event: KeyboardEvent) => {
             }
 
             state.value.macro.refresh();
-            elActionScrollbar.value.setScrollTop(2000);
+            elActionScrollbar.value.setScrollTop(50000);
             lastKey.value = keyCodeTable.value.key;
         }
     }
@@ -538,7 +538,7 @@ const insert = () => {
                     state.value.macro.insert(index, new Action(KeyDefineEnum.NONE, delay.value, ActionType.Delay));
                 }
                 state.value.macro.refresh();
-                elActionScrollbar.value.setScrollTop(2000);
+                elActionScrollbar.value.setScrollTop(50000);
             }
         }
     })

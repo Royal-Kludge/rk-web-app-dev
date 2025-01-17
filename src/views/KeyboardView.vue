@@ -3,6 +3,7 @@
         <RK_R87_Page v-if="productId == 1" />
         <RK_M87_Page v-else-if="productId == 2" />
         <RK_L75_Page v-else-if="productId == 3" />
+        <RK_R87_RF_Page v-else-if="productId == 4" />
     </div>
     <div class="d-flex flex-column ai-center h-100" v-else>
         <div class="p-5 fs-big m-5 mb-4">No keyboard connected to dongle</div>
@@ -14,6 +15,7 @@
 <script setup lang="ts">
 import { keyboard, RK_DONGLE_EVENT_DEFINE } from '@/keyboard/keyboard'
 import RK_R87_Page from '@/components/rk_r87/home.vue'
+import RK_R87_RF_Page from '@/components/rk_r87_rf/home.vue'
 import RK_M87_Page from '@/components/rk_m87/home.vue'
 import RK_L75_Page from '@/components/rk_l75/home.vue'
 import { reactive, ref, onMounted, onBeforeUnmount } from 'vue';
@@ -74,7 +76,6 @@ onMounted(async () => {
 
             switch (keyboard.keyboardDefine.name.valueOf()) {
                 case 'RK-R87PRO':
-                case 'RK-R87PRO RF':
                     productId.value = 1
                     break;
                 case 'RK-M87':
@@ -85,6 +86,9 @@ onMounted(async () => {
                 case 'RK-L75':
                 case 'RK-L75 UK':
                     productId.value = 3
+                    break;
+                case 'RK-R87PRO RF':
+                    productId.value = 4
                     break;
             }
 

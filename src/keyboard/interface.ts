@@ -29,7 +29,7 @@ export interface KeyboardDefine extends HidDeviceDefine {
     keyText: Record<number, String>,
     keyMatrixLayer: Array<KeyMatrixLayer>,
     keyMatrixTable: Array<MatrixTable>,
-    keyLayout: Record<number, Record<number, Array<KeyDefineEnum>>>,
+    keyLayout: Record<number, Record<number, Array<number>>>,
     lightEffects: Array<LightEffect>,
     protocol: (state: KeyboardState, device: HIDDevice) => Promise<IProtocol>
 }
@@ -84,7 +84,7 @@ export interface IPacket {
 }
 
 export interface Key {
-    key: KeyDefineEnum, 
+    key: number, 
     style: string, 
     index: number, 
     keyData: KeyTableData | undefined,

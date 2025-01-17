@@ -3,7 +3,7 @@ import { KeyMatrixLayer, MatrixTable } from '../enum'
 import { KeyMap_FN1_Win, KeyMap_FN2_Win, KeyMap_Normal_Win, KeyMap_Tap_Win, KeyMap_FN1_Mac, KeyMap_FN2_Mac, KeyMap_Normal_Mac, KeyMap_Tap_Mac, LightEffects  } from './layout'
 import { KeyMap_FN1_JP_Win, KeyMap_FN2_JP_Win, KeyMap_Normal_JP_Win, KeyMap_Tap_JP_Win, KeyMap_FN1_JP_Mac, KeyMap_FN2_JP_Mac, KeyMap_Normal_JP_Mac, KeyMap_Tap_JP_Mac  } from './layout_jp'
 import { KeyMap_FN1_UK_Win, KeyMap_FN2_UK_Win, KeyMap_Normal_UK_Win, KeyMap_Tap_UK_Win, KeyMap_FN1_UK_Mac, KeyMap_FN2_UK_Mac, KeyMap_Normal_UK_Mac, KeyMap_Tap_UK_Mac  } from './layout_uk'
-import { KeyText } from "@/common/keyCode"
+import { KeyText } from "@/common/keyCode_m87"
 import { RK_M87_Dongle } from './rk_m87_dongle'
 import { RK_M87_Usb } from './rk_m87_usb'
 import { ConnectionType, DeviceType } from '@/device/enum'
