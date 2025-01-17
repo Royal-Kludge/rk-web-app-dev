@@ -23,7 +23,7 @@ import { GetMacrosPacket } from './packets/dongle/getMacrosPacket';
 import { SetProfilePacket } from './packets/dongle/setProfilePacket';
 import { SetLedEffectPacket } from './packets/dongle/setLedEffectPacket';
 import { SetLedColorsPacket } from './packets/dongle/setLedColorsPacket';
-import { SetKeyMatrixPacket } from './packets/dongle/setKeyMatrixPacket';
+import { BufferPackage, SetKeyMatrixPacket } from './packets/dongle/setKeyMatrixPacket';
 import { SetMacrosPacket } from './packets/dongle/setMacrosPacket';
 import { SetFactoryPacket } from './packets/dongle/setFactoryPacket';
 import { SetWebKeyTabPacket } from './packets/dongle/setWebKeyTabPacket';
@@ -46,6 +46,8 @@ export class RK_L75_Dongle extends RK_L75 {
     pktSetMacros: SetMacrosPacket;
     pktSetFactory: SetFactoryPacket;
     pktWebKeyTabPacket: SetWebKeyTabPacket;
+
+    lastRpt: string = '';
 
     constructor(state: KeyboardState, device: HIDDevice) {
         super(state, device);
@@ -75,10 +77,23 @@ export class RK_L75_Dongle extends RK_L75 {
         super.init();
 
         dongleWorker.onmessage = (async (event: any) => {
-            if (event.data == 'finish' || event.data == 'timeout') {
+            if (event.data == 'finish') {
+                this.lastRpt = '';
                 this.dispatchEvent(new CustomEvent(RK_L75_EVENT_DEFINE.OnReportFinish, { detail: event.data }));
+            } else if (event.data == 'timeout') {
+                //this.dispatchEvent(new CustomEvent(RK_M87_EVENT_DEFINE.OnReportFinish, { detail: event.data }));
+                switch (this.lastRpt) {
+                    case 'SetKeyMatrix':
+                        console.log(`Set Key Matrix [board:${this.pktSetKeyMatrix.board}] [table:${this.pktSetKeyMatrix.table}] [layer:${this.pktSetKeyMatrix.layer}] [index:${this.pktSetKeyMatrix.packageIndex}] time out`);
+                        await this.setReport(REPORT_ID_DONGLE, this.pktSetKeyMatrix.command());
+                        break;
+                    default:
+                        dongleWorker.postMessage('finish');
+                        break;
+                }
             } else {
                 try {
+                    this.lastRpt = event.data;
                     switch (event.data) {
                         case 'SetProfile':
                             await this.setReport(REPORT_ID_DONGLE, this.pktSetProfile.command());
@@ -235,14 +250,28 @@ export class RK_L75_Dongle extends RK_L75 {
 
     async setKeyMatrix(layer: KeyMatrixLayer, table: MatrixTable, board: number): Promise<void> {
         if (this.data.keyMatrixs != undefined) {
-            this.pktSetKeyMatrix.board = board;
-            this.pktSetKeyMatrix.layer = layer;
-            this.pktSetKeyMatrix.table = table;
-            this.pktSetKeyMatrix.packageIndex = 0;
-            this.pktSetKeyMatrix.retry = REPORT_MAX_RETRY;
-            this.pktSetKeyMatrix.buffer = new Uint8Array(this.data.keyMatrixs[table][layer].buffer.buffer.slice(0, this.data.keyMatrixs[table][layer].buffer.byteLength));
+            if (this.pktSetKeyMatrix.isRunning) {
+                let pkg: BufferPackage = {
+                    board : board,
+                    layer : layer,
+                    table : table,
+                    buffer : new Uint8Array(this.data.keyMatrixs[table][layer].buffer.buffer.slice(0, this.data.keyMatrixs[table][layer].buffer.byteLength))
+                };
+                this.pktSetKeyMatrix.bufferPackages.push(pkg);
+                //dongleWorker.postMessage('SetKeyMatrix');
+            } else {
+                this.pktSetKeyMatrix.board = board;
+                this.pktSetKeyMatrix.layer = layer;
+                this.pktSetKeyMatrix.table = table;
+                this.pktSetKeyMatrix.packageIndex = 0;
+                this.pktSetKeyMatrix.retry = REPORT_MAX_RETRY;
+                this.pktSetKeyMatrix.buffer = new Uint8Array(this.data.keyMatrixs[table][layer].buffer.buffer.slice(0, this.data.keyMatrixs[table][layer].buffer.byteLength));
+                this.pktSetKeyMatrix.isRunning = true;
+                console.log(`Set Key Matrix [board:${board}] [table:${table}] [layer:${layer}]`);
+                dongleWorker.postMessage('SetKeyMatrix');
+            }
+
             //await this.setReport(REPORT_ID_DONGLE, this.pktSetKeyMatrix.command());
-            dongleWorker.postMessage('SetKeyMatrix');
         }
     }
 
@@ -353,6 +382,7 @@ export class RK_L75_Dongle extends RK_L75 {
     private async nextReport(event: any) {
         let pkt = event.detail as Packet_Dongle;
         this.dispatchEvent(new CustomEvent(RK_L75_EVENT_DEFINE.OnReportStart, { detail: true }));
+        dongleWorker.postMessage('report');
         await this.setReport(REPORT_ID_DONGLE, pkt.command());
     }
 
@@ -364,6 +394,7 @@ export class RK_L75_Dongle extends RK_L75 {
         let pkt = event.detail as Packet_Dongle_Block_Set;
         pkt.block = pkt.block + 1;
         if (pkt.block < pkt.blockCount) {
+            dongleWorker.postMessage('report');
             await this.setReport(REPORT_ID_DONGLE, pkt.command());
         }
     }

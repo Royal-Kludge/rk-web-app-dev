@@ -1,9 +1,8 @@
 const donglePkgQueue = new Array<any>();
 const dongleLastTime = new Date();
-const dongleMsgInterval = 1400;
+const dongleMsgInterval = 1000;
 
 let interval: any = null;
-
 let dongleIsWaitPkgFinish = false;
 
 self.addEventListener('message', (event) => {
@@ -16,6 +15,9 @@ self.addEventListener('message', (event) => {
     } else if (event.data === 'finish') {
         dongleIsWaitPkgFinish = false;
         if (donglePkgQueue.length <= 0) self.postMessage('finish');
+    } else if (event.data === 'report') {
+        const rptTime = new Date();
+        dongleLastTime.setTime(rptTime.getTime());
     } else {
         let p = event.data;
         donglePkgQueue.splice(0, 0, p);
@@ -28,8 +30,9 @@ function dongleStartLoop() {
         let elapsedTime = currentTime.getTime() - dongleLastTime.getTime();
         if (elapsedTime > dongleMsgInterval && dongleIsWaitPkgFinish)
         {
-            dongleIsWaitPkgFinish = false;
-            if (donglePkgQueue.length <= 0) self.postMessage('timeout');
+            //dongleIsWaitPkgFinish = false;
+            dongleLastTime.setTime(currentTime.getTime());
+            self.postMessage('timeout');
         }
         if (!dongleIsWaitPkgFinish) {
             if (donglePkgQueue.length > 0) {
