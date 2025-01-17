@@ -39,10 +39,11 @@
                             {{ $t("set.but_3") }}
                         </div> -->
                         <div class="py-3 my-3 w-100 bg-warn-1 text-grey-1 text-center br-2 b-grey c-p but"
-                            @click="checkVer(true)">
+                            @click="checkVer(true)"
+                            v-if="keyboard.state.connectType == ConnectionType.USB">
                             {{ $t("set.but_4") }}(<span>{{ VerTips }}</span>)
                         </div>
-                        <div class="w-100 text-grey-1 text-center">
+                        <div class="w-100 text-grey-1 text-center" v-if="keyboard.state.connectType == ConnectionType.USB">
                             Version:{{ ver }}
                         </div>
                     </div>

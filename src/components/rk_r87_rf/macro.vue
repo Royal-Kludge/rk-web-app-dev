@@ -219,13 +219,13 @@
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 import { RK_R87_RF } from '@/keyboard/rk_r87_rf/rk_r87_rf';
 import { Macro, Action, ActionType } from '@/keyboard/rk_r87_rf/macros';
-import { KeyCodeMap } from '@/common/keyCode'
+import { KeyCodeMap } from '@/common/keyCode_r87_rf'
 import { type KeyCodeTable } from '@/common/interface';
 import { storage } from '@/common/storage';
 import { useMacroStore } from "@/stores/rk_r87_rf/macroStore";
 import { storeToRefs } from "pinia";
 import { useI18n } from 'vue-i18n';
-import { KeyDefineEnum } from '@/common/keyCode'
+import { KeyDefineEnum } from '@/common/keyCode_r87_rf'
 import { ElMessageBox, ElMessage } from 'element-plus'
 import type { Action as ElAction } from 'element-plus';
 import type { UploadProps } from 'element-plus'
@@ -363,7 +363,7 @@ const onKeyUp = async (event: KeyboardEvent) => {
             }
 
             state.value.macro.refresh();
-            elActionScrollbar.value.setScrollTop(2000);
+            elActionScrollbar.value.setScrollTop(50000);
         }
     }
 
@@ -427,7 +427,7 @@ const onKeyDown = (event: KeyboardEvent) => {
             }
 
             state.value.macro.refresh();
-            elActionScrollbar.value.setScrollTop(2000);
+            elActionScrollbar.value.setScrollTop(50000);
             lastKey.value = keyCodeTable.value.key;
         }
     }
@@ -538,7 +538,7 @@ const insert = () => {
                     state.value.macro.insert(index, new Action(KeyDefineEnum.NONE, delay.value, ActionType.Delay));
                 }
                 state.value.macro.refresh();
-                elActionScrollbar.value.setScrollTop(2000);
+                elActionScrollbar.value.setScrollTop(50000);
             }
         }
     })

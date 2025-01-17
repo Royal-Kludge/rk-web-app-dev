@@ -8,7 +8,7 @@ import { LedColors } from '@/keyboard/rk_r87_rf/ledColors';
 import { LightEffectEnum, KeyMatrixLayer, MatrixTable } from '@/keyboard/enum'
 import { ConnectionEventEnum, ConnectionStatusEnum, ConnectionType } from '@/device/enum'
 import { type LedColor } from '@/keyboard/interface';
-import { KeyDefineEnum } from '@/common/keyCode';
+import { KeyDefineEnum } from '@/common/keyCode_r87_rf';
 import { type KeyTableData } from '@/keyboard/interface'
 import { ps } from '@/keyboard/rk_r87_rf/profiles';
 

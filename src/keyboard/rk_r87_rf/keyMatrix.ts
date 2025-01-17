@@ -1,7 +1,7 @@
 import { MatrixTable } from '../enum';
 import { KeyMappingType } from '@/common/enum'
 import type { KeyMappingData } from '../interface';
-import type { KeyDefineEnum } from '@/common/keyCode';
+import type { KeyDefineEnum } from '@/common/keyCode_r87_rf';
 import { KEY_MAXTRIX_LINE, KEY_MAXTRIX_COLOUMN, PACKET_HEAD_LENGTH } from "./packets/packet";
 
 export class KeyMatrix {

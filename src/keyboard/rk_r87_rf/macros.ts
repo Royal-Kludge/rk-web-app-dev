@@ -1,4 +1,4 @@
-import { KeyDefineEnum, KeyText_2 } from "@/common/keyCode";
+import { KeyDefineEnum, KeyText_2 } from "@/common/keyCode_r87_rf";
 
 const MACRO_HEAD_ADDRESS_LENGTH = 4;
 const MACRO_ACTION_LENGTH = 4;

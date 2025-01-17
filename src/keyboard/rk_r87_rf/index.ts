@@ -11,7 +11,7 @@ import {
     KeyMap_Tap_RF_Mac
 } from './layout'
 import { LightEffects } from './layout'
-import { KeyText } from "@/common/keyCode"
+import { KeyText } from "@/common/keyCode_r87_rf"
 import { RK_R87_RF_Dongle } from './rk_r87_rf_dongle'
 import { RK_R87_RF_Usb } from './rk_r87_rf_usb'
 import { ConnectionType, DeviceType } from '@/device/enum'
