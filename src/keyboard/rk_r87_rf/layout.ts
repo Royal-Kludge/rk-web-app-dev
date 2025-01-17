@@ -55,7 +55,7 @@ export const KeyMap_FN1_RF_Win: Array<KeyDefineEnum> = [
     //-------------------------------------------------------------------------------------------------------------0
 	KeyDefineEnum.NONE,          	  KeyDefineEnum.NONE,			      KeyDefineEnum.NONE,          KeyDefineEnum.NONE,              KeyDefineEnum.NONE,                KeyDefineEnum.NONE,     	 
 	//--------------------------------------------------------------      -----------------------------------------------1  
-	KeyDefineEnum.KEY_MyComputer,     KeyDefineEnum.KEY_LED_MODE20,       KeyDefineEnum.SP_BT_DEV0,    KeyDefineEnum.SP_Windeos_Mode,   KeyDefineEnum.NONE,                KeyDefineEnum.NONE,
+	KeyDefineEnum.KEY_MyComputer,     KeyDefineEnum.KEY_LED_MODE19,       KeyDefineEnum.SP_BT_DEV0,    KeyDefineEnum.SP_Windeos_Mode,   KeyDefineEnum.NONE,                KeyDefineEnum.NONE,
 	//--------------------------------------------------------------      -----------------------------------------------2  
 	KeyDefineEnum.KEY_WWW,            KeyDefineEnum.KEY_LED_MODE31,       KeyDefineEnum.SP_BT_DEV1,    KeyDefineEnum.SP_Mac_Mode,       KeyDefineEnum.NONE,                KeyDefineEnum.NONE, 
 	//--------------------------------------------------------------      -----------------------------------------------3    

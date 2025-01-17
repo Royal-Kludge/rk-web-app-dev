@@ -9,7 +9,8 @@ export const VERSION = '1.8.2'
 
 //20250102 v1.7.0 Add L75 uk support
 //20250110 v1.8.0 Add M87 jp & uk support
-//20250115 v1.8.0 Fix some dongle issue
+//20250115 v1.8.1 Fix some dongle issue
+//20250117 v1.8.2 Fix issue when test by RK
 
 /**
 * Initial lightInfo

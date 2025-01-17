@@ -149,16 +149,16 @@ export const useKeyStore = defineStore('keyinfo', () => {
       style: "",
       keys: [
         { key: KeyDefineEnum.SHIFT_L, style: 'key key4', index: getIndex(4, 0), keyData: getKeyData(getIndex(4, 0)) },
-        { key: KeyDefineEnum.KEY_Z, style: 'key', index: getIndex(4, 1), keyData: getKeyData(getIndex(4, 1)) },
-        { key: KeyDefineEnum.KEY_X, style: 'key', index: getIndex(4, 2), keyData: getKeyData(getIndex(4, 2)) },
-        { key: KeyDefineEnum.KEY_C, style: 'key', index: getIndex(4, 3), keyData: getKeyData(getIndex(4, 3)) },
-        { key: KeyDefineEnum.KEY_V, style: 'key', index: getIndex(4, 4), keyData: getKeyData(getIndex(4, 4)) },
-        { key: KeyDefineEnum.KEY_B, style: 'key', index: getIndex(4, 5), keyData: getKeyData(getIndex(4, 5)) },
-        { key: KeyDefineEnum.KEY_N, style: 'key', index: getIndex(4, 6), keyData: getKeyData(getIndex(4, 6)) },
-        { key: KeyDefineEnum.KEY_M, style: 'key', index: getIndex(4, 7), keyData: getKeyData(getIndex(4, 7)) },
-        { key: KeyDefineEnum.KEY_COMMA, style: 'key', index: getIndex(4, 8), keyData: getKeyData(getIndex(4, 8)) },
-        { key: KeyDefineEnum.KEY_PERIOD, style: 'key', index: getIndex(4, 9), keyData: getKeyData(getIndex(4, 9)) },
-        { key: KeyDefineEnum.KEY_Interrogation, style: 'key', index: getIndex(4, 10), keyData: getKeyData(getIndex(4, 10)) },
+        { key: KeyDefineEnum.KEY_Z, style: 'key', index: getIndex(4, 2), keyData: getKeyData(getIndex(4, 2)) },
+        { key: KeyDefineEnum.KEY_X, style: 'key', index: getIndex(4, 3), keyData: getKeyData(getIndex(4, 3)) },
+        { key: KeyDefineEnum.KEY_C, style: 'key', index: getIndex(4, 4), keyData: getKeyData(getIndex(4, 4)) },
+        { key: KeyDefineEnum.KEY_V, style: 'key', index: getIndex(4, 5), keyData: getKeyData(getIndex(4, 5)) },
+        { key: KeyDefineEnum.KEY_B, style: 'key', index: getIndex(4, 6), keyData: getKeyData(getIndex(4, 6)) },
+        { key: KeyDefineEnum.KEY_N, style: 'key', index: getIndex(4, 7), keyData: getKeyData(getIndex(4, 7)) },
+        { key: KeyDefineEnum.KEY_M, style: 'key', index: getIndex(4, 8), keyData: getKeyData(getIndex(4, 8)) },
+        { key: KeyDefineEnum.KEY_COMMA, style: 'key', index: getIndex(4, 9), keyData: getKeyData(getIndex(4, 9)) },
+        { key: KeyDefineEnum.KEY_PERIOD, style: 'key', index: getIndex(4, 10), keyData: getKeyData(getIndex(4, 10)) },
+        { key: KeyDefineEnum.KEY_Interrogation, style: 'key', index: getIndex(4, 11), keyData: getKeyData(getIndex(4, 11)) },
         { key: KeyDefineEnum.SHIFT_R, style: 'key key4', index: getIndex(4, 13), keyData: getKeyData(getIndex(4, 13)) },
         { key: KeyDefineEnum.KEY_UpArrow, style: 'key space-l3', index: getIndex(4, 15), keyData: getKeyData(getIndex(4, 15)) },
       ]
@@ -1137,7 +1137,11 @@ export const useKeyStore = defineStore('keyinfo', () => {
         }
         break;
       default:
-        mapping.keyStr = `Unknow`;
+        if (keyText[mapping.keyRaw] != undefined) {
+          mapping.keyStr = `${keyText[mapping.keyRaw]}`;
+        } else {
+          mapping.keyStr = 'Unknow';
+        }
         break;
     }
   };

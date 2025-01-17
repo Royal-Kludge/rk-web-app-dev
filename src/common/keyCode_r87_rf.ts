@@ -1639,7 +1639,7 @@ export const KeyText: Record<number, String> = {
     0x07000008: '2.4G',      //2.4Gģʽ
     0x07000009: 'USB',      //USBģʽ
     0x0700000a: 'EMI Test',      //���߽������?    
-    0x0700000b: 'Unknow',
+    0x0700000b: 'LED_OFF',
     0x0700000c: 'Battery',      //电量显示 
     0x0700000d: 'Unknow',
     0x0700000e: 'Mute_Mode',      //����Windows
@@ -1667,9 +1667,11 @@ export const KeyText: Record<number, String> = {
     0x08090200: 'light.menu_2', //ֱ���趨Ϊģʽ2
     0x08090300: 'light.menu_3', //ֱ���趨Ϊģʽ3
 
-    0x08092000: 'LedMode20', //ֱ���趨Ϊģʽ20
+    0x08091300: 'LedMode20', //ֱ���趨Ϊģʽ19
+    0x08092000: 'LedMode32', //ֱ���趨Ϊģʽ20
     0x08092100: 'LedMode21', //ֱ���趨Ϊģʽ21
     0x08092200: 'LedMode22', //ֱ���趨Ϊģʽ22
+    0x08091F00: 'LedMode31', //ֱ���趨Ϊģʽ31
     //��Ч�л�
     0x08000000: 'LedMode+', //ֱ���趨Ϊģʽ+
     0x08000100: 'LedMode-', //ֱ���趨Ϊģʽ-
@@ -1784,9 +1786,10 @@ export const KeyText: Record<number, String> = {
     0x08091000: 'light.menu_16',
     0x08091100: 'light.menu_17',
     0x08091200: 'light.menu_18',
-    0x08091300: 'light.menu_19',
+    //0x08091300: 'light.menu_19',
 
     0x0A000000: 'RK Web',
+    0x16000000: 'Fn_Ctrl'
 }
 
 export const KeyText_2: Record<number, String> = {
@@ -2288,7 +2291,7 @@ export const KeyText_Mac: Record<number, String> = {
     0x07000008: '2.4G',      //2.4Gģʽ
     0x07000009: 'USB',      //USBģʽ
     0x0700000a: 'EMI Test',      //���߽������?    
-    0x0700000b: 'Unknow',
+    0x0700000b: 'LED_OFF',
     0x0700000c: 'Battery',      //电量显示 
     0x0700000d: 'Unknow',
     0x0700000e: 'Mute_Mode',      //����Windows
@@ -2316,9 +2319,11 @@ export const KeyText_Mac: Record<number, String> = {
     0x08090200: 'light.menu_2', //ֱ���趨Ϊģʽ2
     0x08090300: 'light.menu_3', //ֱ���趨Ϊģʽ3
 
+    0x08091300: 'LedMode13', //ֱ���趨Ϊģʽ19
     0x08092000: 'LedMode20', //ֱ���趨Ϊģʽ20
     0x08092100: 'LedMode21', //ֱ���趨Ϊģʽ21
     0x08092200: 'LedMode22', //ֱ���趨Ϊģʽ22
+    0x08091F00: 'LedMode31', //ֱ���趨Ϊģʽ31
     //��Ч�л�
     0x08000000: 'LedMode+', //ֱ���趨Ϊģʽ+
     0x08000100: 'LedMode-', //ֱ���趨Ϊģʽ-
@@ -2433,7 +2438,7 @@ export const KeyText_Mac: Record<number, String> = {
     0x08091000: 'light.menu_16',
     0x08091100: 'light.menu_17',
     0x08091200: 'light.menu_18',
-    0x08091300: 'light.menu_19',
+    //0x08091300: 'light.menu_19',
 
     0x0A000000: 'RK Web',
     0x16000000: 'Fn_Ctrl'

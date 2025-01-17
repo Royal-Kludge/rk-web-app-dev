@@ -129,7 +129,7 @@ export default {
     title_4: "重复次数",
     title_5: "请先停止宏录制",
     title_6: "宏文件保存完成",
-    but_1: "新键",
+    but_1: "新建",
     but_2: "导入",
     but_3: "插入",
     but_4: "开始录制",
