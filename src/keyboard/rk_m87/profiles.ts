@@ -27,13 +27,13 @@ export class Profile {
                 let table = keyboard.keyboardDefine.keyMatrixTable[type];
                 for (index in keyboard.keyboardDefine.keyMatrixLayer) {
                     let layer = keyboard.keyboardDefine.keyMatrixLayer[index];
-                    this.add(table, layer, new Uint8Array(512))
+                    this.add(table, layer, new Uint8Array(504))
                     let keyDatas = new KeyMatrix(new DataView(this.layers[table][layer].buffer));
 
                     if (!this.keyTypes.hasOwnProperty(table)) {
                         this.keyTypes[table] = {};
                     }
-                    this.keyTypes[table][layer] = new Array<number>(128);
+                    this.keyTypes[table][layer] = new Array<number>(126);
                     let keyType = this.keyTypes[table][layer];
 
                     let layout = keyboard.keyboardDefine?.keyLayout[table][layer];

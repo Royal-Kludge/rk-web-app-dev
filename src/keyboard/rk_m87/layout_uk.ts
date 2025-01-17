@@ -1,4 +1,4 @@
-import { KeyDefineEnum } from '@/common/keyCode'
+import { KeyDefineEnum } from '@/common/keyCode_m87'
 
 export const KeyMap_Normal_UK_Win: Array<KeyDefineEnum> = [
     //-------------------------------------------------------------------------------------------------------------0
@@ -33,7 +33,7 @@ export const KeyMap_Normal_UK_Win: Array<KeyDefineEnum> = [
 	
 	KeyDefineEnum.KEY_PRINT,        KeyDefineEnum.KEY_INS,          KeyDefineEnum.KEY_DEL,          KeyDefineEnum.NONE,             KeyDefineEnum.NONE,                 KeyDefineEnum.KEY_LeftArrow,     	         
 	//-------------------------------------------------------------------------------------------------------------15
-	KeyDefineEnum.KEY_SCRLOCK,      KeyDefineEnum.KEY_HOME,         KeyDefineEnum.KEY_END,          KeyDefineEnum.SP_WinMacMode,    KeyDefineEnum.KEY_UpArrow,          KeyDefineEnum.KEY_DownArrow,	 												   
+	KeyDefineEnum.KEY_SCRLOCK,      KeyDefineEnum.KEY_HOME,         KeyDefineEnum.KEY_END,          KeyDefineEnum.SP_Home_key,    KeyDefineEnum.KEY_UpArrow,          KeyDefineEnum.KEY_DownArrow,	 												   
 	//-------------------------------------------------------------------------------------------------------------16
 	KeyDefineEnum.KEY_PAUSE,        KeyDefineEnum.KEY_PGUP,         KeyDefineEnum.KEY_PGDN,         KeyDefineEnum.KEY_Calculator,   KeyDefineEnum.NONE,                 KeyDefineEnum.KEY_RightArrow,
 	
@@ -51,48 +51,48 @@ export const KeyMap_Normal_UK_Win: Array<KeyDefineEnum> = [
 
 export const KeyMap_FN1_UK_Win: Array<KeyDefineEnum> = [
     //-------------------------------------------------------------------------------------------------------------0
-	KeyDefineEnum.NONE,          	  KeyDefineEnum.NONE,			KeyDefineEnum.NONE,          KeyDefineEnum.NONE,          KeyDefineEnum.NONE,          		 KeyDefineEnum.NONE,     	 
-	//-------------------------------------------------------------------------------------------------------------1 
-	KeyDefineEnum.KEY_MyComputer,     KeyDefineEnum.KEY_LED_MODE20, KeyDefineEnum.SP_BT_DEV0,    KeyDefineEnum.SP_WinMacMode, KeyDefineEnum.NONE,                KeyDefineEnum.SP_Winlock,
-	//------------------------------------------------------------------------------------------------------------- 
-	KeyDefineEnum.KEY_WWW,            KeyDefineEnum.NONE,           KeyDefineEnum.SP_BT_DEV1,    KeyDefineEnum.SP_Mac_Mode,   KeyDefineEnum.NONE,                KeyDefineEnum.NONE, 
-	//------------------------------------------------------------------------------------------------------------- 
-	KeyDefineEnum.KEY_Email,          KeyDefineEnum.NONE,           KeyDefineEnum.SP_BT_DEV2,    KeyDefineEnum.NONE,          KeyDefineEnum.NONE,                KeyDefineEnum.KEY_Stop,    					   
-	//------------------------------------------------------------------------------------------------------------- 
-	KeyDefineEnum.KEY_Calculator,     KeyDefineEnum.NONE,           KeyDefineEnum.SP_BT_DEV4,    KeyDefineEnum.NONE,          KeyDefineEnum.NONE,                KeyDefineEnum.KEY_PrevTr,							  						 						
-	//-------------------------------------------------------------------------------------------------------------5 
-	KeyDefineEnum.KEY_Media,          KeyDefineEnum.NONE,           KeyDefineEnum.SP_Save_Time,  KeyDefineEnum.SP_TEST_EMI,   KeyDefineEnum.NONE,                KeyDefineEnum.SP_KB_REC_Reset,		 			 			    
-	//------------------------------------------------------------------------------------------------------------- 
-	KeyDefineEnum.KEY_Stop,           KeyDefineEnum.NONE,           KeyDefineEnum.NONE,          KeyDefineEnum.NONE,          KeyDefineEnum.NONE,                KeyDefineEnum.KEY_PlayPause,		
-	//------------------------------------------------------------------------------------------------------------- 
-	KeyDefineEnum.KEY_PrevTr,         KeyDefineEnum.NONE,           KeyDefineEnum.NONE,          KeyDefineEnum.NONE,          KeyDefineEnum.NONE,                KeyDefineEnum.KEY_NextTr,
-	//-------------------------------------------------------------------------------------------------------------8 
-	KeyDefineEnum.KEY_PlayPause,      KeyDefineEnum.NONE,           KeyDefineEnum.NONE,          KeyDefineEnum.NONE,          KeyDefineEnum.NONE,                KeyDefineEnum.NONE,
-	//-------------------------------------------------------------------------------------------------------------9 
-	KeyDefineEnum.KEY_NextTr,         KeyDefineEnum.NONE,           KeyDefineEnum.SP_O_Mode,     KeyDefineEnum.SP_L_Mode,     KeyDefineEnum.NONE,                KeyDefineEnum.KEY_Fn1,						 
-	//-------------------------------------------------------------------------------------------------------------10 
-	KeyDefineEnum.KEY_Mute,           KeyDefineEnum.NONE,           KeyDefineEnum.SP_BT_DEV3,    KeyDefineEnum.NONE,          KeyDefineEnum.NONE,                KeyDefineEnum.NONE,					 
-	//-------------------------------------------------------------------------------------------------------------11 
-	KeyDefineEnum.KEY_VolumD,         KeyDefineEnum.NONE,			KeyDefineEnum.NONE,          KeyDefineEnum.NONE,          KeyDefineEnum.NONE,                KeyDefineEnum.NONE,			 
-	//------- -----------------------------------------------------------------------------------------------------12 
-	KeyDefineEnum.KEY_VolumI,         KeyDefineEnum.NONE,			KeyDefineEnum.NONE,          KeyDefineEnum.NONE,          KeyDefineEnum.NONE,                KeyDefineEnum.NONE,		    
-	//-------------------------------------------------------------------------------------------------------------13 
-	KeyDefineEnum.KEY_Calculator,     KeyDefineEnum.NONE,           KeyDefineEnum.NONE,          KeyDefineEnum.NONE,          KeyDefineEnum.NONE,                KeyDefineEnum.NONE,
-	//-------------------------------------------------------------------------------------------------------------14 
-	KeyDefineEnum.SP_LED_REC,         KeyDefineEnum.NONE,			KeyDefineEnum.NONE,          KeyDefineEnum.NONE,          KeyDefineEnum.NONE,                KeyDefineEnum.KEY_LED_BREATHD,     	         
-	//-------------------------------------------------------------------------------------------------------------15 
-	KeyDefineEnum.KEY_LED_MODEL,      KeyDefineEnum.NONE,           KeyDefineEnum.NONE,          KeyDefineEnum.SP_WinMacMode, KeyDefineEnum.KEY_LED_LUMINI,      KeyDefineEnum.KEY_LED_LUMIND,	 												   
-	//-------------------------------------------------------------------------------------------------------------16 
-	KeyDefineEnum.KEY_LED_COLOR_MODEL,KeyDefineEnum.NONE,			KeyDefineEnum.NONE,          KeyDefineEnum.NONE,          KeyDefineEnum.SP_Windows_Mode,     KeyDefineEnum.KEY_LED_BREATHI,							 
-	 
-	//-------------------------------------------------------------------------------------------------------------17 
-	KeyDefineEnum.NONE,       		  KeyDefineEnum.NONE,			KeyDefineEnum.NONE,          KeyDefineEnum.NONE,          KeyDefineEnum.NONE,                KeyDefineEnum.NONE,
-	//-------------------------------------------------------------------------------------------------------------18 
-	KeyDefineEnum.NONE,       		  KeyDefineEnum.NONE,			KeyDefineEnum.NONE,          KeyDefineEnum.NONE,          KeyDefineEnum.NONE,                KeyDefineEnum.NONE,	
-	//-------------------------------------------------------------------------------------------------------------19 
-	KeyDefineEnum.NONE,       		  KeyDefineEnum.NONE,			KeyDefineEnum.NONE,          KeyDefineEnum.NONE,          KeyDefineEnum.NONE,                KeyDefineEnum.NONE,
-	//-------------------------------------------------------------------------------------------------------------20			 
-	KeyDefineEnum.NONE,       		  KeyDefineEnum.NONE,			KeyDefineEnum.NONE,          KeyDefineEnum.NONE,          KeyDefineEnum.NONE,                KeyDefineEnum.NONE,	
+	KeyDefineEnum.NONE,          	  KeyDefineEnum.NONE,			KeyDefineEnum.NONE,          KeyDefineEnum.NONE,               KeyDefineEnum.NONE,          	  KeyDefineEnum.NONE,     	 
+	//-------------------------------------------------------------------------------------------------------------1      
+	KeyDefineEnum.KEY_MyComputer,     KeyDefineEnum.KEY_LED_MODE20, KeyDefineEnum.SP_BT_DEV0,    KeyDefineEnum.SP_Windeos_Mode,    KeyDefineEnum.NONE,                KeyDefineEnum.SP_Winlock,
+	//-------------------------------------------------------------------------------------------------------------      
+	KeyDefineEnum.KEY_WWW,            KeyDefineEnum.NONE,           KeyDefineEnum.SP_BT_DEV1,    KeyDefineEnum.SP_Mac_Mode,        KeyDefineEnum.NONE,                KeyDefineEnum.NONE, 
+	//-------------------------------------------------------------------------------------------------------------      
+	KeyDefineEnum.KEY_Email,          KeyDefineEnum.NONE,           KeyDefineEnum.SP_BT_DEV2,    KeyDefineEnum.NONE,               KeyDefineEnum.NONE,                KeyDefineEnum.KEY_Stop,    					   
+	//-------------------------------------------------------------------------------------------------------------      
+	KeyDefineEnum.KEY_Calculator,     KeyDefineEnum.NONE,           KeyDefineEnum.SP_BT_DEV4,    KeyDefineEnum.NONE,               KeyDefineEnum.NONE,                KeyDefineEnum.KEY_PrevTr,							  						 						
+	//-------------------------------------------------------------------------------------------------------------5      
+	KeyDefineEnum.KEY_Media,          KeyDefineEnum.NONE,           KeyDefineEnum.SP_Save_Time,  KeyDefineEnum.SP_TEST_EMI,        KeyDefineEnum.NONE,                KeyDefineEnum.SP_KB_REC_Reset,		 			 			    
+	//-------------------------------------------------------------------------------------------------------------      
+	KeyDefineEnum.KEY_Stop,           KeyDefineEnum.NONE,           KeyDefineEnum.NONE,          KeyDefineEnum.NONE,               KeyDefineEnum.NONE,                KeyDefineEnum.KEY_PlayPause,		
+	//-------------------------------------------------------------------------------------------------------------      
+	KeyDefineEnum.KEY_PrevTr,         KeyDefineEnum.NONE,           KeyDefineEnum.NONE,          KeyDefineEnum.NONE,               KeyDefineEnum.NONE,                KeyDefineEnum.KEY_NextTr,
+	//-------------------------------------------------------------------------------------------------------------8      
+	KeyDefineEnum.KEY_PlayPause,      KeyDefineEnum.NONE,           KeyDefineEnum.NONE,          KeyDefineEnum.NONE,               KeyDefineEnum.NONE,                KeyDefineEnum.NONE,
+	//-------------------------------------------------------------------------------------------------------------9      
+	KeyDefineEnum.KEY_NextTr,         KeyDefineEnum.NONE,           KeyDefineEnum.SP_O_Mode,     KeyDefineEnum.SP_L_Mode,          KeyDefineEnum.NONE,                KeyDefineEnum.KEY_Fn1,						 
+	//-------------------------------------------------------------------------------------------------------------10      
+	KeyDefineEnum.KEY_Mute,           KeyDefineEnum.NONE,           KeyDefineEnum.SP_BT_DEV3,    KeyDefineEnum.NONE,               KeyDefineEnum.NONE,                KeyDefineEnum.NONE,					 
+	//-------------------------------------------------------------------------------------------------------------11      
+	KeyDefineEnum.KEY_VolumD,         KeyDefineEnum.NONE,			KeyDefineEnum.NONE,          KeyDefineEnum.NONE,               KeyDefineEnum.NONE,                KeyDefineEnum.NONE,			 
+	//------- -----------------------------------------------------------------------------------------------------12      
+	KeyDefineEnum.KEY_VolumI,         KeyDefineEnum.NONE,			KeyDefineEnum.NONE,          KeyDefineEnum.NONE,               KeyDefineEnum.NONE,                KeyDefineEnum.NONE,		    
+	//-------------------------------------------------------------------------------------------------------------13      
+	KeyDefineEnum.KEY_Calculator,     KeyDefineEnum.NONE,           KeyDefineEnum.NONE,          KeyDefineEnum.NONE,               KeyDefineEnum.NONE,                KeyDefineEnum.NONE,
+	//-------------------------------------------------------------------------------------------------------------14      
+	KeyDefineEnum.SP_LED_REC,         KeyDefineEnum.NONE,			KeyDefineEnum.NONE,          KeyDefineEnum.NONE,               KeyDefineEnum.NONE,                KeyDefineEnum.KEY_LED_BREATHD,     	         
+	//-------------------------------------------------------------------------------------------------------------15      
+	KeyDefineEnum.KEY_LED_MODEL,      KeyDefineEnum.NONE,           KeyDefineEnum.NONE,          KeyDefineEnum.SP_Home_key,        KeyDefineEnum.KEY_LED_LUMINI,      KeyDefineEnum.KEY_LED_LUMIND,	 												   
+	//-------------------------------------------------------------------------------------------------------------16      
+	KeyDefineEnum.KEY_LED_COLOR_MODEL,KeyDefineEnum.NONE,			KeyDefineEnum.NONE,          KeyDefineEnum.NONE,               KeyDefineEnum.SP_Mute_Mode,        KeyDefineEnum.KEY_LED_BREATHI,							 
+	      
+	//-------------------------------------------------------------------------------------------------------------17      
+	KeyDefineEnum.NONE,       		  KeyDefineEnum.NONE,			KeyDefineEnum.NONE,          KeyDefineEnum.NONE,               KeyDefineEnum.NONE,                KeyDefineEnum.NONE,
+	//-------------------------------------------------------------------------------------------------------------18      
+	KeyDefineEnum.NONE,       		  KeyDefineEnum.NONE,			KeyDefineEnum.NONE,          KeyDefineEnum.NONE,               KeyDefineEnum.NONE,                KeyDefineEnum.NONE,	
+	//-------------------------------------------------------------------------------------------------------------19      
+	KeyDefineEnum.NONE,       		  KeyDefineEnum.NONE,			KeyDefineEnum.NONE,          KeyDefineEnum.NONE,               KeyDefineEnum.NONE,                KeyDefineEnum.NONE,
+	//-------------------------------------------------------------------------------------------------------------20		     	 
+	KeyDefineEnum.NONE,       		  KeyDefineEnum.NONE,			KeyDefineEnum.NONE,          KeyDefineEnum.NONE,               KeyDefineEnum.NONE,                KeyDefineEnum.NONE,	
 	//===============
 	//KeyDefineEnum.NONE,				  KeyDefineEnum.NONE
 ]
@@ -242,48 +242,48 @@ export const KeyMap_Normal_UK_Mac: Array<KeyDefineEnum> = [
 
 export const KeyMap_FN1_UK_Mac: Array<KeyDefineEnum> = [
     //-------------------------------------------------------------------------------------------------------------0
-	KeyDefineEnum.NONE,          	  KeyDefineEnum.NONE,			KeyDefineEnum.NONE,          KeyDefineEnum.NONE,          KeyDefineEnum.NONE,          		 KeyDefineEnum.NONE,     	 
-	//-------------------------------------------------------------------------------------------------------------1 
-	KeyDefineEnum.KEY_MyComputer,     KeyDefineEnum.KEY_LED_MODE20, KeyDefineEnum.SP_BT_DEV0,    KeyDefineEnum.SP_WinMacMode, KeyDefineEnum.NONE,                KeyDefineEnum.SP_Winlock,
-	//------------------------------------------------------------------------------------------------------------- 
-	KeyDefineEnum.KEY_WWW,            KeyDefineEnum.NONE,           KeyDefineEnum.SP_BT_DEV1,    KeyDefineEnum.SP_Mac_Mode,   KeyDefineEnum.NONE,                KeyDefineEnum.NONE, 
-	//------------------------------------------------------------------------------------------------------------- 
-	KeyDefineEnum.KEY_Email,          KeyDefineEnum.NONE,           KeyDefineEnum.SP_BT_DEV2,    KeyDefineEnum.NONE,          KeyDefineEnum.NONE,                KeyDefineEnum.KEY_Stop,    					   
-	//------------------------------------------------------------------------------------------------------------- 
-	KeyDefineEnum.KEY_Calculator,     KeyDefineEnum.NONE,           KeyDefineEnum.SP_BT_DEV4,    KeyDefineEnum.NONE,          KeyDefineEnum.NONE,                KeyDefineEnum.KEY_PrevTr,							  						 						
-	//-------------------------------------------------------------------------------------------------------------5 
-	KeyDefineEnum.KEY_Media,          KeyDefineEnum.NONE,           KeyDefineEnum.SP_Save_Time,  KeyDefineEnum.SP_TEST_EMI,   KeyDefineEnum.NONE,                KeyDefineEnum.SP_KB_REC_Reset,		 			 			    
-	//------------------------------------------------------------------------------------------------------------- 
-	KeyDefineEnum.KEY_Stop,           KeyDefineEnum.NONE,           KeyDefineEnum.NONE,          KeyDefineEnum.NONE,          KeyDefineEnum.NONE,                KeyDefineEnum.KEY_PlayPause,		
-	//------------------------------------------------------------------------------------------------------------- 
-	KeyDefineEnum.KEY_PrevTr,         KeyDefineEnum.NONE,           KeyDefineEnum.NONE,          KeyDefineEnum.NONE,          KeyDefineEnum.NONE,                KeyDefineEnum.KEY_NextTr,
-	//-------------------------------------------------------------------------------------------------------------8 
-	KeyDefineEnum.KEY_PlayPause,      KeyDefineEnum.NONE,           KeyDefineEnum.NONE,          KeyDefineEnum.NONE,          KeyDefineEnum.NONE,                KeyDefineEnum.NONE,
-	//-------------------------------------------------------------------------------------------------------------9 
-	KeyDefineEnum.KEY_NextTr,         KeyDefineEnum.NONE,           KeyDefineEnum.SP_O_Mode,     KeyDefineEnum.SP_L_Mode,     KeyDefineEnum.NONE,                KeyDefineEnum.KEY_Fn1,						 
-	//-------------------------------------------------------------------------------------------------------------10 
-	KeyDefineEnum.KEY_Mute,           KeyDefineEnum.NONE,           KeyDefineEnum.SP_BT_DEV3,    KeyDefineEnum.NONE,          KeyDefineEnum.NONE,                KeyDefineEnum.NONE,					 
-	//-------------------------------------------------------------------------------------------------------------11 
-	KeyDefineEnum.KEY_VolumD,         KeyDefineEnum.NONE,			KeyDefineEnum.NONE,          KeyDefineEnum.NONE,          KeyDefineEnum.NONE,                KeyDefineEnum.NONE,			 
-	//------- -----------------------------------------------------------------------------------------------------12 
-	KeyDefineEnum.KEY_VolumI,         KeyDefineEnum.NONE,			KeyDefineEnum.NONE,          KeyDefineEnum.NONE,          KeyDefineEnum.NONE,                KeyDefineEnum.NONE,		    
-	//-------------------------------------------------------------------------------------------------------------13 
-	KeyDefineEnum.KEY_Calculator,     KeyDefineEnum.NONE,           KeyDefineEnum.NONE,          KeyDefineEnum.NONE,          KeyDefineEnum.NONE,                KeyDefineEnum.NONE,
-	//-------------------------------------------------------------------------------------------------------------14 
-	KeyDefineEnum.SP_LED_REC,         KeyDefineEnum.NONE,			KeyDefineEnum.NONE,          KeyDefineEnum.NONE,          KeyDefineEnum.NONE,                KeyDefineEnum.KEY_LED_BREATHD,     	         
-	//-------------------------------------------------------------------------------------------------------------15 
-	KeyDefineEnum.KEY_LED_MODEL,      KeyDefineEnum.NONE,           KeyDefineEnum.NONE,          KeyDefineEnum.SP_WinMacMode, KeyDefineEnum.KEY_LED_LUMINI,      KeyDefineEnum.KEY_LED_LUMIND,	 												   
-	//-------------------------------------------------------------------------------------------------------------16 
-	KeyDefineEnum.KEY_LED_COLOR_MODEL,KeyDefineEnum.NONE,			KeyDefineEnum.NONE,          KeyDefineEnum.NONE,          KeyDefineEnum.SP_Windows_Mode,     KeyDefineEnum.KEY_LED_BREATHI,							 
-	 
-	//-------------------------------------------------------------------------------------------------------------17 
-	KeyDefineEnum.NONE,       		  KeyDefineEnum.NONE,			KeyDefineEnum.NONE,          KeyDefineEnum.NONE,          KeyDefineEnum.NONE,                KeyDefineEnum.NONE,
-	//-------------------------------------------------------------------------------------------------------------18 
-	KeyDefineEnum.NONE,       		  KeyDefineEnum.NONE,			KeyDefineEnum.NONE,          KeyDefineEnum.NONE,          KeyDefineEnum.NONE,                KeyDefineEnum.NONE,	
-	//-------------------------------------------------------------------------------------------------------------19 
-	KeyDefineEnum.NONE,       		  KeyDefineEnum.NONE,			KeyDefineEnum.NONE,          KeyDefineEnum.NONE,          KeyDefineEnum.NONE,                KeyDefineEnum.NONE,
-	//-------------------------------------------------------------------------------------------------------------20			 
-	KeyDefineEnum.NONE,       		  KeyDefineEnum.NONE,			KeyDefineEnum.NONE,          KeyDefineEnum.NONE,          KeyDefineEnum.NONE,                KeyDefineEnum.NONE,	
+	KeyDefineEnum.NONE,          	  KeyDefineEnum.NONE,			KeyDefineEnum.NONE,          KeyDefineEnum.NONE,               KeyDefineEnum.NONE,          	  KeyDefineEnum.NONE,     	 
+	//-------------------------------------------------------------------------------------------------------------1      
+	KeyDefineEnum.KEY_MyComputer,     KeyDefineEnum.KEY_LED_MODE20, KeyDefineEnum.SP_BT_DEV0,    KeyDefineEnum.SP_Windeos_Mode,    KeyDefineEnum.NONE,                KeyDefineEnum.SP_Winlock,
+	//-------------------------------------------------------------------------------------------------------------      
+	KeyDefineEnum.KEY_WWW,            KeyDefineEnum.NONE,           KeyDefineEnum.SP_BT_DEV1,    KeyDefineEnum.SP_Mac_Mode,        KeyDefineEnum.NONE,                KeyDefineEnum.NONE, 
+	//-------------------------------------------------------------------------------------------------------------      
+	KeyDefineEnum.KEY_Email,          KeyDefineEnum.NONE,           KeyDefineEnum.SP_BT_DEV2,    KeyDefineEnum.NONE,               KeyDefineEnum.NONE,                KeyDefineEnum.KEY_Stop,    					   
+	//-------------------------------------------------------------------------------------------------------------      
+	KeyDefineEnum.KEY_Calculator,     KeyDefineEnum.NONE,           KeyDefineEnum.SP_BT_DEV4,    KeyDefineEnum.NONE,               KeyDefineEnum.NONE,                KeyDefineEnum.KEY_PrevTr,							  						 						
+	//-------------------------------------------------------------------------------------------------------------5      
+	KeyDefineEnum.KEY_Media,          KeyDefineEnum.NONE,           KeyDefineEnum.SP_Save_Time,  KeyDefineEnum.SP_TEST_EMI,        KeyDefineEnum.NONE,                KeyDefineEnum.SP_KB_REC_Reset,		 			 			    
+	//-------------------------------------------------------------------------------------------------------------      
+	KeyDefineEnum.KEY_Stop,           KeyDefineEnum.NONE,           KeyDefineEnum.NONE,          KeyDefineEnum.NONE,               KeyDefineEnum.NONE,                KeyDefineEnum.KEY_PlayPause,		
+	//-------------------------------------------------------------------------------------------------------------      
+	KeyDefineEnum.KEY_PrevTr,         KeyDefineEnum.NONE,           KeyDefineEnum.NONE,          KeyDefineEnum.NONE,               KeyDefineEnum.NONE,                KeyDefineEnum.KEY_NextTr,
+	//-------------------------------------------------------------------------------------------------------------8      
+	KeyDefineEnum.KEY_PlayPause,      KeyDefineEnum.NONE,           KeyDefineEnum.NONE,          KeyDefineEnum.NONE,               KeyDefineEnum.NONE,                KeyDefineEnum.NONE,
+	//-------------------------------------------------------------------------------------------------------------9      
+	KeyDefineEnum.KEY_NextTr,         KeyDefineEnum.NONE,           KeyDefineEnum.SP_O_Mode,     KeyDefineEnum.SP_L_Mode,          KeyDefineEnum.NONE,                KeyDefineEnum.KEY_Fn1,						 
+	//-------------------------------------------------------------------------------------------------------------10      
+	KeyDefineEnum.KEY_Mute,           KeyDefineEnum.NONE,           KeyDefineEnum.SP_BT_DEV3,    KeyDefineEnum.NONE,               KeyDefineEnum.NONE,                KeyDefineEnum.NONE,					 
+	//-------------------------------------------------------------------------------------------------------------11      
+	KeyDefineEnum.KEY_VolumD,         KeyDefineEnum.NONE,			KeyDefineEnum.NONE,          KeyDefineEnum.NONE,               KeyDefineEnum.NONE,                KeyDefineEnum.NONE,			 
+	//------- -----------------------------------------------------------------------------------------------------12      
+	KeyDefineEnum.KEY_VolumI,         KeyDefineEnum.NONE,			KeyDefineEnum.NONE,          KeyDefineEnum.NONE,               KeyDefineEnum.NONE,                KeyDefineEnum.NONE,		    
+	//-------------------------------------------------------------------------------------------------------------13      
+	KeyDefineEnum.KEY_Calculator,     KeyDefineEnum.NONE,           KeyDefineEnum.NONE,          KeyDefineEnum.NONE,               KeyDefineEnum.NONE,                KeyDefineEnum.NONE,
+	//-------------------------------------------------------------------------------------------------------------14      
+	KeyDefineEnum.SP_LED_REC,         KeyDefineEnum.NONE,			KeyDefineEnum.NONE,          KeyDefineEnum.NONE,               KeyDefineEnum.NONE,                KeyDefineEnum.KEY_LED_BREATHD,     	         
+	//-------------------------------------------------------------------------------------------------------------15      
+	KeyDefineEnum.KEY_LED_MODEL,      KeyDefineEnum.NONE,           KeyDefineEnum.NONE,          KeyDefineEnum.SP_Home_key,        KeyDefineEnum.KEY_LED_LUMINI,      KeyDefineEnum.KEY_LED_LUMIND,	 												   
+	//-------------------------------------------------------------------------------------------------------------16      
+	KeyDefineEnum.KEY_LED_COLOR_MODEL,KeyDefineEnum.NONE,			KeyDefineEnum.NONE,          KeyDefineEnum.NONE,               KeyDefineEnum.SP_Mute_Mode,        KeyDefineEnum.KEY_LED_BREATHI,							 
+	      
+	//-------------------------------------------------------------------------------------------------------------17      
+	KeyDefineEnum.NONE,       		  KeyDefineEnum.NONE,			KeyDefineEnum.NONE,          KeyDefineEnum.NONE,               KeyDefineEnum.NONE,                KeyDefineEnum.NONE,
+	//-------------------------------------------------------------------------------------------------------------18      
+	KeyDefineEnum.NONE,       		  KeyDefineEnum.NONE,			KeyDefineEnum.NONE,          KeyDefineEnum.NONE,               KeyDefineEnum.NONE,                KeyDefineEnum.NONE,	
+	//-------------------------------------------------------------------------------------------------------------19      
+	KeyDefineEnum.NONE,       		  KeyDefineEnum.NONE,			KeyDefineEnum.NONE,          KeyDefineEnum.NONE,               KeyDefineEnum.NONE,                KeyDefineEnum.NONE,
+	//-------------------------------------------------------------------------------------------------------------20		     	 
+	KeyDefineEnum.NONE,       		  KeyDefineEnum.NONE,			KeyDefineEnum.NONE,          KeyDefineEnum.NONE,               KeyDefineEnum.NONE,                KeyDefineEnum.NONE,	
 	//===============
 	//KeyDefineEnum.NONE,				  KeyDefineEnum.NONE
 ]

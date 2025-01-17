@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 import { reactive, ref } from 'vue';
 import { keyboard } from '@/keyboard/keyboard'
 import { RK_M87, RK_M87_EVENT_DEFINE } from '@/keyboard/rk_m87/rk_m87';
-import { KeyCodeEnum, KeyDefineEnum, KeyText, KeyText_Mac } from '@/common/keyCode'
+import { KeyCodeEnum, KeyDefineEnum, KeyText, KeyText_Mac } from '@/common/keyCode_m87'
 import { type KeyMappingData, type KeyTableData, type KeyState, type KeyLine } from '@/keyboard/interface'
 import { KeyMatrixLayer, MatrixTable } from '@/keyboard/enum'
 import { KeyMappingType } from '@/common/enum'
@@ -10,7 +10,7 @@ import { ConnectionEventEnum, ConnectionStatusEnum } from '@/device/enum'
 import { KeyMatrix } from '@/keyboard/rk_m87/keyMatrix';
 import { Action, Macro, Macros } from '@/keyboard/rk_m87/macros';
 import { Profile, ps } from '@/keyboard/rk_m87/profiles';
-import { KeyCodeMap } from '@/common/keyCode'
+import { KeyCodeMap } from '@/common/keyCode_m87'
 import fileSaver from "file-saver";
 import { ElMessage } from 'element-plus'
 
@@ -247,7 +247,7 @@ export const useKeyStore = defineStore('keyinfo_rk_m87', () => {
         { key: KeyDefineEnum.KEY_P, style: 'key', index: getIndex(2, 10), keyData: getKeyData(getIndex(2, 10)) },
         { key: KeyDefineEnum.KEY_L_Brackets, style: 'key', index: getIndex(2, 11), keyData: getKeyData(getIndex(2, 11)) },
         { key: KeyDefineEnum.KEY_R_Brackets, style: 'key', index: getIndex(2, 12), keyData: getKeyData(getIndex(2, 12)) },
-        { key: KeyDefineEnum.KEY_ENTER, style: 'key key3 key_enter p-a', index: getIndex(3, 13), keyData: getKeyData(getIndex(3, 13)), img: '<br/><br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENTER' },
+        { key: KeyDefineEnum.KEY_ENTER, style: 'key key3 key_enter p-a', index: getIndex(3, 13), keyData: getKeyData(getIndex(3, 13)) },
         { key: KeyDefineEnum.KEY_DEL, style: 'key key-right1', index: getIndex(2, 14), keyData: getKeyData(getIndex(2, 14)) },
         { key: KeyDefineEnum.KEY_END, style: 'key key-right2', index: getIndex(2, 15), keyData: getKeyData(getIndex(2, 15)) },
         { key: KeyDefineEnum.KEY_PGDN, style: 'key key-right3', index: getIndex(2, 16), keyData: getKeyData(getIndex(2, 16)) }
@@ -378,7 +378,7 @@ export const useKeyStore = defineStore('keyinfo_rk_m87', () => {
         { key: KeyDefineEnum.KEY_P, style: 'key', index: getIndex(2, 10), keyData: getKeyData(getIndex(2, 10)) },
         { key: KeyDefineEnum.KEY_L_Brackets, style: 'key', index: getIndex(2, 11), keyData: getKeyData(getIndex(2, 11)) },
         { key: KeyDefineEnum.KEY_R_Brackets, style: 'key', index: getIndex(2, 12), keyData: getKeyData(getIndex(2, 12)) },
-        { key: KeyDefineEnum.KEY_ENTER, style: 'key key3 key_enter p-a', index: getIndex(3, 13), keyData: getKeyData(getIndex(3, 13)), img: '<br/><br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENTER' },
+        { key: KeyDefineEnum.KEY_ENTER, style: 'key key3 key_enter p-a', index: getIndex(3, 13), keyData: getKeyData(getIndex(3, 13)) },
         { key: KeyDefineEnum.KEY_DEL, style: 'key key-right1', index: getIndex(2, 14), keyData: getKeyData(getIndex(2, 14)) },
         { key: KeyDefineEnum.KEY_END, style: 'key key-right2', index: getIndex(2, 15), keyData: getKeyData(getIndex(2, 15)) },
         { key: KeyDefineEnum.KEY_PGDN, style: 'key key-right3', index: getIndex(2, 16), keyData: getKeyData(getIndex(2, 16)) }
@@ -1052,6 +1052,7 @@ export const useKeyStore = defineStore('keyinfo_rk_m87', () => {
     if (profile.value != undefined && keyboard.keyboardDefine != undefined) {
       let index: any, type: any;
       ps.curIndex = profile.value?.index;
+      // ------------ 同时下发Win与Mac的矩阵表有几率失败，参考公版驱动，只下载Win的-------------------------
       for (type in keyboard.keyboardDefine.keyMatrixTable) {
         let table = keyboard.keyboardDefine.keyMatrixTable[type];
         for (index in keyboard.keyboardDefine.keyMatrixLayer) {
@@ -1060,6 +1061,13 @@ export const useKeyStore = defineStore('keyinfo_rk_m87', () => {
           await rk_m87.value?.setKeyMatrix(layer, table, 0);
         }
       }
+      // let table = MatrixTable.WIN;
+      // for (index in keyboard.keyboardDefine.keyMatrixLayer) {
+      //   let layer = keyboard.keyboardDefine.keyMatrixLayer[index];
+      //   KeyMatrixData.value[table][layer] = new KeyMatrix(new DataView(new Uint8Array(Object.values(profile.value.get(table, layer))).buffer));
+      //   await rk_m87.value?.setKeyMatrix(layer, table, 0);
+      // }
+      // -------------------------------------------------------------------------------------------------
       refresh()
     }
 
