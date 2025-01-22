@@ -404,7 +404,7 @@ const mediaStrKey = (key: string | undefined) => {
     top: 20px;
 }
 
-@media screen and (max-width: 1600px) {
+@media screen and (max-width: 1600px),screen and (max-height: 900px) {
     .bg {
         width: 886px;
         padding: 18px;
@@ -486,7 +486,7 @@ const mediaStrKey = (key: string | undefined) => {
     }
 }
 
-@media screen and (max-width: 1200px) {
+@media screen and (max-width: 1200px),screen and (max-height: 768px) {
     .bg {
         width: 715px;
         padding: 10px;
