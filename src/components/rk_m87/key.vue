@@ -303,14 +303,11 @@ const mediaStrKey = (key: string | undefined) => {
     pointer-events: none;
 }
 
-:deep {
-    .el-dialog__body {
-        padding: 0px !important;
-    }
-
-    .el-dropdown {
-        line-height: 1.3 !important;
-    }
+:deep(.el-dialog__body) {
+    padding: 0px !important;
+}
+:deep(.el-dropdown) {
+    line-height: 1.3 !important;
 }
 
 .key_remapped {

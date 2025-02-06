@@ -224,22 +224,20 @@ const setToFactory = () => {
 }
 </script>
 <style lang="scss" scoped>
-:deep {
-    .el-checkbox {
-        width: 100%;
-        --el-checkbox-checked-text-color: #4743A7;
-        --el-checkbox-text-color: #4743A7;
-        --el-checkbox-checked-bg-color: #4743A7;
-        --el-checkbox-checked-input-border-color: #ffffff;
-        --el-checkbox-input-border-color-hover: #ffffff;
-        --el-checkbox-checked-icon-color: transparent;
-    }
+:deep(.el-checkbox) {
+    width: 100%;
+    --el-checkbox-checked-text-color: #4743A7;
+    --el-checkbox-text-color: #4743A7;
+    --el-checkbox-checked-bg-color: #4743A7;
+    --el-checkbox-checked-input-border-color: #ffffff;
+    --el-checkbox-input-border-color-hover: #ffffff;
+    --el-checkbox-checked-icon-color: transparent;
+}
 
-    .el-checkbox__inner {
-        background-color: transparent;
-        width: 18px;
-        height: 18px;
-    }
+:deep(.el-checkbox__inner) {
+    background-color: transparent;
+    width: 18px;
+    height: 18px;
 }
 
 .but:hover {

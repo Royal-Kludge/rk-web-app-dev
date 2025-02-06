@@ -80,25 +80,23 @@ onBeforeUnmount(() => {
 });
 </script>
 <style scoped lang="scss">
-:deep {
-  .el-radio-button__inner {
-    padding: 0 5px;
-  }
+:deep(.el-radio-button__inner) {
+  padding: 0 5px;
+}
 
-  .is-active {
-    img {
-      position: relative;
-      left: -99999px;
-      filter: drop-shadow(#ffffff 99999px 0);
-    }
+:deep(.is-active) {
+  img {
+    position: relative;
+    left: -99999px;
+    filter: drop-shadow(#ffffff 99999px 0);
   }
+}
 
-  .el-radio__input.is-checked .el-radio__inner {
-    --el-color-primary: #3235b4;
-  }
+:deep(.el-radio__input.is-checked .el-radio__inner) {
+  --el-color-primary: #3235b4;
+}
 
-  .el-radio__input.is-checked+.el-radio__label {
-    --el-color-primary: #3235b4;
-  }
+:deep(.el-radio__input.is-checked+.el-radio__label) {
+  --el-color-primary: #3235b4;
 }
 </style>
