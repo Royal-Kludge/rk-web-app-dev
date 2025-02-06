@@ -79,24 +79,19 @@
 </template>
 
 <style lang="scss" scoped>
-:deep {
-    .el-button {
-        min-width: 85px;
-    }
-
-    .el-tabs__nav {
-        padding: 0 20px;
-    }
-
-    .el-tabs__header {
-        margin: 0;
-    }
-
-    .el-button:focus {
-        background: #4743A7;
-        border-color: #4743A7;
-        color: #ffffff;
-    }
+:deep(.el-button) {
+    min-width: 85px;
+}
+:deep(.el-tabs__nav) {
+    padding: 0 20px;
+}
+:deep(.el-tabs__header) {
+    margin: 0;
+}
+:deep(.el-button:focus) {
+    background: #4743A7;
+    border-color: #4743A7;
+    color: #ffffff;
 }
 
 .but_left {

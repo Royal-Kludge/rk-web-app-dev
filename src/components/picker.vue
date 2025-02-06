@@ -319,41 +319,39 @@ export default {
   border: 5px solid #c8c8fd !important;
 }
 
-:deep {
-  .r {
-    --bg-color: #FF0000;
-  }
+:deep(.r) {
+  --bg-color: #FF0000;
+}
 
-  .g {
-    --bg-color: #00FF00;
-  }
+:deep(.g) {
+  --bg-color: #00FF00;
+}
 
-  .b {
-    --bg-color: #0000FF;
-  }
+:deep(.b) {
+  --bg-color: #0000FF;
+}
 
-  .el-slider__bar {
-    background-color: var(--bg-color) !important;
-  }
+:deep(.el-slider__bar) {
+  background-color: var(--bg-color) !important;
+}
 
-  .el-slider__button {
-    background-color: var(--bg-color) !important;
-    border: 3px solid #FFFFFF !important;
-    height: 30px !important;
-    border-radius: 3px !important;
-  }
+:deep(.el-slider__button) {
+  background-color: var(--bg-color) !important;
+  border: 3px solid #FFFFFF !important;
+  height: 30px !important;
+  border-radius: 3px !important;
+}
 
-  .el-slider {
-    --el-slider-height: 10px !important;
-  }
+:deep(.el-slider) {
+  --el-slider-height: 10px !important;
+}
 
-  .el-slider__runway {
-    background-color: #DCDCDE !important;
-  }
+:deep(.el-slider__runway) {
+  background-color: #DCDCDE !important;
+}
 
-  .el-slider__stop {
-    background-color: transparent !important;
-  }
+:deep(.el-slider__stop) {
+  background-color: transparent !important;
 }
 
 .eyedropper {

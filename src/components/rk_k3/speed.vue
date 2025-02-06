@@ -58,45 +58,38 @@
 </template>
 
 <style lang="scss" scoped>
-:deep {
-    .dpi {
-        .el-slider {
-            --el-slider-height: 48px !important;
-        }
-
-        .el-slider__bar {
-            background: linear-gradient(to right, #CBCBFE, #36379B) !important;
-        }
-
-        .el-slider__button {
-            width: 0;
-            height: 0 !important;
-            background-color: transparent !important;
-            border-left: 10px solid transparent !important;
-            border-right: 10px solid transparent !important;
-            border-bottom: 10px solid #36379B !important;
-            position: absolute;
-            top: 65px;
-            border: none;
-            left: 8px;
-        }
-
-        .el-slider__stop {
-            background-color: #ffffff !important;
-            height: 20px;
-            width: 3px;
-            border-radius: 3px;
-            top: 15px;
-        }
-
-        .el-slider__runway {
-            background-color: #EEF0F7 !important;
-        }
+:deep(.dpi) {
+    .el-slider {
+        --el-slider-height: 48px !important;
     }
-
+    .el-slider__bar {
+        background: linear-gradient(to right, #CBCBFE, #36379B) !important;
+    }
+    .el-slider__button {
+        width: 0;
+        height: 0 !important;
+        background-color: transparent !important;
+        border-left: 10px solid transparent !important;
+        border-right: 10px solid transparent !important;
+        border-bottom: 10px solid #36379B !important;
+        position: absolute;
+        top: 65px;
+        border: none;
+        left: 8px;
+    }
     .el-slider__stop {
         background-color: #ffffff !important;
+        height: 20px;
+        width: 3px;
+        border-radius: 3px;
+        top: 15px;
     }
+    .el-slider__runway {
+        background-color: #EEF0F7 !important;
+    }
+}
+.el-slider__stop {
+    background-color: #ffffff !important;
 }
 </style>
 

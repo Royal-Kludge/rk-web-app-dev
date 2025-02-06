@@ -100,3 +100,23 @@ export const RK_R_24G_DEFINE: HidDeviceDefine = {
     connectType: ConnectionType.Dongle,
     deviceType: DeviceType.Keyboard,
 }
+
+export const RK_M65_WIRE_DEFINE: HidDeviceDefine = {
+    name: "rk m65 wire",
+    vendorId: 0x258A,
+    productId: 0x01FD,
+    usagePage: 0xFF00,
+    usage: 0x0001,
+    connectType: ConnectionType.USB,
+    deviceType: DeviceType.Keyboard,
+}
+
+export const RK_M65_UK_WIRE_DEFINE: HidDeviceDefine = {
+    name: "rk m65 wire",
+    vendorId: 0x258A,
+    productId: 0x0202,
+    usagePage: 0xFF00,
+    usage: 0x0001,
+    connectType: ConnectionType.USB,
+    deviceType: DeviceType.Keyboard,
+}
