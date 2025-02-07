@@ -359,7 +359,7 @@ const mediaStrKey = (key: string | undefined) => {
 }
 
 .key4 {
-    width: 136px;
+    width: 142px;
 }
 
 .key5 {
@@ -371,27 +371,43 @@ const mediaStrKey = (key: string | undefined) => {
 }
 
 .key7 {
-    width: 96px;
+    width: 38px;
+    height: 38px;
+    font-size: 10px;
+
+    &::before {
+        content: "";
+        position: absolute;
+        width: inherit;
+        height: inherit;
+        background: inherit;
+        border-radius: 50%;
+        box-shadow: 2px 2px 2px #BABABB, -2px -2px 2px #fff;
+    }
 }
 
 .space-l {
-    margin-left: 28px;
+    margin-left: 24px;
 }
 
 .space-l1 {
-    margin-left: 92px;
+    margin-left: 265px;
 }
 
 .space-l2 {
-    margin-left: 35px;
+    margin-left: 23px;
 }
 
 .space-l3 {
-    margin-left: 10px;
+    margin-left: 9px;
+}
+
+.space-l4 {
+    margin-left: 67px;
 }
 
 .space-t {
-    margin-top: 10px;
+    margin-top: 3px;
 }
 
 .p-r {
@@ -440,7 +456,8 @@ const mediaStrKey = (key: string | undefined) => {
     }
 }
 
-@media screen and (max-width: 1600px),screen and (max-height: 900px) {
+@media screen and (max-width: 1600px),
+screen and (max-height: 900px) {
     .bg {
         width: 886px;
         padding: 18px;
@@ -470,7 +487,7 @@ const mediaStrKey = (key: string | undefined) => {
     }
 
     .key4 {
-        width: 112px;
+        width: 118px;
     }
 
     .key5 {
@@ -482,27 +499,34 @@ const mediaStrKey = (key: string | undefined) => {
     }
 
     .key7 {
-        width: 85px;
+        width: 30px;
+        height: 30px;
+        font-size: 9px;
     }
 
+
     .space-l {
-        margin-left: 15px;
+        margin-left: 35px;
     }
 
     .space-l1 {
-        margin-left: 69px;
+        margin-left: 226px;
     }
 
     .space-l2 {
-        margin-left: 20px;
+        margin-left: 34px;
     }
 
     .space-l3 {
-        margin-left: 8px;
+        margin-left: 6px;
+    }
+
+    .space-l4 {
+        margin-left: 55px;
     }
 
     .space-t {
-        margin-top: 20px;
+        margin-top: 5px;
     }
 
     .p-r {
@@ -552,7 +576,8 @@ const mediaStrKey = (key: string | undefined) => {
     }
 }
 
-@media screen and (max-width: 1200px),screen and (max-height: 768px) {
+@media screen and (max-width: 1200px),
+screen and (max-height: 768px) {
     .bg {
         width: 715px;
         padding: 10px;
@@ -582,7 +607,7 @@ const mediaStrKey = (key: string | undefined) => {
     }
 
     .key4 {
-        width: 88px;
+        width: 90px;
     }
 
     .key5 {
@@ -594,27 +619,33 @@ const mediaStrKey = (key: string | undefined) => {
     }
 
     .key7 {
-        width: 58px;
+        width: 19px;
+        height: 19px;
+        font-size: 6px;
     }
 
     .space-l {
-        margin-left: 18px;
+        margin-left: 19px;
     }
 
     .space-l1 {
-        margin-left: 61px;
+        margin-left: 185px;
     }
 
     .space-l2 {
-        margin-left: 20px;
+        margin-left: 19px;
     }
 
     .space-l3 {
-        margin-left: 7px;
+        margin-left: 4px;
+    }
+
+    .space-l4 {
+        margin-left: 43px;
     }
 
     .space-t {
-        margin-top: 20px;
+        margin-top: 5px;
     }
 
     .p-r {
@@ -656,7 +687,7 @@ const mediaStrKey = (key: string | undefined) => {
             position: absolute;
             top: 0px;
             right: 0;
-            bottom: -38px;
+            bottom: -37px;
             width: 41px;
             background: inherit;
             border-radius: 3px;

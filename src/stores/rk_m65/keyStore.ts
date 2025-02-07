@@ -57,20 +57,20 @@ export const useKeyStore = defineStore('keyinfo_rk_m65', () => {
 
   const keyMatrix_us = [
     {
-      line: 2,
+      line: 1,
       style: "space-t",
       keys: [
-        { key: KeyDefineEnum.KEY_Stop, style: 'key', index: getIndex(0, 8), keyData: getKeyData(getIndex(0, 8)) },
-        { key: KeyDefineEnum.KEY_PrevTr, style: 'key', index: getIndex(0, 7), keyData: getKeyData(getIndex(0, 7)) },
-        { key: KeyDefineEnum.KEY_PlayPause, style: 'key', index: getIndex(0, 6), keyData: getKeyData(getIndex(0, 6)) },
-        { key: KeyDefineEnum.KEY_NextTr, style: 'key', index: getIndex(0, 5), keyData: getKeyData(getIndex(0, 5)) },
+        { key: KeyDefineEnum.KEY_Stop, style: 'key key7 space-l1', index: getIndex(0, 8), keyData: getKeyData(getIndex(0, 8)) },
+        { key: KeyDefineEnum.KEY_PrevTr, style: 'key key7', index: getIndex(0, 7), keyData: getKeyData(getIndex(0, 7)) },
+        { key: KeyDefineEnum.KEY_PlayPause, style: 'key key7', index: getIndex(0, 6), keyData: getKeyData(getIndex(0, 6)) },
+        { key: KeyDefineEnum.KEY_NextTr, style: 'key key7', index: getIndex(0, 5), keyData: getKeyData(getIndex(0, 5)) },
       ]
     },
     {
       line: 2,
       style: "space-t",
       keys: [
-        { key: KeyDefineEnum.KEY_ESC, style: 'key', index: getIndex(1, 0), keyData: getKeyData(getIndex(1, 1)) },
+        { key: KeyDefineEnum.KEY_ESC, style: 'key', index: getIndex(1, 0), keyData: getKeyData(getIndex(1, 0)) },
         { key: KeyDefineEnum.KEY_1, style: 'key', index: getIndex(1, 1), keyData: getKeyData(getIndex(1, 1)) },
         { key: KeyDefineEnum.KEY_2, style: 'key', index: getIndex(1, 2), keyData: getKeyData(getIndex(1, 2)) },
         { key: KeyDefineEnum.KEY_3, style: 'key', index: getIndex(1, 3), keyData: getKeyData(getIndex(1, 3)) },
@@ -84,7 +84,7 @@ export const useKeyStore = defineStore('keyinfo_rk_m65', () => {
         { key: KeyDefineEnum.KEY_Underscore, style: 'key', index: getIndex(1, 11), keyData: getKeyData(getIndex(1, 11)) },
         { key: KeyDefineEnum.KEY_EqualSign, style: 'key', index: getIndex(1, 12), keyData: getKeyData(getIndex(1, 12)) },
         { key: KeyDefineEnum.KEY_Backspace, style: 'key key2', index: getIndex(1, 13), keyData: getKeyData(getIndex(1, 13)) },
-        { key: KeyDefineEnum.KEY_DEL, style: 'key space-l', index: getIndex(1, 15), keyData: getKeyData(getIndex(1, 15)) },
+        { key: KeyDefineEnum.KEY_DEL, style: 'key', index: getIndex(1, 15), keyData: getKeyData(getIndex(1, 15)) },
       ]
     },
     {
@@ -125,7 +125,7 @@ export const useKeyStore = defineStore('keyinfo_rk_m65', () => {
         { key: KeyDefineEnum.KEY_Semicolon, style: 'key', index: getIndex(3, 10), keyData: getKeyData(getIndex(3, 10)) },
         { key: KeyDefineEnum.KEY_Quotation, style: 'key', index: getIndex(3, 11), keyData: getKeyData(getIndex(3, 11)) },
         { key: KeyDefineEnum.KEY_ENTER, style: 'key key2', index: getIndex(3, 13), keyData: getKeyData(getIndex(3, 13)) },
-        { key: KeyDefineEnum.KEY_PGDN, style: 'key key2', index: getIndex(3, 15), keyData: getKeyData(getIndex(3, 15)) },
+        { key: KeyDefineEnum.KEY_PGDN, style: 'key', index: getIndex(3, 15), keyData: getKeyData(getIndex(3, 15)) },
       ]
     },
     {
@@ -143,8 +143,8 @@ export const useKeyStore = defineStore('keyinfo_rk_m65', () => {
         { key: KeyDefineEnum.KEY_COMMA, style: 'key', index: getIndex(4, 8), keyData: getKeyData(getIndex(4, 8)) },
         { key: KeyDefineEnum.KEY_PERIOD, style: 'key', index: getIndex(4, 9), keyData: getKeyData(getIndex(4, 9)) },
         { key: KeyDefineEnum.KEY_Interrogation, style: 'key', index: getIndex(4, 10), keyData: getKeyData(getIndex(4, 10)) },
-        { key: KeyDefineEnum.SHIFT_R, style: 'key key4', index: getIndex(4, 13), keyData: getKeyData(getIndex(4, 13)) },
-        { key: KeyDefineEnum.KEY_UpArrow, style: 'key space-l3', index: getIndex(4, 14), keyData: getKeyData(getIndex(4, 14)) },
+        { key: KeyDefineEnum.SHIFT_R, style: 'key key3', index: getIndex(4, 13), keyData: getKeyData(getIndex(4, 13)) },
+        { key: KeyDefineEnum.KEY_UpArrow, style: 'key', index: getIndex(4, 14), keyData: getKeyData(getIndex(4, 14)) },
       ]
     },
     {
@@ -157,7 +157,7 @@ export const useKeyStore = defineStore('keyinfo_rk_m65', () => {
         { key: KeyDefineEnum.KEY_SPACEBAR, style: 'key key5', index: getIndex(5, 5), keyData: getKeyData(getIndex(5, 5)) },
         { key: KeyDefineEnum.ALT_R, style: 'key key6', index: getIndex(5, 8), keyData: getKeyData(getIndex(5, 8)) },
         { key: KeyDefineEnum.KEY_Fn1, style: 'key key6', index: getIndex(5, 9), keyData: getKeyData(getIndex(5, 9)) },
-        { key: KeyDefineEnum.KEY_LeftArrow, style: 'key space-l', index: getIndex(5, 13), keyData: getKeyData(getIndex(5, 13)) },
+        { key: KeyDefineEnum.KEY_LeftArrow, style: 'key space-l2', index: getIndex(5, 13), keyData: getKeyData(getIndex(5, 13)) },
         { key: KeyDefineEnum.KEY_DownArrow, style: 'key', index: getIndex(5, 14), keyData: getKeyData(getIndex(5, 14)) },
         { key: KeyDefineEnum.KEY_RightArrow, style: 'key', index: getIndex(5, 15), keyData: getKeyData(getIndex(5, 15)) }
       ]
@@ -169,17 +169,17 @@ export const useKeyStore = defineStore('keyinfo_rk_m65', () => {
       line: 1,
       style: "space-t",
       keys: [
-        { key: KeyDefineEnum.KEY_Stop, style: 'key', index: getIndex(0, 8), keyData: getKeyData(getIndex(0, 8)) },
-        { key: KeyDefineEnum.KEY_PrevTr, style: 'key', index: getIndex(0, 7), keyData: getKeyData(getIndex(0, 7)) },
-        { key: KeyDefineEnum.KEY_PlayPause, style: 'key', index: getIndex(0, 6), keyData: getKeyData(getIndex(0, 6)) },
-        { key: KeyDefineEnum.KEY_NextTr, style: 'key', index: getIndex(0, 5), keyData: getKeyData(getIndex(0, 5)) },
+        { key: KeyDefineEnum.KEY_Stop, style: 'key key7 space-l1', index: getIndex(0, 8), keyData: getKeyData(getIndex(0, 8)) },
+        { key: KeyDefineEnum.KEY_PrevTr, style: 'key key7', index: getIndex(0, 7), keyData: getKeyData(getIndex(0, 7)) },
+        { key: KeyDefineEnum.KEY_PlayPause, style: 'key key7', index: getIndex(0, 6), keyData: getKeyData(getIndex(0, 6)) },
+        { key: KeyDefineEnum.KEY_NextTr, style: 'key key7', index: getIndex(0, 5), keyData: getKeyData(getIndex(0, 5)) },
       ]
     },
     {
       line: 2,
       style: "space-t",
       keys: [
-        { key: KeyDefineEnum.KEY_ESC, style: 'key', index: getIndex(1, 0), keyData: getKeyData(getIndex(1, 1)) },
+        { key: KeyDefineEnum.KEY_ESC, style: 'key', index: getIndex(1, 0), keyData: getKeyData(getIndex(1, 0)) },
         { key: KeyDefineEnum.KEY_1, style: 'key', index: getIndex(1, 1), keyData: getKeyData(getIndex(1, 1)) },
         { key: KeyDefineEnum.KEY_2, style: 'key', index: getIndex(1, 2), keyData: getKeyData(getIndex(1, 2)) },
         { key: KeyDefineEnum.KEY_3, style: 'key', index: getIndex(1, 3), keyData: getKeyData(getIndex(1, 3)) },
@@ -193,7 +193,7 @@ export const useKeyStore = defineStore('keyinfo_rk_m65', () => {
         { key: KeyDefineEnum.KEY_Underscore, style: 'key', index: getIndex(1, 11), keyData: getKeyData(getIndex(1, 11)) },
         { key: KeyDefineEnum.KEY_EqualSign, style: 'key', index: getIndex(1, 12), keyData: getKeyData(getIndex(1, 12)) },
         { key: KeyDefineEnum.KEY_Backspace, style: 'key key2', index: getIndex(1, 13), keyData: getKeyData(getIndex(1, 13)) },
-        { key: KeyDefineEnum.KEY_DEL, style: 'key space-l', index: getIndex(1, 15), keyData: getKeyData(getIndex(1, 15)) },
+        { key: KeyDefineEnum.KEY_DEL, style: 'key', index: getIndex(1, 15), keyData: getKeyData(getIndex(1, 15)) },
       ]
     },
     {
@@ -234,14 +234,14 @@ export const useKeyStore = defineStore('keyinfo_rk_m65', () => {
         { key: KeyDefineEnum.KEY_Semicolon, style: 'key', index: getIndex(3, 10), keyData: getKeyData(getIndex(3, 10)) },
         { key: KeyDefineEnum.KEY_Quotation, style: 'key', index: getIndex(3, 11), keyData: getKeyData(getIndex(3, 11)) },
         { key: KeyDefineEnum.KEY_CODE29, style: 'key', index: getIndex(2, 13), keyData: getKeyData(getIndex(2, 13)) },
-        { key: KeyDefineEnum.KEY_PGDN, style: 'key', index: getIndex(3, 15), keyData: getKeyData(getIndex(3, 15)) },
+        { key: KeyDefineEnum.KEY_PGDN, style: 'key space-l4', index: getIndex(3, 15), keyData: getKeyData(getIndex(3, 15)) },
       ]
     },
     {
       line: 5,
       style: "p-r",
       keys: [
-        { key: KeyDefineEnum.SHIFT_L, style: 'key key4', index: getIndex(4, 0), keyData: getKeyData(getIndex(4, 0)) },
+        { key: KeyDefineEnum.SHIFT_L, style: 'key key3', index: getIndex(4, 0), keyData: getKeyData(getIndex(4, 0)) },
         { key: KeyDefineEnum.KEY_Z, style: 'key', index: getIndex(4, 1), keyData: getKeyData(getIndex(4, 1)) },
         { key: KeyDefineEnum.KEY_X, style: 'key', index: getIndex(4, 2), keyData: getKeyData(getIndex(4, 2)) },
         { key: KeyDefineEnum.KEY_C, style: 'key', index: getIndex(4, 3), keyData: getKeyData(getIndex(4, 3)) },
@@ -253,7 +253,7 @@ export const useKeyStore = defineStore('keyinfo_rk_m65', () => {
         { key: KeyDefineEnum.KEY_PERIOD, style: 'key', index: getIndex(4, 9), keyData: getKeyData(getIndex(4, 9)) },
         { key: KeyDefineEnum.KEY_Interrogation, style: 'key', index: getIndex(4, 10), keyData: getKeyData(getIndex(4, 10)) },
         { key: KeyDefineEnum.SHIFT_R, style: 'key key4', index: getIndex(4, 13), keyData: getKeyData(getIndex(4, 13)) },
-        { key: KeyDefineEnum.KEY_UpArrow, style: 'key space-l3', index: getIndex(4, 14), keyData: getKeyData(getIndex(4, 14)) },
+        { key: KeyDefineEnum.KEY_UpArrow, style: 'key', index: getIndex(4, 14), keyData: getKeyData(getIndex(4, 14)) },
       ]
     },
     {
