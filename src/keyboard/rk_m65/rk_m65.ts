@@ -46,7 +46,6 @@ export const COMMAND_ID: {
     SetLedColors: number;
     SetKeyMatrix: number;
     SetMacros: number;
-    SetWebKeyTab: number;
 } = {
     ActivelyReport: 0x0A,
     GetDongleStatus: 0x07,
@@ -61,7 +60,6 @@ export const COMMAND_ID: {
     SetLedColors: 0x02,
     SetKeyMatrix: 0x01,
     SetMacros: 0x03,
-    SetWebKeyTab: 0x12
 }
 
 export class RK_M65_Data {
@@ -88,7 +86,6 @@ export abstract class RK_M65 extends Protocol {
     abstract getLedColors(board: number): Promise<void>;
     abstract setLedColors(board: number): Promise<void>;
     abstract setFactory(): Promise<void>;
-    abstract setWebKeyTab(web: string): Promise<void>;
     
     abstract onGetReport(reportId: number, data: DataView): Promise<void>;
 

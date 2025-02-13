@@ -380,10 +380,10 @@ export class RK_L75_Dongle extends RK_L75 {
     }
 
     private async nextReport(event: any) {
-        let pkt = event.detail as Packet_Dongle;
+        //let pkt = event.detail as Packet_Dongle;
         this.dispatchEvent(new CustomEvent(RK_L75_EVENT_DEFINE.OnReportStart, { detail: true }));
         dongleWorker.postMessage('report');
-        await this.setReport(REPORT_ID_DONGLE, pkt.command());
+        //await this.setReport(REPORT_ID_DONGLE, pkt.command());
     }
 
     private packetFinished(event: any) {
@@ -395,7 +395,7 @@ export class RK_L75_Dongle extends RK_L75 {
         pkt.block = pkt.block + 1;
         if (pkt.block < pkt.blockCount) {
             dongleWorker.postMessage('report');
-            await this.setReport(REPORT_ID_DONGLE, pkt.command());
+            //await this.setReport(REPORT_ID_DONGLE, pkt.command());
         }
     }
 

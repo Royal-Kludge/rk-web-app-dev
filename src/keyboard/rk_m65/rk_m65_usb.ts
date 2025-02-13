@@ -22,9 +22,8 @@ import { SetLedColorsPacket } from './packets/usb/setLedColorsPacket';
 import { GetPasswordPacket } from './packets/usb/getPasswordPacket';
 import { SetFactoryPacket } from './packets/usb/setFactoryPacket';
 
-import { SetWebKeyTabPacket } from './packets/usb/setWebKeyTabPacket';
-
 import { Macros } from './macros';
+import { FieldEnum } from './boardProfile';
 
 const worker = new Worker(new URL('@/common/communication.ts', import.meta.url));
 
@@ -90,6 +89,7 @@ export class RK_M65_Usb extends RK_M65 {
     async setProfile(board: number): Promise<void> {
         if (this.data.boardProfile != undefined) {
             let packet = new SetProfilePacket(board);
+            this.data.boardProfile.setFieldValue(FieldEnum.KbConnectMode, 0);
             packet.setPayload(this.data.boardProfile.buffer);
             //await this.setFeature(REPORT_ID_USB, packet.setReport);
             worker.postMessage(packet.setReport);
@@ -215,20 +215,6 @@ export class RK_M65_Usb extends RK_M65 {
     async setFactory(): Promise<void> {
         let packet = new SetFactoryPacket();
         //await this.setFeature(REPORT_ID_USB, packet.setReport);
-        worker.postMessage(packet.setReport);
-    }
-
-    async setWebKeyTab(web: 'https://drive.rkgaming.com/'): Promise<void> {
-        let packet = new SetWebKeyTabPacket();
-        const buff: number[] = [];
-        
-        for (const char of web) {
-            const asciiCode = char.charCodeAt(0);
-            buff.push(asciiCode);
-        }
-
-        packet.setPayload(new DataView(new Uint8Array(buff).buffer));
-
         worker.postMessage(packet.setReport);
     }
 }

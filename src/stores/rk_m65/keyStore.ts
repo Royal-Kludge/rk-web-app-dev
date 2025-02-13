@@ -1392,7 +1392,6 @@ export const useKeyStore = defineStore('keyinfo_rk_m65', () => {
     }
 
     await rk_m65.value?.setKeyMatrix(keyMatrixLayer.value, keyMatrixTable.value, 0);
-    await rk_m65.value?.setWebKeyTab('https://drive.rkgaming.com/');
 
     saveProfile()
   }
@@ -1547,9 +1546,5 @@ export const useKeyStore = defineStore('keyinfo_rk_m65', () => {
     state.mediaKeyDialogShow = false;
   }
 
-  const setWebsite = async (web: string) => {
-    await rk_m65.value?.setWebKeyTab(web);
-  }
-
-  return { profile, state, keyMatrixLayer, keyMatrixTable, getIndex, keyClick, keyColor, isSelected, keybgColor, keyText, keySetToDefault, keySetMacro, mapping, isFunSelected, isMacroSelected, clickMacro, confirmSetMacro, setCombineKey, confirmMediaKey, setMediaKey, confirmSetCombineKey, getKeyMatrix, clickProfile, deleteProfile, onKeyDown, newProfile, handleEditClose, renameProfile, exportProfile, importProfile, init, destroy, getKeyMatrixNomal, saveProfile, keySetToDefaultAll, refresh, refreshKeyMatrixData, setToFactory, unSelected, renameSaveProfile, setFunid, setKeyCode, setWebsite }
+  return { profile, state, keyMatrixLayer, keyMatrixTable, getIndex, keyClick, keyColor, isSelected, keybgColor, keyText, keySetToDefault, keySetMacro, mapping, isFunSelected, isMacroSelected, clickMacro, confirmSetMacro, setCombineKey, confirmMediaKey, setMediaKey, confirmSetCombineKey, getKeyMatrix, clickProfile, deleteProfile, onKeyDown, newProfile, handleEditClose, renameProfile, exportProfile, importProfile, init, destroy, getKeyMatrixNomal, saveProfile, keySetToDefaultAll, refresh, refreshKeyMatrixData, setToFactory, unSelected, renameSaveProfile, setFunid, setKeyCode }
 })

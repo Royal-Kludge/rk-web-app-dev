@@ -182,7 +182,6 @@ const passwordGotten = async (event: any) => {
 
         switch (keyboard.keyboardDefine.name.valueOf()) {
             case 'RK-R87PRO':
-            case 'RK-R87PRO RF':
                 productId.value = 1
                 break;
             case 'RK-M87':
@@ -193,6 +192,9 @@ const passwordGotten = async (event: any) => {
             case 'RK-L75':
             case 'RK-L75 UK':
                 productId.value = 3
+                break;
+            case 'RK-R87PRO RF':
+                productId.value = 4
                 break;
             case 'RK-M65':
             case 'RK-M65 UK':

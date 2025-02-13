@@ -361,15 +361,10 @@ export class RK_M87_Dongle extends RK_M87 {
     }
 
     private async nextReport(event: any) {
-        let pkt = event.detail as Packet_Dongle;
+        //let pkt = event.detail as Packet_Dongle;
         this.dispatchEvent(new CustomEvent(RK_M87_EVENT_DEFINE.OnReportStart, { detail: true }));
         dongleWorker.postMessage('report');
-        //await this.sleep(5);
-        await this.setReport(REPORT_ID_DONGLE, pkt.command());
-    }
-
-    private sleep(ms: number): Promise<void> {
-        return new Promise(resolve => setTimeout(resolve, ms));
+        //await this.setReport(REPORT_ID_DONGLE, pkt.command());
     }
 
     private packetFinished(event: any) {
@@ -381,7 +376,7 @@ export class RK_M87_Dongle extends RK_M87 {
         pkt.block = pkt.block + 1;
         if (pkt.block < pkt.blockCount) {
             dongleWorker.postMessage('report');
-            await this.setReport(REPORT_ID_DONGLE, pkt.command());
+            //await this.setReport(REPORT_ID_DONGLE, pkt.command());
         }
     }
 

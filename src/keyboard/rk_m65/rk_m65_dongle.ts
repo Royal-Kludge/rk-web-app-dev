@@ -26,7 +26,7 @@ import { SetLedColorsPacket } from './packets/dongle/setLedColorsPacket';
 import { BufferPackage, SetKeyMatrixPacket } from './packets/dongle/setKeyMatrixPacket';
 import { SetMacrosPacket } from './packets/dongle/setMacrosPacket';
 import { SetFactoryPacket } from './packets/dongle/setFactoryPacket';
-import { SetWebKeyTabPacket } from './packets/dongle/setWebKeyTabPacket';
+import { FieldEnum } from './boardProfile';
 
 const dongleWorker = new Worker(new URL('@/common/dongleCommunication.ts', import.meta.url));
 
@@ -45,7 +45,6 @@ export class RK_M65_Dongle extends RK_M65 {
     pktSetKeyMatrix: SetKeyMatrixPacket;
     pktSetMacros: SetMacrosPacket;
     pktSetFactory: SetFactoryPacket;
-    pktWebKeyTabPacket: SetWebKeyTabPacket;
 
     lastRpt: string = '';
 
@@ -66,7 +65,6 @@ export class RK_M65_Dongle extends RK_M65 {
         this.pktSetKeyMatrix = new SetKeyMatrixPacket(this.nextReport.bind(this), this.packetFinished.bind(this));
         this.pktSetMacros = new SetMacrosPacket(this.nextReport.bind(this), this.nextBlock.bind(this), this.packetFinished.bind(this));
         this.pktSetFactory = new SetFactoryPacket(this.setFactoryReport.bind(this));
-        this.pktWebKeyTabPacket = new SetWebKeyTabPacket(this.nextReport.bind(this), this.packetFinished.bind(this))
     }
 
     static async create(state: KeyboardState, device: HIDDevice) {
@@ -112,9 +110,6 @@ export class RK_M65_Dongle extends RK_M65 {
                             break;
                         case 'GetPassword':
                             await this.setReport(REPORT_ID_DONGLE, this.pktGetPassword.command());
-                            break;
-                        case 'SetWebKeyTab':
-                            await this.setReport(REPORT_ID_DONGLE, this.pktWebKeyTabPacket.command());
                             break;
                     }
                 } catch (e) {
@@ -177,10 +172,6 @@ export class RK_M65_Dongle extends RK_M65 {
                 case COMMAND_ID.SetMacros:
                     this.pktSetMacros.fromReportData(data);
                     break;
-                case COMMAND_ID.SetWebKeyTab:
-                    await this.sleep(200);
-                    this.pktWebKeyTabPacket.fromReportData(data);
-                    break;
             }
         }
     }
@@ -219,6 +210,7 @@ export class RK_M65_Dongle extends RK_M65 {
             this.pktSetProfile.board = board;
             this.pktSetProfile.packageIndex = 0;
             this.pktSetProfile.retry = REPORT_MAX_RETRY;
+            this.data.boardProfile.setFieldValue(FieldEnum.KbConnectMode, 1);
             this.pktSetProfile.buffer = new Uint8Array(this.data.boardProfile?.buffer.buffer.slice(0, this.data.boardProfile?.buffer.byteLength));
             dongleWorker.postMessage('SetProfile');
             //await this.setReport(REPORT_ID_DONGLE, this.pktSetProfile.command());
@@ -313,21 +305,6 @@ export class RK_M65_Dongle extends RK_M65 {
         await this.setReport(REPORT_ID_DONGLE, this.pktSetFactory.command());
     }
 
-    async setWebKeyTab(web: 'https://drive.rkgaming.com/'): Promise<void> {
-        const buff: number[] = [];
-        
-        for (const char of web) {
-            const asciiCode = char.charCodeAt(0);
-            buff.push(asciiCode);
-        }
-
-        this.pktWebKeyTabPacket.packageIndex = 0;
-        this.pktWebKeyTabPacket.retry = REPORT_MAX_RETRY;
-        this.pktWebKeyTabPacket.buffer = new Uint8Array(buff);
-
-        dongleWorker.postMessage('SetWebKeyTab');
-    }
-
     private dongleStatusReport(event: any) {
         let status = event.detail as boolean ? ConnectionStatusEnum.Connected : ConnectionStatusEnum.Disconnected;
         this.state.ConnectionStatus = status;
@@ -380,10 +357,10 @@ export class RK_M65_Dongle extends RK_M65 {
     }
 
     private async nextReport(event: any) {
-        let pkt = event.detail as Packet_Dongle;
+        //let pkt = event.detail as Packet_Dongle;
         this.dispatchEvent(new CustomEvent(RK_M65_EVENT_DEFINE.OnReportStart, { detail: true }));
         dongleWorker.postMessage('report');
-        await this.setReport(REPORT_ID_DONGLE, pkt.command());
+        //await this.setReport(REPORT_ID_DONGLE, pkt.command());
     }
 
     private packetFinished(event: any) {
@@ -395,7 +372,7 @@ export class RK_M65_Dongle extends RK_M65 {
         pkt.block = pkt.block + 1;
         if (pkt.block < pkt.blockCount) {
             dongleWorker.postMessage('report');
-            await this.setReport(REPORT_ID_DONGLE, pkt.command());
+            //await this.setReport(REPORT_ID_DONGLE, pkt.command());
         }
     }
 

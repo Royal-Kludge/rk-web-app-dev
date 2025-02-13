@@ -75,21 +75,6 @@ const setLayer = () => {
   useKey.saveProfile();
 }
 
-const touchPadChanged = () => {
-  let index = useKey.getIndex(0, 18);
-  useKey.setKeyCode(index, isTouchPad.value ? KeyDefineEnum.KEY_RK_WWW : KeyDefineEnum.NONE);
-}
-
-const openWebSiteInput = () => {
-  www.value = '';
-  isSetWebSite.value = true;
-}
-
-const setWebSite = async () => {
-  await useKey.setWebsite(www.value);
-  isSetWebSite.value = false;
-}
-
 onMounted(async () => {
   await useKey.init();
 });
