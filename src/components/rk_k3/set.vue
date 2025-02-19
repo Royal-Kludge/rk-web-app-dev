@@ -19,6 +19,10 @@
                 <div class="m-5">
                     <div class="m-4 d-flex flex-column">
                         <div class="py-3 my-3 w-100 bg-warn-1 text-grey-1 text-center br-2 b-grey c-p but"
+                            @click="local = true">
+                            {{ $t("set.but_1") }}
+                        </div>
+                        <div class="py-3 my-3 w-100 bg-warn-1 text-grey-1 text-center br-2 b-grey c-p but"
                             @click="reSet = true">
                             {{ $t("set.but_2") }}
                         </div>
@@ -40,6 +44,15 @@
                             </div>
                         </template>
                     </el-dialog>
+                    <el-dialog v-model="local" :title="$t('set.but_1')">
+                        <span>{{ $t("set.title_7") }}</span>
+                        <template #footer>
+                            <div class="d-flex jc-center">
+                                <el-button @click="clearLocalData()">{{ $t("set.but_5") }}</el-button>
+                                <el-button type="primary" @click="local = false">{{ $t("set.but_6") }}</el-button>
+                            </div>
+                        </template>
+                    </el-dialog>
                 </div>
             </div>
         </div>
@@ -51,7 +64,7 @@ import { useSetStore } from "@/stores/setStore";
 import { useKeyStore } from "@/stores/rk_k3/keyStore";
 import { useLocaleStore } from "@/stores/locale";
 import { storeToRefs } from "pinia";
-
+import { storage } from '@/common/storage';
 import { useI18n } from 'vue-i18n';
 import axios from 'axios'
 import { mouse } from '@/mouse/mouse'
@@ -71,7 +84,7 @@ const reSet = ref(false);
 const ver = ref(mouse.state.fwVersion);
 const version = ref(mouse.state.fwVersion)
 const url = ref()
-
+const local = ref(false);
 const VerTips = computed(() => (ver.value !== version.value ? t('set.title_3') + ':' + version.value : t('set.title_2')))
 
 const getVer = () => {
@@ -143,6 +156,11 @@ onBeforeUnmount(() => {
 
 const setToFactory = () => {
     reSet.value = false;
+}
+const clearLocalData = () => {
+    storage.clear();
+    local.value = false;
+    window.location.reload();
 }
 </script>
 <style lang="scss" scoped>

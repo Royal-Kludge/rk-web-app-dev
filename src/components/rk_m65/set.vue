@@ -28,9 +28,10 @@
                             @change="setLayer" />
                     </div> -->
                     <div class="m-4 d-flex flex-column">
-                        <!-- <div class="py-3 my-3 w-100 bg-warn-1 text-grey-1 text-center br-2 b-grey c-p but">
+                        <div class="py-3 my-3 w-100 bg-warn-1 text-grey-1 text-center br-2 b-grey c-p but"
+                            @click="local = true">
                             {{ $t("set.but_1") }}
-                        </div>-->
+                        </div>
                         <div class="py-3 my-3 w-100 bg-warn-1 text-grey-1 text-center br-2 b-grey c-p but"
                             @click="reSet = true">
                             {{ $t("set.but_2") }}
@@ -39,11 +40,11 @@
                             {{ $t("set.but_3") }}
                         </div> -->
                         <div class="py-3 my-3 w-100 bg-warn-1 text-grey-1 text-center br-2 b-grey c-p but"
-                            @click="checkVer(true)"
-                            v-if="keyboard.state.connectType == ConnectionType.USB">
+                            @click="checkVer(true)" v-if="keyboard.state.connectType == ConnectionType.USB">
                             {{ $t("set.but_4") }}(<span>{{ VerTips }}</span>)
                         </div>
-                        <div class="w-100 text-grey-1 text-center" v-if="keyboard.state.connectType == ConnectionType.USB">
+                        <div class="w-100 text-grey-1 text-center"
+                            v-if="keyboard.state.connectType == ConnectionType.USB">
                             Version:{{ ver }}
                         </div>
                     </div>
@@ -54,6 +55,15 @@
                             <div class="d-flex jc-center">
                                 <el-button @click="setToFactory()">{{ $t("set.but_5") }}</el-button>
                                 <el-button type="primary" @click="reSet = false">{{ $t("set.but_6") }}</el-button>
+                            </div>
+                        </template>
+                    </el-dialog>
+                    <el-dialog v-model="local" :title="$t('set.but_1')">
+                        <span>{{ $t("set.title_7") }}</span>
+                        <template #footer>
+                            <div class="d-flex jc-center">
+                                <el-button @click="clearLocalData()">{{ $t("set.but_5") }}</el-button>
+                                <el-button type="primary" @click="local = false">{{ $t("set.but_6") }}</el-button>
                             </div>
                         </template>
                     </el-dialog>
@@ -78,7 +88,7 @@ import { useKeyStore } from "@/stores/rk_m65/keyStore";
 import { useMacroStore } from "@/stores/rk_m65/macroStore";
 import { useLocaleStore } from "@/stores/locale";
 import { storeToRefs } from "pinia";
-
+import { storage } from '@/common/storage';
 import { useI18n } from 'vue-i18n';
 import axios from 'axios'
 import { keyboard } from '@/keyboard/keyboard'
@@ -103,6 +113,7 @@ const version = ref(keyboard.state.fwVersion)
 const url = ref()
 const isLayer = ref(false);
 const layer = ref(0);
+const local = ref(false);
 
 const modeStr = computed(() => (mode.value >= 2 ? "set.mode_work" : "set.mode_game"))
 const isDown = computed(() => (useLight.connectType == ConnectionType.USB))
@@ -207,6 +218,12 @@ const setToFactory = () => {
     useKey.setToFactory();
     reSet.value = false;
     useMacro.clearMacro();
+}
+
+const clearLocalData = () => {
+    storage.clear();
+    local.value = false;
+    window.location.reload();
 }
 </script>
 <style lang="scss" scoped>
