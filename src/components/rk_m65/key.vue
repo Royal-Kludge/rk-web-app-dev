@@ -13,7 +13,7 @@
                             :class="[`d-flex p-2 pl-3 ${key.style}`, useKey.keyColor(key.keyData), useKey.isSelected(key.index)]">
                             <div :class="[`text-white-1`, keyTextColorClass(key.keyData)]"
                                 :style="`z-index:1;word-wrap: break-word;overflow: hidden;text-align: center;${keyTextColorStyle(key.keyData)}`">
-                                <span style="word-wrap: break-word;" v-html="useKey.keyText(key.keyData)"
+                                <span style="word-wrap: break-word;" v-html="$t(useKey.keyText(key.keyData).valueOf())"
                                     v-if="key.img == undefined"></span>
                                 <span v-else v-html="key.img" class="d-flex"></span>
                             </div>
@@ -24,7 +24,7 @@
                         v-for="key in (line as KeyLine).keys" v-else @click="keyClick(key.index)">
                         <div :class="[`text-white-1`, keyTextColorClass(key.keyData)]"
                             :style="`z-index:1;word-wrap: break-word;overflow: hidden;text-align: center;${keyTextColorStyle(key.keyData)}`">
-                            <span style="word-wrap: break-word;" v-html="useKey.keyText(key.keyData)"
+                            <span style="word-wrap: break-word;" v-html="$t(useKey.keyText(key.keyData).valueOf())"
                                 v-if="key.img == undefined"></span>
                             <span v-else v-html="key.img" class="d-flex"></span>
                         </div>
@@ -43,7 +43,7 @@
                             :class="[`d-flex p-2 pl-3 ${key.style}`, useKey.keyColor(key.keyData), useKey.isSelected(key.index)]">
                             <div :class="[`text-white-1`, keyTextColorClass(key.keyData)]"
                                 :style="`z-index:1;word-wrap: break-word;overflow: hidden;text-align: center;${keyTextColorStyle(key.keyData)}`">
-                                <span style="word-wrap: break-word;" v-html="useKey.keyText(key.keyData)"
+                                <span style="word-wrap: break-word;" v-html="$t(useKey.keyText(key.keyData).valueOf())"
                                     v-if="key.img == undefined"></span>
                                 <span v-else v-html="key.img" class="d-flex"></span>
                             </div>
@@ -54,7 +54,7 @@
                         v-for="key in line.keys" v-else @click="keyClick(key.index)">
                         <div :class="[`text-white-1`, keyTextColorClass(key.keyData)]"
                             :style="`z-index:1;word-wrap: break-word;overflow: hidden;text-align: center;${keyTextColorStyle(key.keyData)}`">
-                            <span style="word-wrap: break-word;" v-html="useKey.keyText(key.keyData)"
+                            <span style="word-wrap: break-word;" v-html="$t(useKey.keyText(key.keyData).valueOf())"
                                 v-if="key.img == undefined"></span>
                             <span v-else v-html="key.img" class="d-flex"></span>
                         </div>
@@ -82,7 +82,9 @@ import { storeToRefs } from "pinia";
 import type { KeyLine, KeyState, KeyTableData } from "@/keyboard/interface";
 import { LightEffectEnum } from '@/keyboard/enum'
 import { useMacroStore } from "@/stores/rk_m65/macroStore";
+import { useI18n } from 'vue-i18n';
 
+const { t } = useI18n();
 const useMacro = useMacroStore();
 const useMenu = useMenuStore();
 const { meunid } = storeToRefs(useMenu);

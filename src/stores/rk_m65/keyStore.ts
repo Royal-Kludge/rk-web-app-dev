@@ -1209,7 +1209,7 @@ export const useKeyStore = defineStore('keyinfo_rk_m65', () => {
       case KeyMappingType.Pc:
         if (keyText[mapping.keyRaw] != undefined) {
           //if (mapping.keyMappingPara == 0x09) {
-          mapping.keyStr = t(keyText[mapping.keyRaw].valueOf());
+          mapping.keyStr = keyText[mapping.keyRaw].valueOf();
           // } else {
           //   mapping.keyStr = `${keyText[mapping.keyRaw]}`;
           // }
