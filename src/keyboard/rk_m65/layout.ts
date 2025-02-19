@@ -63,7 +63,7 @@ export const KeyMap_FN1_Win: Array<KeyDefineEnum> = [
 	//-------------------------------------------------------------------------------------------------------------4
 	KeyDefineEnum.NONE,               KeyDefineEnum.KEY_F4,           KeyDefineEnum.NONE,          KeyDefineEnum.NONE,           KeyDefineEnum.NONE,                KeyDefineEnum.NONE,							  						 						
 	//-------------------------------------------------------------------------------------------------------------5	
-	KeyDefineEnum.NONE,               KeyDefineEnum.KEY_F5,           KeyDefineEnum.NONE,          KeyDefineEnum.SP_TEST_EMI,    KeyDefineEnum.NONE,                KeyDefineEnum.SP_ProfileReset,		 			 			    
+	KeyDefineEnum.NONE,               KeyDefineEnum.KEY_F5,           KeyDefineEnum.NONE,          KeyDefineEnum.NONE,           KeyDefineEnum.NONE,                KeyDefineEnum.SP_ProfileReset,		 			 			    
 	//-------------------------------------------------------------------------------------------------------------6
 	KeyDefineEnum.NONE,               KeyDefineEnum.KEY_F6,           KeyDefineEnum.NONE,          KeyDefineEnum.NONE,           KeyDefineEnum.NONE,                KeyDefineEnum.NONE,		
 	//-------------------------------------------------------------------------------------------------------------7
@@ -111,7 +111,7 @@ export const KeyMap_FN2_Win: Array<KeyDefineEnum> = [
 	//-------------------------------------------------------------------------------------------------------------4
 	KeyDefineEnum.NONE,               KeyDefineEnum.KEY_F4,           KeyDefineEnum.NONE,          KeyDefineEnum.NONE,           KeyDefineEnum.NONE,                KeyDefineEnum.NONE,							  						 						
 	//-------------------------------------------------------------------------------------------------------------5	
-	KeyDefineEnum.NONE,               KeyDefineEnum.KEY_F5,           KeyDefineEnum.NONE,          KeyDefineEnum.SP_TEST_EMI,    KeyDefineEnum.NONE,                KeyDefineEnum.SP_ProfileReset,		 			 			    
+	KeyDefineEnum.NONE,               KeyDefineEnum.KEY_F5,           KeyDefineEnum.NONE,          KeyDefineEnum.NONE,           KeyDefineEnum.NONE,                KeyDefineEnum.SP_ProfileReset,		 			 			    
 	//-------------------------------------------------------------------------------------------------------------6
 	KeyDefineEnum.NONE,               KeyDefineEnum.KEY_F6,           KeyDefineEnum.NONE,          KeyDefineEnum.NONE,           KeyDefineEnum.NONE,                KeyDefineEnum.NONE,		
 	//-------------------------------------------------------------------------------------------------------------7
@@ -255,7 +255,7 @@ export const KeyMap_FN1_Mac: Array<KeyDefineEnum> = [
 	//-------------------------------------------------------------------------------------------------------------4
 	KeyDefineEnum.NONE,               KeyDefineEnum.KEY_F4,           KeyDefineEnum.NONE,          KeyDefineEnum.NONE,           KeyDefineEnum.NONE,                KeyDefineEnum.NONE,							  						 						
 	//-------------------------------------------------------------------------------------------------------------5	
-	KeyDefineEnum.NONE,               KeyDefineEnum.KEY_F5,           KeyDefineEnum.NONE,          KeyDefineEnum.SP_TEST_EMI,    KeyDefineEnum.NONE,                KeyDefineEnum.SP_ProfileReset,		 			 			    
+	KeyDefineEnum.NONE,               KeyDefineEnum.KEY_F5,           KeyDefineEnum.NONE,          KeyDefineEnum.NONE,           KeyDefineEnum.NONE,                KeyDefineEnum.SP_ProfileReset,		 			 			    
 	//-------------------------------------------------------------------------------------------------------------6
 	KeyDefineEnum.NONE,               KeyDefineEnum.KEY_F6,           KeyDefineEnum.NONE,          KeyDefineEnum.NONE,           KeyDefineEnum.NONE,                KeyDefineEnum.NONE,		
 	//-------------------------------------------------------------------------------------------------------------7
@@ -303,7 +303,7 @@ export const KeyMap_FN2_Mac: Array<KeyDefineEnum> = [
 	//-------------------------------------------------------------------------------------------------------------4
 	KeyDefineEnum.NONE,               KeyDefineEnum.KEY_F4,           KeyDefineEnum.NONE,          KeyDefineEnum.NONE,           KeyDefineEnum.NONE,                KeyDefineEnum.NONE,							  						 						
 	//-------------------------------------------------------------------------------------------------------------5	
-	KeyDefineEnum.NONE,               KeyDefineEnum.KEY_F5,           KeyDefineEnum.NONE,          KeyDefineEnum.SP_TEST_EMI,    KeyDefineEnum.NONE,                KeyDefineEnum.SP_ProfileReset,		 			 			    
+	KeyDefineEnum.NONE,               KeyDefineEnum.KEY_F5,           KeyDefineEnum.NONE,          KeyDefineEnum.NONE,           KeyDefineEnum.NONE,                KeyDefineEnum.SP_ProfileReset,		 			 			    
 	//-------------------------------------------------------------------------------------------------------------6
 	KeyDefineEnum.NONE,               KeyDefineEnum.KEY_F6,           KeyDefineEnum.NONE,          KeyDefineEnum.NONE,           KeyDefineEnum.NONE,                KeyDefineEnum.NONE,		
 	//-------------------------------------------------------------------------------------------------------------7
@@ -412,9 +412,9 @@ export const KeyMap_Normal_UK_Win: Array<KeyDefineEnum> = [
 	//-------------------------------------------------------------------------------------------------------------11
 	KeyDefineEnum.SP_BT_DEV0,     KeyDefineEnum.KEY_Underscore,      KeyDefineEnum.KEY_L_Brackets,   KeyDefineEnum.KEY_Quotation,    KeyDefineEnum.KEY_CODE56,           KeyDefineEnum.NONE,			 
 	//------- -----------------------------------------------------------------------------------------------------12
-	KeyDefineEnum.SP_BT_DEV3,     KeyDefineEnum.KEY_EqualSign,       KeyDefineEnum.KEY_R_Brackets,   KeyDefineEnum.KEY_CODE42,       KeyDefineEnum.KEY_CODE45,           KeyDefineEnum.NONE,		    
+	KeyDefineEnum.SP_BT_DEV3,     KeyDefineEnum.KEY_EqualSign,       KeyDefineEnum.KEY_R_Brackets,   KeyDefineEnum.KEY_CODE29,       KeyDefineEnum.KEY_CODE45,           KeyDefineEnum.NONE,		    
 	//-------------------------------------------------------------------------------------------------------------13
-	KeyDefineEnum.NONE,           KeyDefineEnum.KEY_Backspace,       KeyDefineEnum.KEY_CODE29,       KeyDefineEnum.KEY_ENTER,        KeyDefineEnum.KEY_R_SHIFT,    	  	 KeyDefineEnum.KEY_LeftArrow,
+	KeyDefineEnum.NONE,           KeyDefineEnum.KEY_Backspace,       KeyDefineEnum.KEY_CODE42,       KeyDefineEnum.KEY_ENTER,        KeyDefineEnum.KEY_R_SHIFT,    	  	 KeyDefineEnum.KEY_LeftArrow,
 	//-------------------------------------------------------------------------------------------------------------14
 	
 	KeyDefineEnum.NONE,           KeyDefineEnum.KEY_Mute,            KeyDefineEnum.NONE,             KeyDefineEnum.NONE,             KeyDefineEnum.KEY_UpArrow,          KeyDefineEnum.KEY_DownArrow,     	         
@@ -447,7 +447,7 @@ export const KeyMap_FN1_UK_Win: Array<KeyDefineEnum> = [
 	//-------------------------------------------------------------------------------------------------------------4
 	KeyDefineEnum.NONE,               KeyDefineEnum.KEY_F4,           KeyDefineEnum.NONE,          KeyDefineEnum.NONE,           KeyDefineEnum.NONE,                KeyDefineEnum.NONE,							  						 						
 	//-------------------------------------------------------------------------------------------------------------5	
-	KeyDefineEnum.NONE,               KeyDefineEnum.KEY_F5,           KeyDefineEnum.NONE,          KeyDefineEnum.SP_TEST_EMI,    KeyDefineEnum.NONE,                KeyDefineEnum.SP_ProfileReset,		 			 			    
+	KeyDefineEnum.NONE,               KeyDefineEnum.KEY_F5,           KeyDefineEnum.NONE,          KeyDefineEnum.NONE,           KeyDefineEnum.NONE,                KeyDefineEnum.SP_ProfileReset,		 			 			    
 	//-------------------------------------------------------------------------------------------------------------6
 	KeyDefineEnum.NONE,               KeyDefineEnum.KEY_F6,           KeyDefineEnum.NONE,          KeyDefineEnum.NONE,           KeyDefineEnum.NONE,                KeyDefineEnum.NONE,		
 	//-------------------------------------------------------------------------------------------------------------7
@@ -495,7 +495,7 @@ export const KeyMap_FN2_UK_Win: Array<KeyDefineEnum> = [
 	//-------------------------------------------------------------------------------------------------------------4
 	KeyDefineEnum.NONE,               KeyDefineEnum.KEY_F4,           KeyDefineEnum.NONE,          KeyDefineEnum.NONE,           KeyDefineEnum.NONE,                KeyDefineEnum.NONE,							  						 						
 	//-------------------------------------------------------------------------------------------------------------5	
-	KeyDefineEnum.NONE,               KeyDefineEnum.KEY_F5,           KeyDefineEnum.NONE,          KeyDefineEnum.SP_TEST_EMI,    KeyDefineEnum.NONE,                KeyDefineEnum.SP_ProfileReset,		 			 			    
+	KeyDefineEnum.NONE,               KeyDefineEnum.KEY_F5,           KeyDefineEnum.NONE,          KeyDefineEnum.NONE,           KeyDefineEnum.NONE,                KeyDefineEnum.SP_ProfileReset,		 			 			    
 	//-------------------------------------------------------------------------------------------------------------6
 	KeyDefineEnum.NONE,               KeyDefineEnum.KEY_F6,           KeyDefineEnum.NONE,          KeyDefineEnum.NONE,           KeyDefineEnum.NONE,                KeyDefineEnum.NONE,		
 	//-------------------------------------------------------------------------------------------------------------7
@@ -604,9 +604,9 @@ export const KeyMap_Normal_UK_Mac: Array<KeyDefineEnum> = [
 	//-------------------------------------------------------------------------------------------------------------11
 	KeyDefineEnum.SP_BT_DEV0,     KeyDefineEnum.KEY_Underscore,      KeyDefineEnum.KEY_L_Brackets,   KeyDefineEnum.KEY_Quotation,    KeyDefineEnum.KEY_CODE56,           KeyDefineEnum.NONE,			 
 	//------- -----------------------------------------------------------------------------------------------------12
-	KeyDefineEnum.SP_BT_DEV3,     KeyDefineEnum.KEY_EqualSign,       KeyDefineEnum.KEY_R_Brackets,   KeyDefineEnum.KEY_CODE42,       KeyDefineEnum.KEY_CODE45,           KeyDefineEnum.NONE,		    
+	KeyDefineEnum.SP_BT_DEV3,     KeyDefineEnum.KEY_EqualSign,       KeyDefineEnum.KEY_R_Brackets,   KeyDefineEnum.KEY_CODE29,       KeyDefineEnum.KEY_CODE45,           KeyDefineEnum.NONE,		    
 	//-------------------------------------------------------------------------------------------------------------13
-	KeyDefineEnum.NONE,           KeyDefineEnum.KEY_Backspace,       KeyDefineEnum.KEY_CODE29,       KeyDefineEnum.KEY_ENTER,        KeyDefineEnum.KEY_R_SHIFT,    	  	 KeyDefineEnum.KEY_LeftArrow,
+	KeyDefineEnum.NONE,           KeyDefineEnum.KEY_Backspace,       KeyDefineEnum.KEY_CODE42,       KeyDefineEnum.KEY_ENTER,        KeyDefineEnum.KEY_R_SHIFT,    	  	 KeyDefineEnum.KEY_LeftArrow,
 	//-------------------------------------------------------------------------------------------------------------14
 	
 	KeyDefineEnum.NONE,           KeyDefineEnum.KEY_Mute,            KeyDefineEnum.NONE,             KeyDefineEnum.NONE,             KeyDefineEnum.KEY_UpArrow,          KeyDefineEnum.KEY_DownArrow,     	         
@@ -639,7 +639,7 @@ export const KeyMap_FN1_UK_Mac: Array<KeyDefineEnum> = [
 	//-------------------------------------------------------------------------------------------------------------4
 	KeyDefineEnum.NONE,               KeyDefineEnum.KEY_F4,           KeyDefineEnum.NONE,          KeyDefineEnum.NONE,           KeyDefineEnum.NONE,                KeyDefineEnum.NONE,							  						 						
 	//-------------------------------------------------------------------------------------------------------------5	
-	KeyDefineEnum.NONE,               KeyDefineEnum.KEY_F5,           KeyDefineEnum.NONE,          KeyDefineEnum.SP_TEST_EMI,    KeyDefineEnum.NONE,                KeyDefineEnum.SP_ProfileReset,		 			 			    
+	KeyDefineEnum.NONE,               KeyDefineEnum.KEY_F5,           KeyDefineEnum.NONE,          KeyDefineEnum.NONE,           KeyDefineEnum.NONE,                KeyDefineEnum.SP_ProfileReset,		 			 			    
 	//-------------------------------------------------------------------------------------------------------------6
 	KeyDefineEnum.NONE,               KeyDefineEnum.KEY_F6,           KeyDefineEnum.NONE,          KeyDefineEnum.NONE,           KeyDefineEnum.NONE,                KeyDefineEnum.NONE,		
 	//-------------------------------------------------------------------------------------------------------------7
@@ -687,7 +687,7 @@ export const KeyMap_FN2_UK_Mac: Array<KeyDefineEnum> = [
 	//-------------------------------------------------------------------------------------------------------------4
 	KeyDefineEnum.NONE,               KeyDefineEnum.KEY_F4,           KeyDefineEnum.NONE,          KeyDefineEnum.NONE,           KeyDefineEnum.NONE,                KeyDefineEnum.NONE,							  						 						
 	//-------------------------------------------------------------------------------------------------------------5	
-	KeyDefineEnum.NONE,               KeyDefineEnum.KEY_F5,           KeyDefineEnum.NONE,          KeyDefineEnum.SP_TEST_EMI,    KeyDefineEnum.NONE,                KeyDefineEnum.SP_ProfileReset,		 			 			    
+	KeyDefineEnum.NONE,               KeyDefineEnum.KEY_F5,           KeyDefineEnum.NONE,          KeyDefineEnum.NONE,           KeyDefineEnum.NONE,                KeyDefineEnum.SP_ProfileReset,		 			 			    
 	//-------------------------------------------------------------------------------------------------------------6
 	KeyDefineEnum.NONE,               KeyDefineEnum.KEY_F6,           KeyDefineEnum.NONE,          KeyDefineEnum.NONE,           KeyDefineEnum.NONE,                KeyDefineEnum.NONE,		
 	//-------------------------------------------------------------------------------------------------------------7

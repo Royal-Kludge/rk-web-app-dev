@@ -111,13 +111,13 @@ const VerTips = computed(() => (ver.value !== version.value ? t('set.title_3') +
 const getVer = () => {
     let pid = keyboard.keyboardDefine?.productId;
     if (pid == 0x01FD) {
-        axios.get('/down/work/RKWEB/firmware/M65/M65_firmware.json').then(response => {
+        axios.get('/down/work/RKWEB/firmware/M65/M65_firmware_en.json').then(response => {
             // 请求成功处理
             version.value = response.data.version
             url.value = response.data.url
             checkVer()
         }).catch(error => {
-            // 请求失败处理   
+            // 请求失败处理
             console.error(error);
         });
     } else if (pid == 0x0202) {
@@ -127,7 +127,7 @@ const getVer = () => {
             url.value = response.data.url
             checkVer()
         }).catch(error => {
-            // 请求失败处理   
+            // 请求失败处理
             console.error(error);
         });
     }
