@@ -293,5 +293,31 @@ export default {
     error_3: "TFT数据下载失败，请重试！",
     error_4: "下载TFT数据出错",
     error_5: "最大支持100帧图片!",
-  }
+  },
+  mouseKey: {
+    leftKey: "左键",
+    rightKey: "右键",
+    middleKey: "中键",
+    forwardKey: "前进键",
+    backKey: "后退键",
+    leftShaft: "左摆",
+    rightShaft: "右摆",
+    wheelUp: "上滚轮",
+    wheelDown: "下滚轮",
+    xAxleLeft: "X 轴左",
+    xAxleRight: "X 轴右",
+    yAxleUp: "Y 轴上",
+    yAxleDown: "Y 轴下"
+  },
+  dpiKey: {
+    increase: "Dpi+",
+    decrease: "Dpi-",
+    loop: "Dpi 循环",
+    lock: "Dpi 锁定"
+  },
+  reportRateKey: {
+    increase: "回报率+",
+    decrease: "回报率-",
+    loop: "回报率循环",
+  },
 };

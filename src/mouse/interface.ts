@@ -1,7 +1,7 @@
 import type { KeyDefineEnum } from "@/common/keyCode"
 import type { HidDeviceDefine } from "../device/interface"
 import type { State } from "@/device/state"
-import type { KeyMappingType } from "@/common/enum"
+import type { DpiCodeEnum, KeyMappingType, MacroLoopEnum, ModifyKey, KeyFunctionType, MouseKeyCode, ReportRateCodeEnum } from "@/mouse/enum"
 
 export interface KeyState {
     index: number,
@@ -23,15 +23,31 @@ export interface MouseState extends State {
 
 export interface MouseDefine extends HidDeviceDefine {
     keyText: Record<number, String>,
+    layout: Array<KeyTableData>,
     protocol: (state: MouseState, device: HIDDevice) => Promise<IProtocol>
 }
 
 export interface KeyMappingData {
     keyStr: String,
-    keyCode: KeyDefineEnum | number,
+    keyFunctionType: KeyFunctionType,
     keyMappingType: KeyMappingType,
-    keyMappingPara: number,
+    keyTypeCode: number | MouseKeyCode | MacroLoopEnum | DpiCodeEnum | ReportRateCodeEnum | ModifyKey,
+    keyParam1: number,
+    keyParam2: number,
     keyRaw: number
+}
+
+export interface LedColor {
+    red: number,
+    green: number,
+    blue: number,
+    color: string
+}
+
+export interface KeyData {
+    keyType: KeyMappingType,
+    green: number,
+    blue: number,
 }
 
 export interface KeyTableData {

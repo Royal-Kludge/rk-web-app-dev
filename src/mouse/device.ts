@@ -1,7 +1,7 @@
 import { ConnectionType, DeviceType } from "../device/enum"
 import type { HidDeviceDefine } from "../device/interface"
 
-export const RK_K3_WIRE_DEFINE: HidDeviceDefine = {
+export const RK_M3_WIRE_DEFINE: HidDeviceDefine = {
     name: "rk k3 wire",
     vendorId: 0x372E,
     productId: 0x102A,
