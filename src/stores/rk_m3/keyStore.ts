@@ -7,7 +7,7 @@ import { Profile, ps } from '@/mouse/rk_m3/profiles';
 import fileSaver from "file-saver";
 import { ElMessage } from 'element-plus'
 import { useI18n } from 'vue-i18n';
-import { KEY_TABLE_DATA, KeyTable } from "@/mouse/rk_m3/keyTable";
+import { KEY_TABLE_DATA, KeyTable, KeyTableEnum } from "@/mouse/rk_m3/keyTable";
 import { LedTable } from "@/mouse/rk_m3/ledTable";
 import { KeyDefineEnum, KeyText } from "@/common/keyCode";
 import { KeyMappingType, KeyFunctionType, MacroLoopEnum } from "@/mouse/enum";
@@ -250,7 +250,7 @@ export const useKeyStore = defineStore('keyinfo_rk_m3', () => {
         renameProfile(tm)
     };
 
-    const keyMapping = (index: number, func: KeyFunctionType, keyCode: KeyDefineEnum, modify: KeyDefineEnum = 0, count: number = 0, delay: number = 0) => {
+    const keyMapping = (index: KeyTableEnum, func: KeyFunctionType, keyCode: KeyDefineEnum, modify: KeyDefineEnum = 0, count: number = 0, delay: number = 0) => {
         let key : number = 0;
 
         switch (func) {

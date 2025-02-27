@@ -57,10 +57,11 @@ import type { KeyMappingData, KeyTableData, LedColor } from "../interface";
  */
 export enum KeyTableEnum {
     LeftKey = 0,                // 左键
-    RightKey = 4,               // 右键
-    MiddleKey = 8,              // 中键
-    BackKey = 12,               // 后退键
-    ForwardKey = 16,            // 前进键
+    RightKey = 1,               // 右键
+    MiddleKey = 2,              // 中键
+    BackKey = 3,                // 后退键
+    ForwardKey = 4,             // 前进键
+    DpiKey = 5,                 // 前进键
 }
 
 export const KEY_TABLE_DATA: Uint8Array = new Uint8Array([
