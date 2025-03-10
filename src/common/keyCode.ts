@@ -1211,7 +1211,7 @@ export enum KeyDefineEnum {
     DPI_SWITCH_I = 0x05010000,
     DPI_SWITCH_D = 0x05020000,
     DPI_SWITCH_L = 0x05040000,
-    DPI_SWITCH_LOCK = 0x05010000,
+    DPI_SWITCH_LOCK = 0x05100000,
     PRFILE_SWITCH_I = 0x06010000,
     PRFILE_SWITCH_D = 0x06020000,
     PRFILE_SWITCH_L = 0x06040000,
@@ -1550,6 +1550,10 @@ export const KeyText: Record<number, String> = {
     //KEY_CTRL_C	  		  : 'Ctrl + C',
     //KEY_CTRL_V	  		  : 'Ctrl + V',
     //KEY_ALT_TAB	  		  : 'Alt + Tab',
+    0x00010006: 'shortcuts.copy',
+    0x00010019: 'shortcuts.paste',
+    0x0001001b: 'shortcuts.cut',
+    0x0004002B: 'shortcuts.switchApp',
     //****************************************************************
     //BYTE1:1�����?2�Ҽ���3�м���4ǰ������5���˼���6��ڡ�?7�Ұڡ�8�Ϲ��֡�9�¹��֡�10X����11X���ҡ�12Y���ϡ�13Y����
     //BYTE2:0xff��������0����һ�Σ����·������룬�ͷŷ��ͷ��룩��1˫����2������
@@ -1615,6 +1619,7 @@ export const KeyText: Record<number, String> = {
     0x05010000: 'dpiKey.increase',
     0x05020000: 'dpiKey.decrease',
     0x05040000: 'dpiKey.loop',
+    0x05100000: 'dpiKey.lock',
     0x06010000: 'ProfileSwitch+',
     0x06020000: 'ProfileSwitch-',
     0x06040000: 'ProfileSwitchLoop',
@@ -1715,8 +1720,8 @@ export const KeyText: Record<number, String> = {
     0x09000001: 'ReportRate250', //ֱ���趨Ϊ250
     0x09000002: 'ReportRate500', //ֱ���趨Ϊ500
     0x09000003: 'ReportRate1000', //ֱ���趨Ϊ1000
-    0x09010000: 'ReportRate+', //�ر��ʵ�λ��
-    0x09020000: 'ReportRate-', //�ر��ʵ�λ��
+    0x09010000: 'ReportRateI', //�ر��ʵ�λ��
+    0x09020000: 'ReportRateD', //�ر��ʵ�λ��
     0x09030000: 'ReportRateLoop', //�ر��ʵ�λѭ��
 
     0x0d000000: 'Fn1',

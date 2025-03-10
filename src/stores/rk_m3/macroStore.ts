@@ -7,6 +7,7 @@ import { storage } from '@/common/storage';
 import { ConnectionEventEnum, ConnectionStatusEnum } from "@/device/enum";
 import fileSaver from "file-saver";
 import { ElMessage } from 'element-plus'
+import { KeyDefineEnum, KeyText } from "@/common/keyCode";
 
 export const useMacroStore = defineStore("macrostore_rk_m3", () => {
     const rk_m3 = ref<RK_M3>();
@@ -28,12 +29,21 @@ export const useMacroStore = defineStore("macrostore_rk_m3", () => {
         ],
         actList: [
             { value: "macro.menu_1", label: "macro.menu_1" },
-            { value: "macro.menu_2", label: "macro.menu_2" }
+            { value: "macro.menu_2", label: "macro.menu_2" },
+            { value: "macro.menu_3", label: "macro.menu_3" },
         ],
         delayList: [
             { value: "macro.menu_4", label: "macro.menu_4" },
             { value: "macro.menu_5", label: "macro.menu_5" },
             { value: "macro.menu_6", label: "macro.menu_6" }
+        ],
+        mouseVal: KeyDefineEnum.KEY_L_BUTTON,
+        mouseList: [
+            { key: KeyDefineEnum.KEY_L_BUTTON, text: '左键' },
+            { key: KeyDefineEnum.KEY_R_BUTTON, text: '右键' },
+            { key: KeyDefineEnum.KEY_M_BUTTON, text: '中键' },
+            { key: KeyDefineEnum.KEY_RB0_BUTTON, text: '前进键' },
+            { key: KeyDefineEnum.KEY_RB1_BUTTON, text: '后退键' },
         ],
         macro: macro,
         name: '',
@@ -177,6 +187,12 @@ export const useMacroStore = defineStore("macrostore_rk_m3", () => {
             macro.value = undefined;
         }
     }
+    const clickMacro = (obj: Macro) => {
+        state.macro = obj;
+    }
+    const selectedMacro = (obj: Macro): string => {
+        return obj.index == state.macro?.index ? 'bg-warn-1' : '';
+    }
 
-    return { macros, state, actions, key, init, destroy, refresh, getMacroData, exportMacro, importProfile, setMacroData, clearMacro, saveAction }
+    return { macros, state, actions, key, init, destroy, refresh, getMacroData, exportMacro, importProfile, setMacroData, clearMacro, saveAction, clickMacro, selectedMacro }
 });

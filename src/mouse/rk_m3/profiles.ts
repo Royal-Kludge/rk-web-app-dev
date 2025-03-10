@@ -27,6 +27,7 @@ export class Profile {
                     index: mouse.mouseDefine.layout[index].index,
                     keyMappingData: {
                         keyStr: mouse.mouseDefine.layout[index].keyMappingData.keyStr,
+                        keyFunctionType: mouse.mouseDefine.layout[index].keyMappingData.keyFunctionType,
                         keyMappingType: mouse.mouseDefine.layout[index].keyMappingData.keyMappingType,
                         keyTypeCode: mouse.mouseDefine.layout[index].keyMappingData.keyTypeCode,
                         keyParam1: mouse.mouseDefine.layout[index].keyMappingData.keyParam1,
@@ -105,6 +106,7 @@ export class Profiles {
                 tm.isDefault = m.isDefault;
                 tm.keyTable = m.keyTable;
                 tm.ledTable = m.ledTable;
+                tm.keyLayout = m.keyLayout;
                 this.add(tm);
             }
             this.curIndex = tmp.curIndex;

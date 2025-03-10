@@ -97,8 +97,15 @@ export class LedTable {
         this.buffer.setUint8(field, value);
     }
 
-    getFieldValue(field: LedTableEnum) : number {
+    getFieldValue(field: LedTableEnum): number {
         return this.buffer.getUint8(field);
+    }
+
+    getDebounce(): number {
+        return this.buffer.getUint8(LedTableEnum.Debounce);
+    }
+    setDebounce(value: number) {
+        this.buffer.setUint8(LedTableEnum.Debounce, value);
     }
 
     // 0:    1ms(1000HZ)
@@ -108,7 +115,7 @@ export class LedTable {
     // 4:    125us(8000HZ)
     // 5:    250us(4000HZ)
     // 6:    500us(2000HZ)
-    getReportRate() : number {
+    getReportRate(): number {
         let rate = this.buffer.getUint8(LedTableEnum.ReportRate);
         return rate & 0x07;
     }
@@ -125,7 +132,7 @@ export class LedTable {
         this.buffer.setUint8(LedTableEnum.ReportRate, value);
     }
 
-    getLodHeight() : number {
+    getLodHeight(): number {
         let val = this.buffer.getUint8(LedTableEnum.LodHeight);
         return val & 0x0F;
     }
@@ -135,7 +142,7 @@ export class LedTable {
         this.buffer.setUint8(LedTableEnum.ReportRate, val);
     }
 
-    getAngleSnaping() : boolean {
+    getAngleSnaping(): boolean {
         let val = this.buffer.getUint8(LedTableEnum.Performance);
         return (val & 0x01) > 0;
     }
@@ -146,7 +153,7 @@ export class LedTable {
         this.buffer.setUint8(LedTableEnum.Performance, val);
     }
 
-    getGlassMode() : boolean {
+    getGlassMode(): boolean {
         let val = this.buffer.getUint8(LedTableEnum.Performance);
         return (val & 0x02) > 0;
     }
@@ -157,7 +164,7 @@ export class LedTable {
         this.buffer.setUint8(LedTableEnum.Performance, val);
     }
 
-    getRippleEnable() : boolean {
+    getRippleEnable(): boolean {
         let val = this.buffer.getUint8(LedTableEnum.Performance);
         return (val & 0x10) > 0;
     }
@@ -168,7 +175,7 @@ export class LedTable {
         this.buffer.setUint8(LedTableEnum.Performance, val);
     }
 
-    getMotionSync() : boolean {
+    getMotionSync(): boolean {
         let val = this.buffer.getUint8(LedTableEnum.Performance);
         return (val & 0x20) > 0;
     }
@@ -180,7 +187,7 @@ export class LedTable {
     }
 
     /// 0: office mode, 1: HP game ,2: CodedGaming
-    getSensorMode() : number {
+    getSensorMode(): number {
         let val = this.buffer.getUint8(LedTableEnum.Performance);
         return val >> 6;
     }
@@ -192,7 +199,7 @@ export class LedTable {
         this.buffer.setUint8(LedTableEnum.Performance, val);
     }
 
-    getSleepTime() : number {
+    getSleepTime(): number {
         let val = this.buffer.getUint8(LedTableEnum.WorkSleepTime);
         return val * 30;
     }
@@ -201,12 +208,12 @@ export class LedTable {
         this.buffer.setUint8(LedTableEnum.WorkSleepTime, time / 30);
     }
 
-    getDpiLevel() : number {
+    getDpiLevel(): number {
         let level = this.buffer.getUint8(LedTableEnum.DpiLevel);
         return level >> 4;
     }
 
-    getDpiMaxLevel() : number {
+    getDpiMaxLevel(): number {
         let max = this.buffer.getUint8(LedTableEnum.DpiLevel);
         return max & 0x0F;
     }
@@ -218,12 +225,12 @@ export class LedTable {
         this.buffer.setUint8(LedTableEnum.DpiLevel, dpi);
     }
 
-    getDpiValue(level: number) : number {
+    getDpiValue(level: number): number {
         let dpi = this.buffer.getUint16(LedTableEnum.DpiValue + ((level - 1) * 2), true);
 
         if (dpi > 42000) dpi = 42000;
         if (dpi < 600) dpi = (dpi + 1) * 50;
-        
+
         return dpi;
     }
 
@@ -233,7 +240,7 @@ export class LedTable {
         this.buffer.setUint16(LedTableEnum.DpiValue + ((level - 1) * 2), dpi, true);
     }
 
-    getDpiColor(level: number) : LedColor {
+    getDpiColor(level: number): LedColor {
         let index = level - 1;
         let r = this.buffer.getUint8(LedTableEnum.DpiColor + (index * 2));
         let g = this.buffer.getUint8(LedTableEnum.DpiColor + (index * 2) + 1);
@@ -256,9 +263,9 @@ export class LedTable {
         this.buffer.setUint8(LedTableEnum.DpiColor + (index * 2) + 2, color.red);
     }
 
-    static fromReportData(data: DataView) : LedTable | undefined {
+    static fromReportData(data: DataView): LedTable | undefined {
         let table = undefined;
-        
+
         if (data.byteLength == 56) {
             table = new LedTable(data);
         }

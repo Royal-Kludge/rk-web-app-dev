@@ -79,10 +79,16 @@ import { useKeyStore } from "@/stores/rk_m3/keyStore";
 import type { UploadProps } from 'element-plus'
 import { Profile } from '@/mouse/rk_m3/profiles';
 import { storeToRefs } from "pinia";
+import { onMounted } from "vue";
 
 const useKey = useKeyStore();
 
 const { state } = storeToRefs(useKey);
+
+// 页面加载时
+onMounted(() => {
+    useKey.init();
+});
 
 const clickProfile = async (obj: Profile) => {
     await useKey.clickProfile(obj)

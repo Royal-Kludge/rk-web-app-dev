@@ -3,7 +3,7 @@
         <MainMeun />
     </div>
     <div class="d-flex flex-1">
-        <div class="d-flex flex-column flex-1 ml-4 my-4">
+        <div class="d-flex flex-column flex-1 mx-4 my-4">
             <div class="bg-white p-2 fw-b" style="border-radius: 10px 10px 0px 0px;line-height: 30px;">
                 系统功能设置
             </div>
@@ -14,9 +14,9 @@
                         <img :src="`../../src/assets/images/help.png`" class="img-title" />
                     </div>
                     <div class="my-4">
-                        <el-radio-group v-model="lodVal" text-color="#00ffff" fill="#ffff00">
-                            <el-radio v-for="item in state.lodList" :value="item.value" :label="$t(item.label)"
-                                class="mx-5">
+                        <el-radio-group v-model="state.lodVal" text-color="#00ffff" fill="#ffff00">
+                            <el-radio v-for="item in state.lodList" :value="item.value" :label="item.value" class="mx-5"
+                                @change="useProperty.setLodHeight(state.lodVal)">
                                 {{ $t(item.label) }}
                             </el-radio>
                         </el-radio-group>
@@ -27,21 +27,24 @@
                         <img :src="`../../src/assets/images/help.png`" class="img-title" />
                     </div>
                     <div class="my-4">
-                        <el-radio-group v-model="sensorVal" text-color="#00ffff" fill="#ffff00">
-                            <el-radio v-for="item in state.sensorList" :value="item.value" :label="$t(item.label)"
-                                class="mx-5">
-                                {{ $t(item.label) }}
-                            </el-radio>
-                        </el-radio-group>
+                        <div class="mx-5">
+                            <el-checkbox v-model="state.rippleEnable" label="波纹控制"
+                                @change="useProperty.setRippleEnable" />
+                            <el-checkbox v-model="state.angleSnaping" label="直线修正"
+                                @change="useProperty.setAngleSnaping" />
+                            <el-checkbox v-model="state.motionSync" label="Motion sync"
+                                @change="useProperty.setMotionSync" />
+                            <el-checkbox v-model="state.glassMode" label="玻璃模式" @change="useProperty.setGlassMode" />
+                        </div>
                     </div>
-
                     <div class="d-flex ai-center">
                         <span class="fw-b">传感器模式</span>
                         <img :src="`../../src/assets/images/help.png`" class="img-title" />
                     </div>
                     <div class="my-4">
-                        <el-radio-group v-model="sensorMode" text-color="#00ffff" fill="#ffff00">
-                            <el-radio v-for="item in state.modeList" :value="item.value" :label="$t(item.label)"
+                        <el-radio-group v-model="state.sensorMode" text-color="#00ffff" fill="#ffff00"
+                            @change="useProperty.setSensorMode(state.sensorMode)">
+                            <el-radio v-for="item in state.modeList" :value="item.value" :label="item.value"
                                 class="mx-5">
                                 {{ $t(item.label) }}
                             </el-radio>
@@ -52,7 +55,11 @@
                 <div class="p-5" style="border-bottom: 1px solid #E7EAF2;">
                     <div class="d-flex ai-center">
                         <span class="fw-b mr-5">休眠时间</span>
-                        <el-input v-model="state.sleep" style="width: 50px;" />
+                        <el-select v-model="state.sleepTime" placeholder="Select"
+                            @change="useProperty.setSleepTime(state.sleepTime)">
+                            <el-option v-for="item in state.sleepList" :key="item.value" :label="$t(item.label)"
+                                :value="item.value" />
+                        </el-select>
                     </div>
                 </div>
                 <div class="p-5">
@@ -61,12 +68,13 @@
                         <img :src="`../../src/assets/images/help.png`" class="img-title" />
                     </div>
                     <div class="my-4">
-                        <el-input-number style="width: 150px" v-model="state.delay" type="number" />ms
+                        <el-input-number style="width: 150px" v-model="state.debounceTime" type="number" :min="1"
+                            max="99" @change="useProperty.setDebounceTime(state.debounceTime)" />ms
                     </div>
                 </div>
             </div>
         </div>
-        <div class="d-flex flex-column flex-1 ml-4 my-4">
+        <!-- <div class="d-flex flex-column flex-1 ml-4 my-4">
             <div class="bg-white p-2 fw-b" style="border-radius: 10px 10px 0px 0px;line-height: 30px;">
                 Windows系统设置
             </div>
@@ -78,7 +86,8 @@
                     </div>
                     <div class="d-flex my-4">
                         <div class="mx-4">慢</div>
-                        <el-slider v-model="move" :min="1" :max="50" show-stops :step="5"></el-slider>
+                        <el-slider v-model="state.moveSpeed" :min="1" :max="20"
+                            @change="useProperty.setMoveSpeed(state.moveSpeed)"></el-slider>
                         <div class="mx-4">快</div>
                     </div>
                 </div>
@@ -88,11 +97,18 @@
                         <span class="fw-b">滚动速度</span>
                         <img :src="`../../src/assets/images/help.png`" class="img-title" />
                     </div>
-                    <div class="my-4">
-                        <el-radio-group v-model="rollVal" text-color="#00ffff" fill="#ffff00">
-                            <el-radio v-for="item in state.rollList" :value="$t(item.value)" :label="$t(item.label)"
+                    <div class="my-4 d-flex">
+                        <el-radio-group v-model="state.rollSpeed" text-color="#00ffff" fill="#ffff00"
+                            @change="useProperty.setRollSpeed(state.rollSpeed)">
+                            <el-radio v-for="item in state.rollList" :value="item.value" :label="item.value"
                                 style="width: 100%;">
-                                {{ $t(item.label) }}
+                                <div class="d-flex ai-center">
+                                    <div>{{ $t(item.label) }}</div>
+                                    <div class="ml-5" v-if="state.rollSpeed == 1 && item.value == 1">
+                                        <el-input type="number" v-model="state.rollNumber" :min="1" max="99"
+                                            style="width: 100px;" />
+                                    </div>
+                                </div>
                             </el-radio>
                         </el-radio-group>
                     </div>
@@ -105,12 +121,13 @@
                     </div>
                     <div class="d-flex my-4">
                         <div class="mx-4">慢</div>
-                        <el-slider v-model="double" :min="1" :max="50" show-stops :step="5"></el-slider>
+                        <el-slider v-model="state.clickSpeed" :format-tooltip="formatSpeedValue" :min="200" :max="900"
+                            show-stops :step="70" @change="useProperty.setClickSpeed(state.clickSpeed)"></el-slider>
                         <div class="mx-4">快</div>
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
 </template>
 
@@ -123,8 +140,16 @@ import { useI18n } from 'vue-i18n';
 import { usePropertyStore } from "@/stores/rk_m3/propertyStore";
 import { storeToRefs } from "pinia";
 const useProperty = usePropertyStore();
-const { state, lodVal, sensorVal, sensorMode, rollVal } = storeToRefs(useProperty);
+const { t } = useI18n();
+const { state } = storeToRefs(useProperty);
 
-const move = ref(0);
-const double = ref(0);
+onMounted(() => {
+    useProperty.init();
+});
+
+const formatSpeedValue = (val: number) => {
+    val = state.value.clickSpeedMax - val;
+    return val;
+};
+
 </script>

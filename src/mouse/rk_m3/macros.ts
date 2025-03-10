@@ -95,7 +95,7 @@ export class Action {
                 text = `Key: [${ModifyKeyText[this.key].valueOf()}]`;
                 break;
             case KeyType.MouseKey:
-                text = `Key: [${MouseKeyText[this.key].valueOf()}]`;
+                text = `Key: [${MouseKeyText[this.key]?.valueOf()}]`;
                 break;
             case KeyType.MouseCursorX:
                 text = `CursorX: [${this.key}]`
