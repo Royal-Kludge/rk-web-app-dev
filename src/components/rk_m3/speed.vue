@@ -71,7 +71,7 @@
                         <div class="d-flex text-white-2">
                             <el-radio-group v-model="state.reportRate" text-color="#00ffff" fill="#ffff00"
                                 @change="useSpeed.setReportRate(state.reportRate)">
-                                <el-radio v-for="item in state.reportRateList" :value="item.value" :label="item.value"
+                                <el-radio v-for="item in state.reportRateList" :value="item.id" :label="item.id"
                                     class="mx-5">
                                     {{ item.value }}Hz
                                 </el-radio>

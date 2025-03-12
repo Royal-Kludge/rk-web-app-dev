@@ -117,7 +117,7 @@ export class LedTable {
     // 6:    500us(2000HZ)
     getReportRate(): number {
         let rate = this.buffer.getUint8(LedTableEnum.ReportRate);
-        return rate & 0x07;
+        return rate;
     }
 
     // 0:    1ms(1000HZ)
@@ -139,7 +139,7 @@ export class LedTable {
 
     setLodHeight(height: number) {
         let val = 0x0F & height;
-        this.buffer.setUint8(LedTableEnum.ReportRate, val);
+        this.buffer.setUint8(LedTableEnum.LodHeight, val);
     }
 
     getAngleSnaping(): boolean {
@@ -149,7 +149,7 @@ export class LedTable {
 
     setAngleSnaping(flag: boolean) {
         let val = this.buffer.getUint8(LedTableEnum.Performance);
-        val = val & (flag ? 0x01 : 0x00);
+        val = flag ? val | 0x01 : val & 0xFE;
         this.buffer.setUint8(LedTableEnum.Performance, val);
     }
 
@@ -160,7 +160,7 @@ export class LedTable {
 
     setGlassMode(flag: boolean) {
         let val = this.buffer.getUint8(LedTableEnum.Performance);
-        val = val & (flag ? 0x02 : 0x00);
+        val = flag ? val | 0x02 : val & 0xFD;
         this.buffer.setUint8(LedTableEnum.Performance, val);
     }
 
@@ -171,7 +171,7 @@ export class LedTable {
 
     setRippleEnable(flag: boolean) {
         let val = this.buffer.getUint8(LedTableEnum.Performance);
-        val = val & (flag ? 0x10 : 0x00);
+        val = flag ? val | 0x10 : val & 0xEF;
         this.buffer.setUint8(LedTableEnum.Performance, val);
     }
 
@@ -182,17 +182,17 @@ export class LedTable {
 
     setMotionSync(flag: boolean) {
         let val = this.buffer.getUint8(LedTableEnum.Performance);
-        val = val & (flag ? 0x20 : 0x00);
+        val = flag ? val | 0x20 : val & 0xDF;
         this.buffer.setUint8(LedTableEnum.Performance, val);
     }
 
-    /// 0: office mode, 1: HP game ,2: CodedGaming
+    /// 0: office mode, 1: HP game, 2: CodedGaming
     getSensorMode(): number {
         let val = this.buffer.getUint8(LedTableEnum.Performance);
         return val >> 6;
     }
 
-    /// 0: office mode, 1: HP game ,2: CodedGaming
+    /// 0: office mode, 1: HP game, 2: CodedGaming
     setSensorMode(mode: number) {
         let val = this.buffer.getUint8(LedTableEnum.Performance);
         val = val & (mode << 6);

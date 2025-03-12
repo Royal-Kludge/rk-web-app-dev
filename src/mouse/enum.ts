@@ -72,3 +72,12 @@ export enum ModifyKey {
     RAlt = 0x40,
     RWin = 0x80,
 }
+
+export enum PopupCmdId {
+    ConnectStatusChanged = 0x02,
+    DpiLevelChanged = 0x03,
+    ProfileChanged = 0x04,
+    BetteryChanged = 0x05,
+    CustomKeyPressed = 0x08,
+    LodHeightChanged = 0x0B,
+}

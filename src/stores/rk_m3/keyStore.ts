@@ -1,14 +1,10 @@
 import { defineStore } from "pinia";
 import { reactive, ref } from 'vue';
 import { mouse } from '@/mouse/mouse'
-import { RK_M3, RK_M3_EVENT_DEFINE } from '@/mouse/rk_m3/rk_m3';
+import { RK_M3 } from '@/mouse/rk_m3/rk_m3';
 import { ConnectionEventEnum, ConnectionStatusEnum, ConnectionType } from '@/device/enum'
-import { Profile, ps } from '@/mouse/rk_m3/profiles';
-import fileSaver from "file-saver";
-import { ElMessage } from 'element-plus'
-import { useI18n } from 'vue-i18n';
-import { KEY_TABLE_DATA, KeyTable, KeyTableEnum } from "@/mouse/rk_m3/keyTable";
-import { LedTable } from "@/mouse/rk_m3/ledTable";
+import { ps } from '@/mouse/rk_m3/profiles';
+import { KeyTableEnum } from "@/mouse/rk_m3/keyTable";
 import { KeyDefineEnum, KeyText } from "@/common/keyCode";
 import { KeyMappingType, KeyFunctionType, MacroLoopEnum } from "@/mouse/enum";
 import type { KeyMappingData, KeyTableData } from "@/mouse/interface";
@@ -17,16 +13,10 @@ import { Macro } from '@/mouse/rk_m3/macros';
 
 export const useKeyStore = defineStore('keyinfo_rk_m3', () => {
     const rk_m3 = ref<RK_M3>();
-    const connectType = ref<ConnectionType>()
-    const isInited = ref(false);
-    const profile = ref<Profile>();
-    const { t } = useI18n();
+    const connectType = ref<ConnectionType>();
+    const keyLayout = ref<Array<KeyTableData>>();
 
     const state = reactive({
-        nameEditorDisplay: false,
-        profileList: [],
-        name: '',
-        isNewProfile: false,
         defaultLayout: KEY_LAYOUT,
         gameList: [
             { value: KeyMappingType.Mouse, label: "鼠标功能" },
@@ -106,7 +96,7 @@ export const useKeyStore = defineStore('keyinfo_rk_m3', () => {
         {
             function: KeyFunctionType.GameAdv,
             text: "游戏增强",
-            type: KeyMappingType.Mouse,
+            type: KeyMappingType.KeyCombo,
             key: KeyDefineEnum.KEY_L_BUTTON,
             count: 1,
             delay: 10,
@@ -147,7 +137,10 @@ export const useKeyStore = defineStore('keyinfo_rk_m3', () => {
             rk_m3.value = (mouse.protocol as RK_M3);
             mouse.addEventListener("connection", connectionEventCallback);
 
-            getProfiles();
+            if (keyLayout.value == undefined) {
+                keyLayout.value = rk_m3.value.data.keys?.keyLayout;
+            }
+
             findFunction();
         }
     };
@@ -164,126 +157,19 @@ export const useKeyStore = defineStore('keyinfo_rk_m3', () => {
     const destroy = () => {
         if (mouse.state.ConnectionStatus != ConnectionStatusEnum.Connected) {
             mouse.removeEventListener("connection", connectionEventCallback);
-            isInited.value = false;
         }
     };
 
     const refresh = () => {
-        if (state.profileList.length > 0) {
-            state.profileList.splice(0, state.profileList.length);
-        }
-
-        let i: number
-        for (i = 0; i < ps.list.length; i++) {
-            (state.profileList as Array<Profile>).push(ps.list[i]);
-        }
-    }
-
-    const getProfiles = () => {
-        ps.init(t("Profile.default"));
-        if (ps.curIndex == undefined) ps.curIndex = 0;
-        profile.value = ps.get()[ps.curIndex];
-        setProfiles();
-
-    }
-    const setProfiles = () => {
-        if (rk_m3.value != undefined && profile.value != undefined) {
-            if (profile.value.keyLayout)
-                if (profile.value.keyTable != undefined) {
-                    if (rk_m3.value.data.keys != undefined) {
-                        rk_m3.value.data.keys.buffer = new DataView(new Uint8Array(Object.values(profile.value.keyTable)).buffer);
-                    } else {
-                        rk_m3.value.data.keys = new KeyTable(new DataView(new Uint8Array(Object.values(profile.value.keyTable)).buffer));
-                    }
-                }
-
-            if (profile.value.keyLayout != undefined && rk_m3.value.data.keys != undefined) {
-                rk_m3.value.data.keys.keyLayout = profile.value.keyLayout;
-            }
-
-            if (profile.value.ledTable != undefined) {
-                if (rk_m3.value.data.led != undefined) {
-                    rk_m3.value.data.led.buffer = new DataView(new Uint8Array(Object.values(profile.value.ledTable)).buffer);
-                } else {
-                    rk_m3.value.data.led = new LedTable(new DataView(new Uint8Array(Object.values(profile.value.ledTable)).buffer));
-                }
-            }
-            refresh();
-        }
-    }
-
-    const clickProfile = async (obj: Profile) => {
-        profile.value = ps.find(obj);
-        setProfiles();
-    }
-
-    const importProfile = (str: any) => {
-        try {
-            var p: Profile = JSON.parse(str);
-            if (p.name == undefined) {
-                ElMessage.error('Error parsing JSON data')
-            }
-            else {
-                let tm = new Profile(p.name);
-                tm.ledTable = p.ledTable;
-                tm.keyTable = p.keyTable;
-                profile.value = tm;
-                ps.add(profile.value);
-                saveProfile()
-            }
-            // 成功解析后的代码
-        } catch (e) {
-            // 解析出错时的代码
-            ElMessage.error('Error parsing JSON data')
+        if (rk_m3.value != undefined) {
+            keyLayout.value = rk_m3.value.data.keys?.keyLayout;
         }
     }
 
     const saveProfile = () => {
         ps.save()
-    }
-    const renameProfile = (obj: Profile) => {
-        profile.value = obj;
-        state.name = obj.name;
-        state.nameEditorDisplay = true;
-    };
-    const deleteProfile = (obj: Profile) => {
-        ps.remove(obj);
-        if (ps.get().length > 0) {
-            profile.value = ps.get()[0];
-        } else {
-            profile.value = undefined;
-        }
-        saveProfile();
-        refresh();
     };
 
-    const exportProfile = (obj: Profile) => {
-        let blob = new Blob([JSON.stringify(obj)], { type: "application/json" });
-        fileSaver.saveAs(blob, `${obj.name}.rk`);
-    };
-    const handleEditClose = (done: () => void) => {
-        done();
-        state.isNewProfile = false
-    };
-    const renameSaveProfile = () => {
-        if (profile.value != undefined) {
-            profile.value.name = state.name;
-            if (state.isNewProfile = true) {
-                ps.add(profile.value);
-            }
-        }
-        saveProfile();
-        setProfiles();
-        state.nameEditorDisplay = false
-        state.isNewProfile = false
-    };
-    const newProfile = () => {
-        let tm = new Profile(`${t("Profile.namePrefix")} ${ps.get().length + 1}`);
-
-        state.name = tm.name;
-        state.isNewProfile = true;
-        renameProfile(tm)
-    };
     const KeyMappingText = (func: KeyFunctionType, keyCode: KeyDefineEnum, modify: KeyDefineEnum, key: number): string => {
         switch (func) {
             case KeyFunctionType.Keyboard:
@@ -305,7 +191,7 @@ export const useKeyStore = defineStore('keyinfo_rk_m3', () => {
             default:
                 return KeyText[key].valueOf();
         };
-    }
+    };
 
     const keyMapping = (index: KeyTableEnum, func: KeyFunctionType, keyCode: KeyDefineEnum, modify: KeyDefineEnum = 0, count: number = 0, delay: number = 0, type: KeyMappingType = KeyMappingType.Mouse) => {
         let key: number = 0;
@@ -348,7 +234,8 @@ export const useKeyStore = defineStore('keyinfo_rk_m3', () => {
             rk_m3.value.data.keys.setKeyMapping(index, mapping);
             rk_m3.value.setKeyMapping(index);
         }
-    }
+    };
+
     const findFunction = () => {
         state.functionItem = state.functionList.find(obj => obj.function === state.functionValue);
         if (state.functionItem.function == KeyFunctionType.Disable) {
@@ -356,12 +243,14 @@ export const useKeyStore = defineStore('keyinfo_rk_m3', () => {
             saveProfile();
         }
     };
+
     const saveGameAdv = () => {
         if (state.KeyLayoutIndex != undefined) {
-            keyMapping(state.KeyLayoutIndex, KeyFunctionType.GameAdv, state.functionItem.type == KeyMappingType.KeyCombo ? state.functionItem.key.hid : state.functionItem.key, state.functionItem.modify, state.functionItem.count, state.functionItem.type);
+            keyMapping(state.KeyLayoutIndex, KeyFunctionType.GameAdv, state.functionItem.type == KeyMappingType.KeyCombo ? state.functionItem.key.hid : state.functionItem.key, state.functionItem.modify, state.functionItem.count, state.functionItem.delay, state.functionItem.type);
             saveProfile();
         }
-    }
+    };
+
     const clickKeyboard = (key: KeyDefineEnum) => {
         let keyboard = state.functionItem.keys.find((obj: any) => obj.key === key);
         if (keyboard != undefined) {
@@ -371,24 +260,26 @@ export const useKeyStore = defineStore('keyinfo_rk_m3', () => {
                 state.functionItem.modify |= keyboard.key;
             }
         }
-    }
+    };
+
     const saveKeyboard = () => {
         if (state.KeyLayoutIndex != undefined) {
             keyMapping(state.KeyLayoutIndex, KeyFunctionType.Keyboard, state.functionItem.key.hid, state.functionItem.modify, state.functionItem.count, state.functionItem.delay);
             saveProfile();
         }
-    }
+    };
+
     const selectedKeyboard = (key: KeyDefineEnum): string => {
         let keyboard = state.functionItem.keys.find((obj: any) => obj.key === key);
         if (keyboard != undefined && state.functionItem.modify & keyboard.key) {
             return 'but_selected';
         }
         return "";
-    }
+    };
+
     const selectedFunction = (key: number): string => {
         return state.functionItem.key == key ? 'bg-warn-1' : '';
-    }
-
+    };
 
     const clickFunction = (key: KeyDefineEnum) => {
         state.functionItem.key = key;
@@ -396,12 +287,13 @@ export const useKeyStore = defineStore('keyinfo_rk_m3', () => {
             keyMapping(state.KeyLayoutIndex, state.functionItem.function, state.functionItem.key, state.functionItem.modify, state.functionItem.count, state.functionItem.delay);
             saveProfile();
         }
-    }
+    };
 
 
     const clickKeyLayout = (index: number) => {
         state.KeyLayoutIndex = index;
-    }
+    };
+
     const selectedKeyLayout = (index: number): string => {
         if (rk_m3.value != undefined) {
             if (rk_m3.value.data.keys != undefined && rk_m3.value.data.keys.keyLayout != undefined) {
@@ -414,16 +306,18 @@ export const useKeyStore = defineStore('keyinfo_rk_m3', () => {
             }
         }
         return "";
-    }
+    };
+
     const setAllDefault = () => {
         for (let i = 0; i < state.defaultLayout.length; i++) {
             keyMapping(i, KeyFunctionType.MouseKey, state.defaultLayout[i].keyCode);
         }
         saveProfile();
-    }
+    };
+
     const getOneDefault = (index: number): KeyTableData | undefined => {
         return state.defaultLayout.find(obj => obj.index === index);
-    }
+    };
 
     const setOneDefault = () => {
         if (state.KeyLayoutIndex != undefined) {
@@ -433,15 +327,19 @@ export const useKeyStore = defineStore('keyinfo_rk_m3', () => {
             }
         }
         saveProfile();
-    }
+    };
+
     const getKeyLayoutByIndex = (index: number): string => {
-        if (profile.value != undefined && profile.value.keyLayout != undefined && profile.value.keyLayout[index].keyMappingData.keyStr != undefined) {
-            return profile.value.keyLayout[index].keyMappingData.keyStr.valueOf();
+        if (keyLayout.value != undefined &&
+            keyLayout.value[index].keyMappingData.keyStr != undefined) {
+            return keyLayout.value[index].keyMappingData.keyStr.valueOf();
         }
         return "";
-    }
+    };
+
     const clickMacro = (obj: Macro) => {
 
     }
-    return { connectType, profile, state, init, destroy, clickProfile, importProfile, renameProfile, deleteProfile, exportProfile, handleEditClose, renameSaveProfile, newProfile, keyMapping, findFunction, selectedFunction, clickFunction, getKeyLayoutByIndex, clickKeyLayout, selectedKeyLayout, setAllDefault, setOneDefault, saveGameAdv, clickKeyboard, selectedKeyboard, saveKeyboard, clickMacro }
-})
+
+    return { connectType, state, init, destroy, keyMapping, findFunction, selectedFunction, clickFunction, getKeyLayoutByIndex, clickKeyLayout, selectedKeyLayout, setAllDefault, setOneDefault, saveGameAdv, clickKeyboard, selectedKeyboard, saveKeyboard, clickMacro, refresh };
+});

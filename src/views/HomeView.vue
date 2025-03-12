@@ -29,7 +29,7 @@ const onConnect = async () => {
     const connectionEventCallback = async (event: Event) => {
         let device = event.currentTarget as Device;
         if (device != undefined && device.deviceState != undefined) {
-            console.log(`Keyboard [${device.deviceState.deviceName}] is ${device.deviceState.connectionEvent}`)
+            console.log(`Device [${device.deviceState.deviceName}] is ${device.deviceState.connectionEvent}`)
         try {
             switch (device.deviceState.connectionEvent) {
             case ConnectionEventEnum.Open:

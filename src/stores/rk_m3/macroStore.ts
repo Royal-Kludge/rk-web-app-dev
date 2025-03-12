@@ -1,8 +1,8 @@
 import { defineStore } from "pinia";
 import { reactive, ref } from 'vue';
 import { Macro, Macros, Action, ActionType } from '@/mouse/rk_m3/macros';
-import { RK_M3, RK_M3_EVENT_DEFINE } from '@/mouse/rk_m3/rk_m3';
-import { mouse } from '@/mouse/mouse'
+import { RK_M3 } from '@/mouse/rk_m3/rk_m3';
+import { mouse, RK_MOUSE_EVENT_DEFINE } from '@/mouse/mouse'
 import { storage } from '@/common/storage';
 import { ConnectionEventEnum, ConnectionStatusEnum } from "@/device/enum";
 import fileSaver from "file-saver";
@@ -62,7 +62,7 @@ export const useMacroStore = defineStore("macrostore_rk_m3", () => {
         }
 
         if (rk_m3.value != undefined && !isInited.value) {
-            rk_m3.value.addEventListener(RK_M3_EVENT_DEFINE.OnMacrosGotten, macroGotten, false);
+            rk_m3.value.addEventListener(RK_MOUSE_EVENT_DEFINE.OnMacrosGotten, macroGotten, false);
 
             let tmp = storage.get(`${mouse.mouseDefine?.name}_macro`) as Macros;
             if (tmp != null) {
@@ -146,7 +146,7 @@ export const useMacroStore = defineStore("macrostore_rk_m3", () => {
 
     const destroy = () => {
         if (rk_m3.value != undefined) {
-            rk_m3.value.removeEventListener(RK_M3_EVENT_DEFINE.OnMacrosGotten, macroGotten, false);
+            rk_m3.value.removeEventListener(RK_MOUSE_EVENT_DEFINE.OnMacrosGotten, macroGotten, false);
         }
 
         if (mouse.state.ConnectionStatus != ConnectionStatusEnum.Connected) {

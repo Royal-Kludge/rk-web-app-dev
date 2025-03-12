@@ -1,11 +1,12 @@
 import type { IPacket } from "@/mouse/interface";
 import { Packet_Usb } from "@/mouse/rk_m3/packets/packet";
 
-export class SetFactoryPacket extends Packet_Usb {
+export class GetOnlinePacket extends Packet_Usb {
 
     constructor() {
-        super(0x06);
-        this.dataLength = 0x01;
+        super(0x47);
+        this.sn = 0x01;
+        this.dataLength = 0x06;
         this.dataOffset = 0x00;
         //this.setReport = new Uint8Array(64);
         this.setReport[0] = 0x00;

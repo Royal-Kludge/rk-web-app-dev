@@ -18,6 +18,10 @@ export class SetDpiPacket extends Packet_Usb {
     }
 
     setPayload(buffer: DataView) : IPacket {
+        this.setReport[2] = buffer.byteLength;
+        this.setReport[3] = this.sn;
+        this.setReport[5] = this.dataOffset;
+        
         for (let i = 0; i < buffer.byteLength; i++) {
             this.setReport[i + 6] = buffer.getUint8(i);
         }

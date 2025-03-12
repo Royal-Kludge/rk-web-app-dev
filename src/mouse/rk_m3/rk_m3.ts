@@ -2,23 +2,7 @@ import { Protocol } from '@/mouse/protocol'
 import type { Macros } from './macros';
 import type { BasicTable } from './basicTable'
 import type { LedTable } from './ledTable';
-import type { KeyTable, KeyTableEnum } from './keyTable';
-
-export const RK_M3_EVENT_DEFINE: {
-    OnReportFinish: string;
-    OnReportStart: string;
-    OnMacrosGotten: string;
-} = {
-    OnReportFinish: 'OnReportFinish',
-    OnReportStart: 'OnReportStart',
-    OnMacrosGotten: 'OnMacrosGotten',
-}
-
-export const COMMAND_ID: {
-    ActivelyReport: number;
-} = {
-    ActivelyReport: 0x0A,
-}
+import type { KeyTable } from './keyTable';
 
 export class RK_M3_Data {
     donglePwd: number = 0;
@@ -33,9 +17,10 @@ export abstract class RK_M3 extends Protocol {
     data: RK_M3_Data = new RK_M3_Data();
 
     abstract onGetReport(reportId: number, data: DataView): Promise<void>;
-    abstract setDpi(level: number): Promise<void>;
     abstract getMacros(): Promise<void>;
     abstract setMacros(): Promise<void>;
+    abstract getOnline(): Promise<void>;
+    abstract setDpi(): Promise<void>;
     abstract setFactory(): Promise<void>;
     abstract setReportRate(): Promise<void>;
     abstract setKeyMapping(index: number): Promise<void>;

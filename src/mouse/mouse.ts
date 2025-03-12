@@ -3,8 +3,22 @@ import { ConnectionType, ConnectionEventEnum, ConnectionStatusEnum } from '../de
 import { defaultState } from './state'
 import type { HidDeviceDefine } from '@/device/interface';
 import { Device } from '@/device/device';
+import { GetOnlinePacket } from './packets/getOnlinePacket';
+import { REPORT_ID_POPUP, REPORT_ID_USB, POPUP_CMD_ID } from './packets/packet';
 
-const REPORT_ID_DONGLE: number = 0x13;
+export const RK_MOUSE_EVENT_DEFINE: {
+    OnDongleStatusChanged: string;
+    OnPasswordGotten: string;
+    OnReportFinish: string;
+    OnReportStart: string;
+    OnMacrosGotten: string;
+} = {
+    OnDongleStatusChanged: 'OnDongleStatusChanged',
+    OnPasswordGotten: 'OnPasswordGotten',
+    OnReportFinish: 'OnReportFinish',
+    OnReportStart: 'OnReportStart',
+    OnMacrosGotten: 'OnMacrosGotten',
+}
 
 /**
  * Main class.
@@ -41,7 +55,7 @@ export class Mouse extends Device {
                 this.state.productId = this.device.productId;
 
                 this.state.connectType = deviceDefine.connectType;
-
+                
                 this.dispatchEvent(new MouseEvent("connection", this));
             }
         }
@@ -74,6 +88,30 @@ export class Mouse extends Device {
         
     }
 
+    async getOnline(): Promise<void> {
+        let packet = new GetOnlinePacket();
+        let u8Data = new DataView(new Uint8Array(0).buffer);
+        
+        if (this.device != undefined) {
+            packet.setPayload(u8Data);
+            await this.device.sendFeatureReport(REPORT_ID_USB, packet.setReport);
+            console.log(`SetFeature [${packet.setReport.byteLength}] bytes -> ${packet.setReport.toString()}`);
+            let data = await this.device.receiveFeatureReport(REPORT_ID_USB);
+
+            let u8 = new Uint8Array(data.buffer, 0, data.buffer.byteLength);
+            console.log(`GetFeature [${data.byteLength}] bytes -> ${u8.toString()}`);
+
+            if (u8.length >= 16 && u8[2] == 0x00) {
+                let tmp = new DataView(new Uint8Array(8).buffer);
+                let index = 0;
+                for (index = 2;index <= 7; index++) {
+                    tmp.setUint8(index, u8[index + 5]);
+                }
+                this.dispatchEvent(new CustomEvent(RK_MOUSE_EVENT_DEFINE.OnPasswordGotten, { detail: { pwd: tmp.getBigUint64(0), status: (u8[6] == 0x01 ? ConnectionStatusEnum.Connected : ConnectionStatusEnum.Disconnected) } }));
+            }
+        }
+    }
+
     async onReport(report: HIDInputReportEvent) {
         let reportId = report.reportId;
         const { data } = report;
@@ -82,8 +120,17 @@ export class Mouse extends Device {
             let u8 = new Uint8Array(data.buffer, 0, data.buffer.byteLength);
             console.log(`GetReport [${data.byteLength}] bytes -> ${u8.toString()}`);
     
-            if (data.byteLength == 19 && reportId == REPORT_ID_DONGLE) {
-                let cmd = data.getUint8(0);
+            if (data.byteLength == 31 && reportId == REPORT_ID_POPUP) {
+                if (data.getUint8(0) == POPUP_CMD_ID) {
+                    let id = data.getUint8(1);
+                    switch (id) {
+                        case 0x02:
+                            let val = data.getUint8(2);
+                            this.state.ConnectionStatus = val == 0x01 ? ConnectionStatusEnum.Connected : ConnectionStatusEnum.Disconnected;
+                            this.dispatchEvent(new CustomEvent(RK_MOUSE_EVENT_DEFINE.OnDongleStatusChanged, { detail: this.state.ConnectionStatus }));
+                            break;
+                    }
+                }
             }
         } catch (e) {
 

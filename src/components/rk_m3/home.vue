@@ -30,15 +30,16 @@
 
 <script setup lang="ts">
 import { useMenuStore } from "@/stores/rk_m3/menuStore";
-import { mouse } from '@/mouse/mouse'
+import { mouse, RK_MOUSE_EVENT_DEFINE } from '@/mouse/mouse'
 import RK_M3_Page from '@/components/rk_m3/index.vue'
-import { RK_M3_EVENT_DEFINE } from "@/mouse/rk_m3/rk_m3";
 import Meun from "@/components/rk_m3/menu.vue";
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 import { storeToRefs } from "pinia";
 import type { RK_M3 } from '@/mouse/rk_m3/rk_m3';
 import { useKeyStore } from "@/stores/rk_m3/keyStore";
+import { useProfileStore } from "@/stores/rk_m3/profileStore";
 
+const useProfile = useProfileStore();
 const useKey = useKeyStore();
 const useMenu = useMenuStore();
 const { meunid } = storeToRefs(useMenu);
@@ -53,19 +54,20 @@ const setMeunid = () => {
     }
 };
 onMounted(async () => {
+    await useProfile.init();
     await useKey.init();
     
     if (rk_m3.value == undefined) {
         rk_m3.value = mouse.protocol as RK_M3;
-        rk_m3.value.addEventListener(RK_M3_EVENT_DEFINE.OnReportStart, reportStart, false);
-        rk_m3.value.addEventListener(RK_M3_EVENT_DEFINE.OnReportFinish, reportFinish, false);
+        rk_m3.value.addEventListener(RK_MOUSE_EVENT_DEFINE.OnReportStart, reportStart, false);
+        rk_m3.value.addEventListener(RK_MOUSE_EVENT_DEFINE.OnReportFinish, reportFinish, false);
     }
 });
 
 onBeforeUnmount(() => {
     if (rk_m3.value != undefined) {
-        rk_m3.value.removeEventListener(RK_M3_EVENT_DEFINE.OnReportFinish, reportFinish, false);
-        rk_m3.value.removeEventListener(RK_M3_EVENT_DEFINE.OnReportStart, reportStart, false);
+        rk_m3.value.removeEventListener(RK_MOUSE_EVENT_DEFINE.OnReportFinish, reportFinish, false);
+        rk_m3.value.removeEventListener(RK_MOUSE_EVENT_DEFINE.OnReportStart, reportStart, false);
     }
 });
 

@@ -15,6 +15,8 @@ export const REPORT_ID_USB: number = 0x03;
 export const REPORT_ID_DONGLE: number = 0x13;
 export const REPORT_PAYLOAD_LENGTH: number = 0x0E;
 export const REPORT_MAX_RETRY: number = 0x0A;
+export const REPORT_ID_POPUP: number = 0x09;
+export const POPUP_CMD_ID: number = 0xFA;
 
 /**
  * Abstract class of packet base

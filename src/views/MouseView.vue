@@ -3,14 +3,14 @@
         <RK_M3_Page v-if="productId == 1" />
     </div>
     <div class="d-flex flex-column ai-center h-100" v-else>
-        <div class="p-5 fs-big m-5 mb-4">No keyboard connected to dongle</div>
+        <div class="p-5 fs-big m-5 mb-4">No mouse connected to dongle</div>
         <div class="bg-dark text-white py-3 px-5 mx-4 c-p mt-4" style="border-radius: 10px;height: 24px;"
             @click="disconnect"> {{ $t("home.but_4") }}</div>
     </div>
 </template>
 
 <script setup lang="ts">
-import { mouse } from '@/mouse/mouse'
+import { mouse, RK_MOUSE_EVENT_DEFINE } from '@/mouse/mouse'
 import { reactive, ref, onMounted, onBeforeUnmount } from 'vue';
 import RK_M3_Page from '@/components/rk_m3/home.vue'
 import { DonglePwdDefineList, MouseDefineList } from '@/mouse/state';
@@ -41,10 +41,9 @@ onMounted(async () => {
     if (mouse != undefined && mouse.device != undefined && mouse.device != null) {
         var item: any;
 
-        state.connectState = ConnectionStatusEnum.Connected;
-
         if (mouse.state.connectType == ConnectionType.USB) {
-            
+            state.connectState = ConnectionStatusEnum.Connected;
+
             for (item in MouseDefineList) {
                 if (mouse.device.vendorId == MouseDefineList[item].vendorId && mouse.device.productId == MouseDefineList[item].productId) {
                     mouse.mouseDefine = MouseDefineList[item];
@@ -64,9 +63,7 @@ onMounted(async () => {
             await mouse.protocol?.init();
 
             if (mouse.state.fwVersion != undefined) data.value.fwVersion = mouse.state.fwVersion.valueOf();
-            if (mouse.state.deviceName != undefined
-                
-            ) data.value.deviceName = mouse.state.deviceName.valueOf();
+            if (mouse.state.deviceName != undefined) data.value.deviceName = mouse.state.deviceName.valueOf();
 
             switch (mouse.mouseDefine.name.valueOf()) {
                 case 'RK-M3':
@@ -75,21 +72,32 @@ onMounted(async () => {
             }
 
             checkProfileVersion();
+        } else if (mouse.state.connectType == ConnectionType.Dongle) {
+            mouse.addEventListener(RK_MOUSE_EVENT_DEFINE.OnDongleStatusChanged, dongleStatusChanged, false);
+            mouse.addEventListener(RK_MOUSE_EVENT_DEFINE.OnPasswordGotten, passwordGotten, false);
+            mouse.device.addEventListener("inputreport", mouse.callback);
+            await mouse.getOnline();
         }
     }
 });
 
 onBeforeUnmount(() => {
     if (mouse != undefined) {
-
-        if (mouse.protocol != undefined) {
-
-        }
+        mouse.device?.addEventListener("inputreport", mouse.callback);
+        mouse.removeEventListener(RK_MOUSE_EVENT_DEFINE.OnDongleStatusChanged, dongleStatusChanged, false);
+        mouse.removeEventListener(RK_MOUSE_EVENT_DEFINE.OnPasswordGotten, passwordGotten, false);
     }
 });
 
 const disconnect = () => {
     state.connectState = ConnectionStatusEnum.Disconnected;
+    
+    if (mouse != undefined) {
+        mouse.device?.addEventListener("inputreport", mouse.callback);
+        mouse.removeEventListener(RK_MOUSE_EVENT_DEFINE.OnDongleStatusChanged, dongleStatusChanged, false);
+        mouse.removeEventListener(RK_MOUSE_EVENT_DEFINE.OnPasswordGotten, passwordGotten, false);
+    }
+
     mouse.close();
 };
 
@@ -102,6 +110,55 @@ const isMouseConnect = (): boolean => {
     }
 
     return isConnect;
+};
+
+const dongleStatusChanged = async (event: any) => {
+    mouse.state.ConnectionStatus = event.detail as ConnectionStatusEnum;
+    state.connectState = event.detail as ConnectionStatusEnum;
+
+    console.log(`Mouse ${state.connectState} to dongle!`);
+
+    if (state.connectState == ConnectionStatusEnum.Connected) {
+        if (mouse.protocol == null || mouse.protocol == undefined) {
+            await mouse.getOnline();
+        }
+    } 
+};
+
+const passwordGotten = async (event: any) => {
+    let pwd = event.detail.pwd as number;
+    mouse.state.ConnectionStatus = event.detail.status as ConnectionStatusEnum;
+    state.connectState = event.detail.status as ConnectionStatusEnum;
+    var item: any;
+
+    for (item in DonglePwdDefineList) {
+        if (pwd == item) {
+            mouse.mouseDefine = MouseDefineList[DonglePwdDefineList[item]];
+            break;
+        }
+    }
+
+    if (mouse.mouseDefine != null && mouse.mouseDefine != undefined && mouse.device != undefined) {
+        mouse.protocol = await mouse.mouseDefine.protocol(mouse.state, mouse.device);
+        mouse.loadDefaultValue();
+
+        await mouse.protocol?.init();
+
+        if (mouse.state.fwVersion != undefined) data.value.fwVersion = mouse.state.fwVersion.valueOf();
+        if (mouse.state.deviceName != undefined) data.value.deviceName = mouse.state.deviceName.valueOf();
+
+        console.log(`Mouse [${mouse.mouseDefine.name.valueOf()}] was got and it [${state.connectState}]!`);
+
+        switch (mouse.mouseDefine.name.valueOf()) {
+            case 'RK-M3':
+                productId.value = 1
+                break;
+        }
+
+        checkProfileVersion();
+    }
+
+    state.password = mouse.mouseDefine != undefined ? pwd : 0;
 };
 
 const checkProfileVersion = () => {

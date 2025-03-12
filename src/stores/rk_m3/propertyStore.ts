@@ -3,6 +3,7 @@ import { reactive, ref } from 'vue';
 import { mouse } from "@/mouse/mouse";
 import { LedTable } from "@/mouse/rk_m3/ledTable";
 import { RK_M3 } from "@/mouse/rk_m3/rk_m3";
+import { ps } from "@/mouse/rk_m3/profiles";
 
 export const usePropertyStore = defineStore('propertyinfo_rk_m3', () => {
     const rk_m3 = ref<RK_M3>();
@@ -57,16 +58,20 @@ export const usePropertyStore = defineStore('propertyinfo_rk_m3', () => {
                 ledTable.value = rk_m3.value.data.led;
             }
 
-            if (ledTable.value != undefined) {
-                state.lodVal = ledTable.value.getLodHeight();
-                state.rippleEnable = ledTable.value.getRippleEnable();
-                state.angleSnaping = ledTable.value.getAngleSnaping();
-                state.glassMode = ledTable.value.getGlassMode();
-                state.motionSync = ledTable.value.getMotionSync();
-                state.sensorMode = ledTable.value.getSensorMode();
-                state.sleepTime = ledTable.value.getSleepTime();
-                state.debounceTime = ledTable.value.getDebounce();
-            }
+            refresh();
+        }
+    };
+
+    const refresh = () => {
+        if (ledTable.value != undefined) {
+            state.lodVal = ledTable.value.getLodHeight();
+            state.rippleEnable = ledTable.value.getRippleEnable();
+            state.angleSnaping = ledTable.value.getAngleSnaping();
+            state.glassMode = ledTable.value.getGlassMode();
+            state.motionSync = ledTable.value.getMotionSync();
+            state.sensorMode = ledTable.value.getSensorMode();
+            state.sleepTime = ledTable.value.getSleepTime();
+            state.debounceTime = ledTable.value.getDebounce();
         }
     };
 
@@ -76,7 +81,8 @@ export const usePropertyStore = defineStore('propertyinfo_rk_m3', () => {
         }
 
         await rk_m3.value?.setLodHeight();
-    }
+        saveProfile();
+    };
 
     const setSensorMode = async (mode: number) => {
         if (ledTable.value != undefined) {
@@ -84,7 +90,8 @@ export const usePropertyStore = defineStore('propertyinfo_rk_m3', () => {
         }
 
         await rk_m3.value?.setPerformance();
-    }
+        saveProfile();
+    };
 
     const setRippleEnable = async (flag: boolean) => {
         if (ledTable.value != undefined) {
@@ -92,7 +99,8 @@ export const usePropertyStore = defineStore('propertyinfo_rk_m3', () => {
         }
 
         await rk_m3.value?.setPerformance();
-    }
+        saveProfile();
+    };
 
     const setAngleSnaping = async (flag: boolean) => {
         if (ledTable.value != undefined) {
@@ -100,7 +108,8 @@ export const usePropertyStore = defineStore('propertyinfo_rk_m3', () => {
         }
 
         await rk_m3.value?.setPerformance();
-    }
+        saveProfile();
+    };
 
     const setGlassMode = async (flag: boolean) => {
         if (ledTable.value != undefined) {
@@ -108,7 +117,8 @@ export const usePropertyStore = defineStore('propertyinfo_rk_m3', () => {
         }
 
         await rk_m3.value?.setPerformance();
-    }
+        saveProfile();
+    };
 
     const setMotionSync = async (flag: boolean) => {
         if (ledTable.value != undefined) {
@@ -116,16 +126,18 @@ export const usePropertyStore = defineStore('propertyinfo_rk_m3', () => {
         }
 
         await rk_m3.value?.setPerformance();
-    }
+        saveProfile();
+    };
 
     const setSleepTime = async (time: number) => {
         if (ledTable.value != undefined) {
             let last = time % 30;
-            ledTable.value.setLodHeight(time - last);
+            ledTable.value.setSleepTime(time - last);
         }
 
         await rk_m3.value?.setSleepTime();
-    }
+        saveProfile();
+    };
 
     const setDebounceTime = async (val: number) => {
         if (ledTable.value != undefined) {
@@ -133,17 +145,24 @@ export const usePropertyStore = defineStore('propertyinfo_rk_m3', () => {
         }
 
         await rk_m3.value?.setDebounce();
-    }
+        saveProfile();
+    };
+
     const setMoveSpeed = async (val: number) => {
 
-    }
+    };
+
     const setRollSpeed = async (val: number) => {
 
-    }
+    };
 
     const setClickSpeed = async (val: number) => {
 
-    }
+    };
 
-    return { state, init, setLodHeight, setRippleEnable, setAngleSnaping, setGlassMode, setMotionSync, setSensorMode, setSleepTime, setMoveSpeed, setRollSpeed, setClickSpeed, setDebounceTime }
+    const saveProfile = () => {
+        ps.save()
+    };
+
+    return { state, init, setLodHeight, setRippleEnable, setAngleSnaping, setGlassMode, setMotionSync, setSensorMode, setSleepTime, setMoveSpeed, setRollSpeed, setClickSpeed, setDebounceTime, refresh }
 })

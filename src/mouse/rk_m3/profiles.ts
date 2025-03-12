@@ -102,12 +102,14 @@ export class Profiles {
 
         if (tmp != null && tmp.list.length > 0 && tmp.version != undefined && tmp.version == VERSION) {
             for (let m of tmp.list) {
-                let tm = new Profile(m.name)
-                tm.isDefault = m.isDefault;
-                tm.keyTable = m.keyTable;
-                tm.ledTable = m.ledTable;
-                tm.keyLayout = m.keyLayout;
-                this.add(tm);
+                if (m.keyTable != undefined && m.ledTable != undefined) {
+                    let tm = new Profile(m.name)
+                    tm.isDefault = m.isDefault;
+                    tm.keyTable = new Uint8Array(Object.values(m.keyTable));
+                    tm.ledTable = new Uint8Array(Object.values(m.ledTable));
+                    tm.keyLayout = m.keyLayout;
+                    this.add(tm);
+                }
             }
             this.curIndex = tmp.curIndex;
         }
@@ -121,6 +123,7 @@ export class Profiles {
             this.save()
         }
     }
+    
     save() {
         storage.set(`${mouse.mouseDefine?.name}_profile`, this);
     }
