@@ -131,7 +131,15 @@
     </div>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+:deep(.el-radio__label) {
+    font-size: 18px;
+}
+
+:deep(.el-checkbox__label) {
+    font-size: 16px;
+}
+</style>
 
 <script setup lang="ts">
 import MainMeun from "./mainMenu.vue";

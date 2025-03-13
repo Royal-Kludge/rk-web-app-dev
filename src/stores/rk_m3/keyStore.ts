@@ -22,6 +22,7 @@ export const useKeyStore = defineStore('keyinfo_rk_m3', () => {
             { value: KeyMappingType.Mouse, label: "鼠标功能" },
             { value: KeyMappingType.KeyCombo, label: "键盘功能" }
         ],
+        isDpiLock: false,
         KeyLayoutIndex: KeyTableEnum.LeftKey,
         functionValue: KeyFunctionType.MouseKey,
         functionItem: Object as any,
@@ -283,10 +284,19 @@ export const useKeyStore = defineStore('keyinfo_rk_m3', () => {
 
     const clickFunction = (key: KeyDefineEnum) => {
         state.functionItem.key = key;
-        if (state.functionValue != KeyFunctionType.Keyboard && state.functionValue != KeyFunctionType.GameAdv && state.functionValue != KeyFunctionType.Macro) {
+        if (state.functionValue != KeyFunctionType.Keyboard && state.functionValue != KeyFunctionType.GameAdv && state.functionValue != KeyFunctionType.Macro && key != KeyDefineEnum.DPI_SWITCH_LOCK) {
             keyMapping(state.KeyLayoutIndex, state.functionItem.function, state.functionItem.key, state.functionItem.modify, state.functionItem.count, state.functionItem.delay);
             saveProfile();
         }
+        if (key == KeyDefineEnum.DPI_SWITCH_LOCK) {
+            state.isDpiLock = true;
+        }
+    };
+    const setDpiLock = (value: number) => {
+        state.functionItem.count = value;
+        keyMapping(state.KeyLayoutIndex, state.functionItem.function, state.functionItem.key, state.functionItem.modify, state.functionItem.count, state.functionItem.delay);
+        saveProfile();
+        state.isDpiLock = false;
     };
 
 
@@ -341,5 +351,5 @@ export const useKeyStore = defineStore('keyinfo_rk_m3', () => {
 
     }
 
-    return { connectType, state, init, destroy, keyMapping, findFunction, selectedFunction, clickFunction, getKeyLayoutByIndex, clickKeyLayout, selectedKeyLayout, setAllDefault, setOneDefault, saveGameAdv, clickKeyboard, selectedKeyboard, saveKeyboard, clickMacro, refresh };
+    return { connectType, state, init, destroy, keyMapping, findFunction, selectedFunction, clickFunction, getKeyLayoutByIndex, clickKeyLayout, selectedKeyLayout, setAllDefault, setOneDefault, saveGameAdv, clickKeyboard, selectedKeyboard, saveKeyboard, clickMacro, refresh, setDpiLock };
 });

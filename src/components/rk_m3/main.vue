@@ -34,6 +34,25 @@
                     </div>
                 </template>
             </el-dialog>
+            <el-dialog v-model="state.isDpiLock" width="500" center>
+                <span>锁定DPI</span>
+                <div class="d-flex my-4">
+                    <div class="mx-4">0</div>
+                    <el-slider v-model="state.functionItem.count" :min="0" :max="1000" show-stops
+                        :step="50"></el-slider>
+                    <div class="mx-4">1000</div>
+                </div>
+                <template #footer>
+                    <div class="dialog-footer">
+                        <el-button @click="useKey.setDpiLock(state.functionItem.count)">
+                            确认
+                        </el-button>
+                        <el-button type="primary" @click="state.isDpiLock = false">
+                            取消
+                        </el-button>
+                    </div>
+                </template>
+            </el-dialog>
             <div class="d-flex flex-column ai-center mx-5">
                 <div>
                     <div>左侧键</div>
@@ -225,7 +244,7 @@
 }
 
 .but_report {
-    margin-top: 90px;
+    margin-top: 50px;
     position: relative;
 
     &::before {
