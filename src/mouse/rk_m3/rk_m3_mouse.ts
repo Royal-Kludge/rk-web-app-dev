@@ -9,11 +9,33 @@ import { SetLedParamPacket } from './packets/setLedParamPacket';
 import { SetPerKeyPacket } from './packets/setPerKeyPacket';
 import { GetOnlinePacket } from './packets/getOnlinePacket';
 import { RK_MOUSE_EVENT_DEFINE } from '../mouse';
-import { PopupCmdId } from '../enum';
+import { BigDataTransType, GetReportCmdId, PopupCmdId } from '../enum';
+import { SetStartDataTransPacket } from './packets/setStartDataTransPacket';
+import { SetInitOtaEventPacket } from './packets/setInitOtaEventPacket';
+import { SetCheckOtaEventPacket } from './packets/setCheckOtaEventPacket';
+import { SetFormatFlashPacket } from './packets/setFormatFlashPacket';
+import { SetMacroDataPacket, MACRO_BYTES_PER_PACKET } from './packets/setMacroDataPacket';
+import { SetCheckMacroPacket } from './packets/setCheckMacroPacket';
+import { setEndDataTransPacket } from './packets/setEndDataTransPacket';
+import { GetResponePacket } from './packets/getResponePacket';
+import { GetFwVerPacket } from './packets/getFwVerPacket';
 
-const worker = new Worker(new URL('@/common/communication.ts', import.meta.url));
+const worker = new Worker(new URL('@/common/mouseCommunication.ts', import.meta.url));
+
+const CMD_FIX_VAL = 0x65;
+const CMD_RSP_SUCCESS = 0x00;
+const CMD_RSP_FAIL = 0x01;
+const CMD_RSP_WAIT = 0x02;
+const CMD_EXEC_SUCCESS = 0x0E;
 
 export class RK_M3_Mouse extends RK_M3 {
+
+    getReportCmd: GetReportCmdId = GetReportCmdId.None;
+    dataTransType: BigDataTransType = BigDataTransType.None;
+
+    setMacroDataPacket: SetMacroDataPacket = new SetMacroDataPacket();
+
+    retry: number = 0;
 
     constructor(state: MouseState, device: HIDDevice) {
         super(state, device);
@@ -29,11 +51,116 @@ export class RK_M3_Mouse extends RK_M3 {
         this.state.ConnectionStatus = ConnectionStatusEnum.Connected;
 
         worker.onmessage = async (event) => {
-            if (event.data == 'heartbeat') {
+            if (event.data == 'getReport') {
+                var data = await this.getFeature(REPORT_ID_USB);
+                if (data.byteLength > 41) {
+                    let packet = new GetResponePacket();
+                    packet.fromReportData(data);
+                    if (packet.fixVal == CMD_FIX_VAL && packet.cmdRsp == CMD_RSP_SUCCESS) {
+                        switch (this.getReportCmd) {
+                            case GetReportCmdId.None:
+                            case GetReportCmdId.SetPerKeyCmd:
+                            case GetReportCmdId.SetMultiKeyStartCmd:
+                            case GetReportCmdId.SetMultiKeyEndCmd:
+                            case GetReportCmdId.SetLedParamCmd:
+                            case GetReportCmdId.SetDpiCmd:
+                            case GetReportCmdId.SetFactoryResetCmd:
+                            case GetReportCmdId.GetOnlineCmd:
+                                worker.postMessage("stopGet");
+                                break;
+                            case GetReportCmdId.SetStartDataTransCmd:
+                            case GetReportCmdId.SetInitOtaEventCmd:
+                                if (packet.result == 0x01 || packet.result == CMD_EXEC_SUCCESS || packet.otaRsp == CMD_RSP_SUCCESS) {
+                                    if (packet.sn == 0x01) {
+                                        worker.postMessage("stopGet");
+                                        await this.setCheckOtaEvent();
+                                    }
+                                }
+                                break;
+                            case GetReportCmdId.SetCheckOtaEventCmd:
+                                if (packet.result == CMD_EXEC_SUCCESS) {
+                                    if (packet.sn == 0x02) {
+                                        worker.postMessage("stopGet");
+                                        switch (this.dataTransType) {
+                                            case BigDataTransType.GetFwVer:
+                                                await this.setGetFwVer();
+                                                break;
+                                            case BigDataTransType.SetMacroData:
+                                                await this.setFormatFlash();
+                                                break;
+                                            default:
+                                                await this.setEndDataTrans();
+                                                break;
+                                        }
+                                    }
+                                }
+                                break;
+                            case GetReportCmdId.SetFormatFlashCmd:
+                                if (packet.result == CMD_EXEC_SUCCESS) {
+                                    if (packet.sn == 0x03) {
+                                        worker.postMessage("stopGet");
+                                        await this.setMacroData();
+                                    }
+                                }
+                                break;
+                            case GetReportCmdId.SetCheckMacroCmd:
+                                if (packet.result == CMD_EXEC_SUCCESS) {
+                                    if (packet.sn == 0x60) {
+                                        worker.postMessage("stopGet");
+                                        if (this.setMacroDataPacket.packetIndex < this.setMacroDataPacket.packetCount) {
+                                            await this.setMacroData();
+                                        } else {
+                                            await this.setEndDataTrans();
+                                        }
+                                    }
+                                }
+                                break;
+                            case GetReportCmdId.SetEndDataTransCmd:
+                                if (packet.result == CMD_EXEC_SUCCESS) {
+                                    if (packet.sn == 0x70) {
+                                        worker.postMessage("stopGet");
+                                    }
+                                }
+                            case GetReportCmdId.GetFwVerCmd:
+                                if (packet.result == CMD_EXEC_SUCCESS) {
+                                    if (packet.sn == 0x07 && packet.payloadData != undefined) {
+                                        worker.postMessage("stopGet");
+                                        if (this.state.connectType == ConnectionType.Dongle) {
+                                            this.state.dongleFwVersion = `${packet.payloadData.getUint8(18).toString(16).padStart(2, '0')}${packet.payloadData.getUint8(17).toString(16).padStart(2, '0')}`
+                                        } else {
+                                            this.state.fwVersion = `${packet.payloadData.getUint8(18).toString(16).padStart(2, '0')}${packet.payloadData.getUint8(17).toString(16).padStart(2, '0')}`
+                                            await this.setEndDataTrans();
+                                        }
+                                    }
+                                }
+                                break;
+                        }
+                    }
+                } else {
+                    this.retry -= 1;
+                    if (this.retry <= 0) {
+                        worker.postMessage("stopGet");
+                    }
+                }
             } else {
                 try {
                     await this.setFeature(REPORT_ID_USB, event.data as Uint8Array);
-                    await this.getFeature(REPORT_ID_USB);
+                    if (this.getReportCmd != GetReportCmdId.None) {
+                        // if (this.getReportCmd == GetReportCmdId.SetStartDataTransCmd) {
+                        //     await this.setInitOtaEvent();
+                        // } else if (this.getReportCmd == GetReportCmdId.SetMacroDataCmd) {
+                        if (this.getReportCmd == GetReportCmdId.SetMacroDataCmd) {
+                            this.setMacroDataPacket.packetIndex += 1;
+                            if (this.setMacroDataPacket.packetIndex >= this.setMacroDataPacket.packetCount || this.setMacroDataPacket.packetIndex % 40 == 0) {
+                                await this.setCheckMacro();
+                            } else {
+                                await this.setMacroData();
+                            }
+                        } else {
+                            this.retry = 30;
+                            worker.postMessage("getReport");
+                        }
+                    }
                 } catch (e) {
                     this.device.close();
                 }
@@ -87,6 +214,8 @@ export class RK_M3_Mouse extends RK_M3 {
             packet.setPayload(u8Data);
 
             worker.postMessage(packet.setReport);
+            this.getReportCmd = GetReportCmdId.SetDpiCmd;
+            
             console.log(`Push set dpi data to queue.`);
         }
     }
@@ -115,6 +244,8 @@ export class RK_M3_Mouse extends RK_M3 {
             packet.setPayload(u8Data);
 
             worker.postMessage(packet.setReport);
+            this.getReportCmd = GetReportCmdId.SetLedParamCmd;
+
             console.log(`Push set report rate data to queue.`);
         }
     }
@@ -133,6 +264,8 @@ export class RK_M3_Mouse extends RK_M3 {
             packet.setPayload(u8Data);
 
             worker.postMessage(packet.setReport);
+            this.getReportCmd = GetReportCmdId.SetLedParamCmd;
+
             console.log(`Push set performance data to queue.`);
         }
     }
@@ -151,6 +284,8 @@ export class RK_M3_Mouse extends RK_M3 {
             packet.setPayload(u8Data);
 
             worker.postMessage(packet.setReport);
+            this.getReportCmd = GetReportCmdId.SetLedParamCmd;
+
             console.log(`Push set performance data to queue.`);
         }
     }
@@ -169,6 +304,8 @@ export class RK_M3_Mouse extends RK_M3 {
             packet.setPayload(u8Data);
 
             worker.postMessage(packet.setReport);
+            this.getReportCmd = GetReportCmdId.SetLedParamCmd;
+
             console.log(`Push set performance data to queue.`);
         }
     }
@@ -184,6 +321,8 @@ export class RK_M3_Mouse extends RK_M3 {
             packet.setPayload(u8Data);
 
             worker.postMessage(packet.setReport);
+            this.getReportCmd = GetReportCmdId.SetLedParamCmd;
+
             console.log(`Push set performance data to queue.`);
         }
     }
@@ -201,7 +340,19 @@ export class RK_M3_Mouse extends RK_M3 {
             packet.setPayload(u8Data);
 
             worker.postMessage(packet.setReport);
+            this.getReportCmd = GetReportCmdId.SetPerKeyCmd;
+
             console.log(`Push set key mapping data to queue.`);
+        }
+    }
+
+    async getFwVer(): Promise<void> {
+        this.dataTransType = BigDataTransType.GetFwVer;
+
+        if (this.state.connectType == ConnectionType.Dongle) {
+            await this.setGetFwVer();
+        } else {
+            await this.setInitOtaEvent();
         }
     }
 
@@ -210,7 +361,163 @@ export class RK_M3_Mouse extends RK_M3 {
     }
 
     async setMacros(): Promise<void> {
+        if (this.data.macros != undefined) {
+            
+            this.setMacroDataPacket.macroData = new DataView(this.data.macros.serialize().buffer);
+            this.setMacroDataPacket.packetIndex = 0;
+            this.setMacroDataPacket.packetCount = Math.ceil(this.setMacroDataPacket.macroData.byteLength / MACRO_BYTES_PER_PACKET);
+            this.setMacroDataPacket.macroCrc = 0;
+
+            this.dataTransType = BigDataTransType.SetMacroData;
+
+            if (this.state.connectType == ConnectionType.Dongle) {
+                await this.setStartDataTrans();
+            } else {
+                await this.setInitOtaEvent();
+            }
+        }
+    }
+
+    async setStartDataTrans(): Promise<void> {
+        let packet = new SetStartDataTransPacket();
+
+        if (this.dataTransType == BigDataTransType.GetFwVer) {
+            packet.device = 0x00;
+        } else {
+            packet.device = this.state.connectType == ConnectionType.Dongle ? 0x01 : 0x00;
+        }
         
+        packet.sn = 0x00;
+        packet.rfSn = 0x00;
+        packet.setPayload(new DataView(new Uint8Array([0x44, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]).buffer));
+
+        await this.setFeature(REPORT_ID_USB, packet.setReport);
+        this.getReportCmd = GetReportCmdId.SetStartDataTransCmd;
+        await this.setInitOtaEvent();
+
+        console.log(`Push set init data trans to queue.`);
+    }
+
+    async setInitOtaEvent(): Promise<void> {
+        let packet = new SetInitOtaEventPacket();
+
+        if (this.dataTransType == BigDataTransType.GetFwVer) {
+            packet.device = 0x00;
+        } else {
+            packet.device = this.state.connectType == ConnectionType.Dongle ? 0x01 : 0x00;
+        }
+
+        packet.sn = 0x01;
+        packet.rfSn = 0x01;
+        let payload = new DataView(new Uint8Array([0x57, 0x03, 0x00, 0x00, 0x00, 0x00]).buffer);
+
+        if (this.setMacroDataPacket.macroData != undefined) {
+            payload.setUint32(2, this.setMacroDataPacket.macroData.byteLength, true);
+        }
+       
+        packet.setPayload(payload);
+
+        //worker.postMessage(packet.setReport);
+        await this.setFeature(REPORT_ID_USB, packet.setReport);
+        this.getReportCmd = GetReportCmdId.SetInitOtaEventCmd;
+        this.retry = 30;
+        worker.postMessage("getReport");
+
+        console.log(`Push set init ota event to queue.`);
+    }
+
+    async setCheckOtaEvent(): Promise<void> {
+        let packet = new SetCheckOtaEventPacket();
+
+        if (this.dataTransType == BigDataTransType.GetFwVer) {
+            packet.device = 0x00;
+        } else {
+            packet.device = this.state.connectType == ConnectionType.Dongle ? 0x01 : 0x00;
+        }
+
+        packet.sn = 0x02;
+        packet.rfSn = 0x02;
+        packet.setPayload(new DataView(new Uint8Array([0x52, 0x00]).buffer));
+
+        worker.postMessage(packet.setReport);
+        this.getReportCmd = GetReportCmdId.SetCheckOtaEventCmd;
+
+        console.log(`Push set check ota event to queue.`);
+    }
+
+    async setFormatFlash(): Promise<void> {
+        let packet = new SetFormatFlashPacket();
+        packet.device = this.state.connectType == ConnectionType.Dongle ? 0x01 : 0x00;
+        packet.sn = 0x03;
+        packet.rfSn = 0x03;
+        packet.setPayload(new DataView(new Uint8Array([0x55, 0x00, 0x00, 0x00, 0x00, 0x00, 0x10, 0x00, 0x00]).buffer));
+
+        worker.postMessage(packet.setReport);
+        this.getReportCmd = GetReportCmdId.SetFormatFlashCmd;
+
+        console.log(`Push set format flash to queue.`);
+    }
+
+    async setMacroData(): Promise<void> {
+        if (this.setMacroDataPacket.macroData != undefined) {
+            this.setMacroDataPacket.device = this.state.connectType == ConnectionType.Dongle ? 0x01 : 0x00;
+            this.setMacroDataPacket.sn = 0x00;
+            this.setMacroDataPacket.rfSn = 0x04;
+            this.setMacroDataPacket.setPayload(this.setMacroDataPacket.macroData);
+
+            worker.postMessage(this.setMacroDataPacket.setReport);
+            this.getReportCmd = GetReportCmdId.SetMacroDataCmd;
+    
+            console.log(`Push set macro data ${this.setMacroDataPacket.packetIndex}/${this.setMacroDataPacket.packetCount} package to queue.`);
+        }
+    }
+
+    async setCheckMacro(): Promise<void> {
+        let packet = new SetCheckMacroPacket();
+        packet.device = this.state.connectType == ConnectionType.Dongle ? 0x01 : 0x00;
+        packet.sn = 0x60;
+        packet.rfSn = 0x60;
+        let payload = new DataView(new Uint8Array([0x51, 0x00, 0x00]).buffer);
+        payload.setUint8(1, this.setMacroDataPacket.macroCrc & 0xFF);
+        payload.setUint8(2, (this.setMacroDataPacket.macroCrc >> 8) & 0x00FF);
+        packet.setPayload(payload);
+
+        worker.postMessage(packet.setReport);
+        this.getReportCmd = GetReportCmdId.SetCheckMacroCmd;
+
+        console.log(`Push set format flash to queue.`);
+    }
+
+    async setEndDataTrans(): Promise<void> {
+        let packet = new setEndDataTransPacket();
+        packet.device = this.state.connectType == ConnectionType.Dongle ? 0x01 : 0x00;
+        packet.sn = 0x70;
+        packet.rfSn = 0x70;
+        packet.setPayload(new DataView(new Uint8Array([0x5E]).buffer));
+
+        worker.postMessage(packet.setReport);
+        this.getReportCmd = GetReportCmdId.SetEndDataTransCmd;
+
+        console.log(`Push set format flash to queue.`);
+    }
+
+    async setGetFwVer(): Promise<void> {
+        let packet = new GetFwVerPacket();
+
+        if (this.dataTransType == BigDataTransType.GetFwVer) {
+            packet.device = 0x00;
+        } else {
+            packet.device = this.state.connectType == ConnectionType.Dongle ? 0x01 : 0x00;
+        }
+
+        packet.sn = 0x07;
+        packet.rfSn = 0x01;
+        packet.setPayload(new DataView(new Uint8Array([0x92, 0x00]).buffer));
+
+        worker.postMessage(packet.setReport);
+        this.getReportCmd = GetReportCmdId.GetFwVerCmd;
+
+        console.log(`Push set get fw ver to queue.`);
     }
 
     async onGetReport(reportId: number, data: DataView): Promise<void> {

@@ -16,6 +16,7 @@ export interface KeyState {
  */
 export interface MouseState extends State {
     fwVersion?: String,
+    dongleFwVersion?: String,
     serialNo?: String,
     commandId: number,
     dataChangeFlag: number,

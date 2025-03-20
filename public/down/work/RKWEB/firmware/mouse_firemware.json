@@ -1,0 +1,12 @@
+{
+    "mouse": {
+        "version": "2008",
+        "url": "",
+        "description": "RK M3 Mouse"
+    },
+    "dongle": {
+        "version": "",
+        "url": "",
+        "description": "RK M3 Dongle"
+    }
+}

@@ -201,6 +201,7 @@ export default {
     but_4: "Firmware Update",
     but_5: "Ok",
     but_6: "Cancel",
+    but_7: "Dongle Update",
     title_1: "Restoring factory settings will clear all data. Do you want to continue?",
     title_2: "No update required",
     title_3: "Update Version",

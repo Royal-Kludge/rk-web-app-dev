@@ -81,3 +81,28 @@ export enum PopupCmdId {
     CustomKeyPressed = 0x08,
     LodHeightChanged = 0x0B,
 }
+
+export enum GetReportCmdId {
+    None = 0x00,
+    SetPerKeyCmd = 0x30,
+    SetMultiKeyStartCmd = 0x31,
+    SetMultiKeyEndCmd = 0x32,
+    SetLedParamCmd = 0x35,
+    SetDpiCmd = 0x3A,
+    SetFactoryResetCmd = 0x04,
+    GetOnlineCmd = 0x47,
+    SetStartDataTransCmd = 0x44,
+    SetInitOtaEventCmd = 0x57,
+    SetCheckOtaEventCmd = 0x52,
+    SetFormatFlashCmd = 0x55,
+    SetMacroDataCmd = 0x50,
+    SetCheckMacroCmd = 0x51,
+    SetEndDataTransCmd = 0x5E,
+    GetFwVerCmd = 0x92,
+}
+
+export enum BigDataTransType {
+    None = 0x00,
+    SetMacroData = 0x50,
+    GetFwVer = 0x92,
+}

@@ -84,10 +84,6 @@ export class Mouse extends Device {
         }
     }
 
-    loadDefaultValue() {
-        
-    }
-
     async getOnline(): Promise<void> {
         let packet = new GetOnlinePacket();
         let u8Data = new DataView(new Uint8Array(0).buffer);

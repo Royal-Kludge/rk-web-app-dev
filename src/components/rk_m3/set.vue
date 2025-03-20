@@ -26,15 +26,19 @@
                             @click="reSet = true">
                             {{ $t("set.but_2") }}
                         </div>
-                        <div class="py-3 my-3 w-100 bg-warn-1 text-grey-1 text-center br-2 b-grey c-p but" v-if="useKey.connectType == ConnectionType.Dongle">
-                            接收器更新
+                        <div class="py-3 my-3 w-100 bg-warn-1 text-grey-1 text-center br-2 b-grey c-p but" 
+                            @click="checkDongle(true)" v-if="useKey.connectType == ConnectionType.Dongle">
+                            {{ $t("set.but_7") }}(<span>{{ VerTipsDongle }}</span>)
                         </div>
                         <div class="py-3 my-3 w-100 bg-warn-1 text-grey-1 text-center br-2 b-grey c-p but"
-                            @click="checkVer(true)" v-if="useKey.connectType == ConnectionType.USB">
+                            @click="checkMouse(true)" v-if="useKey.connectType == ConnectionType.USB">
                             {{ $t("set.but_4") }}(<span>{{ VerTips }}</span>)
                         </div>
-                        <div class="w-100 text-grey-1 text-center">
+                        <div class="w-100 text-grey-1 text-center" v-if="useKey.connectType == ConnectionType.USB">
                             Version:{{ ver }}
+                        </div>
+                        <div class="w-100 text-grey-1 text-center" v-if="useKey.connectType == ConnectionType.Dongle">
+                            Version:{{ verDongle }}
                         </div>
                     </div>
                     <div class="mb-1"></div>
@@ -85,67 +89,132 @@ const useKey = useKeyStore();
 
 const reSet = ref(false);
 const ver = ref(mouse.state.fwVersion);
-const version = ref(mouse.state.fwVersion)
-const url = ref()
+const version = ref(mouse.state.fwVersion);
+const verDongle = ref(mouse.state.dongleFwVersion);
+const versionDongle = ref(mouse.state.dongleFwVersion);
+const mouseVer = ref();
+const dongleVer = ref();
 const local = ref(false);
 const VerTips = computed(() => (ver.value !== version.value ? t('set.title_3') + ':' + version.value : t('set.title_2')))
+const VerTipsDongle = computed(() => (verDongle.value !== versionDongle.value ? t('set.title_3') + ':' + version.value : t('set.title_2')))
 
 const getVer = () => {
     let pid = mouse.mouseDefine?.productId;
-    if (pid == 0x01E5) {
-        axios.get('/down/work/RKWEB/firmware/L75/L75_firmware.json').then(response => {
+    axios.get('/down/work/RKWEB/firmware/M3/M3(533)_firmware.json').then(response => {
             // 请求成功处理
-            version.value = response.data.version
-            url.value = response.data.url
+            mouseVer.value = response.data.mouse;
+            dongleVer.value = response.data.dongle;
+
+            version.value = mouseVer.value.version;
+            versionDongle.value = dongleVer.value.version;
             checkVer()
         }).catch(error => {
             // 请求失败处理   
             console.error(error);
         });
-    } else if (pid == 0x0201) {
-        axios.get('/down/work/RKWEB/firmware/L75/L75_firmware_uk.json').then(response => {
-            // 请求成功处理
-            version.value = response.data.version
-            url.value = response.data.url
-            checkVer()
-        }).catch(error => {
-            // 请求失败处理   
-            console.error(error);
-        });
-    }
 }
 
 const checkVer = (flag: boolean = false) => {
-    if (useKey.connectType !== ConnectionType.USB && flag == true) {
+    if (useKey.connectType == ConnectionType.USB) {
+        if (ver.value !== version.value) {
+        let msg = "";
+
+        if (ver.value !== version.value) {
+            msg = `Mouse ${t('set.title_3')}:${version.value}`;
+        }
+
+        ElMessageBox.alert(msg, t('set.but_4'), {
+            confirmButtonText: 'OK',
+            callback: (action: Action) => {
+                if (action === 'confirm') {
+                    if (ver.value !== version.value) updateMouse();
+                    if (verDongle.value !== versionDongle.value) updateDongle();
+                }
+            },
+        })
+    } else if (flag == true) {
         ElMessage({
             type: 'info',
-            message: t("set.title_5"),
+            message: t("set.title_2"),
         })
-        return
     }
-    if (ver.value !== version.value && useKey.connectType == ConnectionType.USB) {
+    } else {
+        if (verDongle.value !== versionDongle.value) {
+            let msg = "";
+
+            if (verDongle.value !== versionDongle.value) {
+                msg = `Dongle ${t('set.title_3')}:${versionDongle.value}`;
+            }
+
+            ElMessageBox.alert(msg, t('set.but_4'), {
+                confirmButtonText: 'OK',
+                callback: (action: Action) => {
+                    if (action === 'confirm') {
+                        if (ver.value !== version.value) updateMouse();
+                        if (verDongle.value !== versionDongle.value) updateDongle();
+                    }
+                },
+            })
+        } else if (flag == true) {
+            ElMessage({
+                type: 'info',
+                message: t("set.title_2"),
+            })
+        }
+    }
+
+}
+
+const checkMouse = (flag: boolean = false) => {
+    if (ver.value !== version.value) {
         ElMessageBox.alert(`${t('set.title_3')}:${version.value}`, t('set.but_4'), {
             confirmButtonText: 'OK',
             callback: (action: Action) => {
                 if (action === 'confirm') {
-                    updateVer();
+                    updateMouse();
                 }
             },
         })
-    }
-    else if (flag == true) {
+    } else if (flag == true) {
         ElMessage({
             type: 'info',
             message: t("set.title_2"),
         })
     }
 }
-const updateVer = () => {
+
+const checkDongle = (flag: boolean = false) => {
+    if (ver.value !== version.value) {
+        ElMessageBox.alert(`${t('set.title_3')}:${version.value}`, t('set.but_4'), {
+            confirmButtonText: 'OK',
+            callback: (action: Action) => {
+                if (action === 'confirm') {
+                    updateDongle();
+                }
+            },
+        })
+    } else if (flag == true) {
+        ElMessage({
+            type: 'info',
+            message: t("set.title_2"),
+        })
+    }
+}
+
+const updateMouse = () => {
     ElMessage({
         type: 'info',
         message: t("set.title_4"),
     })
-    window.open(url.value, '_blank')// 新窗口打开外连接
+    window.open(mouseVer.value.url, '_blank')// 新窗口打开外连接
+}
+
+const updateDongle = () => {
+    ElMessage({
+        type: 'info',
+        message: t("set.title_4"),
+    })
+    window.open(dongleVer.value.url, '_blank')// 新窗口打开外连接
 }
 
 onMounted(async () => {
@@ -157,7 +226,8 @@ onBeforeUnmount(() => {
     useKey.destroy();
 });
 
-const setToFactory = () => {
+const setToFactory = async () => {
+    await useKey.setToFactory();
     reSet.value = false;
 }
 const clearLocalData = () => {

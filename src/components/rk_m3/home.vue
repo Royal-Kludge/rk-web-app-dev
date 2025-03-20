@@ -9,7 +9,7 @@
             <div v-else class="d-flex flex-column jc-center ai-center">
                 <div class="d-flex flex-column jc-center ai-center">
                     <div class="text-black my-4" style="font-size: 120px; font-weight: bold">
-                        RK-K3
+                        RK-M3
                     </div>
                     <div class="my-4 c-p" @click="setMeunid();">
                         <el-tooltip effect="light" :content="$t('home.title_tip')" placement="top"
@@ -61,6 +61,8 @@ onMounted(async () => {
         rk_m3.value = mouse.protocol as RK_M3;
         rk_m3.value.addEventListener(RK_MOUSE_EVENT_DEFINE.OnReportStart, reportStart, false);
         rk_m3.value.addEventListener(RK_MOUSE_EVENT_DEFINE.OnReportFinish, reportFinish, false);
+
+        await rk_m3.value.getFwVer();
     }
 });
 

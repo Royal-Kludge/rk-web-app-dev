@@ -263,6 +263,13 @@ export class LedTable {
         this.buffer.setUint8(LedTableEnum.DpiColor + (index * 2) + 2, color.red);
     }
 
+    loadDefualtData() {
+       let index: number;
+       for (index = 0; index < LED_TABLE_DATA.length; index++) {
+           this.buffer.setInt8(index, LED_TABLE_DATA[index]);
+       }
+    }
+
     static fromReportData(data: DataView): LedTable | undefined {
         let table = undefined;
 

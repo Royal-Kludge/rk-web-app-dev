@@ -210,6 +210,7 @@ export class Macro {
 
     serialize(): Uint8Array {
         let u8Name = Macro.strToUnicode(this.name);
+        //let u8Name = new Uint8Array([0x41, 0x42, 0x43, 0x44, 0x45, 0x46]);
         let len = 1 + u8Name.length + this.actions.length * MACRO_ACTION_LENGTH;
         let u8 = new Uint8Array(len);
         let index = 0;
@@ -308,7 +309,7 @@ export class Macros {
 
         for (let macro of this.macroList) {
             let u8Macro = macro.serialize();
-            heads.push({ offset: offset, length: u8Macro.length });
+            heads.push({ offset: offset, length: macro.actions.length * 4 });
             u8Macros.push(u8Macro);
             offset += u8Macro.length;
         }

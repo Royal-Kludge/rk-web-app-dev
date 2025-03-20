@@ -58,7 +58,6 @@ onMounted(async () => {
             }
 
             mouse.protocol = await mouse.mouseDefine.protocol(mouse.state, mouse.device);
-            mouse.loadDefaultValue();
 
             await mouse.protocol?.init();
 
@@ -140,7 +139,6 @@ const passwordGotten = async (event: any) => {
 
     if (mouse.mouseDefine != null && mouse.mouseDefine != undefined && mouse.device != undefined) {
         mouse.protocol = await mouse.mouseDefine.protocol(mouse.state, mouse.device);
-        mouse.loadDefaultValue();
 
         await mouse.protocol?.init();
 

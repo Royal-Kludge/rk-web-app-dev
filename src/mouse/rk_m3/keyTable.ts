@@ -149,6 +149,13 @@ export class KeyTable {
          mappingData.keyParam1 = (key >> 8) & 0xFF;
          mappingData.keyParam2 = key & 0xFF;
      }
+
+     loadDefualtData() {
+        let index: number;
+        for (index = 0; index < KEY_TABLE_DATA.length; index++) {
+            this.buffer.setInt8(index, KEY_TABLE_DATA[index]);
+        }
+     }
  
      static fromReportData(data: DataView) : KeyTable | undefined {
          let keyTable = undefined;

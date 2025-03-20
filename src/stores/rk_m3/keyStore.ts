@@ -171,8 +171,11 @@ export const useKeyStore = defineStore('keyinfo_rk_m3', () => {
         ps.save()
     };
 
-    const KeyMappingText = (func: KeyFunctionType, keyCode: KeyDefineEnum, modify: KeyDefineEnum, key: number): string => {
+    const KeyMappingText = (func: KeyFunctionType, keyCode: KeyDefineEnum, modify: KeyDefineEnum, key: number, macroIndex: number = 0): string => {
         switch (func) {
+            case KeyFunctionType.Dpi:
+                return KeyText[key & (0xFFFF << 16)].valueOf();
+                break;
             case KeyFunctionType.Keyboard:
                 let keyStr = "";
                 if ((modify & 0x00010000) > 0)
@@ -189,6 +192,12 @@ export const useKeyStore = defineStore('keyinfo_rk_m3', () => {
                 return "key.gameAdv";
             case KeyFunctionType.Disable:
                 return "key.disable";
+            case KeyFunctionType.Macro:
+                if (rk_m3.value != undefined && rk_m3.value.data.macros != undefined) {
+                    let macro = rk_m3.value.data.macros.macroList[macroIndex];
+                    if (macro != undefined) return macro.name;
+                }
+                return "Macro";
             default:
                 return KeyText[key].valueOf();
         };
@@ -200,6 +209,8 @@ export const useKeyStore = defineStore('keyinfo_rk_m3', () => {
         switch (func) {
             case KeyFunctionType.MouseKey:
             case KeyFunctionType.Dpi:
+                key = keyCode | count;
+                break;
             case KeyFunctionType.ReportRate:
             case KeyFunctionType.Media:
                 key = keyCode;
@@ -222,7 +233,7 @@ export const useKeyStore = defineStore('keyinfo_rk_m3', () => {
         };
 
         let mapping: KeyMappingData = {
-            keyStr: KeyMappingText(func, keyCode, modify, key),
+            keyStr: KeyMappingText(func, keyCode, modify, key, delay),
             keyFunctionType: func,
             keyMappingType: key >> 24,
             keyTypeCode: (key >> 16) & 0xff,
@@ -348,8 +359,24 @@ export const useKeyStore = defineStore('keyinfo_rk_m3', () => {
     };
 
     const clickMacro = (obj: Macro) => {
-
+        keyMapping(state.KeyLayoutIndex, state.functionItem.function, KeyDefineEnum.KEY_MACRO0, state.functionItem.modify, 1, obj.index);
+        saveProfile();
     }
 
-    return { connectType, state, init, destroy, keyMapping, findFunction, selectedFunction, clickFunction, getKeyLayoutByIndex, clickKeyLayout, selectedKeyLayout, setAllDefault, setOneDefault, saveGameAdv, clickKeyboard, selectedKeyboard, saveKeyboard, clickMacro, refresh, setDpiLock };
+    const setToFactory = async () => {
+        if (rk_m3.value != undefined) {
+            rk_m3.value.data.loadDefaultValue();  
+            await rk_m3.value.setDpi();
+            await rk_m3.value.setKeyMapping(0);
+            await rk_m3.value.setKeyMapping(1);
+            await rk_m3.value.setKeyMapping(2);
+            await rk_m3.value.setKeyMapping(3);
+            await rk_m3.value.setKeyMapping(4);
+            await rk_m3.value.setReportRate();
+            await rk_m3.value.setDebounce();
+            await rk_m3.value.setSleepTime();
+        }
+    }
+
+    return { connectType, state, init, destroy, keyMapping, findFunction, selectedFunction, clickFunction, getKeyLayoutByIndex, clickKeyLayout, selectedKeyLayout, setAllDefault, setOneDefault, saveGameAdv, clickKeyboard, selectedKeyboard, saveKeyboard, clickMacro, refresh, setDpiLock, setToFactory };
 });

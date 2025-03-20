@@ -62,12 +62,12 @@
                         :class="[useKey.selectedKeyLayout(0)]">
                         {{ $t(useKey.getKeyLayoutByIndex(0)) }}
                     </el-button> </div>
-                <div class="but_report" v-if="left"><el-button @click="useKey.clickKeyLayout(3)"
-                        :class="[useKey.selectedKeyLayout(3)]">{{
-                            $t(useKey.getKeyLayoutByIndex(3)) }}</el-button></div>
-                <div class="but_back" v-if="left"><el-button @click="useKey.clickKeyLayout(4)"
+                <div class="but_report" v-if="left"><el-button @click="useKey.clickKeyLayout(4)"
                         :class="[useKey.selectedKeyLayout(4)]">{{
-                            $t(useKey.getKeyLayoutByIndex(4)) }}</el-button>
+                            $t(useKey.getKeyLayoutByIndex(4)) }}</el-button></div>
+                <div class="but_back" v-if="left"><el-button @click="useKey.clickKeyLayout(3)"
+                        :class="[useKey.selectedKeyLayout(3)]">{{
+                            $t(useKey.getKeyLayoutByIndex(3)) }}</el-button>
                 </div>
             </div>
 
