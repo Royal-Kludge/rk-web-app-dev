@@ -98,7 +98,7 @@
 
                 <div class="p-5" style="border-bottom: 1px solid #E7EAF2;">
                     <div class="d-flex ai-center">
-                        <span class="fw-b mr-5">{{ $t("property.title_4") }}</span>
+                        <span class="fw-b mr-5 fs-xxl">{{ $t("property.title_4") }}</span>
                         <el-select v-model="state.sleepTime" placeholder="Select"
                             @change="useProperty.setSleepTime(state.sleepTime)">
                             <el-option v-for="item in state.sleepList" :key="item.value" :label="$t(item.label)"
@@ -108,11 +108,11 @@
                 </div>
                 <div class="p-5">
                     <div class="d-flex ai-center">
-                        <span class="fw-b">{{ $t("property.title_5") }}</span>
+                        <span class="fw-b mr-5 fs-xxl">{{ $t("property.title_5") }}</span>
                     </div>
                     <div class="my-4">
                         <el-input-number style="width: 150px" v-model="state.debounceTime" type="number" :min="1"
-                            max="99" @change="useProperty.setDebounceTime(state.debounceTime)" />ms
+                            max="99" @change="useProperty.setDebounceTime(state.debounceTime)" /> ms
                     </div>
                 </div>
             </div>

@@ -14,7 +14,7 @@
                     <div class="my-4 c-p" @click="setMeunid();">
                         <el-tooltip effect="light" :content="$t('home.title_tip')" placement="top"
                             popper-class="tip_font2">
-                            <img :src="`../../src/assets/images/mouse_rk-k3.png`" />
+                            <img :src="`../../src/assets/images/mouse_rk-m3.png`" />
                         </el-tooltip>
                     </div>
                     <div class="d-flex my-4">

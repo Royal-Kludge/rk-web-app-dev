@@ -82,7 +82,7 @@
 
             <div class="d-flex flex-column ai-center">
                 <div>
-                    <img :src="`../../src/assets/images/mouse_rk-k3.png`" />
+                    <img :src="`../../src/assets/images/mouse_rk-m3.png`" />
                 </div>
                 <div class="mt-4">
                     <el-button class="but-blue" style="color: white;padding: 0 50px;" @click="isAllDefault = true"> {{
@@ -108,7 +108,7 @@
             </div>
         </div>
         <div class="d-flex" style="height: 100%;">
-            <div class="d-flex flex-column my-4 mr-4 bg-white br-2" style="width: 320px;">
+            <div class="d-flex flex-column my-4 mr-4 bg-white br-2" style="width: 320px;margin-right: 180px;">
                 <div class="d-flex jc-between p-2" style="line-height: 30px;">
                     <div>
                         {{ $t("key.title_4") }}

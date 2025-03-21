@@ -7,7 +7,7 @@ let isGetReport = false;
 
 self.addEventListener('message', (event) => {
     if (event.data === 'start') {
-        startLoop();
+        mouseStartLoop();
     } else if (event.data === 'getReport') {
         isGetReport = true;
         mouseGetReportTime.setTime(new Date().getTime());
@@ -19,7 +19,7 @@ self.addEventListener('message', (event) => {
     }
 });
 
-function startLoop() {
+function mouseStartLoop() {
     setInterval(() => {
         const currentTime = new Date();
         let elapsedTime = currentTime.getTime() - mouseLastTime.getTime();
