@@ -5,13 +5,21 @@
     <div class="d-flex flex-1">
         <div class="d-flex flex-column flex-1 mx-4 my-4">
             <div class="bg-white p-2 fw-b" style="border-radius: 10px 10px 0px 0px;line-height: 30px;">
-                系统功能设置
+                {{ $t("property.title") }}
             </div>
             <div class="flex-1 bg-white-1" style="border-radius: 0px 0px 10px 10px">
                 <div class="p-5" style="border-bottom: 1px solid #E7EAF2;">
                     <div class="d-flex ai-center">
-                        <span class="fw-b">鼠标LOD高度</span>
-                        <img :src="`../../src/assets/images/help.png`" class="img-title" />
+                        <span class="fw-b fs-xxl">{{ $t("property.title_1") }}</span>
+                        <el-popover placement="right" :width="300"
+                            popper-style="background: #282828;--el-bg-color-overlay:#282828;color:#ffffff">
+                            <template #reference>
+                                <img :src="`../../src/assets/images/help.png`" class="img-title" />
+                            </template>
+                            <template #default>
+                                {{ $t("property.tip_1") }}
+                            </template>
+                        </el-popover>
                     </div>
                     <div class="my-4">
                         <el-radio-group v-model="state.lodVal" text-color="#00ffff" fill="#ffff00">
@@ -23,23 +31,59 @@
                     </div>
 
                     <div class="d-flex ai-center">
-                        <span class="fw-b">Sensor 画线性能</span>
-                        <img :src="`../../src/assets/images/help.png`" class="img-title" />
+                        <span class="fw-b fs-xxl">{{ $t("property.title_2") }}</span>
+                        <el-popover placement="right" :width="300"
+                            popper-style="background: #282828;--el-bg-color-overlay:#282828;color:#ffffff">
+                            <template #reference>
+                                <img :src="`../../src/assets/images/help.png`" class="img-title" />
+                            </template>
+                            <template #default>
+                                <div>
+                                    <div>{{ $t("property.title_2") }}</div>
+                                    <div class="my-3">
+                                        <div>【{{ $t("property.label_1") }}】</div>
+                                        <div>{{ $t("property.tip_2") }}</div>
+                                    </div>
+                                    <div class="my-3">
+                                        <div>【{{ $t("property.label_2") }}】</div>
+                                        <div>{{ $t("property.tip_3") }}</div>
+                                    </div>
+                                    <div class="my-3">
+                                        <div>【{{ $t("property.label_3") }}】</div>
+                                        <div>{{ $t("property.tip_4") }}</div>
+                                    </div>
+                                </div>
+                            </template>
+                        </el-popover>
                     </div>
                     <div class="my-4">
                         <div class="mx-5">
-                            <el-checkbox v-model="state.rippleEnable" label="波纹控制"
+                            <el-checkbox v-model="state.rippleEnable" :label="$t('property.label_1')"
                                 @change="useProperty.setRippleEnable" />
-                            <el-checkbox v-model="state.angleSnaping" label="直线修正"
+                            <el-checkbox v-model="state.angleSnaping" :label="$t('property.label_2')"
                                 @change="useProperty.setAngleSnaping" />
-                            <el-checkbox v-model="state.motionSync" label="Motion sync"
+                            <el-checkbox v-model="state.motionSync" :label="$t('property.label_3')"
                                 @change="useProperty.setMotionSync" />
-                            <el-checkbox v-model="state.glassMode" label="玻璃模式" @change="useProperty.setGlassMode" />
+                            <el-checkbox v-model="state.glassMode" :label="$t('property.label_4')"
+                                @change="useProperty.setGlassMode" />
                         </div>
                     </div>
                     <div class="d-flex ai-center">
-                        <span class="fw-b">传感器模式</span>
-                        <img :src="`../../src/assets/images/help.png`" class="img-title" />
+                        <span class="fw-b fs-xxl">{{ $t("property.title_3") }}</span>
+                        <el-popover placement="right" :width="300"
+                            popper-style="background: #282828;--el-bg-color-overlay:#282828;color:#ffffff">
+                            <template #reference>
+                                <img :src="`../../src/assets/images/help.png`" class="img-title" />
+                            </template>
+                            <template #default>
+                                <div>
+                                    {{ $t("property.tip_5") }}
+                                </div>
+                                <div class="my-3">
+                                    {{ $t("property.tip_6") }}
+                                </div>
+                            </template>
+                        </el-popover>
                     </div>
                     <div class="my-4">
                         <el-radio-group v-model="state.sensorMode" text-color="#00ffff" fill="#ffff00"
@@ -54,7 +98,7 @@
 
                 <div class="p-5" style="border-bottom: 1px solid #E7EAF2;">
                     <div class="d-flex ai-center">
-                        <span class="fw-b mr-5">休眠时间</span>
+                        <span class="fw-b mr-5">{{ $t("property.title_4") }}</span>
                         <el-select v-model="state.sleepTime" placeholder="Select"
                             @change="useProperty.setSleepTime(state.sleepTime)">
                             <el-option v-for="item in state.sleepList" :key="item.value" :label="$t(item.label)"
@@ -64,8 +108,7 @@
                 </div>
                 <div class="p-5">
                     <div class="d-flex ai-center">
-                        <span class="fw-b">按键去抖时间(毫秒)</span>
-                        <img :src="`../../src/assets/images/help.png`" class="img-title" />
+                        <span class="fw-b">{{ $t("property.title_5") }}</span>
                     </div>
                     <div class="my-4">
                         <el-input-number style="width: 150px" v-model="state.debounceTime" type="number" :min="1"
@@ -133,11 +176,15 @@
 
 <style lang="scss" scoped>
 :deep(.el-radio__label) {
-    font-size: 18px;
+    font-size: 20px;
 }
 
 :deep(.el-checkbox__label) {
-    font-size: 16px;
+    font-size: 20px;
+}
+
+.popper {
+    width: 100px !important;
 }
 </style>
 

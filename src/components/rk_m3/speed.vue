@@ -8,27 +8,35 @@
                 <div class="m-5">
                     <el-dialog v-model="state.isDefaultClause" width="500" center>
                         <span>
-                            是否当前DPI默认值?
+                            {{ $t("key.title_3") }}
                         </span>
                         <template #footer>
                             <div class="dialog-footer">
                                 <el-button @click="useSpeed.setDpiDefault()">
-                                    是
+                                    {{ $t("set.but_5") }}
                                 </el-button>
                                 <el-button type="primary" @click="state.isDefaultClause = false">
-                                    否
+                                    {{ $t("set.but_6") }}
                                 </el-button>
                             </div>
                         </template>
                     </el-dialog>
 
                     <div class="d-flex ai-center">
-                        <span class="fw-b">DPI调节</span>
-                        <img :src="`../../src/assets/images/help.png`" class="img-title" />
+                        <span class="fw-b">{{ $t("dpiKey.title_1") }}</span>
+                        <el-popover placement="right" :width="300"
+                            popper-style="background: #282828;--el-bg-color-overlay:#282828;color:#ffffff">
+                            <template #reference>
+                                <img :src="`../../src/assets/images/help.png`" class="img-title" />
+                            </template>
+                            <template #default>
+                                {{ $t("dpiKey.tip_1") }}
+                            </template>
+                        </el-popover>
                     </div>
                     <div class="d-flex flex-column m-4">
                         <div class="d-flex ai-center jc-between">
-                            <span class="fw-b text-white-2">DPI档位数
+                            <span class="fw-b text-white-2">{{ $t("dpiKey.title_2") }}
                                 <el-select v-model="state.maxDpiLevel" placeholder="Select" style="width: 68px;"
                                     @change="useSpeed.setMaxDpiLevel(state.maxDpiLevel)">
                                     <el-option v-for="i in 6" :key="i" :label="i" :value="i" />
@@ -64,8 +72,16 @@
             <div class="bg-white-1 mt-5" style="border-radius: 10px">
                 <div class="m-5">
                     <div class="d-flex ai-center">
-                        <span class="fw-b">回报率</span>
-                        <img :src="`../../src/assets/images/help.png`" class="img-title" />
+                        <span class="fw-b">{{ $t("reportRateKey.title") }}</span>
+                        <el-popover placement="right" :width="300"
+                            popper-style="background: #282828;--el-bg-color-overlay:#282828;color:#ffffff">
+                            <template #reference>
+                                <img :src="`../../src/assets/images/help.png`" class="img-title" />
+                            </template>
+                            <template #default>
+                                {{ $t("reportRateKey.tip_1") }}
+                            </template>
+                        </el-popover>
                     </div>
                     <div class="d-flex flex-column m-4">
                         <div class="d-flex text-white-2">

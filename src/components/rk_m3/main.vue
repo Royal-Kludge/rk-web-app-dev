@@ -6,36 +6,36 @@
         <div class="d-flex jc-center ai-start flex-1">
             <el-dialog v-model="isAllDefault" width="500" center>
                 <span>
-                    是否恢复成默认设置?
+                    {{ $t("key.title_3") }}
                 </span>
                 <template #footer>
                     <div class="dialog-footer">
                         <el-button @click="setAllDefault()">
-                            是
+                            {{ $t("set.but_5") }}
                         </el-button>
                         <el-button type="primary" @click="isAllDefault = false">
-                            否
+                            {{ $t("set.but_6") }}
                         </el-button>
                     </div>
                 </template>
             </el-dialog>
             <el-dialog v-model="isOneDefault" width="500" center>
                 <span>
-                    是否恢复成默认设置?
+                    {{ $t("key.title_3") }}
                 </span>
                 <template #footer>
                     <div class="dialog-footer">
                         <el-button @click="setOneDefault()">
-                            是
+                            {{ $t("set.but_5") }}
                         </el-button>
                         <el-button type="primary" @click="isOneDefault = false">
-                            否
+                            {{ $t("set.but_6") }}
                         </el-button>
                     </div>
                 </template>
             </el-dialog>
             <el-dialog v-model="state.isDpiLock" width="500" center>
-                <span>锁定DPI</span>
+                <span>{{ $t("dpiKey.lock") }}</span>
                 <div class="d-flex my-4">
                     <div class="mx-4">0</div>
                     <el-slider v-model="state.functionItem.count" :min="0" :max="1000" show-stops
@@ -45,29 +45,38 @@
                 <template #footer>
                     <div class="dialog-footer">
                         <el-button @click="useKey.setDpiLock(state.functionItem.count)">
-                            确认
+                            {{ $t("set.confirm") }}
                         </el-button>
                         <el-button type="primary" @click="state.isDpiLock = false">
-                            取消
+                            {{ $t("set.cancel") }}
                         </el-button>
                     </div>
                 </template>
             </el-dialog>
             <div class="d-flex flex-column ai-center mx-5">
                 <div>
-                    <div>左侧键</div>
-                    <el-switch v-model="left" inline-prompt size="large" active-text="开" inactive-text="关" />
+                    <div>{{ $t("key.but_7") }}</div>
+                    <el-switch v-model="left" inline-prompt size="large" :active-text="$t('key.but_8')"
+                        :inactive-text="$t('key.but_9')" />
                 </div>
-                <div class="but_left"><el-button @click="useKey.clickKeyLayout(0)"
-                        :class="[useKey.selectedKeyLayout(0)]">
-                        {{ $t(useKey.getKeyLayoutByIndex(0)) }}
-                    </el-button> </div>
-                <div class="but_report" v-if="left"><el-button @click="useKey.clickKeyLayout(4)"
-                        :class="[useKey.selectedKeyLayout(4)]">{{
-                            $t(useKey.getKeyLayoutByIndex(4)) }}</el-button></div>
-                <div class="but_back" v-if="left"><el-button @click="useKey.clickKeyLayout(3)"
-                        :class="[useKey.selectedKeyLayout(3)]">{{
-                            $t(useKey.getKeyLayoutByIndex(3)) }}</el-button>
+                <div class="d-flex but_left">
+                    <div><el-button @click="useKey.clickKeyLayout(0)" :class="[useKey.selectedKeyLayout(0)]">
+                            {{ $t(useKey.getKeyLayoutByIndex(0)) }}
+                        </el-button>
+                    </div>
+                    <div>--------------------------</div>
+                </div>
+                <div class="d-flex but_report" v-if="left">
+                    <div><el-button @click="useKey.clickKeyLayout(4)" :class="[useKey.selectedKeyLayout(4)]">{{
+                        $t(useKey.getKeyLayoutByIndex(4)) }}</el-button>
+                    </div>
+                    <div>----------------------</div>
+                </div>
+                <div class="d-flex but_back" v-if="left">
+                    <div><el-button @click="useKey.clickKeyLayout(3)" :class="[useKey.selectedKeyLayout(3)]">{{
+                        $t(useKey.getKeyLayoutByIndex(3)) }}</el-button>
+                    </div>
+                    <div>----------------------</div>
                 </div>
             </div>
 
@@ -76,27 +85,33 @@
                     <img :src="`../../src/assets/images/mouse_rk-k3.png`" />
                 </div>
                 <div class="mt-4">
-                    <el-button class="but-blue" style="color: white;padding: 0 50px;"
-                        @click="isAllDefault = true">重置所有按键</el-button>
+                    <el-button class="but-blue" style="color: white;padding: 0 50px;" @click="isAllDefault = true"> {{
+                        $t("key.but_10") }}</el-button>
                 </div>
             </div>
 
             <div class="d-flex flex-column ai-center mx-5">
 
-                <div class="but_right"><el-button @click="useKey.clickKeyLayout(1)"
-                        :class="[useKey.selectedKeyLayout(1)]">{{
+                <div class="d-flex but_right">
+                    <div>----------------------------</div>
+                    <div>
+                        <el-button @click="useKey.clickKeyLayout(1)" :class="[useKey.selectedKeyLayout(1)]">{{
                             $t(useKey.getKeyLayoutByIndex(1)) }}</el-button>
+                    </div>
                 </div>
-                <div class="but_middle"><el-button @click="useKey.clickKeyLayout(2)"
-                        :class="[useKey.selectedKeyLayout(2)]">{{
-                            $t(useKey.getKeyLayoutByIndex(2)) }}</el-button></div>
+                <div class="d-flex but_middle">
+                    <div>-------------------------------------------</div>
+                    <div><el-button @click="useKey.clickKeyLayout(2)" :class="[useKey.selectedKeyLayout(2)]">{{
+                        $t(useKey.getKeyLayoutByIndex(2)) }}</el-button>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="d-flex" style="height: 100%;">
             <div class="d-flex flex-column my-4 mr-4 bg-white br-2" style="width: 320px;">
                 <div class="d-flex jc-between p-2" style="line-height: 30px;">
                     <div>
-                        鼠标功能类型
+                        {{ $t("key.title_4") }}
                     </div>
                     <div class="d-flex ai-center c-p">
                         <img :src="`../../src/assets/images/refresh.png`" class="img-title"
@@ -125,10 +140,11 @@
                                             </div>
                                         </div>
                                         <div class="my-2"><el-input v-model="state.functionItem.key.key"
-                                                placeholder="请输入单键" @focus="handleFocus" @blur="handleBlur" />
+                                                :placeholder="$t('key.title_5')" @focus="handleFocus"
+                                                @blur="handleBlur" />
                                         </div>
-                                        <div class="my-2 text-right"><el-button
-                                                @click="useKey.saveKeyboard()">保存</el-button>
+                                        <div class="my-2 text-right"><el-button @click="useKey.saveKeyboard()">{{
+                                            $t("macro.but_7") }}</el-button>
                                         </div>
                                     </div>
                                 </div>
@@ -141,7 +157,7 @@
                                                         :label="$t(item.label)" :value="item.value" />
                                                 </el-select>
                                             </div>
-                                            <div>键值</div>
+                                            <div>{{ $t("key.title_6") }}</div>
                                             <div>
                                                 <el-select v-model="state.functionItem.key" style="width: 100px;"
                                                     v-if="state.functionItem.type == KeyMappingType.Mouse">
@@ -153,19 +169,19 @@
                                             </div>
                                         </div>
                                         <div class="d-flex jc-between my-2">
-                                            <div>次数</div>
+                                            <div>{{ $t("key.title_7") }}</div>
                                             <div>
                                                 <el-input type="number" v-model="state.functionItem.count"
                                                     maxlength="10" style="width: 100px;" />
                                             </div>
-                                            <div>速率</div>
+                                            <div>{{ $t("key.title_8") }}</div>
                                             <div>
                                                 <el-input type="number" v-model="state.functionItem.delay"
                                                     maxlength="10" style="width: 100px;" />
                                             </div>
                                         </div>
-                                        <div class="my-2 text-right"><el-button
-                                                @click="useKey.saveGameAdv()">保存</el-button>
+                                        <div class="my-2 text-right"><el-button @click="useKey.saveGameAdv()">{{
+                                            $t("macro.but_7") }}</el-button>
                                         </div>
                                     </div>
                                 </div>
@@ -201,76 +217,31 @@
 .but_left {
     margin-top: 10px;
     position: relative;
-
-    &::before {
-        content: "";
-        position: absolute;
-        top: 15px;
-        right: -70px;
-        width: 70px;
-        height: 1px;
-        background: #BABABB;
-    }
+    right: -80px;
 }
 
 .but_right {
     margin-top: 70px;
     position: relative;
-
-    &::before {
-        content: "";
-        position: absolute;
-        top: 15px;
-        right: 60px;
-        width: 70px;
-        height: 1px;
-        background: #BABABB;
-    }
+    left: -130px;
 }
 
 .but_middle {
     margin-top: 10px;
     position: relative;
-
-    &::before {
-        content: "";
-        position: absolute;
-        top: 15px;
-        right: 60px;
-        width: 150px;
-        height: 1px;
-        background: #BABABB;
-    }
+    left: -170px;
 }
 
 .but_report {
     margin-top: 50px;
     position: relative;
-
-    &::before {
-        content: "";
-        position: absolute;
-        top: 15px;
-        right: -55px;
-        width: 55px;
-        height: 1px;
-        background: #BABABB;
-    }
+    right: -80px;
 }
 
 .but_back {
     margin-top: 10px;
     position: relative;
-
-    &::before {
-        content: "";
-        position: absolute;
-        top: 15px;
-        right: -55px;
-        width: 55px;
-        height: 1px;
-        background: #BABABB;
-    }
+    right: -80px;
 }
 </style>
 
