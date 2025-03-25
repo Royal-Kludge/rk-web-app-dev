@@ -17,6 +17,12 @@ export default {
     profile_out: "Profile out of date",
     profile_reset: "Reset",
     profile_goon: "Go on",
+    menu: "HomePage",
+    menu_1: "Key settings",
+    menu_2: "macro manager",
+    menu_3: "DPI setting",
+    menu_4: "Performance settings",
+    menu_5: "Settings",
   },
   Profile: {
     default: "Default Profile",

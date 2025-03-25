@@ -126,7 +126,7 @@
                                 :value="item.function" />
                         </el-select>
                     </div>
-                    <div style="height: 70vh;">
+                    <div style="height: 68vh;">
                         <el-scrollbar ref="elActionScrollbar">
                             <div class="m-2">
                                 <div v-if="state.functionValue == KeyFunctionType.Keyboard">

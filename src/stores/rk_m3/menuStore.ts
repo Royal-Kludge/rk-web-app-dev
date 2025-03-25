@@ -7,10 +7,10 @@ export const useMenuStore = defineStore("menustore_rk_m3", {
         name: '<img src="/src/assets/images/logo@1x.png" style="width: 130px" />',
         moduleList: [] as any,
         menuList: [
-            { id: 1, title: "按键设置", src: "/src/assets/images/menu/mouse/main.png" },
-            { id: 2, title: "宏管理器", src: "/src/assets/images/menu/mouse/macro.png" },
-            { id: 3, title: "速率", src: "/src/assets/images/menu/mouse/speed.png" },
-            { id: 4, title: "属性设置", src: "/src/assets/images/menu/mouse/property.png" },
+            { id: 1, title: "home.menu_1", src: "/src/assets/images/menu/mouse/main.png" },
+            // { id: 2, title: "home.menu_2", src: "/src/assets/images/menu/mouse/macro.png" },
+            { id: 3, title: "home.menu_3", src: "/src/assets/images/menu/mouse/speed.png" },
+            { id: 4, title: "home.menu_4", src: "/src/assets/images/menu/mouse/property.png" },
         ] as any,
     }),
     actions: {

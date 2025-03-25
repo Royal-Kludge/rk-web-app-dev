@@ -3,7 +3,7 @@
         <div class="d-flex flex-column flex-1">
             <div class="d-flex flex-column h-100">
                 <div class="p-3 bg-white-1 fw-b fs-xxl">{{ $t("key.title") }}</div>
-                <div style="height: 75vh">
+                <div style="height: 65vh">
                     <el-scrollbar>
                         <div v-for="item in (state.profileList as Array<Profile>)"
                             class="module_box d-flex p-3 my-2 text-grey-1 jc-between"
@@ -72,6 +72,13 @@
                 </div>
             </div>
         </div>
+        <div class="d-flex jc-center">
+            <div class="box p-3 d-flex ai-center jc-center" :class="{ active: 5 === meunid }"
+                @click="useMenu.setMeunid(5)">
+                <img src="@/assets/images/menu/mouse/set.png" />
+                <span class="ml-2">{{ $t("home.menu_5") }}</span>
+            </div>
+        </div>
     </div>
 </template>
 <script setup lang="ts">
@@ -86,6 +93,10 @@ import { useSpeedStore } from "@/stores/rk_m3/speedStore";
 import { usePropertyStore } from "@/stores/rk_m3/propertyStore";
 import { mouse } from "@/mouse/mouse";
 import type { RK_M3 } from "@/mouse/rk_m3/rk_m3";
+import { useMenuStore } from "@/stores/rk_m3/menuStore";
+
+const useMenu = useMenuStore();
+const { meunid } = storeToRefs(useMenu);
 
 const rk_m3 = ref<RK_M3>();
 
@@ -133,4 +144,25 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
     return false
 }
 </script>
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.box {
+    cursor: pointer;
+    width: 180px;
+    border-radius: 10px 10px 0% 0% !important;
+
+    img {
+        width: 16px;
+    }
+}
+
+.active {
+    color: #FC5D41 !important;
+    background-color: #eff1f7 !important;
+
+    img {
+        position: relative;
+        left: -99999px;
+        filter: drop-shadow(#FC5D41 99999px 0);
+    }
+}
+</style>

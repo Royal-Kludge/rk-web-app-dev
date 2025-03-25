@@ -17,6 +17,12 @@ export default {
     profile_out: "設定檔已經過期",
     profile_reset: "重置",
     profile_goon: "繼續",
+    menu: "主頁",
+    menu_1: "按鍵設定",
+    menu_2: "宏管理器",
+    menu_3: "DPI設定",
+    menu_4: "效能設定",
+    menu_5: "設定",
   },
   Profile: {
     default: "默認設定檔",

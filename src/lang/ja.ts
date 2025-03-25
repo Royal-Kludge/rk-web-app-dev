@@ -17,6 +17,12 @@ export default {
     profile_out: "プロファイルの有効期限が切れています",
     profile_reset: "リセット",
     profile_goon: "続行",
+    menu: "ホーム・ページ",
+    menu_1: "キー設定",
+    menu_2: "マクロマネージャ",
+    menu_3: "DPI設定",
+    menu_4: "パフォーマンス設定",
+    menu_5: "設定＃セッテイ＃",
   },
   Profile: {
     default: "デフォルト設定ファイル",

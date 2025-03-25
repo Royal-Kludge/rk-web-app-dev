@@ -1,5 +1,5 @@
 <template>
-    <div class="d-flex h-100" style="overflow: hidden;">
+    <div class="d-flex" style="overflow: hidden;">
         <Macro v-if="meunid === 2" />
         <Speed v-else-if="meunid === 3" />
         <Property v-else-if="meunid === 4" />

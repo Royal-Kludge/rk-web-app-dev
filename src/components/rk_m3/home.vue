@@ -1,10 +1,10 @@
 <template>
     <div class="d-flex h-100" v-loading="loading" :element-loading-text="$t('home.title_1')"
         element-loading-background="rgba(0, 0, 0, 0.7)">
-        <div style="min-width: 70px">
-            <Meun />
-        </div>
         <div class="flex-1">
+            <div>
+                <Meun />
+            </div>
             <RK_M3_Page v-if="meunid > 0" />
             <div v-else class="d-flex flex-column jc-center ai-center">
                 <div class="d-flex flex-column jc-center ai-center">
@@ -56,7 +56,7 @@ const setMeunid = () => {
 onMounted(async () => {
     await useProfile.init();
     await useKey.init();
-    
+
     if (rk_m3.value == undefined) {
         rk_m3.value = mouse.protocol as RK_M3;
         rk_m3.value.addEventListener(RK_MOUSE_EVENT_DEFINE.OnReportStart, reportStart, false);
