@@ -1,5 +1,5 @@
 <template>
-    <div style="min-width: 210px;width: 260px;">
+    <div style="min-width: 210px;width: 260px;height: 100%;">
         <MainMeun />
     </div>
     <div class="d-flex flex-1 jc-center ai-center">
