@@ -62,6 +62,7 @@ onMounted(async () => {
         rk_m3.value.addEventListener(RK_MOUSE_EVENT_DEFINE.OnReportStart, reportStart, false);
         rk_m3.value.addEventListener(RK_MOUSE_EVENT_DEFINE.OnReportFinish, reportFinish, false);
 
+        await mouse.getBattery();
         await rk_m3.value.getFwVer();
     }
 });

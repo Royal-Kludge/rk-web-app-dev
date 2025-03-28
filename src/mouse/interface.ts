@@ -20,6 +20,8 @@ export interface MouseState extends State {
     serialNo?: String,
     commandId: number,
     dataChangeFlag: number,
+    batteryStatus: number,
+    batteryValue: number,
 }
 
 export interface MouseDefine extends HidDeviceDefine {

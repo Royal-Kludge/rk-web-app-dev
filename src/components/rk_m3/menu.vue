@@ -1,11 +1,11 @@
 <template>
-    <div class="d-flex flex-column bg-white jc-between ai-center h-100">
+    <div class="d-flex flex-column bg-white jc-between h-100">
         <div class="d-flex">
-            <div class="box p-3 d-flex ai-center jc-center" @click="home" :class="{ active: 0 === meunid }">
+            <div class="box p-3 d-flex ai-center jc-center fs-xxl" @click="home" :class="{ active: 0 === meunid }">
                 <img src="@/assets/images/menu/mouse/home.png" />
                 <span class="ml-2">{{ $t("home.menu") }}</span>
             </div>
-            <div v-for="item in menuList" class="box p-3 d-flex ai-center jc-center"
+            <div v-for="item in menuList" class="box p-3 d-flex ai-center jc-center fs-xxl"
                 :class="{ active: item.id === meunid }" @click="onMenuClick(item.id)">
                 <img :src="item.src" />
                 <span class="ml-2">{{ $t(item.title) }}</span>
@@ -41,7 +41,7 @@ const home = () => {
 <style scoped lang="scss">
 .box {
     cursor: pointer;
-    width: 180px;
+    width: 239px;
     border-radius: 10px 10px 0% 0% !important;
 
     img {

@@ -73,7 +73,7 @@
             </div>
         </div>
         <div class="d-flex jc-center">
-            <div class="box p-3 d-flex ai-center jc-center" :class="{ active: 5 === meunid }"
+            <div class="box p-3 d-flex ai-center jc-center fs-xxl" :class="{ active: 5 === meunid }"
                 @click="useMenu.setMeunid(5)">
                 <img src="@/assets/images/menu/mouse/set.png" />
                 <span class="ml-2">{{ $t("home.menu_5") }}</span>

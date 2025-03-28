@@ -49,6 +49,7 @@ export abstract class RK_M3 extends Protocol {
     abstract getMacros(): Promise<void>;
     abstract setMacros(): Promise<void>;
     abstract getOnline(): Promise<void>;
+    abstract getBattery(): Promise<void>;
     abstract setDpi(): Promise<void>;
     abstract setFactory(): Promise<void>;
     abstract setReportRate(): Promise<void>;

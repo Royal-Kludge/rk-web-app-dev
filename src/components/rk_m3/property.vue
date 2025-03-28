@@ -176,11 +176,11 @@
 
 <style lang="scss" scoped>
 :deep(.el-radio__label) {
-    font-size: 20px;
+    font-size: 18px;
 }
 
 :deep(.el-checkbox__label) {
-    font-size: 20px;
+    font-size: 18px;
 }
 
 .popper {

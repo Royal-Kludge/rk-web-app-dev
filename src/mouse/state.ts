@@ -22,6 +22,8 @@ export const defaultState: MouseState = {
     fwVersion: undefined,
     commandId: 0x00,
     dataChangeFlag: 0,
+    batteryStatus: 0,
+    batteryValue: 0
 }
 
 /**

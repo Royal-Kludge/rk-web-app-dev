@@ -19,6 +19,7 @@ import { storage } from '@/common/storage';
 import { VERSION } from '@/mouse/state';
 import { ElMessageBox } from 'element-plus'
 import { useI18n } from "vue-i18n";
+import { log } from 'console';
 
 const { t } = useI18n();
 
@@ -59,6 +60,7 @@ onMounted(async () => {
 
             mouse.protocol = await mouse.mouseDefine.protocol(mouse.state, mouse.device);
 
+            mouse.addEventListener(RK_MOUSE_EVENT_DEFINE.OnBatteryGotten, batteryGotten, false);
             await mouse.protocol?.init();
 
             if (mouse.state.fwVersion != undefined) data.value.fwVersion = mouse.state.fwVersion.valueOf();
@@ -69,9 +71,9 @@ onMounted(async () => {
                     productId.value = 1
                     break;
             }
-
             checkProfileVersion();
         } else if (mouse.state.connectType == ConnectionType.Dongle) {
+            mouse.addEventListener(RK_MOUSE_EVENT_DEFINE.OnBatteryGotten, batteryGotten, false);
             mouse.addEventListener(RK_MOUSE_EVENT_DEFINE.OnDongleStatusChanged, dongleStatusChanged, false);
             mouse.addEventListener(RK_MOUSE_EVENT_DEFINE.OnPasswordGotten, passwordGotten, false);
             mouse.device.addEventListener("inputreport", mouse.callback);
@@ -83,6 +85,7 @@ onMounted(async () => {
 onBeforeUnmount(() => {
     if (mouse != undefined) {
         mouse.device?.addEventListener("inputreport", mouse.callback);
+        mouse.removeEventListener(RK_MOUSE_EVENT_DEFINE.OnBatteryGotten, batteryGotten, false);
         mouse.removeEventListener(RK_MOUSE_EVENT_DEFINE.OnDongleStatusChanged, dongleStatusChanged, false);
         mouse.removeEventListener(RK_MOUSE_EVENT_DEFINE.OnPasswordGotten, passwordGotten, false);
     }
@@ -93,6 +96,7 @@ const disconnect = () => {
     
     if (mouse != undefined) {
         mouse.device?.addEventListener("inputreport", mouse.callback);
+        mouse.removeEventListener(RK_MOUSE_EVENT_DEFINE.OnBatteryGotten, batteryGotten, false);
         mouse.removeEventListener(RK_MOUSE_EVENT_DEFINE.OnDongleStatusChanged, dongleStatusChanged, false);
         mouse.removeEventListener(RK_MOUSE_EVENT_DEFINE.OnPasswordGotten, passwordGotten, false);
     }
@@ -102,6 +106,7 @@ const disconnect = () => {
 
 const isMouseConnect = (): boolean => {
     let isConnect = false;
+    console.log(`Password => ${state.password}`);
     if (mouse.state.connectType == ConnectionType.Dongle) {
         isConnect = state.connectState == ConnectionStatusEnum.Connected && state.password != 0;
     } else {
@@ -157,6 +162,12 @@ const passwordGotten = async (event: any) => {
     }
 
     state.password = mouse.mouseDefine != undefined ? pwd : 0;
+};
+
+const batteryGotten = async (event: any) => {
+    // 电量
+    mouse.state.batteryStatus = event.detail.state as number;
+    mouse.state.batteryValue = event.detail.value as number;
 };
 
 const checkProfileVersion = () => {

@@ -19,6 +19,7 @@ import { SetCheckMacroPacket } from './packets/setCheckMacroPacket';
 import { setEndDataTransPacket } from './packets/setEndDataTransPacket';
 import { GetResponePacket } from './packets/getResponePacket';
 import { GetFwVerPacket } from './packets/getFwVerPacket';
+import { GetBatteryPacket } from './packets/getBatteryPacket';
 
 const worker = new Worker(new URL('@/common/mouseCommunication.ts', import.meta.url));
 
@@ -187,6 +188,26 @@ export class RK_M3_Mouse extends RK_M3 {
                 }
                 let pwd = tmp.getBigUint64(0);
                 this.dispatchEvent(new CustomEvent(RK_MOUSE_EVENT_DEFINE.OnPasswordGotten, { detail: pwd }));
+            }
+        }
+    }
+
+    async getBattery(): Promise<void> {
+        let packet = new GetBatteryPacket();
+        packet.sn = 0x02;
+        packet.dataOffset = (0x02 << 6) | 0x01;
+        let u8Data = new DataView(new Uint8Array(0).buffer);
+        
+        if (this.device != undefined) {
+            packet.setPayload(u8Data);
+            await this.setFeature(REPORT_ID_USB, packet.setReport);
+            await this.sleep(200);
+            let data = await this.getFeature(REPORT_ID_USB);
+
+            if (data.byteLength >= 16 && data.getUint8(2) == 0x00 && data.getUint8(5) == 0x01) {
+                let batState = data.getUint8(6) >> 7;
+                let batValue = data.getUint8(6) & 0x7F;
+                this.dispatchEvent(new CustomEvent(RK_MOUSE_EVENT_DEFINE.OnBatteryGotten, { detail: { state: batState, value: batValue } }));
             }
         }
     }
