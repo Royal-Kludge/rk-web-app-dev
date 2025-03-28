@@ -1,5 +1,5 @@
 <template>
-    <div class="d-flex flex-column bg-white jc-between h-100">
+    <div class="d-flex bg-white jc-between h-100">
         <div class="d-flex">
             <div class="box p-3 d-flex ai-center jc-center fs-xxl" @click="home" :class="{ active: 0 === meunid }">
                 <img src="@/assets/images/menu/mouse/home.png" />
@@ -11,17 +11,22 @@
                 <span class="ml-2">{{ $t(item.title) }}</span>
             </div>
         </div>
-        <!-- <div>
-            <div class="box p-4" :class="{ active: 5 === meunid }" @click="onMenuClick(5)">
-                <img src="@/assets/images/menu/mouse/set.png" />
+        <div>
+            <div class="p-3 d-flex ai-center jc-center">
+                <img src="@/assets/images/menu/mouse/battery-charge.png" v-if="mouse.state.batteryStatus == 1"
+                    style="height: 28px;" />
+                <img src="@/assets/images/menu/mouse/battery.png" v-else style="height: 28px;" />
+                {{ mouse.state.batteryValue }}%
             </div>
-        </div> -->
+        </div>
     </div>
 </template>
 <script setup lang="ts">
 import { useMenuStore } from "@/stores/rk_m3/menuStore";
 import { storeToRefs } from "pinia";
 import { onMounted } from "vue";
+import { mouse } from '@/mouse/mouse'
+
 const useMenu = useMenuStore();
 const { meunid, menuList } = storeToRefs(useMenu);
 // 页面加载时

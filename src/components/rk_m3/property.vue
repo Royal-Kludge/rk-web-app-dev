@@ -3,7 +3,111 @@
         <MainMeun />
     </div>
     <div class="d-flex flex-1">
-        <div class="d-flex flex-column flex-1 mx-4 my-4">
+        <div class="d-flex flex-column flex-1">
+            <div class="flex-1 bg-white-1 p-3 m-4" style="border-radius: 10px 10px 10px 10px;line-height: 30px;">
+                <div class="fw-b fs-xxl pb-2" style="border-bottom: 1px solid #E7EAF2;">
+                    {{ $t("property.title_1") }}
+                </div>
+                <div class="my-3">
+                    {{ $t("property.tip_1") }}
+                </div>
+                <div class="my-3">
+                    <el-radio-group v-model="state.lodVal" text-color="#00ffff" fill="#ffff00">
+                        <el-radio v-for="item in state.lodList" :value="item.value" :label="item.value" class="mx-5"
+                            @change="useProperty.setLodHeight(state.lodVal)">
+                            {{ $t(item.label) }}
+                        </el-radio>
+                    </el-radio-group>
+                </div>
+            </div>
+
+            <div class="flex-1 bg-white-1 p-3 m-4" style="border-radius: 10px 10px 10px 10px;line-height: 30px;">
+                <div class="mb-4" style="border-bottom: 1px solid #E7EAF2;">
+                    <div class="fw-b fs-xxl">
+                        {{ $t("property.label_1") }}
+                    </div>
+                    <div class="d-flex jc-between ai-center my-3">
+                        <div> {{ $t("property.tip_2") }}</div>
+                        <div class="ml-3"><el-switch v-model="state.rippleEnable" inline-prompt size="large"
+                                @change="useProperty.setRippleEnable" /></div>
+                    </div>
+                </div>
+                <div class="mb-4" style="border-bottom: 1px solid #E7EAF2;">
+                    <div class="fw-b fs-xxl">
+                        {{ $t("property.label_2") }}
+                    </div>
+                    <div class="d-flex jc-between ai-center my-3">
+                        <div> {{ $t("property.tip_3") }}</div>
+                        <div class="ml-3"><el-switch v-model="state.angleSnaping" inline-prompt size="large"
+                                @change="useProperty.setAngleSnaping" /></div>
+                    </div>
+                </div>
+                <div class="mb-4" style="border-bottom: 1px solid #E7EAF2;">
+                    <div class="fw-b fs-xxl">
+                        {{ $t("property.label_3") }}
+                    </div>
+                    <div class="d-flex jc-between ai-center my-3">
+                        <div> {{ $t("property.tip_4") }}</div>
+                        <div class="ml-3"><el-switch v-model="state.motionSync" inline-prompt size="large"
+                                @change="useProperty.setMotionSync" /></div>
+                    </div>
+                </div>
+                <div>
+                    <div class="fw-b fs-xxl">
+                        {{ $t("property.label_4") }}
+                    </div>
+                    <div class="d-flex jc-between ai-center my-3">
+                        <div></div>
+                        <div class="ml-3"><el-switch v-model="state.glassMode" inline-prompt size="large"
+                                @change="useProperty.setGlassMode" /></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex flex-column flex-1">
+            <div class="flex-1 bg-white-1 p-3 m-4" style="border-radius: 10px 10px 10px 10px;line-height: 30px;">
+                <div class="fw-b fs-xxl pb-2" style="border-bottom: 1px solid #E7EAF2;">
+                    {{ $t("property.title_3") }}
+                </div>
+                <div class="my-3">
+                    <div>{{ $t("property.tip_5") }}</div>
+                    <div>{{ $t("property.tip_6") }}</div>
+                </div>
+                <div class="my-3">
+                    <el-radio-group v-model="state.sensorMode" text-color="#00ffff" fill="#ffff00"
+                        @change="useProperty.setSensorMode(state.sensorMode)">
+                        <el-radio v-for="item in state.modeList" :value="item.value" :label="item.value" class="mx-5">
+                            {{ $t(item.label) }}
+                        </el-radio>
+                    </el-radio-group>
+                </div>
+            </div>
+
+            <div class="flex-1 bg-white-1 p-3 m-4" style="border-radius: 10px 10px 10px 10px;line-height: 30px;">
+                <div class="fw-b fs-xxl pb-2" style="border-bottom: 1px solid #E7EAF2;">
+                    {{ $t("property.title_4") }}
+                </div>
+                <div class="my-3"> </div>
+                <div class="my-3 text-center">
+                    <el-radio-group v-model="state.sleepTime" @change="useProperty.setSleepTime(state.sleepTime)">
+                        <el-radio-button v-for="item in state.sleepList" :value="item.value" :label="item.value">
+                            {{ $t(item.label) }}
+                        </el-radio-button>
+                    </el-radio-group>
+                </div>
+            </div>
+            <div class="flex-1 bg-white-1 p-3 m-4" style="border-radius: 10px 10px 10px 10px;line-height: 30px;">
+                <div class="fw-b fs-xxl pb-2" style="border-bottom: 1px solid #E7EAF2;">
+                    {{ $t("property.title_5") }}
+                </div>
+                <div class="my-3"> </div>
+                <div class="my-3 text-center">
+                    <el-input-number style="width: 150px" v-model="state.debounceTime" type="number" :min="1" max="99"
+                        @change="useProperty.setDebounceTime(state.debounceTime)" /> ms
+                </div>
+            </div>
+        </div>
+        <!-- <div class="d-flex flex-column flex-1 mx-4 my-4">
             <div class="bg-white p-2 fw-b" style="border-radius: 10px 10px 0px 0px;line-height: 30px;">
                 {{ $t("property.title") }}
             </div>
@@ -16,28 +120,28 @@
                             <template #reference>
                                 <img :src="`../../src/assets/images/help.png`" class="img-title" />
                             </template>
-                            <template #default>
+<template #default>
                                 {{ $t("property.tip_1") }}
                             </template>
-                        </el-popover>
-                    </div>
-                    <div class="my-4">
-                        <el-radio-group v-model="state.lodVal" text-color="#00ffff" fill="#ffff00">
-                            <el-radio v-for="item in state.lodList" :value="item.value" :label="item.value" class="mx-5"
-                                @change="useProperty.setLodHeight(state.lodVal)">
-                                {{ $t(item.label) }}
-                            </el-radio>
-                        </el-radio-group>
-                    </div>
+</el-popover>
+</div>
+<div class="my-4">
+    <el-radio-group v-model="state.lodVal" text-color="#00ffff" fill="#ffff00">
+        <el-radio v-for="item in state.lodList" :value="item.value" :label="item.value" class="mx-5"
+            @change="useProperty.setLodHeight(state.lodVal)">
+            {{ $t(item.label) }}
+        </el-radio>
+    </el-radio-group>
+</div>
 
-                    <div class="d-flex ai-center">
-                        <span class="fw-b fs-xxl">{{ $t("property.title_2") }}</span>
-                        <el-popover placement="right" :width="300"
-                            popper-style="background: #282828;--el-bg-color-overlay:#282828;color:#ffffff">
-                            <template #reference>
+<div class="d-flex ai-center">
+    <span class="fw-b fs-xxl">{{ $t("property.title_2") }}</span>
+    <el-popover placement="right" :width="300"
+        popper-style="background: #282828;--el-bg-color-overlay:#282828;color:#ffffff">
+        <template #reference>
                                 <img :src="`../../src/assets/images/help.png`" class="img-title" />
                             </template>
-                            <template #default>
+        <template #default>
                                 <div>
                                     <div>{{ $t("property.title_2") }}</div>
                                     <div class="my-3">
@@ -54,28 +158,26 @@
                                     </div>
                                 </div>
                             </template>
-                        </el-popover>
-                    </div>
-                    <div class="my-4">
-                        <div class="mx-5">
-                            <el-checkbox v-model="state.rippleEnable" :label="$t('property.label_1')"
-                                @change="useProperty.setRippleEnable" />
-                            <el-checkbox v-model="state.angleSnaping" :label="$t('property.label_2')"
-                                @change="useProperty.setAngleSnaping" />
-                            <el-checkbox v-model="state.motionSync" :label="$t('property.label_3')"
-                                @change="useProperty.setMotionSync" />
-                            <el-checkbox v-model="state.glassMode" :label="$t('property.label_4')"
-                                @change="useProperty.setGlassMode" />
-                        </div>
-                    </div>
-                    <div class="d-flex ai-center">
-                        <span class="fw-b fs-xxl">{{ $t("property.title_3") }}</span>
-                        <el-popover placement="right" :width="300"
-                            popper-style="background: #282828;--el-bg-color-overlay:#282828;color:#ffffff">
-                            <template #reference>
+    </el-popover>
+</div>
+<div class="my-4">
+    <div class="mx-5">
+        <el-checkbox v-model="state.rippleEnable" :label="$t('property.label_1')"
+            @change="useProperty.setRippleEnable" />
+        <el-checkbox v-model="state.angleSnaping" :label="$t('property.label_2')"
+            @change="useProperty.setAngleSnaping" />
+        <el-checkbox v-model="state.motionSync" :label="$t('property.label_3')" @change="useProperty.setMotionSync" />
+        <el-checkbox v-model="state.glassMode" :label="$t('property.label_4')" @change="useProperty.setGlassMode" />
+    </div>
+</div>
+<div class="d-flex ai-center">
+    <span class="fw-b fs-xxl">{{ $t("property.title_3") }}</span>
+    <el-popover placement="right" :width="300"
+        popper-style="background: #282828;--el-bg-color-overlay:#282828;color:#ffffff">
+        <template #reference>
                                 <img :src="`../../src/assets/images/help.png`" class="img-title" />
                             </template>
-                            <template #default>
+        <template #default>
                                 <div>
                                     {{ $t("property.tip_5") }}
                                 </div>
@@ -83,40 +185,37 @@
                                     {{ $t("property.tip_6") }}
                                 </div>
                             </template>
-                        </el-popover>
-                    </div>
-                    <div class="my-4">
-                        <el-radio-group v-model="state.sensorMode" text-color="#00ffff" fill="#ffff00"
-                            @change="useProperty.setSensorMode(state.sensorMode)">
-                            <el-radio v-for="item in state.modeList" :value="item.value" :label="item.value"
-                                class="mx-5">
-                                {{ $t(item.label) }}
-                            </el-radio>
-                        </el-radio-group>
-                    </div>
-                </div>
+    </el-popover>
+</div>
+<div class="my-4">
+    <el-radio-group v-model="state.sensorMode" text-color="#00ffff" fill="#ffff00"
+        @change="useProperty.setSensorMode(state.sensorMode)">
+        <el-radio v-for="item in state.modeList" :value="item.value" :label="item.value" class="mx-5">
+            {{ $t(item.label) }}
+        </el-radio>
+    </el-radio-group>
+</div>
+</div>
 
-                <div class="p-5" style="border-bottom: 1px solid #E7EAF2;">
-                    <div class="d-flex ai-center">
-                        <span class="fw-b mr-5 fs-xxl">{{ $t("property.title_4") }}</span>
-                        <el-select v-model="state.sleepTime" placeholder="Select"
-                            @change="useProperty.setSleepTime(state.sleepTime)">
-                            <el-option v-for="item in state.sleepList" :key="item.value" :label="$t(item.label)"
-                                :value="item.value" />
-                        </el-select>
-                    </div>
-                </div>
-                <div class="p-5">
-                    <div class="d-flex ai-center">
-                        <span class="fw-b mr-5 fs-xxl">{{ $t("property.title_5") }}</span>
-                    </div>
-                    <div class="my-4">
-                        <el-input-number style="width: 150px" v-model="state.debounceTime" type="number" :min="1"
-                            max="99" @change="useProperty.setDebounceTime(state.debounceTime)" /> ms
-                    </div>
-                </div>
-            </div>
-        </div>
+<div class="p-5" style="border-bottom: 1px solid #E7EAF2;">
+    <div class="d-flex ai-center">
+        <span class="fw-b mr-5 fs-xxl">{{ $t("property.title_4") }}</span>
+        <el-select v-model="state.sleepTime" placeholder="Select" @change="useProperty.setSleepTime(state.sleepTime)">
+            <el-option v-for="item in state.sleepList" :key="item.value" :label="$t(item.label)" :value="item.value" />
+        </el-select>
+    </div>
+</div>
+<div class="p-5">
+    <div class="d-flex ai-center">
+        <span class="fw-b mr-5 fs-xxl">{{ $t("property.title_5") }}</span>
+    </div>
+    <div class="my-4">
+        <el-input-number style="width: 150px" v-model="state.debounceTime" type="number" :min="1" max="99"
+            @change="useProperty.setDebounceTime(state.debounceTime)" /> ms
+    </div>
+</div>
+</div>
+</div> -->
         <!-- <div class="d-flex flex-column flex-1 ml-4 my-4">
             <div class="bg-white p-2 fw-b" style="border-radius: 10px 10px 0px 0px;line-height: 30px;">
                 Windows系统设置
