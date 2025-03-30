@@ -10,6 +10,10 @@
                 <img :src="item.src" />
                 <span class="ml-2">{{ $t(item.title) }}</span>
             </div>
+            <div class="box p-3 d-flex ai-center jc-center fs-xxl" @click="useMenu.setMeunid(5)" :class="{ active: 5 === meunid }">
+                <img src="@/assets/images/menu/mouse/set.png" />
+                <span class="ml-2">{{ $t("home.menu_5") }}</span>
+            </div>
         </div>
         <div>
             <div class="p-3 d-flex ai-center jc-center">
