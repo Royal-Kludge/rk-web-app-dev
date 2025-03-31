@@ -15,12 +15,12 @@
                 <span class="ml-2">{{ $t("home.menu_5") }}</span>
             </div>
         </div>
-        <div>
+        <div style="margin-right: 40px;">
             <div class="p-3 d-flex ai-center jc-center">
-                <img src="@/assets/images/menu/mouse/battery-charge.png" v-if="mouse.state.batteryStatus == 1"
+                <img src="@/assets/images/menu/mouse/battery-charge.png" v-if="state.batteryStatus == 1"
                     style="height: 28px;" />
                 <img src="@/assets/images/menu/mouse/battery.png" v-else style="height: 28px;" />
-                {{ mouse.state.batteryValue }}%
+                {{ state.batteryValue }}%
             </div>
         </div>
     </div>
@@ -28,14 +28,30 @@
 <script setup lang="ts">
 import { useMenuStore } from "@/stores/rk_m3/menuStore";
 import { storeToRefs } from "pinia";
-import { onMounted } from "vue";
-import { mouse } from '@/mouse/mouse'
+import { reactive, onMounted, onBeforeUnmount } from "vue";
+import { mouse, RK_MOUSE_EVENT_DEFINE } from '@/mouse/mouse'
 
 const useMenu = useMenuStore();
 const { meunid, menuList } = storeToRefs(useMenu);
+
+const state = reactive({
+    batteryStatus: 0,
+    batteryValue: 0
+});
+
 // 页面加载时
 onMounted(() => {
+    mouse.addEventListener(RK_MOUSE_EVENT_DEFINE.OnBatteryGotten, batteryGotten, false);
     useMenu.setMeunid(meunid.value);
+
+    state.batteryStatus = mouse.state.batteryStatus;
+    state.batteryValue = mouse.state.batteryValue;
+});
+
+onBeforeUnmount(() => {
+    if (mouse != undefined) {
+        mouse.removeEventListener(RK_MOUSE_EVENT_DEFINE.OnBatteryGotten, batteryGotten, false);
+    }
 });
 
 const onMenuClick = async (id: any) => {
@@ -45,6 +61,12 @@ const onMenuClick = async (id: any) => {
 const home = () => {
     useMenu.nameInit();
     useMenu.setMeunid(0);
+};
+
+const batteryGotten = async (event: any) => {
+    // 电量
+    state.batteryStatus = event.detail.state as number;
+    state.batteryValue = event.detail.value as number;
 };
 </script>
 <style scoped lang="scss">

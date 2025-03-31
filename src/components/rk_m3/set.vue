@@ -184,7 +184,7 @@ const checkMouse = (flag: boolean = false) => {
 }
 
 const checkDongle = (flag: boolean = false) => {
-    if (ver.value !== version.value) {
+    if (verDongle.value !== versionDongle.value) {
         ElMessageBox.alert(`${t('set.title_3')}:${version.value}`, t('set.but_4'), {
             confirmButtonText: 'OK',
             callback: (action: Action) => {

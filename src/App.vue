@@ -21,9 +21,9 @@ const name = '<img src="/src/assets/images/logo@1x.png" style="width: 130px" />'
         <span style="word-wrap: break-word;font-size: 32px; font-weight: bold;font-family:'Microsoft YaHei';"
           v-html="name"></span>
       </div>
-      <div class="d-flex ai-center mr-4">
+      <div class="d-flex ai-center mr-5">
         <el-select v-model="locale" placeholder="Select" style="width: 100%;" @change="useLocale.setLocale(locale)">
-          <el-option v-for="item in langList" :key="item.value" :label="item.label" :value="item.value" />
+          <el-option class="fs-xxxl" v-for="item in langList" :key="item.value" :label="item.label" :value="item.value" />
         </el-select>
       </div>
     </el-header>
@@ -78,6 +78,10 @@ body {
   font-family: "思源黑体";
   src: url("assets/css/SourceHanSansCN-Normal.otf");
   font-style: normal;
+}
+
+.el-input__inner {
+    font-size: 15px !important;
 }
 
 #app {
