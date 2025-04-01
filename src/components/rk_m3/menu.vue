@@ -17,10 +17,12 @@
         </div>
         <div style="margin-right: 40px;">
             <div class="p-3 d-flex ai-center jc-center">
-                <img src="@/assets/images/menu/mouse/battery-charge.png" v-if="state.batteryStatus == 1"
-                    style="height: 28px;" />
-                <img src="@/assets/images/menu/mouse/battery.png" v-else style="height: 28px;" />
-                {{ state.batteryValue }}%
+                <img src="@/assets/images/menu/mouse/battery-0.png" v-if="batteryImg() == 0" style="height: 22px;" />
+                <img src="@/assets/images/menu/mouse/battery-1.png" v-if="batteryImg() == 1" style="height: 22px;" />
+                <img src="@/assets/images/menu/mouse/battery-2.png" v-if="batteryImg() == 2" style="height: 22px;" />
+                <img src="@/assets/images/menu/mouse/battery-3.png" v-if="batteryImg() == 3" style="height: 22px;" />
+                <img src="@/assets/images/menu/mouse/battery-4.png" v-if="batteryImg() == 4" style="height: 22px;" />
+                <span class="ml-2">{{ state.batteryValue }}%</span>
             </div>
         </div>
     </div>
@@ -36,7 +38,7 @@ const { meunid, menuList } = storeToRefs(useMenu);
 
 const state = reactive({
     batteryStatus: 0,
-    batteryValue: 0
+    batteryValue: 0,
 });
 
 // 页面加载时
@@ -68,6 +70,16 @@ const batteryGotten = async (event: any) => {
     state.batteryStatus = event.detail.state as number;
     state.batteryValue = event.detail.value as number;
 };
+
+const batteryImg = (): number => {
+    if (state.batteryStatus == 1) return 0;
+    if (state.batteryValue <= 30) return 1;
+    if (state.batteryValue > 30 && state.batteryValue <= 60) return 2;
+    if (state.batteryValue > 60 && state.batteryValue <= 80) return 3;
+    if (state.batteryValue > 90) return 4;
+    return 0;
+};
+
 </script>
 <style scoped lang="scss">
 .box {
