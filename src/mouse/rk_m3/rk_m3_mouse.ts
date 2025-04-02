@@ -342,6 +342,7 @@ export class RK_M3_Mouse extends RK_M3 {
     async setSleepTime(): Promise<void> {
         if (this.data.led != undefined) {
             let packet = new SetLedParamPacket();
+            packet.sn = 0x31;
             let u8Data = new DataView(new Uint8Array(1).buffer);
 
             u8Data.setUint8(0, this.data.led.getFieldValue(LedTableEnum.WorkSleepTime));
