@@ -102,69 +102,68 @@ export class KeyTable {
         this.buffer = data;
     }
 
-     setKeyMapping(index: number, mappingData: KeyMappingData) {
-         let offset = index * 4;
-         if (this.keyLayout != undefined) {
-            this.keyLayout[index].keyMappingData.keyStr = mappingData.keyStr;
-            this.keyLayout[index].keyMappingData.keyFunctionType = mappingData.keyFunctionType;
-            this.keyLayout[index].keyMappingData.keyMappingType = mappingData.keyMappingType;
-            this.keyLayout[index].keyMappingData.keyTypeCode = mappingData.keyTypeCode;
-            this.keyLayout[index].keyMappingData.keyParam1 = mappingData.keyParam1;
-            this.keyLayout[index].keyMappingData.keyRaw = mappingData.keyRaw;
-         }
-         
-         this.buffer.setUint32(offset, mappingData.keyRaw);
-     }
- 
-     setKeyMappingRaw(index: number, key: number) {
-         let offset = index;
-         this.buffer.setUint32(offset, key);
-     }
- 
-     getKeyMapping(index: number) : KeyMappingData {
-         if (this.keyLayout != undefined) {
-            return this.keyLayout[index].keyMappingData;
-         } else {
-            let offset = index * 4;
-            let key = this.buffer.getUint32(offset);
-            return {
-                keyRaw: key,
-                keyStr: '',
-                keyFunctionType: KeyFunctionType.MouseKey,
-                keyMappingType: key >> 24,
-                keyTypeCode: (key >> 16) & 0xFF,
-                keyParam1: (key >> 8) & 0xFF,
-                keyParam2: key & 0xFF
-            };
-         }
-
-     }
- 
-     fillKeyMappingData(index: number, mappingData: KeyMappingData) {
-         let offset = index;
-         let key = this.buffer.getUint32(offset);
-         mappingData.keyRaw = key;
-         mappingData.keyMappingType = key >> 24;
-         mappingData.keyTypeCode = (key >> 16) & 0xFF;
-         mappingData.keyParam1 = (key >> 8) & 0xFF;
-         mappingData.keyParam2 = key & 0xFF;
-     }
-
-     loadDefualtData() {
-        let index: number;
-        for (index = 0; index < KEY_TABLE_DATA.length; index++) {
-            this.buffer.setInt8(index, KEY_TABLE_DATA[index]);
+    setKeyMapping(index: number, mappingData: KeyMappingData) {
+        let offset = index * 4;
+        if (this.keyLayout != undefined) {
+           this.keyLayout[index].keyMappingData.keyStr = mappingData.keyStr;
+           this.keyLayout[index].keyMappingData.keyFunctionType = mappingData.keyFunctionType;
+           this.keyLayout[index].keyMappingData.keyMappingType = mappingData.keyMappingType;
+           this.keyLayout[index].keyMappingData.keyTypeCode = mappingData.keyTypeCode;
+           this.keyLayout[index].keyMappingData.keyParam1 = mappingData.keyParam1;
+           this.keyLayout[index].keyMappingData.keyRaw = mappingData.keyRaw;
         }
-     }
- 
-     static fromReportData(data: DataView) : KeyTable | undefined {
-         let keyTable = undefined;
-         
-         if (data.byteLength == 112) {
-             //let buffer = new DataView(data.buffer.slice(PACKET_HEAD_LENGTH, data.byteLength));
-             keyTable = new KeyTable(data);
-         }
- 
-         return keyTable;
-     }
+        
+        this.buffer.setUint32(offset, mappingData.keyRaw);
+    }
+
+    setKeyMappingRaw(index: number, key: number) {
+        let offset = index;
+        this.buffer.setUint32(offset, key);
+    }
+
+    getKeyMapping(index: number) : KeyMappingData {
+        if (this.keyLayout != undefined) {
+           return this.keyLayout[index].keyMappingData;
+        } else {
+           let offset = index * 4;
+           let key = this.buffer.getUint32(offset);
+           return {
+               keyRaw: key,
+               keyStr: '',
+               keyFunctionType: KeyFunctionType.MouseKey,
+               keyMappingType: key >> 24,
+               keyTypeCode: (key >> 16) & 0xFF,
+               keyParam1: (key >> 8) & 0xFF,
+               keyParam2: key & 0xFF
+           };
+        }
+    }
+
+    fillKeyMappingData(index: number, mappingData: KeyMappingData) {
+        let offset = index;
+        let key = this.buffer.getUint32(offset);
+        mappingData.keyRaw = key;
+        mappingData.keyMappingType = key >> 24;
+        mappingData.keyTypeCode = (key >> 16) & 0xFF;
+        mappingData.keyParam1 = (key >> 8) & 0xFF;
+        mappingData.keyParam2 = key & 0xFF;
+    }
+    
+    loadDefualtData() {
+       let index: number;
+       for (index = 0; index < KEY_TABLE_DATA.length; index++) {
+           this.buffer.setInt8(index, KEY_TABLE_DATA[index]);
+       }
+    }
+
+    static fromReportData(data: DataView) : KeyTable | undefined {
+        let keyTable = undefined;
+        
+        if (data.byteLength == 112) {
+            //let buffer = new DataView(data.buffer.slice(PACKET_HEAD_LENGTH, data.byteLength));
+            keyTable = new KeyTable(data);
+        }
+
+        return keyTable;
+    }
 }
