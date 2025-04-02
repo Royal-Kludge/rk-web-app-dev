@@ -70,13 +70,13 @@
                     <div><el-button @click="useKey.clickKeyLayout(4)" :class="[useKey.selectedKeyLayout(4)]">{{
                         $t(useKey.getKeyLayoutByIndex(4)) }}</el-button>
                     </div>
-                    <div>----------------------</div>
+                    <div>---------------------</div>
                 </div>
                 <div class="d-flex but_back" v-if="left">
                     <div><el-button @click="useKey.clickKeyLayout(3)" :class="[useKey.selectedKeyLayout(3)]">{{
                         $t(useKey.getKeyLayoutByIndex(3)) }}</el-button>
                     </div>
-                    <div>----------------------</div>
+                    <div>---------------------</div>
                 </div>
             </div>
 
@@ -235,13 +235,13 @@
 .but_report {
     margin-top: 50px;
     position: relative;
-    right: -80px;
+    right: -60px;
 }
 
 .but_back {
     margin-top: 10px;
     position: relative;
-    right: -80px;
+    right: -60px;
 }
 </style>
 

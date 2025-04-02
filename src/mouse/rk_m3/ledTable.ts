@@ -242,9 +242,9 @@ export class LedTable {
 
     getDpiColor(level: number): LedColor {
         let index = level - 1;
-        let r = this.buffer.getUint8(LedTableEnum.DpiColor + (index * 2));
-        let g = this.buffer.getUint8(LedTableEnum.DpiColor + (index * 2) + 1);
-        let b = this.buffer.getUint8(LedTableEnum.DpiColor + (index * 2) + 2);
+        let r = this.buffer.getUint8(LedTableEnum.DpiColor + (index * 3));
+        let g = this.buffer.getUint8(LedTableEnum.DpiColor + (index * 3) + 1);
+        let b = this.buffer.getUint8(LedTableEnum.DpiColor + (index * 3) + 2);
 
         let color = `#${r.toString(16).toUpperCase().padStart(2, '0')}${g.toString(16).toUpperCase().padStart(2, '0')}${b.toString(16).toUpperCase().padStart(2, '0')}`;
 
@@ -258,9 +258,9 @@ export class LedTable {
 
     setDpiColor(level: number, color: LedColor) {
         let index = level - 1;
-        this.buffer.setUint8(LedTableEnum.DpiColor + (index * 2), color.red);
-        this.buffer.setUint8(LedTableEnum.DpiColor + (index * 2) + 1, color.red);
-        this.buffer.setUint8(LedTableEnum.DpiColor + (index * 2) + 2, color.red);
+        this.buffer.setUint8(LedTableEnum.DpiColor + (index * 3), color.red);
+        this.buffer.setUint8(LedTableEnum.DpiColor + (index * 3) + 1, color.red);
+        this.buffer.setUint8(LedTableEnum.DpiColor + (index * 3) + 2, color.red);
     }
 
     loadDefualtData() {
