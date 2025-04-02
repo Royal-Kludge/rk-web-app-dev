@@ -42,6 +42,7 @@ export const useSpeedStore = defineStore('speedinfo_rk_m3', () => {
                     let rate = ledTable.value.getReportRate() ?? 1;
                     state.reportRate = rate & 0x07;
                     state.dpiLevel = ledTable.value.getDpiLevel();
+                    state.maxDpiLevel = ledTable.value.getDpiMaxLevel();
                     state.dpiLevelValue = ledTable.value.getDpiValue(state.dpiLevel) ?? 1600;
                 }
             }
@@ -53,6 +54,7 @@ export const useSpeedStore = defineStore('speedinfo_rk_m3', () => {
             let rate = ledTable.value.getReportRate() ?? 1;
             state.reportRate = rate & 0x07;
             state.dpiLevel = ledTable.value.getDpiLevel();
+            state.maxDpiLevel = ledTable.value.getDpiMaxLevel();
             state.dpiLevelValue = ledTable.value.getDpiValue(state.dpiLevel) ?? 1600;
 
             // if (rk_m3.value) {
@@ -61,8 +63,12 @@ export const useSpeedStore = defineStore('speedinfo_rk_m3', () => {
         }
     };
 
-    const setMaxDpiLevel = (id: number) => {
+    const setMaxDpiLevel = async (id: number) => {
         state.maxDpiLevel = id;
+        ledTable.value?.setDpiLevel(state.dpiLevel, state.maxDpiLevel);
+
+        await rk_m3.value?.setDpi();
+        saveProfile();
     };
 
     const getDpiList = (): any => {

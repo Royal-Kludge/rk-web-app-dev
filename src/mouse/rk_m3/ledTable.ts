@@ -212,7 +212,7 @@ export class LedTable {
         let level = this.buffer.getUint8(LedTableEnum.DpiLevel);
         return level >> 4;
     }
-
+    
     getDpiMaxLevel(): number {
         let max = this.buffer.getUint8(LedTableEnum.DpiLevel);
         return max & 0x0F;

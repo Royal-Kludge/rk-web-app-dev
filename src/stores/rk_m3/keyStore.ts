@@ -6,15 +6,18 @@ import { ConnectionEventEnum, ConnectionStatusEnum, ConnectionType } from '@/dev
 import { ps } from '@/mouse/rk_m3/profiles';
 import { KeyTableEnum } from "@/mouse/rk_m3/keyTable";
 import { KeyDefineEnum, KeyText } from "@/common/keyCode";
-import { KeyMappingType, KeyFunctionType, MacroLoopEnum } from "@/mouse/enum";
+import { KeyMappingType, KeyFunctionType, MacroLoopEnum, MouseKeyCode } from "@/mouse/enum";
 import type { KeyMappingData, KeyTableData } from "@/mouse/interface";
 import { KEY_LAYOUT } from '@/mouse/rk_m3/layout';
 import { Macro } from '@/mouse/rk_m3/macros';
+import { ElMessageBox } from 'element-plus'
+import { useI18n } from "vue-i18n";
 
 export const useKeyStore = defineStore('keyinfo_rk_m3', () => {
     const rk_m3 = ref<RK_M3>();
     const connectType = ref<ConnectionType>();
     const keyLayout = ref<Array<KeyTableData>>();
+    const { t } = useI18n();
 
     const state = reactive({
         defaultLayout: KEY_LAYOUT,
@@ -243,6 +246,29 @@ export const useKeyStore = defineStore('keyinfo_rk_m3', () => {
         };
 
         if (rk_m3.value != undefined && rk_m3.value.data.keys != undefined) {
+            let desKey = rk_m3.value.data.keys.getKeyMapping(index);
+            if (desKey.keyFunctionType == KeyFunctionType.MouseKey && desKey.keyTypeCode == MouseKeyCode.LeftKey &&
+                (mapping.keyFunctionType != KeyFunctionType.MouseKey || mapping.keyTypeCode != MouseKeyCode.LeftKey)) {
+
+                let hasLeft = false;
+                let i = 0;
+                for (i = 0; i < 6; i++) {
+                    if (i != index) {
+                        let tmpKey = rk_m3.value.data.keys.getKeyMapping(i);
+                        hasLeft = tmpKey.keyFunctionType == KeyFunctionType.MouseKey && tmpKey.keyTypeCode == MouseKeyCode.LeftKey;
+                        if (hasLeft) break;
+                    }
+                }
+
+                if (!hasLeft) {
+                    ElMessageBox.alert(t('message.need_left'), '', {
+                        confirmButtonText: 'OK'
+                    })
+        
+                    return;
+                }
+            }
+
             rk_m3.value.data.keys.setKeyMapping(index, mapping);
             rk_m3.value.setKeyMapping(index);
         }
