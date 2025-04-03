@@ -5,8 +5,10 @@ import { RK_R87_RF_USB_DEFINE, RK_R87_RF_DONGLE_DEFINE } from "./rk_r87_rf"
 import { RK_M87_USB_DEFINE, RK_M87_DONGLE_DEFINE, RK_M87_JP_USB_DEFINE, RK_M87_JP_DONGLE_DEFINE, RK_M87_UK_USB_DEFINE, RK_M87_UK_DONGLE_DEFINE } from "./rk_m87"
 import { RK_L75_USB_DEFINE, RK_L75_DONGLE_DEFINE, RK_L75_UK_USB_DEFINE, RK_L75_UK_DONGLE_DEFINE } from "./rk_l75"
 import { RK_M65_USB_DEFINE, RK_M65_DONGLE_DEFINE, RK_M65_UK_USB_DEFINE, RK_M65_UK_DONGLE_DEFINE } from "./rk_m65"
+import { RK_M70_USB_DEFINE, RK_M70_UK_USB_DEFINE, RK_M70_DONGLE_DEFINE, RK_M70_UK_DONGLE_DEFINE } from "./rk_m70"
+import { RK_L98_USB_DEFINE, RK_L98_DONGLE_DEFINE } from "./rk_l98"
 
-export const VERSION = '1.10.1'
+export const VERSION = '1.10.3'
 
 //20250102 v1.7.0 Add L75 uk support
 //20250110 v1.8.0 Add M87 jp & uk support
@@ -16,6 +18,8 @@ export const VERSION = '1.10.1'
 //20250219 v1.9.1 Fix some bug and add clear stroage data button
 //20250328 v1.10.0 Add mouse
 //20250402 v1.10.1 Fixed bugs for 20250401 feedback
+//20250403 v1.10.2 add M70
+//20250403 v1.10.3 add L98 
 
 /**
 * Initial lightInfo
@@ -63,6 +67,12 @@ export const KeyboardDefineList: Record<string, KeyboardDefine> = {
     "rk m65 24G": RK_M65_DONGLE_DEFINE,
     "rk m65 uk wire": RK_M65_UK_USB_DEFINE,
     "rk m65 uk 24G": RK_M65_UK_DONGLE_DEFINE,
+    "rk m70 wire": RK_M70_USB_DEFINE,
+    "rk m70 uk wire": RK_M70_UK_USB_DEFINE,
+    "rk m70 24G": RK_M70_DONGLE_DEFINE,
+    "rk m70 uk 24G": RK_M70_UK_DONGLE_DEFINE,
+    "rk l98 wire": RK_L98_USB_DEFINE,
+    "rk l98 24G": RK_L98_DONGLE_DEFINE,
 }
 
 /**
@@ -78,4 +88,7 @@ export const DonglePwdDefineList: Record<number, string> = {
     0x03000311: "rk l75 uk 24G",
     0x03000305: "rk m65 24G",
     0x03000316: "rk m65 uk 24G",
+    0x03000306: "rk m70 24G",
+    0x0300031C: "rk m70 uk 24G",
+    0x0600004E: "rk l98 24G",
 }
