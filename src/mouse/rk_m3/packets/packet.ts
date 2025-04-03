@@ -156,6 +156,35 @@ export abstract class Packet_Big_Report implements IPacket {
     }
 }
 
+export abstract class Packet_Respone implements IPacket {
+    fixVal?: number = 0x50;     // byte[1]
+    //执行结果 ,含义是CMD_RSP_SUCCESS = 0x00, CMD_RSP_FAIL =0x01,CMD_RSP_WAIT = 0x02. 代表下位机的操作结果是否正常,不正常则上位机需要做处理
+    cmdRsp?: number;        // byte[2] 
+    //回传数据长度， 一般固定是 11个字节， 1个偏移地址+10个有效字节
+    dataLength?: number;        // byte[3]
+    //命令 SN 顺序指示位，和SET 包一致表示一次传输应答完成ok，否则上位机需要重试上次的Set 命令，并做超时机制。
+    sn?: number;                // byte[4]
+    //偏移地址，0代表偏移0， 1代表偏移量是10，以此类推。上位机收到后对照设备参数表检查数据完整性。
+    offset?: number;            // byte[5]
+
+    payloadData?: DataView;
+
+    constructor() {
+ 
+    }
+
+    fromReportData(buffer: DataView) : IPacket {
+        this.fixVal = buffer.getUint8(1);
+        this.cmdRsp = buffer.getUint8(2);            // byte[2] 
+        this.dataLength = buffer.getUint8(3);        // byte[3]
+        this.sn = buffer.getUint8(4);                // byte[4]
+        this.offset = buffer.getUint8(5);            // byte[5]
+        this.payloadData = new DataView(buffer.buffer.slice(6, this.dataLength - 1));
+        
+        return this;
+    }
+}
+
 export abstract class Packet_Big_Respone implements IPacket {
     fixVal?: number = 0x65;     // byte[1]
     //执行结果 ,含义是CMD_RSP_SUCCESS = 0x00, CMD_RSP_FAIL =0x01,CMD_RSP_WAIT = 0x02. 代表下位机的操作结果是否正常,不正常则上位机需要做处理

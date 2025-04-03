@@ -17,13 +17,15 @@ import { SetFormatFlashPacket } from './packets/setFormatFlashPacket';
 import { SetMacroDataPacket, MACRO_BYTES_PER_PACKET } from './packets/setMacroDataPacket';
 import { SetCheckMacroPacket } from './packets/setCheckMacroPacket';
 import { setEndDataTransPacket } from './packets/setEndDataTransPacket';
+import { GetResponeBigPacket } from './packets/getResponeBigPacket';
 import { GetResponePacket } from './packets/getResponePacket';
 import { GetFwVerPacket } from './packets/getFwVerPacket';
 import { GetBatteryPacket } from './packets/getBatteryPacket';
 
 const worker = new Worker(new URL('@/common/mouseCommunication.ts', import.meta.url));
 
-const CMD_FIX_VAL = 0x65;
+const CMD_FIX_VAL_SHORT = 0x50;
+const CMD_FIX_VAL_LONG = 0x65;
 const CMD_RSP_SUCCESS = 0x00;
 const CMD_RSP_FAIL = 0x01;
 const CMD_RSP_WAIT = 0x02;
@@ -54,10 +56,16 @@ export class RK_M3_Mouse extends RK_M3 {
         worker.onmessage = async (event) => {
             if (event.data == 'getReport') {
                 var data = await this.getFeature(REPORT_ID_USB);
-                if (data.byteLength > 41) {
+                if (data.byteLength == 16) {
                     let packet = new GetResponePacket();
                     packet.fromReportData(data);
-                    if (packet.fixVal == CMD_FIX_VAL && packet.cmdRsp == CMD_RSP_SUCCESS) {
+                    if (packet.fixVal == CMD_FIX_VAL_SHORT && packet.cmdRsp == CMD_RSP_SUCCESS) {
+                        worker.postMessage("stopGet");
+                    }
+                } else if (data.byteLength > 41) {
+                    let packet = new GetResponeBigPacket();
+                    packet.fromReportData(data);
+                    if (packet.fixVal == CMD_FIX_VAL_LONG && packet.cmdRsp == CMD_RSP_SUCCESS) {
                         switch (this.getReportCmd) {
                             case GetReportCmdId.None:
                             case GetReportCmdId.SetPerKeyCmd:
@@ -334,6 +342,7 @@ export class RK_M3_Mouse extends RK_M3 {
     async setSleepTime(): Promise<void> {
         if (this.data.led != undefined) {
             let packet = new SetLedParamPacket();
+            packet.sn = 0x31;
             let u8Data = new DataView(new Uint8Array(1).buffer);
 
             u8Data.setUint8(0, this.data.led.getFieldValue(LedTableEnum.WorkSleepTime));
@@ -551,9 +560,10 @@ export class RK_M3_Mouse extends RK_M3 {
                     let id = data.getUint8(1);
                     switch (id) {
                         case PopupCmdId.ConnectStatusChanged:
-                            // let val = data.getUint8(2);
-                            // this.state.ConnectionStatus = val == 0x01 ? ConnectionStatusEnum.Connected : ConnectionStatusEnum.Disconnected;
-                            // this.dispatchEvent(new CustomEvent(RK_MOUSE_EVENT_DEFINE.OnDongleStatusChanged, { detail: this.state.ConnectionStatus }));
+                            break;
+                        case PopupCmdId.DpiLevelChanged:
+                            break;
+                        case PopupCmdId.BetteryChanged:
                             break;
                     }
                 }

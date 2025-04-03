@@ -9,6 +9,7 @@ import { GetBatteryPacket } from './packets/getBatteryPacket';
 
 export const RK_MOUSE_EVENT_DEFINE: {
     OnDongleStatusChanged: string;
+    OnDpiLevelChanged: string;
     OnPasswordGotten: string;
     OnBatteryGotten: string;
     OnReportFinish: string;
@@ -16,6 +17,7 @@ export const RK_MOUSE_EVENT_DEFINE: {
     OnMacrosGotten: string;
 } = {
     OnDongleStatusChanged: 'OnDongleStatusChanged',
+    OnDpiLevelChanged: 'OnDpiLevelChanged',
     OnPasswordGotten: 'OnPasswordGotten',
     OnBatteryGotten: 'OnBatteryGotten',
     OnReportFinish: 'OnReportFinish',
@@ -154,6 +156,15 @@ export class Mouse extends Device {
                             let val = data.getUint8(2);
                             this.state.ConnectionStatus = val == 0x01 ? ConnectionStatusEnum.Connected : ConnectionStatusEnum.Disconnected;
                             this.dispatchEvent(new CustomEvent(RK_MOUSE_EVENT_DEFINE.OnDongleStatusChanged, { detail: this.state.ConnectionStatus }));
+                            break;
+                        case 0x03:
+                            let dpiLevel = data.getUint8(2);
+                            this.dispatchEvent(new CustomEvent(RK_MOUSE_EVENT_DEFINE.OnDpiLevelChanged, { detail: dpiLevel }));
+                            break;
+                        case 0x05:
+                            let batState = data.getUint8(2) >> 7;
+                            let batValue = data.getUint8(2) & 0x7F;
+                            this.dispatchEvent(new CustomEvent(RK_MOUSE_EVENT_DEFINE.OnBatteryGotten, { detail: { state: batState, value: batValue } }));
                             break;
                     }
                 }

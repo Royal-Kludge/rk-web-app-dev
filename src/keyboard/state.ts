@@ -10,6 +10,7 @@ import { RK_L98_USB_DEFINE, RK_L98_DONGLE_DEFINE } from "./rk_l98"
 
 export const VERSION = '1.10.3'
 
+
 //20250102 v1.7.0 Add L75 uk support
 //20250110 v1.8.0 Add M87 jp & uk support
 //20250115 v1.8.1 Fix some dongle issue
@@ -20,6 +21,7 @@ export const VERSION = '1.10.3'
 //20250402 v1.10.1 Fixed bugs for 20250401 feedback
 //20250403 v1.10.2 add M70
 //20250403 v1.10.3 add L98 
+
 /**
 * Initial lightInfo
 */

@@ -16,12 +16,12 @@ export const useSpeedStore = defineStore('speedinfo_rk_m3', () => {
         dpiLevelValue: 1600,
         reportRate: 1,
         dpiList: [
-            { id: 1, color: "#55F4C1", value: 800, intival: 800 },
-            { id: 2, color: "#FB752E", value: 1600, intival: 1600 },
-            { id: 3, color: "#FD4832", value: 3200, intival: 3200 },
-            { id: 4, color: "#F93A6C", value: 6400, intival: 6400 },
-            { id: 5, color: "#8E16B6", value: 12800, intival: 12800 },
-            { id: 6, color: "#3D054F", value: 25600, intival: 25600 },
+            { id: 1, color: "#00FF00", value: 800, intival: 800 },
+            { id: 2, color: "#FF0000", value: 1600, intival: 1600 },
+            { id: 3, color: "#00FFFF", value: 3200, intival: 3200 },
+            { id: 4, color: "#FF00FF", value: 6400, intival: 6400 },
+            { id: 5, color: "#0000FF", value: 12800, intival: 12800 },
+            { id: 6, color: "#FFFFFF", value: 25600, intival: 25600 },
         ],
         reportRateList: [
             { id: 3, value: 125 },
@@ -42,6 +42,7 @@ export const useSpeedStore = defineStore('speedinfo_rk_m3', () => {
                     let rate = ledTable.value.getReportRate() ?? 1;
                     state.reportRate = rate & 0x07;
                     state.dpiLevel = ledTable.value.getDpiLevel();
+                    state.maxDpiLevel = ledTable.value.getDpiMaxLevel();
                     state.dpiLevelValue = ledTable.value.getDpiValue(state.dpiLevel) ?? 1600;
                 }
             }
@@ -53,6 +54,7 @@ export const useSpeedStore = defineStore('speedinfo_rk_m3', () => {
             let rate = ledTable.value.getReportRate() ?? 1;
             state.reportRate = rate & 0x07;
             state.dpiLevel = ledTable.value.getDpiLevel();
+            state.maxDpiLevel = ledTable.value.getDpiMaxLevel();
             state.dpiLevelValue = ledTable.value.getDpiValue(state.dpiLevel) ?? 1600;
 
             // if (rk_m3.value) {
@@ -61,8 +63,12 @@ export const useSpeedStore = defineStore('speedinfo_rk_m3', () => {
         }
     };
 
-    const setMaxDpiLevel = (id: number) => {
+    const setMaxDpiLevel = async (id: number) => {
         state.maxDpiLevel = id;
+        ledTable.value?.setDpiLevel(state.dpiLevel, state.maxDpiLevel);
+
+        await rk_m3.value?.setDpi();
+        saveProfile();
     };
 
     const getDpiList = (): any => {

@@ -142,16 +142,30 @@
 </style>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted } from 'vue';
+import { ref, reactive, onMounted, onBeforeUnmount } from 'vue';
 import { useSpeedStore } from "@/stores/rk_m3/speedStore";
 import MainMeun from "./mainMenu.vue";
 import { storeToRefs } from 'pinia';
+import { mouse, RK_MOUSE_EVENT_DEFINE } from '@/mouse/mouse'
+import { RK_M3 } from "@/mouse/rk_m3/rk_m3";
 
 const useSpeed = useSpeedStore();
 
 const { state } = storeToRefs(useSpeed);
 
 onMounted(async () => {
+    mouse.addEventListener(RK_MOUSE_EVENT_DEFINE.OnDpiLevelChanged, dpiLevelChanged, false);
     await useSpeed.init();
 });
+
+onBeforeUnmount(() => {
+    if (mouse != undefined) {
+        mouse.removeEventListener(RK_MOUSE_EVENT_DEFINE.OnDpiLevelChanged, dpiLevelChanged, false);
+    }
+});
+
+const dpiLevelChanged = async (event: any) => {
+    (mouse.protocol as RK_M3).data.led?.setDpiLevel(event.detail as number, state.value.maxDpiLevel);
+    useSpeed.refresh();
+};
 </script>

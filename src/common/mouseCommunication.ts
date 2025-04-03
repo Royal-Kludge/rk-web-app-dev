@@ -1,7 +1,7 @@
 const mousePackages = new Array<Uint8Array>();
 const mouseLastTime = new Date();
 const mouseGetReportTime = new Date();
-const mouseMsgInterval = 3000;
+const mouseMsgInterval = 2000;
 
 let isGetReport = false;
 

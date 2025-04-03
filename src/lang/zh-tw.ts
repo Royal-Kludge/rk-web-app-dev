@@ -321,8 +321,8 @@ export default {
     middleKey: "中鍵",
     forwardKey: "前進鍵",
     backKey: "後退鍵",
-    leftShaft: "左擺",
-    rightShaft: "右擺",
+    leftShaft: "左滾輪",
+    rightShaft: "右滾輪",
     wheelUp: "上滾輪",
     wheelDown: "下滾輪",
     xAxleLeft: "X 軸左",
@@ -399,5 +399,8 @@ export default {
     tip_4: "感測器重繪週期的準確性和感測器移動數據的離散性8000回報率下不支持Motion sync",
     tip_5: "辦公模式下，感測器和主控都進入緘默模式，響應最慢，但會减少功耗，新增使用時間",
     tip_6: "遊戲發燒下，感測器和主控都進入最活躍模式，響應更快，但是會新增功耗，减少使用時間",
+  },
+  message: {
+    need_left: "請至少保留一個左鍵。",
   },
 };

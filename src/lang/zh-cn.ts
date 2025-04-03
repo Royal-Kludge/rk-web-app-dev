@@ -322,8 +322,8 @@ export default {
     middleKey: "中键",
     forwardKey: "前进键",
     backKey: "后退键",
-    leftShaft: "左摆",
-    rightShaft: "右摆",
+    leftShaft: "左滚动",
+    rightShaft: "右滚动",
     wheelUp: "上滚轮",
     wheelDown: "下滚轮",
     xAxleLeft: "X 轴左",
@@ -400,5 +400,8 @@ export default {
     tip_4: "传感器刷新周期的准确性和传感器移动数据的离散性8000回报率下不支持Motion sync",
     tip_5: "办公模式下，传感器和主控都进入缄默模式，响应最慢，但会减少功耗，增加使用时间",
     tip_6: "游戏发烧下，传感器和主控都进入最活跃模式，响应更快，但是会增加功耗，减少使用时间",
+  },
+  message: {
+    need_left: "请至少保留一个左键。",
   },
 };

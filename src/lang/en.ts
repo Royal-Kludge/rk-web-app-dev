@@ -400,5 +400,8 @@ export default {
     tip_4: "The accuracy of sensor refresh cycle and the discreteness of sensor movement data do not support Motion sync at a return rate of 8000",
     tip_5: "In office mode, both sensors and the main control enter silent mode, which has the slowest response but reduces power consumption and increases usage time",
     tip_6: "Under the fever of the game, both the sensor and the main control enter the most active mode, with faster response, but it will increase power consumption and reduce usage time",
+  }, 
+  message: {
+    need_left: "Please keep at least one left button.",
   },
 };
