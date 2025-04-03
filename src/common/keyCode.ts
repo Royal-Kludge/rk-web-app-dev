@@ -1771,6 +1771,12 @@ export const KeyText: Record<number, String> = {
     0x08091300: 'light.menu_19',
 
     0x0A000000: 'RK Web',
+    
+    0x00010006: 'Ctrl+C',
+    0x00010019: 'Ctrl+V',
+    0x00010004: 'Ctrl+A',
+    0x0001001b: 'Ctrl+X',
+    0x0001001d: 'Ctrl+Z'
 }
 
 export const KeyText_2: Record<number, String> = {
@@ -2007,7 +2013,12 @@ export const KeyText_2: Record<number, String> = {
     0x0d000000: 'Fn1',
     0x0d010000: 'Fn2',
 
-    0x0A000000: 'RK Web'
+    0x0A000000: 'RK Web',
+    0x00010006: 'Ctrl+C',
+    0x00010019: 'Ctrl+V',
+    0x00010004: 'Ctrl+A',
+    0x0001001b: 'Ctrl+X',
+    0x0001001d: 'Ctrl+Z'
 }
 
 export const KeyText_Mac: Record<number, String> = {
@@ -2406,7 +2417,12 @@ export const KeyText_Mac: Record<number, String> = {
     0x08091200: 'light.menu_18',
     0x08091300: 'light.menu_19',
 
-    0x0A000000: 'RK Web'
+    0x0A000000: 'RK Web',
+    0x00010006: 'Ctrl+C',
+    0x00010019: 'Ctrl+V',
+    0x00010004: 'Ctrl+A',
+    0x0001001b: 'Ctrl+X',
+    0x0001001d: 'Ctrl+Z'
 }
 
 export const KeyCodeMap: Record<string, KeyCodeTable> = {

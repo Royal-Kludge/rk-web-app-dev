@@ -120,3 +120,33 @@ export const RK_M65_UK_WIRE_DEFINE: HidDeviceDefine = {
     connectType: ConnectionType.USB,
     deviceType: DeviceType.Keyboard,
 }
+
+export const RK_M70_WIRE_DEFINE: HidDeviceDefine = {
+    name: "rk m70 wire",
+    vendorId: 0x258A,
+    productId: 0x01FE,
+    usagePage: 0xFF00,
+    usage: 0x0001,
+    connectType: ConnectionType.USB,
+    deviceType: DeviceType.Keyboard,
+}
+
+export const RK_M70_UK_WIRE_DEFINE: HidDeviceDefine = {
+    name: "rk m70 uk wire",
+    vendorId: 0x258A,
+    productId: 0x0203,
+    usagePage: 0xFF00,
+    usage: 0x0001,
+    connectType: ConnectionType.USB,
+    deviceType: DeviceType.Keyboard,
+}   
+
+export const RK_L98_WIRE_DEFINE: HidDeviceDefine = {
+    name: "rk l98 wire",
+    vendorId: 0x258A,
+    productId: 0x01FB,
+    usagePage: 0xFF00,
+    usage: 0x0001,
+    connectType: ConnectionType.USB,
+    deviceType: DeviceType.Keyboard,
+}
