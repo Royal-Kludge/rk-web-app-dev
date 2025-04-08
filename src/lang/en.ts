@@ -317,8 +317,8 @@ export default {
   },
   mouseKey: {
     title: "Mouse Function",
-    leftKey: "Left Key",
-    rightKey: "Right Key",
+    leftKey: "Left side Key",
+    rightKey: "Right side Key",
     middleKey: "Middle Key",
     forwardKey: "Forward Key",
     backKey: "Back Key",
