@@ -16,6 +16,7 @@ self.addEventListener('message', (event) => {
     } else {
         let p = event.data as Uint8Array;
         mousePackages.splice(0, 0, p);
+        console.log(`Put mouse Message`);
     }
 });
 
@@ -34,6 +35,7 @@ function mouseStartLoop() {
             let p = mousePackages.pop();
             if (p != undefined) {
                 self.postMessage(p);
+                console.log(`Post mouse Message`);
                 mouseLastTime.setTime(currentTime.getTime());
             }
         }

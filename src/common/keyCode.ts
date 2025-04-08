@@ -1772,10 +1772,10 @@ export const KeyText: Record<number, String> = {
 
     0x0A000000: 'RK Web',
     
-    0x00010006: 'Ctrl+C',
-    0x00010019: 'Ctrl+V',
+    //0x00010006: 'Ctrl+C',
+    //0x00010019: 'Ctrl+V',
     0x00010004: 'Ctrl+A',
-    0x0001001b: 'Ctrl+X',
+    //0x0001001b: 'Ctrl+X',
     0x0001001d: 'Ctrl+Z'
 }
 
