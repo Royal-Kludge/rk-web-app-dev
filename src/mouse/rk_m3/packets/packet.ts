@@ -36,7 +36,7 @@ export abstract class Packet_Usb implements IPacket {
         this.dataOffset = 0;
         this.dataLength = 0;
 
-        this.setReport = new Uint8Array(64);
+        this.setReport = new Uint8Array(63);
     }
 
     fromReportData(buffer: DataView) : IPacket {
@@ -136,7 +136,7 @@ export abstract class Packet_Big_Report implements IPacket {
         this.payloadLength = 0; // byte[8]
         this.opCodeId = 0;      // byte[9]
 
-        this.setReport = new Uint8Array(64);
+        this.setReport = new Uint8Array(63);
     }
 
     fromReportData(buffer: DataView) : IPacket {
