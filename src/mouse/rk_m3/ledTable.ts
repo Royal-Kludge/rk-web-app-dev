@@ -195,7 +195,7 @@ export class LedTable {
     /// 0: office mode, 1: HP game, 2: CodedGaming
     setSensorMode(mode: number) {
         let val = this.buffer.getUint8(LedTableEnum.Performance);
-        val = val & (mode << 6);
+        val = (val & 0x3F) | ((mode << 6));
         this.buffer.setUint8(LedTableEnum.Performance, val);
     }
 

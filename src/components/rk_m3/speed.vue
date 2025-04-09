@@ -4,8 +4,7 @@
     </div>
     <div class="d-flex flex-1 jc-center">
         <div class="d-flex flex-1 flex-column m-5">
-            <div class="bg-white-1" style="border-radius: 10px" v-loading="state.loading"
-                :element-loading-text="$t('home.title_1')" element-loading-background="rgba(0, 0, 0, 0.3)">
+            <div class="bg-white-1" style="border-radius: 10px">
                 <div class="m-5">
                     <el-dialog v-model="state.isDefaultClause" width="500" center>
                         <span>
