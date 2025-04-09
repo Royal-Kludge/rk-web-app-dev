@@ -11,6 +11,7 @@ export const useSpeedStore = defineStore('speedinfo_rk_m3', () => {
 
     const state = reactive({
         isDefaultClause: false,
+        loading: false,
         dpiLevel: 1,
         maxDpiLevel: 6,
         dpiLevelValue: 1600,
@@ -80,6 +81,7 @@ export const useSpeedStore = defineStore('speedinfo_rk_m3', () => {
     };
 
     const clickSpeed = async (id: number) => {
+        state.loading = true;
         state.dpiLevel = id;
         state.dpiLevelValue = state.dpiList[id - 1].value;
 
@@ -88,6 +90,9 @@ export const useSpeedStore = defineStore('speedinfo_rk_m3', () => {
 
         await rk_m3.value?.setDpi();
         saveProfile();
+        setTimeout(() => {
+            state.loading = false;
+        }, 1500);
     };
 
     const setDpiValue = (value: number) => {
