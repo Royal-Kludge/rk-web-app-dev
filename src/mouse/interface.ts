@@ -60,6 +60,12 @@ export interface KeyTableData {
     keyMappingData: KeyMappingData
 }
 
+export interface LeftSideKey {
+    isEnable: boolean,
+    key3: KeyMappingData,
+    key4: KeyMappingData
+}
+
 export interface IProtocol {
     state: MouseState;
     device?: HIDDevice

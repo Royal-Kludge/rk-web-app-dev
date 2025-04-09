@@ -4,7 +4,7 @@ import { keyboard } from '@/keyboard/keyboard'
 import { KeyMatrix } from '@/keyboard/rk_m65/keyMatrix';
 import { PROFILE_DEFAULT_DATA } from './boardProfile';
 import { LED_EFFECT_DEFAULT_DATA } from './ledEffect';
-import { VERSION } from '../state';
+import { VERSION } from '@/common/state';
 
 export class Profile {
     name: string;

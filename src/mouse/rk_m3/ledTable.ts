@@ -71,7 +71,7 @@ export enum LedTableEnum {
 
 export const LED_TABLE_DATA: Uint8Array = new Uint8Array([
     0x01,
-    0x44,
+    0x00,
     0x26,
     0x01,
     0x05,

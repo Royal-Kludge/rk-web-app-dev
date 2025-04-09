@@ -21,6 +21,7 @@ export const useProfileStore = defineStore('profile_rk_m3', () => {
         profileList: [],
         name: '',
         isNewProfile: false,
+        isSideKeyEnable: true
     });
 
     const init = async () => {
@@ -65,7 +66,11 @@ export const useProfileStore = defineStore('profile_rk_m3', () => {
                     rk_m3.value.data.led = new LedTable(new DataView(profile.value.ledTable.buffer));
                 }
             }
-            
+
+            if (profile.value.leftSideKey != undefined) {
+                rk_m3.value.data.leftSideKey = profile.value.leftSideKey;
+            }
+
             refresh();
         }
     };
@@ -78,6 +83,10 @@ export const useProfileStore = defineStore('profile_rk_m3', () => {
         let i: number
         for (i = 0; i < ps.list.length; i++) {
             (state.profileList as Array<Profile>).push(ps.list[i]);
+        }
+
+        if (profile.value != undefined && profile.value.leftSideKey != undefined) {
+            state.isSideKeyEnable = profile.value.leftSideKey.isEnable;
         }
     };
 
@@ -156,8 +165,8 @@ export const useProfileStore = defineStore('profile_rk_m3', () => {
 
         state.name = tm.name;
         state.isNewProfile = true;
-        renameProfile(tm)
+        renameProfile(tm);
     };
 
-    return { profile, state, init, destroy, clickProfile, importProfile, renameProfile, deleteProfile, exportProfile, handleEditClose, renameSaveProfile, newProfile };
+    return { profile, state, init, destroy, clickProfile, importProfile, renameProfile, deleteProfile, exportProfile, handleEditClose, renameSaveProfile, newProfile, saveProfile };
 });
