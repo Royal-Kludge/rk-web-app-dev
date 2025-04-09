@@ -1,15 +1,16 @@
 import { storage } from '@/common/storage';
-import { VERSION } from '../state';
+import { VERSION } from '@/common/state';
 import { KEY_TABLE_DATA } from './keyTable';
 import { LED_TABLE_DATA } from './ledTable';
 import { mouse } from '../mouse';
-import type { KeyTableData } from '../interface';
+import type { KeyTableData, LeftSideKey } from '../interface';
 import { KEY_LAYOUT } from './layout';
 
 export class Profile {
     name: string;
     index = 0;
     isDefault = false;
+    leftSideKey?: LeftSideKey;
     keyLayout?: Array<KeyTableData>;
     keyTable?: Uint8Array;
     ledTable?: Uint8Array;
@@ -35,6 +36,28 @@ export class Profile {
                         keyRaw: mouse.mouseDefine.layout[index].keyMappingData.keyRaw,
                     }
                 });
+            }
+
+            this.leftSideKey = {
+                isEnable: true,
+                key3: {
+                    keyStr: mouse.mouseDefine.layout[3].keyMappingData.keyStr,
+                    keyFunctionType: mouse.mouseDefine.layout[3].keyMappingData.keyFunctionType,
+                    keyMappingType: mouse.mouseDefine.layout[3].keyMappingData.keyMappingType,
+                    keyTypeCode: mouse.mouseDefine.layout[3].keyMappingData.keyTypeCode,
+                    keyParam1: mouse.mouseDefine.layout[3].keyMappingData.keyParam1,
+                    keyParam2: mouse.mouseDefine.layout[3].keyMappingData.keyParam2,
+                    keyRaw: mouse.mouseDefine.layout[3].keyMappingData.keyRaw,
+                },
+                key4: {
+                    keyStr: mouse.mouseDefine.layout[4].keyMappingData.keyStr,
+                    keyFunctionType: mouse.mouseDefine.layout[4].keyMappingData.keyFunctionType,
+                    keyMappingType: mouse.mouseDefine.layout[4].keyMappingData.keyMappingType,
+                    keyTypeCode: mouse.mouseDefine.layout[4].keyMappingData.keyTypeCode,
+                    keyParam1: mouse.mouseDefine.layout[4].keyMappingData.keyParam1,
+                    keyParam2: mouse.mouseDefine.layout[4].keyMappingData.keyParam2,
+                    keyRaw: mouse.mouseDefine.layout[4].keyMappingData.keyRaw,
+                }
             }
         }
 
@@ -108,6 +131,7 @@ export class Profiles {
                     tm.keyTable = new Uint8Array(Object.values(m.keyTable));
                     tm.ledTable = new Uint8Array(Object.values(m.ledTable));
                     tm.keyLayout = m.keyLayout;
+                    tm.leftSideKey = m.leftSideKey;
                     this.add(tm);
                 }
             }

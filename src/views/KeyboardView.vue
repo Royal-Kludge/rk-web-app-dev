@@ -29,7 +29,7 @@ import { DonglePwdDefineList, KeyboardDefineList } from '@/keyboard/state';
 import { ConnectionStatusEnum, ConnectionType } from '@/device/enum';
 import { storage } from '@/common/storage';
 import type { Profiles } from '@/keyboard/rk_r87/profiles';
-import { VERSION } from '@/keyboard/state';
+import { VERSION } from '@/common/state';
 import { ElMessageBox } from 'element-plus'
 import { useI18n } from "vue-i18n";
 import type { Protocol } from '@/keyboard/protocol';

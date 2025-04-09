@@ -4,9 +4,11 @@ import type { BasicTable } from './basicTable'
 import type { LedTable } from './ledTable';
 import type { KeyTable } from './keyTable';
 import { mouse } from '../mouse';
+import type { LeftSideKey } from '../interface';
 
 export class RK_M3_Data {
     donglePwd: number = 0;
+    leftSideKey?: LeftSideKey;
     macros?: Macros;
     basic?: BasicTable;
     led?: LedTable;

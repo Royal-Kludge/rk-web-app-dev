@@ -7,7 +7,7 @@ import { ps } from '@/mouse/rk_m3/profiles';
 import { KeyTableEnum } from "@/mouse/rk_m3/keyTable";
 import { KeyDefineEnum, KeyText } from "@/common/keyCode";
 import { KeyMappingType, KeyFunctionType, MacroLoopEnum, MouseKeyCode } from "@/mouse/enum";
-import type { KeyMappingData, KeyTableData } from "@/mouse/interface";
+import type { KeyMappingData, KeyTableData, LeftSideKey } from "@/mouse/interface";
 import { KEY_LAYOUT } from '@/mouse/rk_m3/layout';
 import { Macro } from '@/mouse/rk_m3/macros';
 import { ElMessageBox } from 'element-plus'
@@ -206,7 +206,7 @@ export const useKeyStore = defineStore('keyinfo_rk_m3', () => {
         };
     };
 
-    const keyMapping = (index: KeyTableEnum, func: KeyFunctionType, keyCode: KeyDefineEnum, modify: KeyDefineEnum = 0, count: number = 0, delay: number = 0, type: KeyMappingType = KeyMappingType.Mouse) => {
+    const keyMapping = async (index: KeyTableEnum, func: KeyFunctionType, keyCode: KeyDefineEnum, modify: KeyDefineEnum = 0, count: number = 0, delay: number = 0, type: KeyMappingType = KeyMappingType.Mouse) => {
         let key: number = 0;
 
         switch (func) {
@@ -269,8 +269,31 @@ export const useKeyStore = defineStore('keyinfo_rk_m3', () => {
                 }
             }
 
+            var leftSideKey = rk_m3.value.data.leftSideKey;
+            if ((index == KeyTableEnum.ForwardKey || index == KeyTableEnum.BackKey) && leftSideKey != undefined && leftSideKey.isEnable) {
+                if (index == KeyTableEnum.BackKey) {
+                    leftSideKey.key3.keyStr = mapping.keyStr;
+                    leftSideKey.key3.keyRaw = mapping.keyRaw;
+                    leftSideKey.key3.keyTypeCode = mapping.keyTypeCode;
+                    leftSideKey.key3.keyFunctionType = mapping.keyFunctionType;
+                    leftSideKey.key3.keyMappingType = mapping.keyMappingType;
+                    leftSideKey.key3.keyParam1 = mapping.keyParam1;
+                    leftSideKey.key3.keyParam2 = mapping.keyParam2;
+                }
+
+                if (index == KeyTableEnum.ForwardKey) {
+                    leftSideKey.key4.keyStr = mapping.keyStr;
+                    leftSideKey.key4.keyRaw = mapping.keyRaw;
+                    leftSideKey.key4.keyTypeCode = mapping.keyTypeCode;
+                    leftSideKey.key4.keyFunctionType = mapping.keyFunctionType;
+                    leftSideKey.key4.keyMappingType = mapping.keyMappingType;
+                    leftSideKey.key4.keyParam1 = mapping.keyParam1;
+                    leftSideKey.key4.keyParam2 = mapping.keyParam2;
+                }
+            }
+
             rk_m3.value.data.keys.setKeyMapping(index, mapping);
-            rk_m3.value.setKeyMapping(index);
+            await rk_m3.value.setKeyMapping(index);
         }
     };
 
@@ -389,6 +412,26 @@ export const useKeyStore = defineStore('keyinfo_rk_m3', () => {
         saveProfile();
     }
 
+    const setLeftSideKeyEnable = async (val: boolean) => {
+        if (rk_m3.value != undefined) {
+            var leftSideKey = rk_m3.value.data.leftSideKey;
+            if (leftSideKey != undefined) {
+                leftSideKey.isEnable = val;
+                if (leftSideKey.isEnable) {
+                    if (rk_m3.value != undefined && rk_m3.value.data.keys != undefined) {
+                        rk_m3.value.data.keys.setKeyMapping(KeyTableEnum.BackKey, leftSideKey.key3);
+                        await rk_m3.value.setKeyMapping(KeyTableEnum.BackKey);
+                        rk_m3.value.data.keys.setKeyMapping(KeyTableEnum.ForwardKey, leftSideKey.key4);
+                        await rk_m3.value.setKeyMapping(KeyTableEnum.ForwardKey);
+                    }
+                } else {
+                    await keyMapping(KeyTableEnum.ForwardKey, KeyFunctionType.Disable, KeyDefineEnum.NONE);
+                    await keyMapping(KeyTableEnum.BackKey, KeyFunctionType.Disable, KeyDefineEnum.NONE);
+                }
+            }
+        }
+    }
+
     const setToFactory = async () => {
         if (rk_m3.value != undefined) {
             rk_m3.value.data.loadDefaultValue();
@@ -404,5 +447,5 @@ export const useKeyStore = defineStore('keyinfo_rk_m3', () => {
         }
     }
 
-    return { connectType, state, init, destroy, keyMapping, findFunction, selectedFunction, clickFunction, getKeyLayoutByIndex, clickKeyLayout, selectedKeyLayout, setAllDefault, setOneDefault, saveGameAdv, clickKeyboard, selectedKeyboard, saveKeyboard, clickMacro, refresh, setDpiLock, setToFactory };
+    return { connectType, state, init, destroy, keyMapping, findFunction, selectedFunction, clickFunction, getKeyLayoutByIndex, clickKeyLayout, selectedKeyLayout, setAllDefault, setOneDefault, saveGameAdv, clickKeyboard, selectedKeyboard, saveKeyboard, clickMacro, refresh, setDpiLock, setToFactory, setLeftSideKeyEnable };
 });

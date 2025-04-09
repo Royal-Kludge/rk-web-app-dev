@@ -56,8 +56,8 @@
             <div class="d-flex flex-column ai-center mx-5">
                 <div>
                     <div>{{ $t("key.but_7") }}</div>
-                    <el-switch v-model="left" inline-prompt size="large" :active-text="$t('key.but_8')"
-                        :inactive-text="$t('key.but_9')" />
+                    <el-switch v-model="useProfile.state.isSideKeyEnable" inline-prompt size="large" :active-text="$t('key.but_8')"
+                        :inactive-text="$t('key.but_9')" @change="sideKeySwitch"/>
                 </div>
                 <div class="d-flex but_left">
                     <div><el-button @click="useKey.clickKeyLayout(0)" :class="[useKey.selectedKeyLayout(0)]">
@@ -66,13 +66,13 @@
                     </div>
                     <div>--------------------------</div>
                 </div>
-                <div class="d-flex but_report" v-if="left">
+                <div class="d-flex but_report" v-if="useProfile.state.isSideKeyEnable">
                     <div><el-button @click="useKey.clickKeyLayout(4)" :class="[useKey.selectedKeyLayout(4)]">{{
                         $t(useKey.getKeyLayoutByIndex(4)) }}</el-button>
                     </div>
                     <div>---------------------</div>
                 </div>
-                <div class="d-flex but_back" v-if="left">
+                <div class="d-flex but_back" v-if="useProfile.state.isSideKeyEnable">
                     <div><el-button @click="useKey.clickKeyLayout(3)" :class="[useKey.selectedKeyLayout(3)]">{{
                         $t(useKey.getKeyLayoutByIndex(3)) }}</el-button>
                     </div>
@@ -249,16 +249,18 @@
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 import MainMeun from "./mainMenu.vue";
 import { useKeyStore } from "@/stores/rk_m3/keyStore";
+import { useProfileStore } from "@/stores/rk_m3/profileStore";
 import { storeToRefs } from "pinia";
 import { KeyCodeMap } from '@/common/keyCode'
 import { useMacroStore } from "@/stores/rk_m3/macroStore";
 import { Macro } from '@/mouse/rk_m3/macros';
 import { KeyMappingType, KeyFunctionType, MacroLoopEnum } from "@/mouse/enum";
+import { RK_M3 } from '@/mouse/rk_m3/rk_m3';
 
 const useMacro = useMacroStore();
-const { macros } = storeToRefs(useMacro);
+const useProfile = useProfileStore();
 
-const left = ref(true)
+const { macros } = storeToRefs(useMacro);
 
 const isAllDefault = ref(false)
 const isOneDefault = ref(false)
@@ -270,10 +272,12 @@ const setAllDefault = () => {
     isAllDefault.value = false;
     useKey.setAllDefault()
 }
+
 const setOneDefault = () => {
     isOneDefault.value = false;
     useKey.setOneDefault()
 }
+
 onMounted(async () => {
     await useMacro.init();
     document.addEventListener('keydown', onKeyDown, false);
@@ -307,4 +311,8 @@ const handleBlur = () => {
     isFocused.value = false;
 }
 
+const sideKeySwitch = async (val: boolean) => {
+    await useKey.setLeftSideKeyEnable(val);
+    useProfile.saveProfile();
+}
 </script>
