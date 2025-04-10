@@ -86,7 +86,7 @@ export const KeyMap_FN1_Win: Array<KeyDefineEnum> = [
 	//-------------------------------------------------------------------------------------------------------------15
 	KeyDefineEnum.NONE,               KeyDefineEnum.NONE,             KeyDefineEnum.NONE,          KeyDefineEnum.NONE,           KeyDefineEnum.KEY_LED_LUMINI,      KeyDefineEnum.KEY_LED_LUMIND,     	         
 	//-------------------------------------------------------------------------------------------------------------16
-	KeyDefineEnum.NONE,               KeyDefineEnum.KEY_PRINT,        KeyDefineEnum.KEY_INS,       KeyDefineEnum.KEY_PAUSE,      KeyDefineEnum.END,                 KeyDefineEnum.KEY_LED_BREATHI,	 												   
+	KeyDefineEnum.NONE,               KeyDefineEnum.KEY_PRINT,        KeyDefineEnum.KEY_INS,       KeyDefineEnum.KEY_PAUSE,      KeyDefineEnum.KEY_END,                 KeyDefineEnum.KEY_LED_BREATHI,	 												   
 	//-------------------------------------------------------------------------------------------------------------17
 	KeyDefineEnum.NONE,               KeyDefineEnum.NONE,             KeyDefineEnum.NONE,          KeyDefineEnum.NONE,           KeyDefineEnum.NONE,                KeyDefineEnum.NONE,							 
 	//-------------------------------------------------------------------------------------------------------------17
@@ -281,7 +281,7 @@ export const KeyMap_FN1_Mac: Array<KeyDefineEnum> = [
 	//-------------------------------------------------------------------------------------------------------------15
 	KeyDefineEnum.NONE,               KeyDefineEnum.NONE,             KeyDefineEnum.NONE,          KeyDefineEnum.NONE,           KeyDefineEnum.KEY_LED_LUMINI,      KeyDefineEnum.KEY_LED_LUMIND,     	         
 	//-------------------------------------------------------------------------------------------------------------16
-	KeyDefineEnum.NONE,               KeyDefineEnum.KEY_PRINT,        KeyDefineEnum.KEY_INS,       KeyDefineEnum.KEY_PAUSE,      KeyDefineEnum.END,                 KeyDefineEnum.KEY_LED_BREATHI,	 												   
+	KeyDefineEnum.NONE,               KeyDefineEnum.KEY_PRINT,        KeyDefineEnum.KEY_INS,       KeyDefineEnum.KEY_PAUSE,      KeyDefineEnum.KEY_END,                 KeyDefineEnum.KEY_LED_BREATHI,	 												   
 	//-------------------------------------------------------------------------------------------------------------17
 	KeyDefineEnum.NONE,               KeyDefineEnum.NONE,             KeyDefineEnum.NONE,          KeyDefineEnum.NONE,           KeyDefineEnum.NONE,                KeyDefineEnum.NONE,							 
 	
@@ -477,7 +477,7 @@ export const KeyMap_FN1_UK_Win: Array<KeyDefineEnum> = [
 	//-------------------------------------------------------------------------------------------------------------15
 	KeyDefineEnum.NONE,               KeyDefineEnum.NONE,             KeyDefineEnum.NONE,          KeyDefineEnum.NONE,           KeyDefineEnum.KEY_LED_LUMINI,      KeyDefineEnum.KEY_LED_LUMIND,     	         
 	//-------------------------------------------------------------------------------------------------------------16
-	KeyDefineEnum.NONE,               KeyDefineEnum.KEY_PRINT,        KeyDefineEnum.KEY_INS,       KeyDefineEnum.KEY_PAUSE,      KeyDefineEnum.END,                 KeyDefineEnum.KEY_LED_BREATHI,	 												   
+	KeyDefineEnum.NONE,               KeyDefineEnum.KEY_PRINT,        KeyDefineEnum.KEY_INS,       KeyDefineEnum.KEY_PAUSE,      KeyDefineEnum.KEY_END,                 KeyDefineEnum.KEY_LED_BREATHI,	 												   
 	//-------------------------------------------------------------------------------------------------------------17
 	KeyDefineEnum.NONE,               KeyDefineEnum.NONE,             KeyDefineEnum.NONE,          KeyDefineEnum.NONE,           KeyDefineEnum.NONE,                KeyDefineEnum.NONE,							 
 	
@@ -672,7 +672,7 @@ export const KeyMap_FN1_UK_Mac: Array<KeyDefineEnum> = [
 	//-------------------------------------------------------------------------------------------------------------15
 	KeyDefineEnum.NONE,               KeyDefineEnum.NONE,             KeyDefineEnum.NONE,          KeyDefineEnum.NONE,           KeyDefineEnum.KEY_LED_LUMINI,      KeyDefineEnum.KEY_LED_LUMIND,     	         
 	//-------------------------------------------------------------------------------------------------------------16
-	KeyDefineEnum.NONE,               KeyDefineEnum.KEY_PRINT,        KeyDefineEnum.KEY_INS,       KeyDefineEnum.KEY_PAUSE,      KeyDefineEnum.END,                 KeyDefineEnum.KEY_LED_BREATHI,	 												   
+	KeyDefineEnum.NONE,               KeyDefineEnum.KEY_PRINT,        KeyDefineEnum.KEY_INS,       KeyDefineEnum.KEY_PAUSE,      KeyDefineEnum.KEY_END,                 KeyDefineEnum.KEY_LED_BREATHI,	 												   
 	//-------------------------------------------------------------------------------------------------------------17
 	KeyDefineEnum.NONE,               KeyDefineEnum.NONE,             KeyDefineEnum.NONE,          KeyDefineEnum.NONE,           KeyDefineEnum.NONE,                KeyDefineEnum.NONE,							 
 	
