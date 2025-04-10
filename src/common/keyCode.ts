@@ -1315,7 +1315,7 @@ export enum KeyDefineEnum {
     SP_LED_REC_Save = 0x08060000, //LED¼�Ƽ�����
     SP_LED_REC = 0x08070000, //LED¼�Ƽ�����/����
     SP_LED_REC_Reset = 0x08080000, //LED�ָ���������
-
+    SP_KB_REC_Reset = 0x08ff0000,
     //logo
     KEY_LOG_MODEL = 0x08000001, //ֱ���趨Ϊģʽ+
     KEY_LOG_MODEI = 0x08000101, //ֱ���趨Ϊģʽ-
@@ -1693,7 +1693,7 @@ export const KeyText: Record<number, String> = {
     0x08060000: 'LedRecSave', //LED¼�Ƽ�����
     0x08070000: 'LedRec', //LED¼�Ƽ�����/����
     0x08080000: 'LedRecReset', //LED�ָ���������
-
+    0x08ff0000: 'SP_KB_REC_Reset',	
     //logo
     0x08000001: 'LogoModelLoop', //ֱ���趨Ϊģʽ+
     0x08000101: 'LogoModel+', //ֱ���趨Ϊģʽ-
@@ -2292,6 +2292,7 @@ export const KeyText_Mac: Record<number, String> = {
     0x07000022: 'O_Mode',
     0x07000023: 'L_Mode',
     0x07000024: 'Touch_Mode',
+    0x07000025: 'SP_B6Key_Mode',
     //****************************************************************
     //byte0���̶�0x08
     //byte1��0��Ч�л���1��Ч����2��ɫ�л���3�����л���4�ٶ��л���5������Ϸ����¼�ƣ�6��Ϸ���ֱ��棬7¼��/���棬8��λ��9��Чģʽָ��
@@ -2340,7 +2341,7 @@ export const KeyText_Mac: Record<number, String> = {
     0x08060000: 'LedRecSave', //LED¼�Ƽ�����
     0x08070000: 'LedRec', //LED¼�Ƽ�����/����
     0x08080000: 'LedRecReset', //LED�ָ���������
-
+    0x08ff0000: 'SP_KB_REC_Reset',		
     //logo
     0x08000001: 'LogoModelLoop', //ֱ���趨Ϊģʽ+
     0x08000101: 'LogoModel+', //ֱ���趨Ϊģʽ-
