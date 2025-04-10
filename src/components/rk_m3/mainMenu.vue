@@ -53,7 +53,7 @@
                     <el-input v-model="useProfile.state.name" placeholder="Please input" maxlength="10" />
                 </div>
                 <div class="d-flex jc-end">
-                    <div class="py-1 px-4 but-green text-white c-p mt-4" @click="useProfile.renameSaveProfile">
+                    <div class="py-1 px-4 but-green text-white c-p mt-4" @click="saveRenameProfile">
                         {{ $t('macro.but_7') }}
                     </div>
                 </div>
@@ -140,6 +140,14 @@ const clickProfile = async (obj: Profile) => {
 
 const newProfile = async () => {
     await useProfile.newProfile();
+
+    // useKey.refresh();
+    // useSpeed.refresh();
+    // useProperty.refresh();
+}
+
+const saveRenameProfile = () => {
+    useProfile.renameSaveProfile();
 
     useKey.refresh();
     useSpeed.refresh();
