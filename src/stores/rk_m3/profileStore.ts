@@ -166,7 +166,8 @@ export const useProfileStore = defineStore('profile_rk_m3', () => {
 
         state.name = tm.name;
         state.isNewProfile = true;
-        clickProfile(tm);
+        renameProfile(tm);
+        //clickProfile(tm);
     };
 
     return { profile, state, init, destroy, clickProfile, importProfile, renameProfile, deleteProfile, exportProfile, handleEditClose, renameSaveProfile, newProfile, saveProfile };
