@@ -61,7 +61,7 @@ onMounted(async () => {
     await useProfile.init();
     await useKey.init();
 
-    if (rk_m3.value == undefined) {
+    if (rk_m3.value == undefined || (rk_m3.value != undefined && rk_m3.value.data.isDestroy)) {
         rk_m3.value = mouse.protocol as RK_M3;
         rk_m3.value.addEventListener(RK_MOUSE_EVENT_DEFINE.OnReportStart, reportStart, false);
         rk_m3.value.addEventListener(RK_MOUSE_EVENT_DEFINE.OnReportFinish, reportFinish, false);

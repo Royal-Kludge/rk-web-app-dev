@@ -60,6 +60,8 @@ onMounted(async () => {
 
             mouse.protocol = await mouse.mouseDefine.protocol(mouse.state, mouse.device);
 
+            mouse.device.addEventListener("inputreport", mouse.callback);
+
             mouse.addEventListener(RK_MOUSE_EVENT_DEFINE.OnBatteryGotten, batteryGotten, false);
             await mouse.protocol?.init();
 
@@ -71,6 +73,7 @@ onMounted(async () => {
                     productId.value = 1
                     break;
             }
+
             checkProfileVersion();
         } else if (mouse.state.connectType == ConnectionType.Dongle) {
             mouse.addEventListener(RK_MOUSE_EVENT_DEFINE.OnBatteryGotten, batteryGotten, false);

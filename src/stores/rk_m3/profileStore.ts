@@ -25,7 +25,7 @@ export const useProfileStore = defineStore('profile_rk_m3', () => {
     });
 
     const init = async () => {
-        if (rk_m3.value == undefined) {
+        if (rk_m3.value == undefined || (rk_m3.value != undefined && rk_m3.value.data.isDestroy)) {
             rk_m3.value = (mouse.protocol as RK_M3);
             getProfiles();
         }
@@ -33,6 +33,7 @@ export const useProfileStore = defineStore('profile_rk_m3', () => {
 
     const destroy = () => {
         if (mouse.state.ConnectionStatus != ConnectionStatusEnum.Connected) {
+            rk_m3.value = undefined
             isInited.value = false;
         }
     };
@@ -165,7 +166,7 @@ export const useProfileStore = defineStore('profile_rk_m3', () => {
 
         state.name = tm.name;
         state.isNewProfile = true;
-        renameProfile(tm);
+        clickProfile(tm);
     };
 
     return { profile, state, init, destroy, clickProfile, importProfile, renameProfile, deleteProfile, exportProfile, handleEditClose, renameSaveProfile, newProfile, saveProfile };

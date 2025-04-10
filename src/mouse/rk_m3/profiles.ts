@@ -61,8 +61,18 @@ export class Profile {
             }
         }
 
-        this.keyTable = new Uint8Array(KEY_TABLE_DATA.buffer, 0, KEY_TABLE_DATA.buffer.byteLength);
-        this.ledTable = new Uint8Array(LED_TABLE_DATA.buffer, 0, LED_TABLE_DATA.buffer.byteLength);
+        let index = 0;
+        //this.keyTable = new Uint8Array(KEY_TABLE_DATA.buffer, 0, KEY_TABLE_DATA.buffer.byteLength);
+        this.keyTable = new Uint8Array(KEY_TABLE_DATA.buffer.byteLength);
+        for (index = 0; index < KEY_TABLE_DATA.buffer.byteLength; index++) {
+            this.keyTable[index] = KEY_TABLE_DATA[index];
+        }
+
+        //this.ledTable = new Uint8Array(LED_TABLE_DATA.buffer, 0, LED_TABLE_DATA.buffer.byteLength);
+        this.ledTable = new Uint8Array(LED_TABLE_DATA.buffer.byteLength);
+        for (index = 0; index < LED_TABLE_DATA.buffer.byteLength; index++) {
+            this.ledTable[index] = LED_TABLE_DATA[index];
+        }
     }
     setKeyTable(data: Uint8Array) {
         this.keyTable = data;

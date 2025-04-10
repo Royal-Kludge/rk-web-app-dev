@@ -69,6 +69,9 @@
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
 import { useSetStore } from "@/stores/setStore";
 import { useKeyStore } from "@/stores/rk_m3/keyStore";
+import { usePropertyStore } from "@/stores/rk_m3/propertyStore";
+import { useSpeedStore } from "@/stores/rk_m3/speedStore";
+import { useProfileStore } from "@/stores/rk_m3/profileStore";
 import { useLocaleStore } from "@/stores/locale";
 import { storeToRefs } from "pinia";
 import { storage } from '@/common/storage';
@@ -86,6 +89,9 @@ const { locale } = storeToRefs(useLocale);
 const setStore = useSetStore();
 const { langList } = storeToRefs(setStore);
 const useKey = useKeyStore();
+const useProperty = usePropertyStore();
+const useSpeed = useSpeedStore();
+const useProfile = useProfileStore();
 
 const reSet = ref(false);
 const ver = ref(mouse.state.fwVersion);
@@ -228,6 +234,10 @@ onBeforeUnmount(() => {
 
 const setToFactory = async () => {
     await useKey.setToFactory();
+    useKey.refresh();
+    useProperty.refresh();
+    useSpeed.refresh();
+    useProfile.saveProfile();
     reSet.value = false;
 }
 const clearLocalData = () => {

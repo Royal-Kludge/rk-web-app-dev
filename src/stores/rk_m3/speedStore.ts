@@ -36,7 +36,7 @@ export const useSpeedStore = defineStore('speedinfo_rk_m3', () => {
 
     const init = async () => {
         if (mouse != undefined) {
-            if (rk_m3.value == undefined) {
+            if (rk_m3.value == undefined || (rk_m3.value != undefined && rk_m3.value.data.isDestroy)) {
                 rk_m3.value = (mouse.protocol as RK_M3);
                 ledTable.value = rk_m3.value.data.led;
                 if (ledTable.value != undefined) {

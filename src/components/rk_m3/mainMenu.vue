@@ -61,7 +61,7 @@
         </div>
         <div class="bg-white" style="height: 46px;">
             <div class="d-flex jc-center text-white">
-                <div class="d-flex py-1 m-2 px-3 but-blue c-p" @click="useProfile.newProfile()">
+                <div class="d-flex py-1 m-2 px-3 but-blue c-p" @click="newProfile">
                     <img src="../../assets/images/title/new.png" class="img-but" />{{ $t("key.but_1") }}
                 </div>
                 <div class="d-flex py-1 m-2 px-3 but-green c-p">
@@ -86,7 +86,7 @@ import { reactive, ref } from 'vue';
 import { useProfileStore } from "@/stores/rk_m3/profileStore";
 import type { UploadProps } from 'element-plus'
 import { storeToRefs } from "pinia";
-import { onMounted } from "vue";
+import { onMounted, onBeforeUnmount } from "vue";
 import { Profile } from '@/mouse/rk_m3/profiles';
 import { useKeyStore } from "@/stores/rk_m3/keyStore";
 import { useSpeedStore } from "@/stores/rk_m3/speedStore";
@@ -110,9 +110,13 @@ const { state } = storeToRefs(useProfile);
 onMounted(() => {
     useProfile.init();
 
-    if (rk_m3.value == undefined) {
+    if (rk_m3.value == undefined || (rk_m3.value != undefined && rk_m3.value.data.isDestroy)) {
         rk_m3.value = (mouse.protocol as RK_M3);
     }
+});
+
+onBeforeUnmount(() => {
+    useProfile.destroy();
 });
 
 const clickProfile = async (obj: Profile) => {
@@ -128,6 +132,14 @@ const clickProfile = async (obj: Profile) => {
         await rk_m3.value.setDebounce();
         await rk_m3.value.setSleepTime();
     }
+
+    useKey.refresh();
+    useSpeed.refresh();
+    useProperty.refresh();
+}
+
+const newProfile = async () => {
+    await useProfile.newProfile();
 
     useKey.refresh();
     useSpeed.refresh();
