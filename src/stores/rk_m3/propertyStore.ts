@@ -53,9 +53,12 @@ export const usePropertyStore = defineStore('propertyinfo_rk_m3', () => {
 
     const init = async () => {
         if (mouse != undefined) {
-            if (rk_m3.value == undefined) {
+            if (rk_m3.value == undefined || (rk_m3.value != undefined && rk_m3.value.data.isDestroy)) {
                 rk_m3.value = (mouse.protocol as RK_M3);
-                ledTable.value = rk_m3.value.data.led;
+                if (rk_m3.value.data != undefined) {
+                    ledTable.value = rk_m3.value.data.led;
+                }
+                
             }
 
             refresh();

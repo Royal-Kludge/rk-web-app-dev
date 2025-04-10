@@ -1,15 +1,16 @@
 import { storage } from '@/common/storage';
-import { VERSION } from '../state';
+import { VERSION } from '@/common/state';
 import { KEY_TABLE_DATA } from './keyTable';
 import { LED_TABLE_DATA } from './ledTable';
 import { mouse } from '../mouse';
-import type { KeyTableData } from '../interface';
+import type { KeyTableData, LeftSideKey } from '../interface';
 import { KEY_LAYOUT } from './layout';
 
 export class Profile {
     name: string;
     index = 0;
     isDefault = false;
+    leftSideKey?: LeftSideKey;
     keyLayout?: Array<KeyTableData>;
     keyTable?: Uint8Array;
     ledTable?: Uint8Array;
@@ -36,10 +37,42 @@ export class Profile {
                     }
                 });
             }
+
+            this.leftSideKey = {
+                isEnable: true,
+                key3: {
+                    keyStr: mouse.mouseDefine.layout[3].keyMappingData.keyStr,
+                    keyFunctionType: mouse.mouseDefine.layout[3].keyMappingData.keyFunctionType,
+                    keyMappingType: mouse.mouseDefine.layout[3].keyMappingData.keyMappingType,
+                    keyTypeCode: mouse.mouseDefine.layout[3].keyMappingData.keyTypeCode,
+                    keyParam1: mouse.mouseDefine.layout[3].keyMappingData.keyParam1,
+                    keyParam2: mouse.mouseDefine.layout[3].keyMappingData.keyParam2,
+                    keyRaw: mouse.mouseDefine.layout[3].keyMappingData.keyRaw,
+                },
+                key4: {
+                    keyStr: mouse.mouseDefine.layout[4].keyMappingData.keyStr,
+                    keyFunctionType: mouse.mouseDefine.layout[4].keyMappingData.keyFunctionType,
+                    keyMappingType: mouse.mouseDefine.layout[4].keyMappingData.keyMappingType,
+                    keyTypeCode: mouse.mouseDefine.layout[4].keyMappingData.keyTypeCode,
+                    keyParam1: mouse.mouseDefine.layout[4].keyMappingData.keyParam1,
+                    keyParam2: mouse.mouseDefine.layout[4].keyMappingData.keyParam2,
+                    keyRaw: mouse.mouseDefine.layout[4].keyMappingData.keyRaw,
+                }
+            }
         }
 
-        this.keyTable = new Uint8Array(KEY_TABLE_DATA.buffer, 0, KEY_TABLE_DATA.buffer.byteLength);
-        this.ledTable = new Uint8Array(LED_TABLE_DATA.buffer, 0, LED_TABLE_DATA.buffer.byteLength);
+        let index = 0;
+        //this.keyTable = new Uint8Array(KEY_TABLE_DATA.buffer, 0, KEY_TABLE_DATA.buffer.byteLength);
+        this.keyTable = new Uint8Array(KEY_TABLE_DATA.buffer.byteLength);
+        for (index = 0; index < KEY_TABLE_DATA.buffer.byteLength; index++) {
+            this.keyTable[index] = KEY_TABLE_DATA[index];
+        }
+
+        //this.ledTable = new Uint8Array(LED_TABLE_DATA.buffer, 0, LED_TABLE_DATA.buffer.byteLength);
+        this.ledTable = new Uint8Array(LED_TABLE_DATA.buffer.byteLength);
+        for (index = 0; index < LED_TABLE_DATA.buffer.byteLength; index++) {
+            this.ledTable[index] = LED_TABLE_DATA[index];
+        }
     }
     setKeyTable(data: Uint8Array) {
         this.keyTable = data;
@@ -108,6 +141,7 @@ export class Profiles {
                     tm.keyTable = new Uint8Array(Object.values(m.keyTable));
                     tm.ledTable = new Uint8Array(Object.values(m.ledTable));
                     tm.keyLayout = m.keyLayout;
+                    tm.leftSideKey = m.leftSideKey;
                     this.add(tm);
                 }
             }

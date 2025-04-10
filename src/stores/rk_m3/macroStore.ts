@@ -56,7 +56,7 @@ export const useMacroStore = defineStore("macrostore_rk_m3", () => {
     const isInited = ref(false);
 
     const init = async () => {
-        if (rk_m3.value == undefined) {
+        if (rk_m3.value == undefined || (rk_m3.value != undefined && rk_m3.value.data.isDestroy)) {
             rk_m3.value = (mouse.protocol as RK_M3);
             mouse.addEventListener("connection", connectionEventCallback);
         }

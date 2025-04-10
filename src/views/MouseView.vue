@@ -16,10 +16,10 @@ import RK_M3_Page from '@/components/rk_m3/home.vue'
 import { DonglePwdDefineList, MouseDefineList } from '@/mouse/state';
 import { ConnectionStatusEnum, ConnectionType } from '@/device/enum';
 import { storage } from '@/common/storage';
-import { VERSION } from '@/mouse/state';
+import { VERSION } from '@/common/state';
 import { ElMessageBox } from 'element-plus'
 import { useI18n } from "vue-i18n";
-import { log } from 'console';
+import type { Profiles } from '@/mouse/rk_m3/profiles';
 
 const { t } = useI18n();
 
@@ -60,6 +60,8 @@ onMounted(async () => {
 
             mouse.protocol = await mouse.mouseDefine.protocol(mouse.state, mouse.device);
 
+            mouse.device.addEventListener("inputreport", mouse.callback);
+
             mouse.addEventListener(RK_MOUSE_EVENT_DEFINE.OnBatteryGotten, batteryGotten, false);
             await mouse.protocol?.init();
 
@@ -71,6 +73,7 @@ onMounted(async () => {
                     productId.value = 1
                     break;
             }
+
             checkProfileVersion();
         } else if (mouse.state.connectType == ConnectionType.Dongle) {
             mouse.addEventListener(RK_MOUSE_EVENT_DEFINE.OnBatteryGotten, batteryGotten, false);
@@ -171,20 +174,20 @@ const batteryGotten = async (event: any) => {
 };
 
 const checkProfileVersion = () => {
-    // let tmp = storage.get(`${mouse.mouseDefine?.name}_profile`) as Profiles;
-    // if (tmp != null && (tmp.version == undefined || tmp.version != VERSION)) {
-    //     ElMessageBox.confirm(
-    //         t('home.profile'),
-    //         t('home.profile_out'),
-    //         {
-    //             confirmButtonText: t('home.profile_reset'),
-    //             cancelButtonText: t('home.profile_goon'),
-    //             customClass: 'set-to-default',
-    //         }
-    //     ).then(async () => {
-    //         storage.clear();
-    //     });
-    // }
+    let tmp = storage.get(`${mouse.mouseDefine?.name}_profile`) as Profiles;
+    if (tmp != null && (tmp.version == undefined || tmp.version != VERSION)) {
+        ElMessageBox.confirm(
+            t('home.profile'),
+            t('home.profile_out'),
+            {
+                confirmButtonText: t('home.profile_reset'),
+                cancelButtonText: t('home.profile_goon'),
+                customClass: 'set-to-default',
+            }
+        ).then(async () => {
+            storage.clear();
+        });
+    }
 };
 
 </script>

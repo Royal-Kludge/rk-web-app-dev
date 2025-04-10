@@ -1,6 +1,6 @@
 <template>
-    <div class="d-flex h-100" v-loading="loading" :element-loading-text="$t('home.title_1')"
-        element-loading-background="rgba(0, 0, 0, 0.7)">
+    <div class="d-flex h-100" v-loading="state.loading" :element-loading-text="$t('home.title_1')"
+        element-loading-background="rgba(0, 0, 0, 0.3)">
         <div class="d-flex flex-1 flex-column">
             <div>
                 <Meun />
@@ -38,10 +38,14 @@ import { storeToRefs } from "pinia";
 import type { RK_M3 } from '@/mouse/rk_m3/rk_m3';
 import { useKeyStore } from "@/stores/rk_m3/keyStore";
 import { useProfileStore } from "@/stores/rk_m3/profileStore";
+import { useSpeedStore } from "@/stores/rk_m3/speedStore";
 
 const useProfile = useProfileStore();
 const useKey = useKeyStore();
 const useMenu = useMenuStore();
+const useSpeed = useSpeedStore();
+
+const { state } = storeToRefs(useSpeed);
 const { meunid } = storeToRefs(useMenu);
 
 const loading = ref(false)
@@ -57,7 +61,7 @@ onMounted(async () => {
     await useProfile.init();
     await useKey.init();
 
-    if (rk_m3.value == undefined) {
+    if (rk_m3.value == undefined || (rk_m3.value != undefined && rk_m3.value.data.isDestroy)) {
         rk_m3.value = mouse.protocol as RK_M3;
         rk_m3.value.addEventListener(RK_MOUSE_EVENT_DEFINE.OnReportStart, reportStart, false);
         rk_m3.value.addEventListener(RK_MOUSE_EVENT_DEFINE.OnReportFinish, reportFinish, false);

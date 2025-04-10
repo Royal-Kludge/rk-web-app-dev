@@ -4,14 +4,16 @@ import type { BasicTable } from './basicTable'
 import type { LedTable } from './ledTable';
 import type { KeyTable } from './keyTable';
 import { mouse } from '../mouse';
+import type { LeftSideKey } from '../interface';
 
 export class RK_M3_Data {
     donglePwd: number = 0;
+    leftSideKey?: LeftSideKey;
     macros?: Macros;
     basic?: BasicTable;
     led?: LedTable;
     keys?: KeyTable;
-
+    isDestroy: boolean = false;
     
     loadDefaultValue() {
         if (mouse.mouseDefine != undefined) {
@@ -67,6 +69,12 @@ export abstract class RK_M3 extends Protocol {
 
     async destroy(): Promise<void> {
         this.device.removeEventListener("inputreport", this.callback);
+        this.data.leftSideKey = undefined;
+        this.data.macros = undefined;
+        this.data.basic = undefined;
+        this.data.keys = undefined;
+        this.data.led = undefined;
+        this.data.isDestroy = true;
     }
 
     async getFeature(reportId: number): Promise<DataView> {

@@ -61,7 +61,7 @@ export default {
     but_4: "Edit",
     but_5: "Delete",
     but_6: "Export",
-    but_7: "Left key",
+    but_7: "Left side key",
     but_8: "Open",
     but_9: "Close",
     but_10: "Reset all buttons",

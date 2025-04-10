@@ -165,7 +165,7 @@ onBeforeUnmount(() => {
 });
 
 const dpiLevelChanged = async (event: any) => {
-    (mouse.protocol as RK_M3).data.led?.setDpiLevel(event.detail as number, state.value.maxDpiLevel);
+    (mouse.protocol as RK_M3).data?.led?.setDpiLevel(event.detail as number, state.value.maxDpiLevel);
     useSpeed.refresh();
 };
 </script>
