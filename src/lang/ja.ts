@@ -338,7 +338,8 @@ export default {
     decrease: "Dpi-",
     loop: "Dpiサイクル",
     lock: "Dpiロック",
-    tip_1: "任意の方向へのマウスポインタの移動速度を調整するか、感度レベルを設定します."
+    tip_1: "任意の方向へのマウスポインタの移動速度を調整するか、感度レベルを設定します.",
+    default: "デフォルトに戻す"
   },
   reportRateKey: {
     title: "収益率",

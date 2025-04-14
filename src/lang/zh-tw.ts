@@ -338,7 +338,8 @@ export default {
     decrease: "Dpi-",
     loop: "Dpi 迴圈",
     lock: "Dpi 鎖定",
-    tip_1: "調整滑鼠指標在任意方向的移動速度，或配寘其靈敏度等級."
+    tip_1: "調整滑鼠指標在任意方向的移動速度，或配寘其靈敏度等級.",
+    default: "恢復默認"
   },
 
   reportRateKey: {
