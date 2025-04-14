@@ -339,7 +339,8 @@ export default {
         decrease: "Dpi-",
         loop: "Dpi 순환",
         lock: "Dpi 잠금",
-        tip_1: "마우스 포인터의 임의의 방향에서 이동 속도를 조정하거나 민감도 등급을 설정합니다."
+        tip_1: "마우스 포인터의 임의의 방향에서 이동 속도를 조정하거나 민감도 등급을 설정합니다.",
+        default: "기본 복원"
     },
 
     reportRateKey: {

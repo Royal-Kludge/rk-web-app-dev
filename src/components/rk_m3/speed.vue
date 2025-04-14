@@ -42,7 +42,7 @@
                                     <el-option v-for="i in 6" :key="i" :label="i" :value="i" />
                                 </el-select>
                             </span>
-                            <span class="c-p" @click="state.isDefaultClause = true">
+                            <span class="c-p" @click="state.isDefaultClause = true" v-if="false">
                                 <img :src="`../../src/assets/images/refresh.png`" class="img-title" />
                             </span>
                         </div>
@@ -57,14 +57,14 @@
                         <div class="d-flex text-white-2 dpi mt-5">
                             <div class="mx-4">50</div>
                             <el-slider v-model="state.dpiLevelValue" :min="50" :max="42000" show-stops :step="50"
-                                tooltip-class="tooltip" @input="useSpeed.setDpiValue(state.dpiLevelValue)"></el-slider>
+                                tooltip-class="tooltip" @change="useSpeed.setDpiValue(state.dpiLevelValue)"></el-slider>
                             <div class="mx-4">42000</div>
                         </div>
                     </div>
                 </div>
                 <div class="d-flex bg-white p-4 jc-center" style="border-radius: 0px 0px 10px 10px">
-                    <div class="py-1 px-4 but-green text-white mx-3 c-p" @click="useSpeed.saveSpeed()">
-                        {{ $t('macro.but_7') }}
+                    <div class="py-1 px-4 but-green text-white mx-3 c-p" @click="state.isDefaultClause = true">
+                        {{ $t('dpiKey.default') }}
                     </div>
                 </div>
             </div>

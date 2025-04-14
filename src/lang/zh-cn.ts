@@ -339,7 +339,8 @@ export default {
     decrease: "Dpi-",
     loop: "Dpi 循环",
     lock: "Dpi 锁定",
-    tip_1: "调整鼠标指针在任意方向的移动速度，或配置其灵敏度等级."
+    tip_1: "调整鼠标指针在任意方向的移动速度，或配置其灵敏度等级.",
+    default: "恢复默认"
   },
 
   reportRateKey: {

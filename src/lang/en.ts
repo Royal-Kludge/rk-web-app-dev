@@ -339,7 +339,8 @@ export default {
     decrease: "Dpi-",
     loop: "Dpi Loop",
     lock: "Dpi Lock",
-    tip_1: "Adjust the movement speed of the mouse pointer in any direction, or configure its sensitivity level."
+    tip_1: "Adjust the movement speed of the mouse pointer in any direction, or configure its sensitivity level.",
+    default: "Restore default"
   },
 
   reportRateKey: {
