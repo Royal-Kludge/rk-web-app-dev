@@ -45,6 +45,11 @@ export const useSpeedStore = defineStore('speedinfo_rk_m3', () => {
                     state.dpiLevel = ledTable.value.getDpiLevel();
                     state.maxDpiLevel = ledTable.value.getDpiMaxLevel();
                     state.dpiLevelValue = ledTable.value.getDpiValue(state.dpiLevel) ?? 1600;
+
+                    let index = 0;
+                    for (index = 0; index < state.dpiList.length; index++) {
+                        state.dpiList[index].value = ledTable.value.getDpiValue(state.dpiList[index].id) ?? 1600;
+                    }
                 }
             }
         }
@@ -58,9 +63,10 @@ export const useSpeedStore = defineStore('speedinfo_rk_m3', () => {
             state.maxDpiLevel = ledTable.value.getDpiMaxLevel();
             state.dpiLevelValue = ledTable.value.getDpiValue(state.dpiLevel) ?? 1600;
 
-            // if (rk_m3.value) {
-            //     await rk_m3.value.setDpi(state.dpiLevel);
-            // }
+            let index = 0;
+            for (index = 0; index < state.dpiList.length; index++) {
+                state.dpiList[index].value = ledTable.value.getDpiValue(state.dpiList[index].id) ?? 1600;
+            }
         }
     };
 
@@ -95,8 +101,17 @@ export const useSpeedStore = defineStore('speedinfo_rk_m3', () => {
         }, 1500);
     };
 
-    const setDpiValue = (value: number) => {
+    const setDpiValue = async (value: number) => {
+        state.loading = true;
         state.dpiList[state.dpiLevel - 1].value = value;
+
+        ledTable.value?.setDpiValue(state.dpiLevel, state.dpiList[state.dpiLevel - 1].value);
+
+        await rk_m3.value?.setDpi();
+        saveProfile();
+        setTimeout(() => {
+            state.loading = false;
+        }, 1500);
     };
 
     const saveSpeed = async () => {
@@ -109,10 +124,19 @@ export const useSpeedStore = defineStore('speedinfo_rk_m3', () => {
         saveProfile();
     };
 
-    const setDpiDefault = () => {
+    const setDpiDefault = async () => {
+        state.loading = true;
         state.isDefaultClause = false;
         state.dpiList[state.dpiLevel - 1].value = state.dpiList[state.dpiLevel - 1].intival;
         state.dpiLevelValue = state.dpiList[state.dpiLevel - 1].value;
+
+        ledTable.value?.setDpiValue(state.dpiLevel, state.dpiList[state.dpiLevel - 1].value);
+
+        await rk_m3.value?.setDpi();
+        saveProfile();
+        setTimeout(() => {
+            state.loading = false;
+        }, 1500);
     };
 
     const saveProfile = () => {

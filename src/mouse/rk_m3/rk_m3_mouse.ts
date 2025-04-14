@@ -229,7 +229,7 @@ export class RK_M3_Mouse extends RK_M3 {
 
             let level = this.data.led.getDpiLevel();
             let dpi = this.data.led.getDpiValue(level);
-            let setVal = 0;
+            let setVal = dpi;
             if (dpi > 42000) setVal = 42000;
             if (dpi <= 30000) setVal = (dpi / 50) - 1;
 
