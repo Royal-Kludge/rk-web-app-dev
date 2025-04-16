@@ -26,7 +26,7 @@ export interface KeyboardState extends State {
 
 export interface KeyboardDefine extends HidDeviceDefine {
     image: string,
-    keyText: Record<number, String>,
+    keyText: Record<number, Array<String>>,
     keyMatrixLayer: Array<KeyMatrixLayer>,
     keyMatrixTable: Array<MatrixTable>,
     keyLayout: Record<number, Record<number, Array<number>>>,
@@ -35,7 +35,7 @@ export interface KeyboardDefine extends HidDeviceDefine {
 }
 
 export interface KeyMappingData {
-    keyStr: String,
+    keyStr: Array<String>,
     keyCode: KeyDefineEnum | number,
     keyMappingType: KeyMappingType,
     keyMappingPara: number,
@@ -65,7 +65,7 @@ export interface LightInfo {
 }
 
 export interface KeyTableData {
-    keyStr: String,
+    keyStr: Array<String>,
     keyCode: KeyDefineEnum,
     index: number,
     keyMappingData: KeyMappingData
