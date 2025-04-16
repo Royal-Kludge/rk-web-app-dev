@@ -61,10 +61,17 @@ const clickMacro = (obj: Macro) => {
 }
 
 const itemText = (item: any) => {
-  if (item.type == MatrixTable.MAC) return item.text;
-  if (item.tip != '') return t(item.text as string);
-  if ((item.key >> 24) == 8) return t(item.text as string);
-  return item.text;
+  if (item.type == MatrixTable.MAC) return item.text[0] as string;
+  if (item.tip != '') return t(item.text[0] as string);
+  if ((item.key >> 24) == 8) return t(item.text[0] as string);
+
+  let str = '';
+  let i = 0;
+  for (i = 0; i < item.text.length; i++) {
+    str = `${str}${item.text[i]}`
+  }
+
+  return str;
 }
 
 const itemTipText = (item: any) => {
