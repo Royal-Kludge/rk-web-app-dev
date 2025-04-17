@@ -1259,10 +1259,47 @@ export const useKeyStore = defineStore('keyinfo_rk_m70', () => {
 
     let keyStr = '';
     let index = 0;
+    let texts = [];
     for (index = 0; index < keyData.keyMappingData.keyStr.length; index++) {
       keyStr = `${keyStr}${keyData.keyMappingData.keyStr[index]}`
+      if (keyData.keyMappingData.keyStr[index] != '' && keyData.keyMappingData.keyStr[index] != undefined) {
+        texts.push(keyData.keyMappingData.keyStr[index])
+      }
     }
-
+    if (texts.length == 4) {
+      keyStr = `<div class='d-flex'>
+      <div>
+          <div>${texts[1]}</div>
+          <div>${texts[0]}</div>
+      </div>
+      <div class='ml-3'>
+          <div>${texts[3]}</div>
+          <div>${texts[2]}</div>
+      </div>
+      </div>`
+    } else if (texts.length == 3) {
+      keyStr = `<div class='d-flex'>
+      <div>
+          <div>${texts[1]}</div>
+          <div>${texts[0]}</div>
+      </div>
+      <div class='ml-3'>
+          <div>&nbsp;</div>
+          <div>${texts[2]}</div>
+      </div>
+      </div>`
+    } else if (texts.length == 2) {
+      keyStr = `<div class='d-flex'>
+      <div>
+          <div>${texts[0]}</div>
+          <div>&nbsp;</div>
+      </div>
+        <div class='ml-3'>
+          <div>&nbsp;</div>
+          <div>${texts[1]}</div>
+      </div>
+      </div>`
+    }
     return keyStr;
   };
 
