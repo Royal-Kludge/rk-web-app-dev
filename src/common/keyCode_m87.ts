@@ -2054,7 +2054,7 @@ export const KeyText_jp: Record<number, Array<String>> = {
     0x28: ['ENTER'],
     0x2c: ['Space'],
 
-    0x35: ['`~'],   //bo lang
+    0x35: ['E/J'],   //bo lang
     0x2d: ['-', '=', '', 'ほ'],   //xia hua xian
     0x2e: ['^', '~', '', 'へ'],   //deng hao
     0x2f: ['、','@', '゛', ''],   //zuo zhong kuo hao
@@ -2072,7 +2072,7 @@ export const KeyText_jp: Record<number, Array<String>> = {
     0x21: ['4', '$', 'う', 'ぅ'],
     0x22: ['5', '%', 'え', 'ぇ'],
     0x23: ['6', '&', 'お', 'ぉ'],
-    0x24: ['7', '', 'や', 'ゃ'],
+    0x24: ['7', '\'', 'や', 'ゃ'],
     0x25: ['8', '(', 'ゆ', 'ゅ'],
     0x26: ['9', ')', 'よ', 'ょ'],
     0x27: ['0', '', 'わ', 'を'],
@@ -2135,8 +2135,8 @@ export const KeyText_jp: Record<number, Array<String>> = {
     0x87: ['\\', 'ー', 'ろ'],
     0x88: ['Kana'],
     0x89: ['￥', '|', '-', ''],
-    0x8a: ['K132'],
-    0x8b: ['K131'],
+    0x8a: ['<img class="keyimg_noinvert" src="/src/assets/images/keys/K132.png" />'],
+    0x8b: ['<img class="keyimg_noinvert" src="/src/assets/images/keys/K131.png" />'],
     0x90: ['K151'],   //key_Hangul
     0x91: ['K150'],   //Key_Hanja
 
