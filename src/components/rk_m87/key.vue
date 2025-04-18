@@ -262,7 +262,7 @@ const keyTextColorStyle = (key: KeyTableData | undefined): string => {
             if (key != undefined) {
                 color = `color:rgb(0, 0, 0);`;
                 if (useLight.state.lightProps.light == LightEffectEnum.SelfDefine)
-                    color = `color: ${useLight.keyTextColor(key.index)};`;
+                    color = `position: relative;left: -99999px;filter: drop-shadow(${useLight.keyTextColor(key.index)} 99999px 0);color: ${useLight.keyTextColor(key.index)};`;
             }
             break;
     }
