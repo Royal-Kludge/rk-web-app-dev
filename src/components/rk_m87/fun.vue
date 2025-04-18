@@ -17,15 +17,16 @@
           <el-scrollbar>
             <div class="d-flex flex-wrap" v-if="useKey.state.funid == 3">
               <div :class="['d-flex c-p ai-center jc-center p-3 m-1 bg-grey br-1', useKey.isMacroSelected(macro)]"
-                v-for=" macro in useKey.state.macros?.get()" @click="clickMacro(macro)" style="min-width: 24px;">
+                v-for="macro in useKey.state.macros?.get()" @click="clickMacro(macro)" style="min-width: 24px;">
                 {{ macro.name }}
               </div>
             </div>
             <div :class="['d-flex flex-wrap', `${line.style}`]" v-for="line in useKey.state.keyFunList" v-else>
               <el-tooltip v-if="line.id == useKey.state.funid" v-for="item in line.keys" effect="light"
                 :disabled="item.tip == ''" :content="itemTipText(item)" placement="bottom" popper-class="tip_font">
-                <div :class="[`c-p d-flex ai-center jc-center p-3 m-1 bg-grey br-1`, useKey.isFunSelected(item.key)]"
-                  @click="useKey.mapping(item.key, item.type)" style="min-width: 32px;">
+                <div :class="[`c-p d-flex ai-center jc-center p-2 m-1 bg-grey br-1`, useKey.isFunSelected(item.key)]"
+                  @click="useKey.mapping(item.key, item.type)"
+                  style="min-width: 36px;min-height: 32px;font-size: 14px;">
                   <span style="word-wrap: break-word;" v-html="itemText(item)"></span>
                 </div>
               </el-tooltip>
@@ -61,10 +62,56 @@ const clickMacro = (obj: Macro) => {
 }
 
 const itemText = (item: any) => {
-  if (item.type == MatrixTable.MAC) return item.text;
-  if (item.tip != '') return t(item.text as string);
-  if ((item.key >> 24) == 8) return t(item.text as string);
-  return item.text;
+  if (item.type == MatrixTable.MAC) return item.text[0] as string;
+  if (item.tip != '') return t(item.text[0] as string);
+  if ((item.key >> 24) == 8) return t(item.text[0] as string);
+
+  let str = '';
+  let i = 0;
+
+  let texts = [];
+  for (i = 0; i < item.text.length; i++) {
+    str = `${str}${item.text[i]}`
+    if (item.text[i] != '' && item.text[i] != undefined) {
+      texts.push(item.text[i])
+    }
+  }
+  if (texts.length == 4) {
+    str = `<div class='d-flex'>
+    <div>
+        <div>${texts[1]}</div>
+        <div>${texts[0]}</div>
+    </div>
+    <div class='ml-3'>
+        <div>${texts[3]}</div>
+        <div>${texts[2]}</div>
+    </div>
+    </div>`
+  } else if (texts.length == 3) {
+    str = `<div class='d-flex'>
+    <div>
+        <div>${texts[1]}</div>
+        <div>${texts[0]}</div>
+    </div>
+    <div class='ml-3'>
+        <div>&nbsp;</div>
+        <div>${texts[2]}</div>
+    </div>
+    </div>`
+  } else if (texts.length == 2) {
+    str = `<div class='d-flex'>
+    <div>
+        <div>${texts[0]}</div>
+        <div>&nbsp;</div>
+    </div>
+      <div class='ml-3'>
+        <div>&nbsp;</div>
+        <div>${texts[1]}</div>
+    </div>
+    </div>`
+  }
+
+  return str;
 }
 
 const itemTipText = (item: any) => {

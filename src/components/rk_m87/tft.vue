@@ -36,6 +36,7 @@
                                     {{ $t("tft.title_2") }}
                                 </div>
                             </el-upload>
+                            <div>{{ $t("tft.desc_4") }}</div>
                         </div>
                         <div class="d-flex my-3">
                             <el-upload :before-upload='handleBeforeUpload' :show-file-list="false" :auto-upload="true">

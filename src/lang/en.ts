@@ -309,6 +309,7 @@ export default {
     desc_1: "Left click to drag the layer, scroll to zoom in and out of the layer",
     desc_2: "Apply to all frames",
     desc_3: "Play interval (milliseconds)",
+    desc_4: "The default resolution is 240 * 135",
     error_1: "Image data is out of stroge space, please remove some frame to retry!",
     error_2: "Data out of stroge",
     error_3: "TFT data download to device failed, please retry again!",

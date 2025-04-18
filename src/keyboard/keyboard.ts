@@ -138,6 +138,18 @@ export class Keyboard extends Device {
                 
                     for (i = 0; i < this.keyboardDefine.keyLayout[table][layer].length; i++) {
                         let code = this.keyboardDefine.keyLayout[table][layer][i];
+                        // let keyStr = '';
+
+                        // let strArray = this.keyboardDefine.keyText[code];
+                        // if (strArray != undefined) {
+                        //     let index = 0;
+                        //     for (index = 0; index < this.keyboardDefine.keyText[code].length; index++) {
+                        //         keyStr = `${keyStr}${this.keyboardDefine.keyText[code][index]}`
+                        //     }
+                        // } else {
+                        //     keyStr = 'undefined';
+                        // }
+
                         let key: KeyTableData = {
                             keyStr: this.keyboardDefine.keyText[code],
                             keyCode: code,
@@ -150,6 +162,7 @@ export class Keyboard extends Device {
                                 keyRaw: code
                             }
                         }
+
                         layout.push(key);
                     }
                 }

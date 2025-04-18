@@ -3,11 +3,11 @@ import type { KeyTableData } from "../interface";
 import { DpiCodeEnum, KeyFunctionType, KeyMappingType, MouseKeyCode } from "../enum";
 
 export const KEY_LAYOUT : Array<KeyTableData> = [{
-        keyStr: KeyText[KeyDefineEnum.KEY_L_BUTTON],
+        keyStr: KeyText[KeyDefineEnum.KEY_L_BUTTON][0],
         keyCode: KeyDefineEnum.KEY_L_BUTTON,
         index: 0,
         keyMappingData: {
-            keyStr: KeyText[KeyDefineEnum.KEY_L_BUTTON],
+            keyStr: KeyText[KeyDefineEnum.KEY_L_BUTTON][0],
             keyFunctionType: KeyFunctionType.MouseKey,
             keyMappingType: KeyMappingType.Mouse,
             keyTypeCode: MouseKeyCode.LeftKey,
@@ -17,11 +17,11 @@ export const KEY_LAYOUT : Array<KeyTableData> = [{
         }
     },
     {
-        keyStr: KeyText[KeyDefineEnum.KEY_R_BUTTON],
+        keyStr: KeyText[KeyDefineEnum.KEY_R_BUTTON][0],
         keyCode: KeyDefineEnum.KEY_R_BUTTON,
         index: 1,
         keyMappingData: {
-            keyStr: KeyText[KeyDefineEnum.KEY_R_BUTTON],
+            keyStr: KeyText[KeyDefineEnum.KEY_R_BUTTON][0],
             keyFunctionType: KeyFunctionType.MouseKey,
             keyMappingType: KeyMappingType.Mouse,
             keyTypeCode: MouseKeyCode.RightKey,
@@ -31,11 +31,11 @@ export const KEY_LAYOUT : Array<KeyTableData> = [{
         }
     },
     {
-        keyStr: KeyText[KeyDefineEnum.KEY_M_BUTTON],
+        keyStr: KeyText[KeyDefineEnum.KEY_M_BUTTON][0],
         keyCode: KeyDefineEnum.KEY_M_BUTTON,
         index: 2,
         keyMappingData: {
-            keyStr: KeyText[KeyDefineEnum.KEY_M_BUTTON],
+            keyStr: KeyText[KeyDefineEnum.KEY_M_BUTTON][0],
             keyFunctionType: KeyFunctionType.MouseKey,
             keyMappingType: KeyMappingType.Mouse,
             keyTypeCode: MouseKeyCode.MidKey,
@@ -45,11 +45,11 @@ export const KEY_LAYOUT : Array<KeyTableData> = [{
         }
     },
     {
-        keyStr: KeyText[KeyDefineEnum.KEY_RB1_BUTTON],
+        keyStr: KeyText[KeyDefineEnum.KEY_RB1_BUTTON][0],
         keyCode: KeyDefineEnum.KEY_RB1_BUTTON,
         index: 3,
         keyMappingData: {
-            keyStr: KeyText[KeyDefineEnum.KEY_RB1_BUTTON],
+            keyStr: KeyText[KeyDefineEnum.KEY_RB1_BUTTON][0],
             keyFunctionType: KeyFunctionType.MouseKey,
             keyMappingType: KeyMappingType.Mouse,
             keyTypeCode: MouseKeyCode.ForwardKey,
@@ -59,11 +59,11 @@ export const KEY_LAYOUT : Array<KeyTableData> = [{
         }
     },
     {
-        keyStr: KeyText[KeyDefineEnum.KEY_RB0_BUTTON],
+        keyStr: KeyText[KeyDefineEnum.KEY_RB0_BUTTON][0],
         keyCode: KeyDefineEnum.KEY_RB0_BUTTON,
         index: 4,
         keyMappingData: {
-            keyStr: KeyText[KeyDefineEnum.KEY_RB0_BUTTON],
+            keyStr: KeyText[KeyDefineEnum.KEY_RB0_BUTTON][0],
             keyFunctionType: KeyFunctionType.MouseKey,
             keyMappingType: KeyMappingType.Mouse,
             keyTypeCode: MouseKeyCode.BackKey,
@@ -73,11 +73,11 @@ export const KEY_LAYOUT : Array<KeyTableData> = [{
         }
     },
     {
-        keyStr: KeyText[KeyDefineEnum.DPI_SWITCH_L],
+        keyStr: KeyText[KeyDefineEnum.DPI_SWITCH_L][0],
         keyCode: KeyDefineEnum.DPI_SWITCH_L,
         index: 5,
         keyMappingData: {
-            keyStr: KeyText[KeyDefineEnum.DPI_SWITCH_L],
+            keyStr: KeyText[KeyDefineEnum.DPI_SWITCH_L][0],
             keyFunctionType: KeyFunctionType.MouseKey,
             keyMappingType: KeyMappingType.DPIKey,
             keyTypeCode: DpiCodeEnum.DpiLoop,

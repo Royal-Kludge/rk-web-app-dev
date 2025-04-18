@@ -31,7 +31,7 @@ export class KeyMatrix {
         let key = this.buffer.getUint32(offset);
         return {
             keyRaw: key,
-            keyStr: '',
+            keyStr: [''],
             keyCode: key & 0x0000FFFF,
             keyMappingType: key >> 24,
             keyMappingPara: (key >> 16) & 0xFF
