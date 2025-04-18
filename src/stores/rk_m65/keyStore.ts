@@ -1248,6 +1248,19 @@ export const useKeyStore = defineStore('keyinfo_rk_m65', () => {
     for (index = 0; index < keyData.keyMappingData.keyStr.length; index++) {
       keyStr = `${keyStr}${keyData.keyMappingData.keyStr[index]}`
       if (keyData.keyMappingData.keyStr[index] != '' && keyData.keyMappingData.keyStr[index] != undefined) {
+        switch (keyData.keyMappingData.keyMappingType) {
+          case KeyMappingType.Mousue:
+          case KeyMappingType.Media:
+          case KeyMappingType.DPIKey:
+          case KeyMappingType.ProfileSwitch:
+          case KeyMappingType.SpecialFun:
+          case KeyMappingType.LightSwitch:
+          case KeyMappingType.Pc:
+            if (KeyText[keyData.keyMappingData.keyRaw] != undefined) {
+              keyData.keyMappingData.keyStr[index] = t(KeyText[keyData.keyMappingData.keyRaw][index].valueOf());
+            }
+            break;
+          }
         texts.push(keyData.keyMappingData.keyStr[index])
       }
     }
