@@ -596,7 +596,7 @@ export const useLightStore = defineStore('lightinfo_rk_l98', () => {
         state.keyColor.color = state.keyColors[index];
         let str = getKeyData(index)?.keyStr;
         if (str != undefined) {
-            state.keyColor.keyStr = str.valueOf();
+            state.keyColor.keyStr = str[0].valueOf();
         }
     };
 

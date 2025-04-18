@@ -25,7 +25,7 @@ export interface MouseState extends State {
 }
 
 export interface MouseDefine extends HidDeviceDefine {
-    keyText: Record<number, String>,
+    keyText: Record<number, Array<String>>,
     layout: Array<KeyTableData>,
     protocol: (state: MouseState, device: HIDDevice) => Promise<IProtocol>
 }

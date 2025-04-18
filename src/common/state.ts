@@ -1,4 +1,4 @@
-export const VERSION = '1.10.4'
+export const VERSION = '1.11.0'
 
 
 //20250102 v1.7.0 Add L75 uk support
@@ -12,3 +12,4 @@ export const VERSION = '1.10.4'
 //20250403 v1.10.2 add M70
 //20250403 v1.10.3 add L98 
 //20250408 v1.10.4 Fixed bugs for 20250408 feedback
+//20250418 v1.11.0 Let multiple text display to key

@@ -177,7 +177,7 @@ export const useKeyStore = defineStore('keyinfo_rk_m3', () => {
     const KeyMappingText = (func: KeyFunctionType, keyCode: KeyDefineEnum, modify: KeyDefineEnum, key: number, macroIndex: number = 0): string => {
         switch (func) {
             case KeyFunctionType.Dpi:
-                return KeyText[key & (0xFFFF << 16)].valueOf();
+                return KeyText[key & (0xFFFF << 16)][0].valueOf();
                 break;
             case KeyFunctionType.Keyboard:
                 let keyStr = "";
@@ -189,7 +189,7 @@ export const useKeyStore = defineStore('keyinfo_rk_m3', () => {
                     keyStr += "Alt+";
                 if ((modify & 0x00080000) > 0)
                     keyStr += "Win+";
-                keyStr += KeyText[keyCode].valueOf();
+                keyStr += KeyText[keyCode][0].valueOf();
                 return keyStr;
             case KeyFunctionType.GameAdv:
                 return "key.gameAdv";
@@ -202,7 +202,7 @@ export const useKeyStore = defineStore('keyinfo_rk_m3', () => {
                 }
                 return "Macro";
             default:
-                return KeyText[key].valueOf();
+                return KeyText[key][0].valueOf();
         };
     };
 
