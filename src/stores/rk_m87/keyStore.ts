@@ -1426,8 +1426,7 @@ export const useKeyStore = defineStore('keyinfo_rk_m87', () => {
     for (index = 0; index < keyData.keyMappingData.keyStr.length; index++) {
       keyStr = `${keyStr}${keyData.keyMappingData.keyStr[index]}`
       if (keyData.keyMappingData.keyStr[index] != '' && keyData.keyMappingData.keyStr[index] != undefined) {
-        let tt:String = '';
-        switch  (keyData.keyMappingData.keyMappingType) {
+        switch (keyData.keyMappingData.keyMappingType) {
           case KeyMappingType.Mousue:
           case KeyMappingType.Media:
           case KeyMappingType.DPIKey:
