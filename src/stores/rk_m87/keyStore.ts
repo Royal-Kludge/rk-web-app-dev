@@ -599,6 +599,10 @@ export const useKeyStore = defineStore('keyinfo_rk_m87', () => {
       keys: [
         { key: KeyDefineEnum.KEY_Fn1, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Fn1], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
         { key: KeyDefineEnum.KEY_Fn2, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Fn2], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_CODE131, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_CODE131], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_CODE132, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_CODE132], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_CODE133, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_CODE133], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_CODE14, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_CODE14], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
       ],
     },
     {
@@ -847,6 +851,12 @@ export const useKeyStore = defineStore('keyinfo_rk_m87', () => {
     winKey: false,
     altKey: false
   });
+
+  const collapsedFunKeys: Record<string, Array<KeyDefineEnum>> = {
+    "RK-M87": [KeyDefineEnum.KEY_CODE131, KeyDefineEnum.KEY_CODE132, KeyDefineEnum.KEY_CODE133, KeyDefineEnum.KEY_CODE14],
+    "RK-M87 JP": [],
+    "RK-M87 UK": [KeyDefineEnum.KEY_CODE131, KeyDefineEnum.KEY_CODE132, KeyDefineEnum.KEY_CODE133, KeyDefineEnum.KEY_CODE14],
+  }
 
   const isInited = ref(false);
 
@@ -1751,5 +1761,19 @@ export const useKeyStore = defineStore('keyinfo_rk_m87', () => {
 
     state.mediaKeyDialogShow = false;
   }
-  return { profile, state, keyMatrixLayer, keyMatrixTable, keyClick, keyColor, isSelected, keybgColor, keyText, keySetToDefault, keySetMacro, mapping, isFunSelected, isMacroSelected, clickMacro, confirmSetMacro, setCombineKey, confirmMediaKey, setMediaKey, confirmSetCombineKey, getKeyMatrix, clickProfile, deleteProfile, onKeyDown, newProfile, handleEditClose, renameProfile, exportProfile, importProfile, init, destroy, getKeyMatrixNomal, saveProfile, keySetToDefaultAll, refresh, refreshKeyMatrixData, setToFactory, unSelected, renameSaveProfile, setFunid }
+
+  const isFunKeyVisibility = (keyCode: KeyDefineEnum): boolean => {
+    if (keyboard.keyboardDefine != undefined) {
+      let collapsedKeys = collapsedFunKeys[keyboard.keyboardDefine.name.valueOf()];
+      let i = 0;
+      for (i = 0; i < collapsedKeys.length; i++) {
+        if (keyCode == collapsedKeys[i]) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
+  return { profile, state, keyMatrixLayer, keyMatrixTable, keyClick, keyColor, isSelected, keybgColor, keyText, keySetToDefault, keySetMacro, mapping, isFunSelected, isMacroSelected, clickMacro, confirmSetMacro, setCombineKey, confirmMediaKey, setMediaKey, confirmSetCombineKey, getKeyMatrix, clickProfile, deleteProfile, onKeyDown, newProfile, handleEditClose, renameProfile, exportProfile, importProfile, init, destroy, getKeyMatrixNomal, saveProfile, keySetToDefaultAll, refresh, refreshKeyMatrixData, setToFactory, unSelected, renameSaveProfile, setFunid, isFunKeyVisibility }
 })

@@ -27,7 +27,7 @@
                 <div :class="[`c-p d-flex ai-center jc-center p-2 m-1 bg-grey br-1`, useKey.isFunSelected(item.key)]"
                   @click="useKey.mapping(item.key, item.type)"
                   style="min-width: 36px;min-height: 32px;font-size: 14px;">
-                  <span style="word-wrap: break-word;" v-html="itemText(item)"></span>
+                  <span style="word-wrap: break-word;filter: drop-shadow(#6a6a77 99999px 0);position: relative;left: -99999px;color:#6a6a77" v-html="itemText(item)"></span>
                 </div>
               </el-tooltip>
             </div>
