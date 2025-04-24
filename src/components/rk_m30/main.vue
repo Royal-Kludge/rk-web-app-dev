@@ -67,14 +67,14 @@
                     <div>--------------------------</div>
                 </div>
                 <div class="d-flex but_report" v-if="useProfile.state.isSideKeyEnable">
-                    <div><el-button @click="useKey.clickKeyLayout(4)" :class="[useKey.selectedKeyLayout(4)]">{{
-                        $t(useKey.getKeyLayoutByIndex(4)) }}</el-button>
+                    <div><el-button @click="useKey.clickKeyLayout(3)" :class="[useKey.selectedKeyLayout(3)]">{{
+                        $t(useKey.getKeyLayoutByIndex(3)) }}</el-button>
                     </div>
                     <div>---------------------</div>
                 </div>
                 <div class="d-flex but_back" v-if="useProfile.state.isSideKeyEnable">
-                    <div><el-button @click="useKey.clickKeyLayout(3)" :class="[useKey.selectedKeyLayout(3)]">{{
-                        $t(useKey.getKeyLayoutByIndex(3)) }}</el-button>
+                    <div><el-button @click="useKey.clickKeyLayout(4)" :class="[useKey.selectedKeyLayout(4)]">{{
+                        $t(useKey.getKeyLayoutByIndex(4)) }}</el-button>
                     </div>
                     <div>---------------------</div>
                 </div>

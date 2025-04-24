@@ -79,6 +79,10 @@ export const useKeyStore = defineStore('keyinfo_rk_m30', () => {
                 { key: KeyDefineEnum.KEY_PrevTr, text: 'mediaKey.PrevTr' },
                 { key: KeyDefineEnum.KEY_NextTr, text: 'mediaKey.NextTr' },
                 { key: KeyDefineEnum.KEY_Stop, text: 'mediaKey.Stop' },
+                { key: KeyDefineEnum.KEY_Calculator, text: 'Calculator' },
+                { key: KeyDefineEnum.KEY_MyComputer, text: 'MyComputer' },
+                { key: KeyDefineEnum.KEY_WWW, text: 'shortcuts.homePage' },
+                { key: KeyDefineEnum.KEY_Email, text: 'Email' },
             ],
         },
         {
@@ -91,11 +95,6 @@ export const useKeyStore = defineStore('keyinfo_rk_m30', () => {
             { key: KeyDefineEnum.KEY_L_ALT, text: 'Alt' },
             { key: KeyDefineEnum.KEY_L_SHIFT, text: 'Shift' }
             ],
-        },
-        {
-            function: KeyFunctionType.Macro,
-            text: "macroKey.title",
-            keys: [],
         },
         {
             function: KeyFunctionType.GameAdv,
@@ -114,12 +113,6 @@ export const useKeyStore = defineStore('keyinfo_rk_m30', () => {
             function: KeyFunctionType.Shortcuts,
             text: "shortcuts.title",
             keys: [
-                { key: KeyDefineEnum.KEY_SysBkBrigthInc, text: 'shortcuts.brightI' },
-                { key: KeyDefineEnum.KEY_SysBkBrigthDec, text: 'shortcuts.brightD' },
-                { key: KeyDefineEnum.KEY_Calculator, text: 'Calculator' },
-                { key: KeyDefineEnum.KEY_MyComputer, text: 'MyComputer' },
-                { key: KeyDefineEnum.KEY_WWW, text: 'shortcuts.homePage' },
-                { key: KeyDefineEnum.KEY_Email, text: 'Email' },
                 { key: KeyDefineEnum.KEY_Refresh, text: 'Refresh' },
                 { key: KeyDefineEnum.KEY_ALT_TAB, text: 'shortcuts.switchApp' },
                 { key: KeyDefineEnum.KEY_CTRL_C, text: 'shortcuts.copy' },

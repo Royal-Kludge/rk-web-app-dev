@@ -21,7 +21,6 @@
                     </el-radio-group>
                 </div>
             </div>
-            -->
             <div class="flex-1 bg-white-1 p-3 m-4" style="border-radius: 10px 10px 10px 10px;line-height: 30px;">
                 <div class="fw-b fs-xxl pb-2" style="border-bottom: 1px solid #E7EAF2;">
                     {{ $t("property.title_4") }}
@@ -32,36 +31,6 @@
                         <el-radio-button v-for="item in state.sleepList" :value="item.value" :label="item.value">
                             {{ $t(item.label) }}
                         </el-radio-button>
-                    </el-radio-group>
-                </div>
-            </div>
-            <div class="flex-1 bg-white-1 p-3 m-4" style="border-radius: 10px 10px 10px 10px;line-height: 30px;">
-                <div class="fw-b fs-xxl pb-2" style="border-bottom: 1px solid #E7EAF2;">
-                    {{ $t("property.title_5") }}
-                </div>
-                <div class="my-3"> </div>
-                <div class="my-3 text-center">
-                    <el-input-number style="width: 150px" v-model="state.debounceTime" type="number" :min="1" max="99"
-                        @change="useProperty.setDebounceTime(state.debounceTime)" /> ms
-                </div>
-            </div>
-        </div>
-        <div class="d-flex flex-column flex-1">
-            <!--
-            <div class="flex-1 bg-white-1 p-3 m-4" style="border-radius: 10px 10px 10px 10px;line-height: 30px;">
-                <div class="fw-b fs-xxl pb-2" style="border-bottom: 1px solid #E7EAF2;">
-                    {{ $t("property.title_3") }}
-                </div>
-                <div class="my-3">
-                    <div>{{ $t("property.tip_5") }}</div>
-                    <div>{{ $t("property.tip_6") }}</div>
-                </div>
-                <div class="my-3">
-                    <el-radio-group v-model="state.sensorMode" text-color="#00ffff" fill="#ffff00"
-                        @change="useProperty.setSensorMode(state.sensorMode)">
-                        <el-radio v-for="item in state.modeList" :value="item.value" :label="item.value" class="mx-5">
-                            {{ $t(item.label) }}
-                        </el-radio>
                     </el-radio-group>
                 </div>
             </div>
@@ -87,6 +56,7 @@
                                 @change="useProperty.setAngleSnaping" /></div>
                     </div>
                 </div>
+                <!--
                 <div class="mb-4" style="border-bottom: 1px solid #E7EAF2;">
                     <div class="fw-b fs-xxl">
                         {{ $t("property.label_3") }}
@@ -97,6 +67,7 @@
                                 @change="useProperty.setMotionSync" /></div>
                     </div>
                 </div>
+                -->
                 <!--
                 <div>
                     <div class="fw-b fs-xxl">
@@ -110,7 +81,38 @@
                 </div>
                 -->
             </div>
+            <div class="flex-1 bg-white-1 p-3 m-4" style="border-radius: 10px 10px 10px 10px;line-height: 30px;">
+                <div class="fw-b fs-xxl pb-2" style="border-bottom: 1px solid #E7EAF2;">
+                    {{ $t("property.title_5") }}
+                </div>
+                <div class="my-3"> </div>
+                <div class="my-3 text-center">
+                    <el-input-number style="width: 150px" v-model="state.debounceTime" type="number" :min="1" max="99"
+                        @change="useProperty.setDebounceTime(state.debounceTime)" /> ms
+                </div>
+            </div>
         </div>
+        <!--
+        <div class="d-flex flex-column flex-1">
+            <div class="flex-1 bg-white-1 p-3 m-4" style="border-radius: 10px 10px 10px 10px;line-height: 30px;">
+                <div class="fw-b fs-xxl pb-2" style="border-bottom: 1px solid #E7EAF2;">
+                    {{ $t("property.title_3") }}
+                </div>
+                <div class="my-3">
+                    <div>{{ $t("property.tip_5") }}</div>
+                    <div>{{ $t("property.tip_6") }}</div>
+                </div>
+                <div class="my-3">
+                    <el-radio-group v-model="state.sensorMode" text-color="#00ffff" fill="#ffff00"
+                        @change="useProperty.setSensorMode(state.sensorMode)">
+                        <el-radio v-for="item in state.modeList" :value="item.value" :label="item.value" class="mx-5">
+                            {{ $t(item.label) }}
+                        </el-radio>
+                    </el-radio-group>
+                </div>
+            </div>
+        </div>
+        -->
         <!-- <div class="d-flex flex-column flex-1 mx-4 my-4">
             <div class="bg-white p-2 fw-b" style="border-radius: 10px 10px 0px 0px;line-height: 30px;">
                 {{ $t("property.title") }}

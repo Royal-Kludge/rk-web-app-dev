@@ -93,11 +93,6 @@ export const useKeyStore = defineStore('keyinfo_rk_m3', () => {
             ],
         },
         {
-            function: KeyFunctionType.Macro,
-            text: "macroKey.title",
-            keys: [],
-        },
-        {
             function: KeyFunctionType.GameAdv,
             text: "key.gameAdv",
             type: KeyMappingType.KeyCombo,
