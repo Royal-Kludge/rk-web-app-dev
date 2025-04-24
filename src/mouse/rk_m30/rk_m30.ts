@@ -1,17 +1,15 @@
 import { Protocol } from '@/mouse/protocol'
 import type { Macros } from './macros';
-import type { BasicTable } from './basicTable'
-import type { LedTable } from './ledTable';
+import type { ConfigTable } from './configTable';
 import type { KeyTable } from './keyTable';
 import { mouse } from '../mouse';
 import type { LeftSideKey } from '../interface';
 
-export class RK_M3_Data {
+export class RK_M30_Data {
     donglePwd: number = 0;
     leftSideKey?: LeftSideKey;
     macros?: Macros;
-    basic?: BasicTable;
-    led?: LedTable;
+    config?: ConfigTable;
     keys?: KeyTable;
     isDestroy: boolean = false;
     
@@ -35,31 +33,24 @@ export class RK_M3_Data {
                 this.keys.loadDefualtData();
             }
 
-            if (this.led != undefined) {
-                this.led.loadDefualtData();
+            if (this.config != undefined) {
+                this.config.loadDefualtData();
             }
         }
     }
 }
 
-export abstract class RK_M3 extends Protocol {
+export abstract class RK_M30 extends Protocol {
 
-    data: RK_M3_Data = new RK_M3_Data();
+    data: RK_M30_Data = new RK_M30_Data();
 
     abstract onGetReport(reportId: number, data: DataView): Promise<void>;
     abstract getFwVer(): Promise<void>
-    abstract getMacros(): Promise<void>;
-    abstract setMacros(): Promise<void>;
     abstract getOnline(): Promise<void>;
     abstract getBattery(): Promise<void>;
-    abstract setDpi(): Promise<void>;
     abstract setFactory(): Promise<void>;
-    abstract setReportRate(): Promise<void>;
-    abstract setKeyMapping(index: number): Promise<void>;
-    abstract setDebounce(): Promise<void>;
-    abstract setPerformance(): Promise<void>;
-    abstract setLodHeight(): Promise<void>;
-    abstract setSleepTime(): Promise<void>;
+    abstract setConfigData(): Promise<void>;
+    abstract setKeyMapping(): Promise<void>;
 
     callback = (e: HIDInputReportEvent) => this.processKeyboardReport(e);
 
@@ -71,9 +62,8 @@ export abstract class RK_M3 extends Protocol {
         this.device.removeEventListener("inputreport", this.callback);
         this.data.leftSideKey = undefined;
         this.data.macros = undefined;
-        this.data.basic = undefined;
         this.data.keys = undefined;
-        this.data.led = undefined;
+        this.data.config = undefined;
         this.data.isDestroy = true;
     }
 

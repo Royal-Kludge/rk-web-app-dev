@@ -39,5 +39,5 @@ function mouseStartLoop() {
                 mouseLastTime.setTime(currentTime.getTime());
             }
         }
-    }, 50);
+    }, 100);
 }

@@ -28,7 +28,7 @@
     </div>
 </template>
 <script setup lang="ts">
-import { useMenuStore } from "@/stores/rk_m3/menuStore";
+import { useMenuStore } from "@/stores/rk_m30/menuStore";
 import { storeToRefs } from "pinia";
 import { reactive, onMounted, onBeforeUnmount } from "vue";
 import { mouse } from '@/mouse/mouse'
