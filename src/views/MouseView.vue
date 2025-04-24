@@ -1,6 +1,7 @@
 <template>
     <div v-if="isMouseConnect()" class="h-100">
         <RK_M3_Page v-if="productId == 1" />
+        <RK_M30_Page v-if="productId == 2" />
     </div>
     <div class="d-flex flex-column ai-center h-100" v-else>
         <div class="p-5 fs-big m-5 mb-4">No mouse connected to dongle</div>
@@ -10,9 +11,11 @@
 </template>
 
 <script setup lang="ts">
-import { mouse, RK_MOUSE_EVENT_DEFINE } from '@/mouse/mouse'
+import { mouse } from '@/mouse/mouse'
+import { RK_MOUSE_EVENT_DEFINE } from '@/mouse/state'
 import { reactive, ref, onMounted, onBeforeUnmount } from 'vue';
 import RK_M3_Page from '@/components/rk_m3/home.vue'
+import RK_M30_Page from '@/components/rk_m30/home.vue'
 import { DonglePwdDefineList, MouseDefineList } from '@/mouse/state';
 import { ConnectionStatusEnum, ConnectionType } from '@/device/enum';
 import { storage } from '@/common/storage';
@@ -60,9 +63,11 @@ onMounted(async () => {
 
             mouse.protocol = await mouse.mouseDefine.protocol(mouse.state, mouse.device);
 
-            mouse.device.addEventListener("inputreport", mouse.callback);
+            if (mouse != undefined && mouse.report != undefined) {
+                mouse.report.addEventListener(RK_MOUSE_EVENT_DEFINE.OnBatteryGotten, batteryGotten, false);
+            }
 
-            mouse.addEventListener(RK_MOUSE_EVENT_DEFINE.OnBatteryGotten, batteryGotten, false);
+            mouse.device.addEventListener("inputreport", mouse.callback);
             await mouse.protocol?.init();
 
             if (mouse.state.fwVersion != undefined) data.value.fwVersion = mouse.state.fwVersion.valueOf();
@@ -71,14 +76,19 @@ onMounted(async () => {
             switch (mouse.mouseDefine.name.valueOf()) {
                 case 'RK-M3':
                     productId.value = 1
+                case 'RK-M30':
+                    productId.value = 2
                     break;
             }
 
             checkProfileVersion();
         } else if (mouse.state.connectType == ConnectionType.Dongle) {
-            mouse.addEventListener(RK_MOUSE_EVENT_DEFINE.OnBatteryGotten, batteryGotten, false);
-            mouse.addEventListener(RK_MOUSE_EVENT_DEFINE.OnDongleStatusChanged, dongleStatusChanged, false);
-            mouse.addEventListener(RK_MOUSE_EVENT_DEFINE.OnPasswordGotten, passwordGotten, false);
+            if (mouse != undefined && mouse.report != undefined) {
+                mouse.report.addEventListener(RK_MOUSE_EVENT_DEFINE.OnBatteryGotten, batteryGotten, false);
+                mouse.report.addEventListener(RK_MOUSE_EVENT_DEFINE.OnDongleStatusChanged, dongleStatusChanged, false);
+                mouse.report.addEventListener(RK_MOUSE_EVENT_DEFINE.OnPasswordGotten, passwordGotten, false);
+            }
+
             mouse.device.addEventListener("inputreport", mouse.callback);
             await mouse.getOnline();
         }
@@ -86,22 +96,22 @@ onMounted(async () => {
 });
 
 onBeforeUnmount(() => {
-    if (mouse != undefined) {
+    if (mouse != undefined && mouse.report != undefined) {
         mouse.device?.addEventListener("inputreport", mouse.callback);
-        mouse.removeEventListener(RK_MOUSE_EVENT_DEFINE.OnBatteryGotten, batteryGotten, false);
-        mouse.removeEventListener(RK_MOUSE_EVENT_DEFINE.OnDongleStatusChanged, dongleStatusChanged, false);
-        mouse.removeEventListener(RK_MOUSE_EVENT_DEFINE.OnPasswordGotten, passwordGotten, false);
+        mouse.report.removeEventListener(RK_MOUSE_EVENT_DEFINE.OnBatteryGotten, batteryGotten, false);
+        mouse.report.removeEventListener(RK_MOUSE_EVENT_DEFINE.OnDongleStatusChanged, dongleStatusChanged, false);
+        mouse.report.removeEventListener(RK_MOUSE_EVENT_DEFINE.OnPasswordGotten, passwordGotten, false);
     }
 });
 
 const disconnect = () => {
     state.connectState = ConnectionStatusEnum.Disconnected;
     
-    if (mouse != undefined) {
+    if (mouse != undefined && mouse.report != undefined) {
         mouse.device?.addEventListener("inputreport", mouse.callback);
-        mouse.removeEventListener(RK_MOUSE_EVENT_DEFINE.OnBatteryGotten, batteryGotten, false);
-        mouse.removeEventListener(RK_MOUSE_EVENT_DEFINE.OnDongleStatusChanged, dongleStatusChanged, false);
-        mouse.removeEventListener(RK_MOUSE_EVENT_DEFINE.OnPasswordGotten, passwordGotten, false);
+        mouse.report.removeEventListener(RK_MOUSE_EVENT_DEFINE.OnBatteryGotten, batteryGotten, false);
+        mouse.report.removeEventListener(RK_MOUSE_EVENT_DEFINE.OnDongleStatusChanged, dongleStatusChanged, false);
+        mouse.report.removeEventListener(RK_MOUSE_EVENT_DEFINE.OnPasswordGotten, passwordGotten, false);
     }
 
     mouse.close();
@@ -158,6 +168,8 @@ const passwordGotten = async (event: any) => {
         switch (mouse.mouseDefine.name.valueOf()) {
             case 'RK-M3':
                 productId.value = 1
+            case 'RK-M30':
+                productId.value = 2
                 break;
         }
 

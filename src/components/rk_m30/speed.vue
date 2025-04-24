@@ -55,10 +55,10 @@
                             </div>
                         </div>
                         <div class="d-flex text-white-2 dpi mt-5">
-                            <div class="mx-4">50</div>
-                            <el-slider v-model="state.dpiLevelValue" :min="50" :max="42000" show-stops :step="50"
+                            <div class="mx-4">100</div>
+                            <el-slider v-model="state.dpiLevelValue" :min="100" :max="24000" show-stops :step="100"
                                 tooltip-class="tooltip" @change="useSpeed.setDpiValue(state.dpiLevelValue)"></el-slider>
-                            <div class="mx-4">42000</div>
+                            <div class="mx-4">24000</div>
                         </div>
                     </div>
                 </div>
@@ -143,12 +143,12 @@
 
 <script setup lang="ts">
 import { ref, reactive, onMounted, onBeforeUnmount } from 'vue';
-import { useSpeedStore } from "@/stores/rk_m3/speedStore";
+import { useSpeedStore } from "@/stores/rk_m30/speedStore";
 import MainMeun from "./mainMenu.vue";
 import { storeToRefs } from 'pinia';
 import { mouse } from '@/mouse/mouse'
 import { RK_MOUSE_EVENT_DEFINE } from '@/mouse/state'
-import { RK_M3 } from "@/mouse/rk_m3/rk_m3";
+import { RK_M30 } from "@/mouse/rk_m30/rk_m30";
 
 const useSpeed = useSpeedStore();
 
@@ -158,7 +158,7 @@ onMounted(async () => {
     if (mouse != undefined && mouse.report != undefined) {
         mouse.report.addEventListener(RK_MOUSE_EVENT_DEFINE.OnDpiLevelChanged, dpiLevelChanged, false);
     }
-
+    
     await useSpeed.init();
 });
 
@@ -169,7 +169,7 @@ onBeforeUnmount(() => {
 });
 
 const dpiLevelChanged = async (event: any) => {
-    (mouse.protocol as RK_M3).data?.led?.setDpiLevel(event.detail as number, state.value.maxDpiLevel);
+    (mouse.protocol as RK_M30).data?.config?.setDpiLevel(event.detail as number, state.value.maxDpiLevel);
     useSpeed.refresh();
 };
 </script>

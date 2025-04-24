@@ -1,29 +1,9 @@
-import type { IProtocol, MouseDefine } from './interface'
+import type { IMouseReport, IProtocol, MouseDefine } from './interface'
 import { ConnectionType, ConnectionEventEnum, ConnectionStatusEnum } from '../device/enum'
-import { defaultState } from './state'
+import { defaultState, MouseReportList } from './state'
 import type { HidDeviceDefine } from '@/device/interface';
 import { Device } from '@/device/device';
-import { GetOnlinePacket } from './packets/getOnlinePacket';
-import { REPORT_ID_POPUP, REPORT_ID_USB, POPUP_CMD_ID } from './packets/packet';
-import { GetBatteryPacket } from './packets/getBatteryPacket';
-
-export const RK_MOUSE_EVENT_DEFINE: {
-    OnDongleStatusChanged: string;
-    OnDpiLevelChanged: string;
-    OnPasswordGotten: string;
-    OnBatteryGotten: string;
-    OnReportFinish: string;
-    OnReportStart: string;
-    OnMacrosGotten: string;
-} = {
-    OnDongleStatusChanged: 'OnDongleStatusChanged',
-    OnDpiLevelChanged: 'OnDpiLevelChanged',
-    OnPasswordGotten: 'OnPasswordGotten',
-    OnBatteryGotten: 'OnBatteryGotten',
-    OnReportFinish: 'OnReportFinish',
-    OnReportStart: 'OnReportStart',
-    OnMacrosGotten: 'OnMacrosGotten',
-}
+import type { Mouse_Report } from './mouse_report';
 
 /**
  * Main class.
@@ -32,6 +12,7 @@ export class Mouse extends Device {
 
     /** Device protocol */
     protocol?: IProtocol;
+    report?: Mouse_Report;
 
     /** Current keyboard state */
     state = defaultState;
@@ -60,6 +41,8 @@ export class Mouse extends Device {
                 this.state.productId = this.device.productId;
 
                 this.state.connectType = deviceDefine.connectType;
+
+                this.report = MouseReportList[deviceDefine.name.valueOf()](this.state, this.device) as Mouse_Report;
                 
                 this.dispatchEvent(new MouseEvent("connection", this));
             }
@@ -84,99 +67,29 @@ export class Mouse extends Device {
             this.mouseDefine = undefined;
             this.device = undefined;
             this.protocol = undefined;
+            this.report = undefined;
 
             this.dispatchEvent(new MouseEvent("connection", this));
         }
     }
 
     async getOnline(): Promise<void> {
-        let packet = new GetOnlinePacket();
-        let u8Data = new DataView(new Uint8Array(0).buffer);
-        
-        if (this.device != undefined) {
-            packet.setPayload(u8Data);
-            await this.device.sendFeatureReport(REPORT_ID_USB, packet.setReport);
-            console.log(`SetFeature [${packet.setReport.byteLength}] bytes -> ${packet.setReport.toString()}`);
-            
-            await this.sleep(50);
-            let data = await this.device.receiveFeatureReport(REPORT_ID_USB);
-
-            let u8 = new Uint8Array(data.buffer, 0, data.buffer.byteLength);
-            console.log(`GetFeature [${data.byteLength}] bytes -> ${u8.toString()}`);
-
-            if (u8.length >= 16 && u8[2] == 0x00) {
-                let tmp = new DataView(new Uint8Array(8).buffer);
-                let index = 0;
-                for (index = 2;index <= 7; index++) {
-                    tmp.setUint8(index, u8[index + 5]);
-                }
-                this.dispatchEvent(new CustomEvent(RK_MOUSE_EVENT_DEFINE.OnPasswordGotten, { detail: { pwd: tmp.getBigUint64(0), status: (u8[6] == 0x01 ? ConnectionStatusEnum.Connected : ConnectionStatusEnum.Disconnected) } }));
-            }
+        if (this.report != undefined) {
+            this.report.getOnline();
         }
     }
 
     async getBattery(): Promise<void> {
-        let packet = new GetBatteryPacket();
-        packet.sn = 0x02;
-        packet.dataOffset = (0x02 << 6) | 0x01;
-        let u8Data = new DataView(new Uint8Array(0).buffer);
-        
-        if (this.device != undefined) {
-            packet.setPayload(u8Data);
-            await this.device.sendFeatureReport(REPORT_ID_USB, packet.setReport);
-            console.log(`SetFeature [${packet.setReport.byteLength}] bytes -> ${packet.setReport.toString()}`);
-            
-            await this.sleep(100);
-            let data = await this.device.receiveFeatureReport(REPORT_ID_USB);
-
-            let u8 = new Uint8Array(data.buffer, 0, data.buffer.byteLength);
-            console.log(`GetFeature [${data.byteLength}] bytes -> ${u8.toString()}`);
-
-            if (data.byteLength >= 16 && data.getUint8(2) == 0x00 && data.getUint8(5) == 0x01) {
-                let batState = data.getUint8(6) >> 7;
-                let batValue = data.getUint8(6) & 0x7F;
-                this.dispatchEvent(new CustomEvent(RK_MOUSE_EVENT_DEFINE.OnBatteryGotten, { detail: { state: batState, value: batValue } }));
-            }
+        if (this.report != undefined) {
+            this.report.getBattery();
         }
     }
 
     async onReport(report: HIDInputReportEvent) {
-        let reportId = report.reportId;
-        const { data } = report;
-
-        try {
-            let u8 = new Uint8Array(data.buffer, 0, data.buffer.byteLength);
-            console.log(`GetReport [${data.byteLength}] bytes -> ${u8.toString()}`);
-    
-            if (data.byteLength == 31 && reportId == REPORT_ID_POPUP) {
-                if (data.getUint8(0) == POPUP_CMD_ID) {
-                    let id = data.getUint8(1);
-                    switch (id) {
-                        case 0x02:
-                            let val = data.getUint8(2);
-                            this.state.ConnectionStatus = val == 0x01 ? ConnectionStatusEnum.Connected : ConnectionStatusEnum.Disconnected;
-                            this.dispatchEvent(new CustomEvent(RK_MOUSE_EVENT_DEFINE.OnDongleStatusChanged, { detail: this.state.ConnectionStatus }));
-                            break;
-                        case 0x03:
-                            let dpiLevel = data.getUint8(2);
-                            this.dispatchEvent(new CustomEvent(RK_MOUSE_EVENT_DEFINE.OnDpiLevelChanged, { detail: dpiLevel }));
-                            break;
-                        case 0x05:
-                            let batState = data.getUint8(2) >> 7;
-                            let batValue = data.getUint8(2) & 0x7F;
-                            this.dispatchEvent(new CustomEvent(RK_MOUSE_EVENT_DEFINE.OnBatteryGotten, { detail: { state: batState, value: batValue } }));
-                            break;
-                    }
-                }
-            }
-        } catch (e) {
-
+        if (this.report != undefined) {
+            this.report.onReport(report);
         }
     };
-
-    async sleep(ms: number): Promise<void> {
-        return new Promise(resolve => setTimeout(resolve, ms));
-    }
 }
 
 declare class MouseEvent extends CustomEvent<Mouse> {

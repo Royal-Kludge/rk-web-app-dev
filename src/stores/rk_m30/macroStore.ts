@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { reactive, ref } from 'vue';
-import { Macro, Macros, Action, ActionType } from '@/mouse/rk_m3/macros';
-import { RK_M3 } from '@/mouse/rk_m3/rk_m3';
+import { Macro, Macros, Action, ActionType } from '@/mouse/rk_m30/macros';
+import { RK_M30 } from '@/mouse/rk_m30/rk_m30';
 import { mouse } from '@/mouse/mouse'
 import { RK_MOUSE_EVENT_DEFINE } from '@/mouse/state'
 import { storage } from '@/common/storage';
@@ -10,8 +10,8 @@ import fileSaver from "file-saver";
 import { ElMessage } from 'element-plus'
 import { KeyDefineEnum, KeyText } from "@/common/keyCode";
 
-export const useMacroStore = defineStore("macrostore_rk_m3", () => {
-    const rk_m3 = ref<RK_M3>();
+export const useMacroStore = defineStore("macrostore_rk_m30", () => {
+    const rk_m30 = ref<RK_M30>();
     const macros = ref<Macros>();
     const macro = ref<Macro>();
     const key = ref<string>('');
@@ -57,13 +57,13 @@ export const useMacroStore = defineStore("macrostore_rk_m3", () => {
     const isInited = ref(false);
 
     const init = async () => {
-        if (rk_m3.value == undefined || (rk_m3.value != undefined && rk_m3.value.data.isDestroy)) {
-            rk_m3.value = (mouse.protocol as RK_M3);
+        if (rk_m30.value == undefined || (rk_m30.value != undefined && rk_m30.value.data.isDestroy)) {
+            rk_m30.value = (mouse.protocol as RK_M30);
             mouse.addEventListener("connection", connectionEventCallback);
         }
 
-        if (rk_m3.value != undefined && !isInited.value) {
-            rk_m3.value.addEventListener(RK_MOUSE_EVENT_DEFINE.OnMacrosGotten, macroGotten, false);
+        if (rk_m30.value != undefined && !isInited.value) {
+            rk_m30.value.addEventListener(RK_MOUSE_EVENT_DEFINE.OnMacrosGotten, macroGotten, false);
 
             let tmp = storage.get(`${mouse.mouseDefine?.name}_macro`) as Macros;
             if (tmp != null) {
@@ -77,15 +77,15 @@ export const useMacroStore = defineStore("macrostore_rk_m3", () => {
                     tm.refresh();
                     ms.add(tm);
                 }
-                rk_m3.value.data.macros = ms;
-                macros.value = rk_m3.value.data.macros;
+                rk_m30.value.data.macros = ms;
+                macros.value = rk_m30.value.data.macros;
                 macro.value = macros.value.get()[0];
                 refresh();
             } else {
                 let ms = new Macros();
                 ms.add(new Macro("Default Macro"));
-                rk_m3.value.data.macros = ms;
-                macros.value = rk_m3.value.data.macros;
+                rk_m30.value.data.macros = ms;
+                macros.value = rk_m30.value.data.macros;
                 macro.value = macros.value.get()[0];
             }
 
@@ -146,14 +146,14 @@ export const useMacroStore = defineStore("macrostore_rk_m3", () => {
     };
 
     const destroy = () => {
-        if (rk_m3.value != undefined) {
-            rk_m3.value.removeEventListener(RK_MOUSE_EVENT_DEFINE.OnMacrosGotten, macroGotten, false);
+        if (rk_m30.value != undefined) {
+            rk_m30.value.removeEventListener(RK_MOUSE_EVENT_DEFINE.OnMacrosGotten, macroGotten, false);
         }
 
         if (mouse.state.ConnectionStatus != ConnectionStatusEnum.Connected) {
             mouse.removeEventListener("connection", connectionEventCallback);
             isInited.value = false;
-            rk_m3.value = undefined;
+            rk_m30.value = undefined;
         }
     };
 
@@ -169,22 +169,22 @@ export const useMacroStore = defineStore("macrostore_rk_m3", () => {
     };
 
     const getMacroData = async () => {
-        if (rk_m3.value != undefined) {
-            await rk_m3.value.getMacros();
+        if (rk_m30.value != undefined) {
+            //await rk_m30.value.getMacros();
         }
     }
 
     const setMacroData = async () => {
-        if (rk_m3.value != undefined) {
-            await rk_m3.value.setMacros();
+        if (rk_m30.value != undefined) {
+            //await rk_m30.value.setMacros();
         }
     }
 
     const clearMacro = async () => {
-        if (rk_m3.value != undefined) {
+        if (rk_m30.value != undefined) {
             let ms = new Macros();
-            rk_m3.value.data.macros = ms;
-            macros.value = rk_m3.value.data.macros;
+            rk_m30.value.data.macros = ms;
+            macros.value = rk_m30.value.data.macros;
             macro.value = undefined;
         }
     }

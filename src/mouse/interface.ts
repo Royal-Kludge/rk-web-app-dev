@@ -74,6 +74,15 @@ export interface IProtocol {
     destroy: () => Promise<void> | null;
 }
 
+export interface IMouseReport {
+    state: MouseState;
+    device?: HIDDevice
+
+    getOnline(): Promise<void> 
+    onReport(report: HIDInputReportEvent): void
+    getBattery(): Promise<void>
+}
+
 export interface IPacket {
     fromReportData(buffer: DataView) : IPacket;
 }

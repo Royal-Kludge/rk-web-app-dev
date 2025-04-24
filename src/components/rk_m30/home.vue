@@ -5,11 +5,11 @@
             <div>
                 <Meun />
             </div>
-            <RK_M3_Page v-if="meunid > 0" />
+            <RK_M30_Page v-if="meunid > 0" />
             <div v-else class="d-flex flex-column jc-center ai-center">
                 <div class="d-flex flex-column jc-center ai-center">
                     <div class="text-black my-4" style="font-size: 120px; font-weight: bold">
-                        RK-M3
+                        RK-M30
                     </div>
                     <div class="my-4 c-p" @click="setMeunid();">
                         <el-tooltip effect="light" :content="$t('home.title_tip')" placement="top"
@@ -29,17 +29,17 @@
 </template>
 
 <script setup lang="ts">
-import { useMenuStore } from "@/stores/rk_m3/menuStore";
+import { useMenuStore } from "@/stores/rk_m30/menuStore";
 import { mouse } from '@/mouse/mouse'
 import { RK_MOUSE_EVENT_DEFINE } from '@/mouse/state'
-import RK_M3_Page from '@/components/rk_m3/index.vue'
-import Meun from "@/components/rk_m3/menu.vue";
+import RK_M30_Page from '@/components/rk_m30/index.vue'
+import Meun from "@/components/rk_m30/menu.vue";
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 import { storeToRefs } from "pinia";
-import type { RK_M3 } from '@/mouse/rk_m3/rk_m3';
-import { useKeyStore } from "@/stores/rk_m3/keyStore";
-import { useProfileStore } from "@/stores/rk_m3/profileStore";
-import { useSpeedStore } from "@/stores/rk_m3/speedStore";
+import type { RK_M30 } from '@/mouse/rk_m30/rk_m30';
+import { useKeyStore } from "@/stores/rk_m30/keyStore";
+import { useProfileStore } from "@/stores/rk_m30/profileStore";
+import { useSpeedStore } from "@/stores/rk_m30/speedStore";
 
 const useProfile = useProfileStore();
 const useKey = useKeyStore();
@@ -50,7 +50,7 @@ const { state } = storeToRefs(useSpeed);
 const { meunid } = storeToRefs(useMenu);
 
 const loading = ref(false)
-const rk_m3 = ref<RK_M3>();
+const rk_m30 = ref<RK_M30>();
 
 const setMeunid = () => {
     useMenu.setMeunid(1);
@@ -62,21 +62,21 @@ onMounted(async () => {
     await useProfile.init();
     await useKey.init();
 
-    if (rk_m3.value == undefined || (rk_m3.value != undefined && rk_m3.value.data.isDestroy)) {
-        rk_m3.value = mouse.protocol as RK_M3;
-        rk_m3.value.addEventListener(RK_MOUSE_EVENT_DEFINE.OnReportStart, reportStart, false);
-        rk_m3.value.addEventListener(RK_MOUSE_EVENT_DEFINE.OnReportFinish, reportFinish, false);
+    if (rk_m30.value == undefined || (rk_m30.value != undefined && rk_m30.value.data.isDestroy)) {
+        rk_m30.value = mouse.protocol as RK_M30;
+        rk_m30.value.addEventListener(RK_MOUSE_EVENT_DEFINE.OnReportStart, reportStart, false);
+        rk_m30.value.addEventListener(RK_MOUSE_EVENT_DEFINE.OnReportFinish, reportFinish, false);
 
         await mouse.getBattery();
-        await rk_m3.value.sleep(300);
-        await rk_m3.value.getFwVer();
+        await rk_m30.value.sleep(300);
+        await rk_m30.value.getFwVer();
     }
 });
 
 onBeforeUnmount(() => {
-    if (rk_m3.value != undefined) {
-        rk_m3.value.removeEventListener(RK_MOUSE_EVENT_DEFINE.OnReportFinish, reportFinish, false);
-        rk_m3.value.removeEventListener(RK_MOUSE_EVENT_DEFINE.OnReportStart, reportStart, false);
+    if (rk_m30.value != undefined) {
+        rk_m30.value.removeEventListener(RK_MOUSE_EVENT_DEFINE.OnReportFinish, reportFinish, false);
+        rk_m30.value.removeEventListener(RK_MOUSE_EVENT_DEFINE.OnReportStart, reportStart, false);
     }
 });
 

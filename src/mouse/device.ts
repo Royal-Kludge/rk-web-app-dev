@@ -20,3 +20,23 @@ export const RK_M3_24G_DEFINE: HidDeviceDefine = {
     connectType: ConnectionType.Dongle,
     deviceType: DeviceType.Mouse,
 }
+
+export const RK_M30_WIRE_DEFINE: HidDeviceDefine = {
+    name: "rk m30 wire",
+    vendorId: 0x258A,
+    productId: 0x0136,
+    usagePage: 0xFF00,
+    usage: 0x0001,
+    connectType: ConnectionType.USB,
+    deviceType: DeviceType.Mouse,
+}
+
+export const RK_M30_24G_DEFINE: HidDeviceDefine = {
+    name: "rk m30 24G",
+    vendorId: 0x258A,
+    productId: 0x0138,
+    usagePage: 0xFF00,
+    usage: 0x0001,
+    connectType: ConnectionType.Dongle,
+    deviceType: DeviceType.Mouse,
+}

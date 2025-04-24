@@ -8,7 +8,7 @@ import { SetFactoryPacket } from './packets/setFactoryPacket';
 import { SetLedParamPacket } from './packets/setLedParamPacket';
 import { SetPerKeyPacket } from './packets/setPerKeyPacket';
 import { GetOnlinePacket } from './packets/getOnlinePacket';
-import { RK_MOUSE_EVENT_DEFINE } from '../mouse';
+import { RK_MOUSE_EVENT_DEFINE } from '../state';
 import { BigDataTransType, GetReportCmdId, PopupCmdId } from '../enum';
 import { SetStartDataTransPacket } from './packets/setStartDataTransPacket';
 import { SetInitOtaEventPacket } from './packets/setInitOtaEventPacket';
@@ -180,24 +180,24 @@ export class RK_M3_Mouse extends RK_M3 {
     }
 
     async getOnline(): Promise<void> {
-        let packet = new GetOnlinePacket();
-        let u8Data = new DataView(new Uint8Array(0).buffer);
+        // let packet = new GetOnlinePacket();
+        // let u8Data = new DataView(new Uint8Array(0).buffer);
         
-        if (this.device != undefined) {
-            packet.setPayload(u8Data);
-            await this.setFeature(REPORT_ID_USB, packet.setReport);
-            let data = await this.getFeature(REPORT_ID_USB);
+        // if (this.device != undefined) {
+        //     packet.setPayload(u8Data);
+        //     await this.setFeature(REPORT_ID_USB, packet.setReport);
+        //     let data = await this.getFeature(REPORT_ID_USB);
 
-            if (data.byteLength >= 16 && data.getUint8(2) == 0x00 && data.getUint8(6) == 0x01) {
-                let tmp = new DataView(new Uint8Array(8).buffer);
-                let index = 0;
-                for (index = 2;index <= 7; index++) {
-                    tmp.setUint8(index, data.getUint8(index + 5));
-                }
-                let pwd = tmp.getBigUint64(0);
-                this.dispatchEvent(new CustomEvent(RK_MOUSE_EVENT_DEFINE.OnPasswordGotten, { detail: pwd }));
-            }
-        }
+        //     if (data.byteLength >= 16 && data.getUint8(2) == 0x00 && data.getUint8(6) == 0x01) {
+        //         let tmp = new DataView(new Uint8Array(8).buffer);
+        //         let index = 0;
+        //         for (index = 2;index <= 7; index++) {
+        //             tmp.setUint8(index, data.getUint8(index + 5));
+        //         }
+        //         let pwd = tmp.getBigUint64(0);
+        //         this.dispatchEvent(new CustomEvent(RK_MOUSE_EVENT_DEFINE.OnPasswordGotten, { detail: pwd }));
+        //     }
+        // }
     }
 
     async getBattery(): Promise<void> {
@@ -571,9 +571,5 @@ export class RK_M3_Mouse extends RK_M3 {
         } catch (e) {
 
         }
-    }
-
-    async sleep(ms: number): Promise<void> {
-        return new Promise(resolve => setTimeout(resolve, ms));
     }
 }
