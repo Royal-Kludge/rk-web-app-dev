@@ -76,6 +76,7 @@ onMounted(async () => {
             switch (mouse.mouseDefine.name.valueOf()) {
                 case 'RK-M3':
                     productId.value = 1
+                    break;
                 case 'RK-M30':
                     productId.value = 2
                     break;
@@ -168,6 +169,7 @@ const passwordGotten = async (event: any) => {
         switch (mouse.mouseDefine.name.valueOf()) {
             case 'RK-M3':
                 productId.value = 1
+                break;
             case 'RK-M30':
                 productId.value = 2
                 break;
