@@ -11,6 +11,7 @@ import {
     RK_M70_WIRE_DEFINE,
     RK_M70_UK_WIRE_DEFINE,
     RK_L98_WIRE_DEFINE,
+    RK_N99_WIRE_DEFINE,
     RK_L_24G_DEFINE,
     RK_M_24G_DEFINE,
     RK_R_24G_DEFINE,
@@ -46,7 +47,8 @@ export const DeviceDefineList: Array<HidDeviceDefine> = [
     RK_M70_UK_WIRE_DEFINE,
     RK_L98_WIRE_DEFINE,
     RK_M30_WIRE_DEFINE,
-    RK_M30_24G_DEFINE
+    RK_M30_24G_DEFINE,
+    RK_N99_WIRE_DEFINE,
 ]
 
 export interface State {

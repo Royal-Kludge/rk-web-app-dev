@@ -7,6 +7,7 @@
         <RK_M65_Page v-else-if="productId == 5" />
         <RK_M70_Page v-else-if="productId == 6" />
         <RK_L98_Page v-else-if="productId == 7" />
+        <RK_N99_Page v-else-if="productId == 8" />
     </div>
     <div class="d-flex flex-column ai-center h-100" v-else>
         <div class="p-5 fs-big m-5 mb-4">No keyboard connected to dongle</div>
@@ -24,6 +25,7 @@ import RK_L75_Page from '@/components/rk_l75/home.vue'
 import RK_M65_Page from '@/components/rk_m65/home.vue'
 import RK_M70_Page from '@/components/rk_m70/home.vue'
 import RK_L98_Page from '@/components/rk_l98/home.vue'
+import RK_N99_Page from '@/components/rk_n99/home.vue'
 import { reactive, ref, onMounted, onBeforeUnmount } from 'vue';
 import { DonglePwdDefineList, KeyboardDefineList } from '@/keyboard/state';
 import { ConnectionStatusEnum, ConnectionType } from '@/device/enum';
@@ -106,6 +108,10 @@ onMounted(async () => {
                     break;
                 case 'RK-L98':
                     productId.value = 7
+                    break;
+                case 'RK-N99':
+                    productId.value = 8
+                    break;
             }
 
             checkProfileVersion();
@@ -216,6 +222,9 @@ const passwordGotten = async (event: any) => {
                 break;
             case 'RK-L98':
                 productId.value = 7
+                break;
+            case 'RK-N99':
+                productId.value = 8
                 break;
         }
 
