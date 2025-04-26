@@ -39,7 +39,7 @@ export const KeyMap_Normal_Win: Array<KeyDefineEnum> = [
 	//-------------------------------------------------------------------------------------------------------------16
 	KeyDefineEnum.KEY_NUM_DIV,	  KeyDefineEnum.KEY_NUM_MINUS, 		 KeyDefineEnum.KEY_NUM_8,		 KeyDefineEnum.KEY_NUM_5,		 KeyDefineEnum.KEY_NUM_2,	 		 KeyDefineEnum.NONE,							   
 	//-------------------------------------------------------------------------------------------------------------17
-	KeyDefineEnum.KEY_HOME,       KeyDefineEnum.NONE,		         KeyDefineEnum.KEY_NUM_9,		 KeyDefineEnum.KEY_NUM_6,		 KeyDefineEnum.KEY_NUM_3,			 KeyDefineEnum.KEY_NUM_DOT,
+	KeyDefineEnum.SP_Home,       KeyDefineEnum.NONE,		         KeyDefineEnum.KEY_NUM_9,		 KeyDefineEnum.KEY_NUM_6,		 KeyDefineEnum.KEY_NUM_3,			 KeyDefineEnum.KEY_NUM_DOT,
 	//-------------------------------------------------------------------------------------------------------------18
 	KeyDefineEnum.NONE,           KeyDefineEnum.NONE,                KeyDefineEnum.KEY_NUM_PLUS,	 KeyDefineEnum.NONE,			 KeyDefineEnum.KEY_NUM_ENTER,	     KeyDefineEnum.NONE,
 	//-------------------------------------------------------------------------------------------------------------19
@@ -86,7 +86,7 @@ export const KeyMap_FN1_Win: Array<KeyDefineEnum> = [
 	//-------------------------------------------------------------------------------------------------------------16
 	KeyDefineEnum.KEY_INS,            KeyDefineEnum.NONE,             KeyDefineEnum.NONE,          KeyDefineEnum.NONE,           KeyDefineEnum.NONE,                KeyDefineEnum.NONE,
 	//-------------------------------------------------------------------------------------------------------------17
-	KeyDefineEnum.KEY_HOME,           KeyDefineEnum.NONE,             KeyDefineEnum.NONE,          KeyDefineEnum.NONE,           KeyDefineEnum.NONE,                KeyDefineEnum.NONE,
+	KeyDefineEnum.SP_Home,           KeyDefineEnum.NONE,             KeyDefineEnum.NONE,          KeyDefineEnum.NONE,           KeyDefineEnum.NONE,                KeyDefineEnum.NONE,
 	//-------------------------------------------------------------------------------------------------------------18
 	KeyDefineEnum.NONE,               KeyDefineEnum.NONE,             KeyDefineEnum.NONE,          KeyDefineEnum.NONE,           KeyDefineEnum.NONE,                KeyDefineEnum.NONE,
 	//-------------------------------------------------------------------------------------------------------------19
@@ -227,7 +227,7 @@ export const KeyMap_Normal_Mac: Array<KeyDefineEnum> = [
 	//-------------------------------------------------------------------------------------------------------------16
 	KeyDefineEnum.KEY_NUM_DIV,	  KeyDefineEnum.KEY_NUM_MINUS, 		 KeyDefineEnum.KEY_NUM_8,		 KeyDefineEnum.KEY_NUM_5,		 KeyDefineEnum.KEY_NUM_2,	 		 KeyDefineEnum.NONE,							   
 	//-------------------------------------------------------------------------------------------------------------17
-	KeyDefineEnum.KEY_HOME,       KeyDefineEnum.NONE,		         KeyDefineEnum.KEY_NUM_9,		 KeyDefineEnum.KEY_NUM_6,		 KeyDefineEnum.KEY_NUM_3,			 KeyDefineEnum.KEY_NUM_DOT,
+	KeyDefineEnum.SP_Home,       KeyDefineEnum.NONE,		         KeyDefineEnum.KEY_NUM_9,		 KeyDefineEnum.KEY_NUM_6,		 KeyDefineEnum.KEY_NUM_3,			 KeyDefineEnum.KEY_NUM_DOT,
 	//-------------------------------------------------------------------------------------------------------------18
 	KeyDefineEnum.NONE,           KeyDefineEnum.NONE,                KeyDefineEnum.KEY_NUM_PLUS,	 KeyDefineEnum.NONE,			 KeyDefineEnum.KEY_NUM_ENTER,	     KeyDefineEnum.NONE,
 	//-------------------------------------------------------------------------------------------------------------19
@@ -275,7 +275,7 @@ export const KeyMap_FN1_Mac: Array<KeyDefineEnum> = [
 	//-------------------------------------------------------------------------------------------------------------16
 	KeyDefineEnum.KEY_INS,            KeyDefineEnum.NONE,             KeyDefineEnum.NONE,          KeyDefineEnum.NONE,           KeyDefineEnum.NONE,                KeyDefineEnum.NONE,
 	//-------------------------------------------------------------------------------------------------------------17
-	KeyDefineEnum.KEY_HOME,           KeyDefineEnum.NONE,             KeyDefineEnum.NONE,          KeyDefineEnum.NONE,           KeyDefineEnum.NONE,                KeyDefineEnum.NONE,
+	KeyDefineEnum.SP_Home,           KeyDefineEnum.NONE,             KeyDefineEnum.NONE,          KeyDefineEnum.NONE,           KeyDefineEnum.NONE,                KeyDefineEnum.NONE,
 	//-------------------------------------------------------------------------------------------------------------18
 	KeyDefineEnum.NONE,               KeyDefineEnum.NONE,             KeyDefineEnum.NONE,          KeyDefineEnum.NONE,           KeyDefineEnum.NONE,                KeyDefineEnum.NONE,
 	//-------------------------------------------------------------------------------------------------------------19

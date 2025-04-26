@@ -76,7 +76,7 @@ export const useKeyStore = defineStore('keyinfo_rk_n99', () => {
         { key: KeyDefineEnum.KEY_DEL, style: 'key space-l', index: getIndex(0, 15), keyData: getKeyData(getIndex(0, 15)) },
         { key: KeyDefineEnum.KEY_NUM_MUL, style: 'key space-l', index: getIndex(0, 16), keyData: getKeyData(getIndex(0, 16)) },
         { key: KeyDefineEnum.KEY_NUM_DIV, style: 'key', index: getIndex(0, 17), keyData: getKeyData(getIndex(0, 17)) },
-        //{ key: KeyDefineEnum.SP_Home, style: 'key space-l', index: getIndex(0, 18), keyData: getKeyData(getIndex(0, 18)) },
+        { key: KeyDefineEnum.SP_Home, style: 'key space-l4', index: getIndex(0, 18), keyData: getKeyData(getIndex(0, 18)) },
         
       ]
     },
