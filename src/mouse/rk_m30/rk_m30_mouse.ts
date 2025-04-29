@@ -61,9 +61,10 @@ export class RK_M30_Mouse extends RK_M30 {
                             }
                             break;
                         case GetReportCmdId.GetFwVerCmd:
-                            if (data.byteLength >= 10 && data.getUint8(2) == GetReportCmdId.GetFwVerCmd) {
+                            if (data.byteLength >= 12 && data.getUint8(2) == GetReportCmdId.GetFwVerCmd) {
                                 if (this.state.connectType == ConnectionType.Dongle) {
-                                    this.state.dongleFwVersion = `${data.getUint8(8).toString(16).padStart(2, '0')}${data.getUint8(9).toString(16).padStart(2, '0')}` 
+                                    this.state.fwVersion = `${data.getUint8(8).toString(16).padStart(2, '0')}${data.getUint8(9).toString(16).padStart(2, '0')}` 
+                                    this.state.dongleFwVersion = `${data.getUint8(10).toString(16).padStart(2, '0')}${data.getUint8(11).toString(16).padStart(2, '0')}`
                                 } else {
                                     this.state.fwVersion = `${data.getUint8(8).toString(16).padStart(2, '0')}${data.getUint8(9).toString(16).padStart(2, '0')}`
                                 }
