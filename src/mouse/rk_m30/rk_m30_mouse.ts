@@ -22,7 +22,8 @@ export enum GetReportCmdId {
     GetConfigCmd = 0x44,
     GetPwdCmd = 0x05,
     GetDongleStatusCmd = 0x07,
-    GetFwVerCmd = 0x09,
+    GetPasswordCmd = 0x09,
+    GetFwVerCmd = 0x48,
 }
 
 export class RK_M30_Mouse extends RK_M30 {
@@ -49,8 +50,8 @@ export class RK_M30_Mouse extends RK_M30 {
                 if (data.byteLength > 0) {
                     worker.postMessage("stopGet");
                     switch (this.getReportCmd) {
-                        case GetReportCmdId.GetFwVerCmd:
-                            if (data.byteLength >= 14 && data.getUint8(2) == GetReportCmdId.GetFwVerCmd) {
+                        case GetReportCmdId.GetPasswordCmd:
+                            if (data.byteLength >= 14 && data.getUint8(2) == GetReportCmdId.GetPasswordCmd) {
                                 let tmp = new DataView(new Uint8Array(8).buffer);
                                 let index = 0;
                                 for (index = 2;index <= 7; index++) {
@@ -58,7 +59,17 @@ export class RK_M30_Mouse extends RK_M30 {
                                 }
                                 this.dispatchEvent(new CustomEvent(RK_MOUSE_EVENT_DEFINE.OnPasswordGotten, { detail: { pwd: tmp.getBigUint64(0), status: ConnectionStatusEnum.Connected } }));
                             }
-                        break;
+                            break;
+                        case GetReportCmdId.GetFwVerCmd:
+                            if (data.byteLength >= 12 && data.getUint8(2) == GetReportCmdId.GetFwVerCmd) {
+                                if (this.state.connectType == ConnectionType.Dongle) {
+                                    this.state.fwVersion = `${data.getUint8(8).toString(16).padStart(2, '0')}${data.getUint8(9).toString(16).padStart(2, '0')}` 
+                                    this.state.dongleFwVersion = `${data.getUint8(10).toString(16).padStart(2, '0')}${data.getUint8(11).toString(16).padStart(2, '0')}`
+                                } else {
+                                    this.state.fwVersion = `${data.getUint8(8).toString(16).padStart(2, '0')}${data.getUint8(9).toString(16).padStart(2, '0')}`
+                                }
+                            }
+                            break;
                     }
                 } else {
                     this.retry -= 1;
@@ -69,7 +80,7 @@ export class RK_M30_Mouse extends RK_M30 {
             } else {
                 try {
                     await this.setFeature(REPORT_ID_USB, event.data as Uint8Array);
-                    if (this.getReportCmd == GetReportCmdId.GetFwVerCmd) {
+                    if (this.getReportCmd == GetReportCmdId.GetPasswordCmd || this.getReportCmd == GetReportCmdId.GetFwVerCmd) {
                         this.retry = 30;
                         worker.postMessage("getReport");
                     }
