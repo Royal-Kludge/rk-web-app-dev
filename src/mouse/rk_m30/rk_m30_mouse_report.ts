@@ -5,7 +5,8 @@ import type { MouseState, IMouseReport } from '../interface'
 import { RK_MOUSE_EVENT_DEFINE } from '../state';
 import { GetBatteryPacket } from './packets/getBatteryPacket';
 import { ConnectionStatusEnum, ConnectionType } from '@/device/enum';
-import { GetFwVerPacket } from './packets/getFwVerPacket';
+import { GetPasswordPacket } from './packets/getPasswordPacket';
+import { GetConfigPacket } from './packets/getConfigPacket';
 
 export class RK_M30_Mouse_Report extends Mouse_Report  {
 
@@ -19,7 +20,7 @@ export class RK_M30_Mouse_Report extends Mouse_Report  {
 
     async getOnline(): Promise<void> {
         let onLinePacket = new GetOnlinePacket();
-        let fwPacket = new GetFwVerPacket();
+        let pwdPacket = new GetPasswordPacket();
         let u8Data = new DataView(new Uint8Array(1).buffer);
         
         let status = ConnectionStatusEnum.Disconnected;
@@ -40,9 +41,9 @@ export class RK_M30_Mouse_Report extends Mouse_Report  {
             }
 
             await this.sleep(100);
-            fwPacket.setPayload(u8Data);
-            await this.device.sendFeatureReport(REPORT_ID_USB, fwPacket.setReport);
-            console.log(`SetFeature [${fwPacket.setReport.byteLength}] bytes -> ${fwPacket.setReport.toString()}`);
+            pwdPacket.setPayload(u8Data);
+            await this.device.sendFeatureReport(REPORT_ID_USB, pwdPacket.setReport);
+            console.log(`SetFeature [${pwdPacket.setReport.byteLength}] bytes -> ${pwdPacket.setReport.toString()}`);
 
             await this.sleep(50);
             data = await this.device.receiveFeatureReport(REPORT_ID_USB);
