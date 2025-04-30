@@ -26,7 +26,6 @@
                             @click="reSet = true">
                             {{ $t("set.but_2") }}
                         </div>
-                        <!--
                         <div class="py-3 my-3 w-100 bg-warn-1 text-grey-1 text-center br-2 b-grey c-p but" 
                             @click="checkDongle(true)" v-if="useKey.connectType == ConnectionType.Dongle">
                             {{ $t("set.but_7") }}(<span>{{ VerTipsDongle }}</span>)
@@ -41,7 +40,6 @@
                         <div class="w-100 text-grey-1 text-center" v-if="useKey.connectType == ConnectionType.Dongle">
                             Version:{{ verDongle }}
                         </div>
-                        -->
                     </div>
                     <div class="mb-1"></div>
                     <el-dialog v-model="reSet" :title="$t('set.but_2')">
@@ -125,27 +123,27 @@ const getVer = () => {
 const checkVer = (flag: boolean = false) => {
     if (useKey.connectType == ConnectionType.USB) {
         if (ver.value !== version.value) {
-        let msg = "";
+            let msg = "";
 
-        if (ver.value !== version.value) {
-            msg = `Mouse ${t('set.title_3')}:${version.value}`;
+            if (ver.value !== version.value) {
+                msg = `Mouse ${t('set.title_3')}:${version.value}`;
+            }
+
+            ElMessageBox.alert(msg, t('set.but_4'), {
+                confirmButtonText: 'OK',
+                callback: (action: Action) => {
+                    if (action === 'confirm') {
+                        if (ver.value !== version.value) updateMouse();
+                        if (verDongle.value !== versionDongle.value) updateDongle();
+                    }
+                },
+            })
+        } else if (flag == true) {
+            ElMessage({
+                type: 'info',
+                message: t("set.title_2"),
+            })
         }
-
-        ElMessageBox.alert(msg, t('set.but_4'), {
-            confirmButtonText: 'OK',
-            callback: (action: Action) => {
-                if (action === 'confirm') {
-                    if (ver.value !== version.value) updateMouse();
-                    if (verDongle.value !== versionDongle.value) updateDongle();
-                }
-            },
-        })
-    } else if (flag == true) {
-        ElMessage({
-            type: 'info',
-            message: t("set.title_2"),
-        })
-    }
     } else {
         if (verDongle.value !== versionDongle.value) {
             let msg = "";
@@ -227,7 +225,7 @@ const updateDongle = () => {
 
 onMounted(async () => {
     await useKey.init();
-    //getVer();
+    getVer();
 });
 
 onBeforeUnmount(() => {
