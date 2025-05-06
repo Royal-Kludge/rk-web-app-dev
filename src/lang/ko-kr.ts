@@ -48,6 +48,7 @@ export default {
         menu_2: "매크로",
         menu_3: "키 조합",
         menu_4: "멀티미디어",
+        menu_5: "단축키",
         key_1: "기본 키",
         key_2: "미디어 키",
         key_3: "매크로 키",
@@ -244,6 +245,8 @@ export default {
         Mute: '음소거',
         VolumI: "볼륨 +",
         VolumD: "볼륨 -",
+        SysBkBrigthDec: "밝기 -",
+        SysBkBrigthInc: "밝기 +",
     },
     tip: {
         volumI: "볼륨 +",
@@ -360,6 +363,10 @@ export default {
         brightI: "화면 밝기 증가",
         brightD: "화면 밝기 감소",
         homePage: "홈 페이지 열기",
+        save: "저장",
+        desktop: "데스크톱 표시",
+        lock: "PC 잠금",
+        close: "창 닫기",
     },
     keyBoardKey: {
         title: "키보드 기능",

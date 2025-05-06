@@ -48,6 +48,7 @@ export default {
     menu_2: "マクロ",
     menu_3: "結合キー",
     menu_4: "マルチメディア",
+    menu_5: "ショートカットキー",
     key_1: "基本キー",
     key_2: "メディアボタン",
     key_3: "マクロボタン",
@@ -244,6 +245,8 @@ export default {
     Mute: "ミュート",
     VolumI: "音量+",
     VolumD: "音量-",
+    SysBkBrigthDec: "きど-",
+    SysBkBrigthInc: "きど+",
   },
   tip: {
     volumI: "音量+",
@@ -358,6 +361,10 @@ export default {
     brightI: "画面輝度の増加",
     brightD: "画面の輝度が低下",
     homePage: "ホームページを開く",
+    save: "保存",
+    desktop: "デスクトップを表示",
+    lock: "PCをロックする",
+    close: "ウィンドウを閉じる",
   },
   keyBoardKey: {
     title: "キーボード機能",

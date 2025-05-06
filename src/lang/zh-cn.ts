@@ -48,6 +48,7 @@ export default {
     menu_2: "宏",
     menu_3: "组合键",
     menu_4: "多媒体",
+    menu_5: "快捷键",
     key_1: "基本按键",
     key_2: "媒体按键",
     key_3: "宏按键",
@@ -244,6 +245,8 @@ export default {
     Mute: "静音",
     VolumI: "音量+",
     VolumD: "音量-",
+    SysBkBrigthDec: "亮度-",
+    SysBkBrigthInc: "亮度+",
   },
   tip: {
     volumI: "音量+",
@@ -360,6 +363,10 @@ export default {
     brightI: "屏幕亮度增加",
     brightD: "屏幕亮度减少",
     homePage: "打开主页",
+    save: "保存",
+    desktop: "显示桌面",
+    lock: "锁定PC",
+    close: "关闭窗口",
   },
   keyBoardKey: {
     title: "键盘功能",

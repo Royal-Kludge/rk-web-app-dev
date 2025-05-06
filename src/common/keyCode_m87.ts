@@ -1103,6 +1103,7 @@ export enum KeyDefineEnum {
     KEY_win_shift_3 = 0x000a0000 | KEY_3,
     KEY_win_shift_ctrl_4 = 0x000b0000 | KEY_4,
     KEY_WIN_D = 0x00080000 | KEY_D,
+    KEY_WIN_L = 0x00080000 | KEY_L,
     KEY_WIN_SPACEBAR = 0x00080000 | KEY_SPACEBAR,//SIRI
     KEY_WIN_TAB = 0x00080000 | KEY_TAB,//�����񴰿�
     KEY_WIN_E = 0x00080000 | KEY_E,//�����б�    
@@ -1114,7 +1115,9 @@ export enum KeyDefineEnum {
     KEY_CTRL_A = 0x00010000 | KEY_A,
     KEY_CTRL_Z = 0x00010000 | KEY_Z,
     KEY_CTRL_X = 0x00010000 | KEY_X,
+    KEY_CTRL_S = 0x00010000 | KEY_S,
     KEY_ALT_TAB = 0x0004002B,
+    KEY_ALT_F4 = 0x0004003D,
     //****************************************************************
     //BYTE1:1�����?2�Ҽ���3�м���4ǰ������5���˼���6��ڡ�?7�Ұڡ�8�Ϲ��֡�9�¹��֡�10X����11X���ҡ�12Y���ϡ�13Y����
     //BYTE2:0xff��������0����һ�Σ����·������룬�ͷŷ��ͷ��룩��1˫����2������
@@ -1774,6 +1777,18 @@ export const KeyText: Record<number, Array<String>> = {
     0x08091300: ['light.menu_19'],
 
     0x0A000000: ['RK Web'],
+
+    0x00010004: ['Ctrl+A'],
+    0x0001001d: ['Ctrl+Z'],
+
+    0x00010006: ['shortcuts.copy'],
+    0x00010019: ['shortcuts.paste'],
+    0x0001001b: ['shortcuts.cut'],
+    0x00010016: ['shortcuts.save'],
+    0x0004002b: ['shortcuts.switchApp'],
+    0x00080007: ['shortcuts.desktop'],
+    0x0008000f: ['shortcuts.lock'],
+    0x0004003d: ['shortcuts.close'],
 }
 
 export const KeyText_2: Record<number, Array<String>> = {
@@ -2015,7 +2030,8 @@ export const KeyText_2: Record<number, Array<String>> = {
     0x00010019: ['Ctrl+V'],
     0x00010004: ['Ctrl+A'],
     0x0001001b: ['Ctrl+X'],
-    0x0001001d: ['Ctrl+Z']
+    0x0001001d: ['Ctrl+Z'],
+    0x00010016: ['Ctrl+S'],
 }
 
 export const KeyText_jp: Record<number, Array<String>> = {
@@ -2189,7 +2205,11 @@ export const KeyText_jp: Record<number, Array<String>> = {
     0x00010006: ['shortcuts.copy'],
     0x00010019: ['shortcuts.paste'],
     0x0001001b: ['shortcuts.cut'],
-    0x0004002B: ['shortcuts.switchApp'],
+    0x00010016: ['shortcuts.save'],
+    0x0004002b: ['shortcuts.switchApp'],
+    0x00080007: ['shortcuts.desktop'],
+    0x0008000f: ['shortcuts.lock'],
+    0x0004003d: ['shortcuts.close'],
     //****************************************************************
     //BYTE1:1�����?2�Ҽ���3�м���4ǰ������5���˼���6��ڡ�?7�Ұڡ�8�Ϲ��֡�9�¹��֡�10X����11X���ҡ�12Y���ϡ�13Y����
     //BYTE2:0xff��������0����һ�Σ����·������룬�ͷŷ��ͷ��룩��1˫����2������
@@ -2412,7 +2432,7 @@ export const KeyText_jp: Record<number, Array<String>> = {
     //0x00010019: 'Ctrl+V',
     0x00010004: ['Ctrl+A'],
     //0x0001001b: 'Ctrl+X',
-    0x0001001d: ['Ctrl+Z']
+    0x0001001d: ['Ctrl+Z'],
 }
 
 export const KeyText_Mac: Record<number, Array<String>> = {
