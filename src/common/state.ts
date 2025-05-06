@@ -1,4 +1,4 @@
-export const VERSION = '1.12.0'
+export const VERSION = '1.12.1'
 
 
 //20250102 v1.7.0 Add L75 uk support
@@ -13,4 +13,5 @@ export const VERSION = '1.12.0'
 //20250403 v1.10.3 add L98 
 //20250408 v1.10.4 Fixed bugs for 20250408 feedback
 //20250418 v1.11.0 Let multiple text display to key
-//20250424 v1.11.0 Add M30 mouse
+//20250424 v1.12.0 Add M30 mouse
+//20250506 v1.12.1 Add right click menu

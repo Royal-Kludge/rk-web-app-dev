@@ -48,6 +48,9 @@
                                         <el-dropdown-item @click="useKey.setMediaKey(key.index)" style="height: min-content;">
                                             {{ $t('key.menu_4') }}
                                         </el-dropdown-item>
+                                        <el-dropdown-item @click="useKey.setShortcutKey(key.index)" style="height: min-content;">
+                                            {{ $t('key.menu_5') }}
+                                        </el-dropdown-item>
                                     </el-dropdown-menu>
                                 </template>
                         </el-dropdown>
@@ -142,6 +145,31 @@
                         </div>
                         <div class="d-flex p-4 " style="border-radius: 0px 0px 10px 10px">
                             <div class="py-1 px-5 but-green text-white mx-3 c-p" @click="useKey.confirmMediaKey(useKey.state.mediaKey)">
+                                {{ $t('key.but_3') }}
+                            </div>
+                        </div>
+                    </div>
+                </el-dialog>
+                <el-dialog v-model="useKey.state.shortcutsKeyDialogShow" top="24vh" width="380px"
+                    style="--el-dialog-padding-primary:3px;" @opened="dialogOpened" @closed="dialogClosed" :close-on-press-escape="false" :close-on-click-modal="false">
+                    <div class="d-flex flex-column ml-4">
+                        <div class="m-3" id="input">
+                            <el-select
+                                v-model="useKey.state.shortcutsKey"
+                                :placeholder="$t('key.select')"
+                                size="large"
+                                style="width: 240px"
+                                >
+                                <el-option class="fs-xxxl"
+                                    v-for="item in useKey.state.shortcutsKeyOptions"
+                                    :key="item.key"
+                                    :label="$t(shortcutStrKey(item.text))"
+                                    :value="item.key"
+                                />
+                                </el-select>
+                        </div>
+                        <div class="d-flex p-4 " style="border-radius: 0px 0px 10px 10px">
+                            <div class="py-1 px-5 but-green text-white mx-3 c-p" @click="useKey.confirmShortcutKey(useKey.state.shortcutsKey)">
                                 {{ $t('key.but_3') }}
                             </div>
                         </div>
@@ -374,6 +402,14 @@ const mediaStrKey = (key: String[] | undefined) => {
     if (key == undefined) return '';
     if (key.length > 0) {
         return `mediaKey.${key[0]}`
+    }
+    return ``
+}
+
+const shortcutStrKey = (key: String[] | undefined) => {
+    if (key == undefined) return '';
+    if (key.length > 0) {
+        return `${key[0]}`
     }
     return ``
 }

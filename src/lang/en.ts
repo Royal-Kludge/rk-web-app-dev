@@ -48,6 +48,7 @@ export default {
     menu_2: "Macro",
     menu_3: "Combination Key",
     menu_4: "Media Key",
+    menu_5: "Shortcut Key",
     key_1: "Basic",
     key_2: "Media",
     key_3: "Macro",
@@ -245,6 +246,8 @@ export default {
     Mute: "Mute",
     VolumI: "Volume up",
     VolumD: "Volume down",
+    SysBkBrigthDec: "Brightness up",
+    SysBkBrigthInc: "Brightness down",
   },
   tip: {
     volumI: "Volume+",
@@ -360,6 +363,10 @@ export default {
     brightI: "Screen Brightness Increases",
     brightD: "Screen Brightness Decreased",
     homePage: "Open Home Page",
+    Save: "Save",
+    Desktop: "Display Desktop",
+    Lock: "Lock PC",
+    Close: "Close window",
   },
   keyBoardKey: {
     title: "Keyboard Function",
