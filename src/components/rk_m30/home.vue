@@ -58,6 +58,7 @@ const setMeunid = () => {
         useMenu.setName(mouse.mouseDefine.name.valueOf())
     }
 };
+
 onMounted(async () => {
     await useProfile.init();
     await useKey.init();

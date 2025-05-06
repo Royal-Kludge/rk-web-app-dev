@@ -1,10 +1,10 @@
 import type { IPacket } from "@/mouse/interface";
 import { Packet_Usb } from "@/mouse/rk_m30/packets/packet";
 
-export class GetFwVerPacket extends Packet_Usb {
+export class GetPasswordPacket extends Packet_Usb {
 
     constructor() {
-        super(0x48);
+        super(0x05);
         this.cmdPara = 0x01;
         this.dataLength = 0x00;
         this.packageNum = 0x01;
