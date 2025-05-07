@@ -1118,6 +1118,7 @@ export enum KeyDefineEnum {
     KEY_CTRL_S = 0x00010000 | KEY_S,
     KEY_ALT_TAB = 0x0004002B,
     KEY_ALT_F4 = 0x0004003D,
+
     //****************************************************************
     //BYTE1:1�����?2�Ҽ���3�м���4ǰ������5���˼���6��ڡ�?7�Ұڡ�8�Ϲ��֡�9�¹��֡�10X����11X���ҡ�12Y���ϡ�13Y����
     //BYTE2:0xff��������0����һ�Σ����·������룬�ͷŷ��ͷ��룩��1˫����2������
@@ -1211,14 +1212,7 @@ export enum KeyDefineEnum {
     KEY_Define1 = 0x04000001,
     KEY_Define2 = 0x04000002,
     //****************************************************************
-    DPI_SWITCH_I = 0x05010000,
-    DPI_SWITCH_D = 0x05020000,
-    DPI_SWITCH_L = 0x05040000,
-    DPI_SWITCH_LOCK = 0x050A0000,
-    PRFILE_SWITCH_I = 0x06010000,
-    PRFILE_SWITCH_D = 0x06020000,
-    PRFILE_SWITCH_L = 0x06040000,
-    //****************************************************************
+
     //���⹦�ܼ�
     SP_SWAP_ASDW = 0x07000000,      //ȡ��ASWD�뷽��
     SP_Winlock = 0x07000001,      //WIN Lock
@@ -1231,17 +1225,18 @@ export enum KeyDefineEnum {
     SP_BT_DEV3 = 0x07000008,      //2.4Gģʽ
     SP_BT_DEV4 = 0x07000009,      //USBģʽ
     SP_TEST_EMI = 0x0700000a,      //���߽������?    
-    SP_LedOnOff = 0x0700000b,
-    SP_BatView = 0x0700000c,      //电量显示
-    SP_Power_Mode = 0x0700000c,      //电量显示  
-    SP_WinMacMode = 0x0700000d,
-    SP_Windows_Mode = 0x0700000e,      //����Windows
-    SP_Mac_Mode = 0x0700000f,
-    SP_KB_Mode = 0x07000010,
-    SP_O_Mode = 0x07000022,
-    SP_L_Mode = 0x07000023,
-    SP_Touch_Mode = 0x07000024,
+    SP_Screen_Left = 0x0700000B,      //screen left
+    SP_Screen_Right = 0x0700000C,      //screen right
+    SP_Home = 0x0700000D,
+    SP_Windows_Mode = 0x07000020,      //����Windows
+    SP_Mac_Mode = 0x07000021,
+    Speed_SaveTime = 0x07000022,
+    SP_KB_Mode = 0x07000015,
+    SP_O_Mode = 0x07000012,
+    SP_L_Mode = 0x0700000F,
+    SP_LED_OFF = 0x07000013,
     //****************************************************************
+    MAXLEDMODE1 = 17,			 //0~11
     //byte0���̶�0x08
     //byte1��0��Ч�л���1��Ч����2��ɫ�л���3�����л���4�ٶ��л���5������Ϸ����¼�ƣ�6��Ϸ���ֱ��棬7¼��/���棬8��λ��9��Чģʽָ��
     //byte2��0ѭ����1+/��2-/�ң����byte1Ϊ9����������ֵ������ǰģʽ
@@ -1267,16 +1262,21 @@ export enum KeyDefineEnum {
     KEY_LED_MODE17 = 0x08091100, //ֱ���趨Ϊģʽ1
     KEY_LED_MODE18 = 0x08091200, //ֱ���趨Ϊģʽ2
     KEY_LED_MODE19 = 0x08091300, //ֱ���趨Ϊģʽ3\
+    
+    MAXLEDMODE2	= 36,          //0~9
 
     KEY_LED_MODE20 = 0x08092000, //ֱ���趨Ϊģʽ20
     KEY_LED_MODE21 = 0x08092100, //ֱ���趨Ϊģʽ21
     KEY_LED_MODE22 = 0x08092200, //ֱ���趨Ϊģʽ22
-    KEY_LED_MODE31 = 0x08091F00, //ֱ���趨Ϊģʽ31
-    KEY_LED_MODE32 = 0x08092000, //ֱ���趨Ϊģʽ32
+    
     //��Ч�л�
     KEY_LED_MODEL = 0x08000000, //ֱ���趨Ϊģʽ+
     KEY_LED_MODEI = 0x08000100, //ֱ���趨Ϊģʽ-
     KEY_LED_MODED = 0x08000200, //ֱ���趨ΪģʽLOOP
+
+    KEY_Logo_MODEL = 0x08000101, //ֱ���趨Ϊģʽ+
+    KEY_Logo_MODEI = 0x08000201, //ֱ���趨Ϊģʽ-
+    KEY_Logo_MODED = 0x08000001, //ֱ���趨ΪģʽLOOP
 
     KEY_Define_LED_MODEL = 0x08000300, //ֱ���趨Ϊģʽ+
     KEY_Define_LED_MODEI = 0x08000400, //ֱ���趨Ϊģʽ-
@@ -1288,26 +1288,24 @@ export enum KeyDefineEnum {
     KEY_LED_DirectionI = 0x08010100, //��Ч������
     KEY_LED_DirectionD = 0x08010200, //��Ч������
 
+    MAXLEDCOLORMODE = 0x07,
     //��ɫ�л�
     KEY_LED_COLOR_MODEI = 0x08020100, //ֱ���趨Ϊ��ɫ+
     KEY_LED_COLOR_MODED = 0x08020200, //ֱ���趨Ϊ��ɫ-
     KEY_LED_COLOR_MODEL = 0x08020000, //ֱ���趨Ϊ��ɫLOOP
 
     //��ɫ�л�
-    KEY_LED_COLOR_LOGOI = 0x08020101, //ֱ���趨Ϊ��ɫ+
-    KEY_LED_COLOR_LOGOD = 0x08020201, //ֱ���趨Ϊ��ɫ-
-    KEY_LED_COLOR_LOGOL = 0x08020001, //ֱ���趨Ϊ��ɫLOOP
+    KEY_Logo_COLOR_MODEI = 0x08020101, //ֱ���趨Ϊ��ɫ+
+    KEY_Logo_COLOR_MODED = 0x08020201, //ֱ���趨Ϊ��ɫ-
+    KEY_Logo_COLOR_MODEL = 0x08020001, //ֱ���趨Ϊ��ɫLOOP
 
-    //��ɫ�л�
-    KEY_LED_COLOR_SIDEI = 0x08020102, //ֱ���趨Ϊ��ɫ+
-    KEY_LED_COLOR_SIDED = 0x08020202, //ֱ���趨Ϊ��ɫ-
-    KEY_LED_COLOR_SIDEL = 0x08020002, //ֱ���趨Ϊ��ɫLOOP
-
+    MAXLEDLUM = 0x04,
     //����
     KEY_LED_LUMINI = 0x08030100, //ֱ���趨Ϊģʽ+
     KEY_LED_LUMIND = 0x08030200, //ֱ���趨Ϊģʽ-
     KEY_LED_LUMINL = 0x08030000, //ֱ���趨ΪģʽLOOP
 
+    MAXLEDBREATH = 0x03,
     //�ٶ�
     KEY_LED_BREATHI = 0x08040100, //  +
     KEY_LED_BREATHD = 0x08040200, //  -
@@ -1319,27 +1317,14 @@ export enum KeyDefineEnum {
     SP_LED_REC = 0x08070000, //LED¼�Ƽ�����/����
     SP_LED_REC_Reset = 0x08080000, //LED�ָ���������
     SP_KB_REC_Reset = 0x08ff0000,
-    //logo
-    KEY_LOG_MODEL = 0x08000001, //ֱ���趨Ϊģʽ+
-    KEY_LOG_MODEI = 0x08000101, //ֱ���趨Ϊģʽ-
-    KEY_LOG_MODED = 0x08000201, //ֱ���趨ΪģʽLOOP
 
-    KEY_LOG_DirectionL = 0x08010001, //��Ч����LOOP
-    KEY_LOG_DirectionI = 0x08010101, //��Ч������
-    KEY_LOG_DirectionD = 0x08010201, //��Ч������
+    MAXLOGOSPEED = 0x04,
+    MAXLOGOLUMIAN = 0x04,
+    MAXLOGOCOLOR = 0x07,
+    MAXLOGOMODE = 0x07,
 
-    KEY_LOG_COLOR_MODEI = 0x08020101, //ֱ���趨Ϊ��ɫ+
-    KEY_LOG_COLOR_MODED = 0x08020201, //ֱ���趨Ϊ��ɫ-
-    KEY_LOG_COLOR_MODEL = 0x08020001, //ֱ���趨Ϊ��ɫLOOP
-
-    KEY_LOG_LUMINI = 0x08030101, //ֱ���趨Ϊģʽ+
-    KEY_LOG_LUMIND = 0x08030201, //ֱ���趨Ϊģʽ-
-    KEY_LOG_LUMINL = 0x08030001, //ֱ���趨ΪģʽLOOP
-
-    KEY_LOG_BREATHI = 0x08040101, //ֱ���趨Ϊ�����ٶ�+
-    KEY_LOG_BREATHD = 0x08040201, //ֱ���趨Ϊ�����ٶ�-
-    KEY_LOG_BREATHL = 0x08040001, //ֱ���趨Ϊ�����ٶ�LOOP
-
+    MAXREPRATE = 0x03, //0~3
+    
     //ReportRate�趨
     KEY_REPORT_RATE0 = 0x09000000, //ֱ���趨Ϊ125
     KEY_REPORT_RATE1 = 0x09000001, //ֱ���趨Ϊ250
@@ -1380,9 +1365,15 @@ export enum KeyDefineEnum {
     KEY_LessSign = 0x00020036,
     KEY_GreaterSign = 0x00020037,
     KEY_Question = 0x00020038,
+    
+    KEY_SCAN_TIME_USB_MODE = 2,           //1ms
+    KEY_SCAN_TIME_WIRELESS_MODE = 2,           //1ms
 
-    KEY_RK_WWW = 0x0A000000,
-    KEY_Fn_Ctrl  = 0x16000000,
+    USB_KEY_PRESS_DEBOUNCE_CNT = 2,
+    TP24G_KEY_PRESS_DEBOUNCE_CNT = 2,
+
+    KEY_RELEASE_DEBOUNCE_CNT = 6,
+
 }
 
 export const KeyText: Record<number, Array<String>> = {
@@ -1635,16 +1626,17 @@ export const KeyText: Record<number, Array<String>> = {
     0x07000008: ['2.4G'],      //2.4Gģʽ
     0x07000009: ['USB'],      //USBģʽ
     0x0700000a: ['EMI Test'],      //���߽������?    
-    0x0700000b: ['LedOnOff'],
-    0x0700000c: ['Battery'],      //电量显示 
-    0x0700000d: ['WinMac'],
-    0x0700000e: ['Win'], 
-    0x0700000f: ['Mac'],          //����Mac
+    0x07000015: ['KB_Mode'],      //电量显示 
+    0x0700000b: ['Screen_Left'],
+    0x0700000c: ['Screen_Right'],
+    0x0700000d: ['SP_Home'],
+    0x07000021: ['Mac'],          //����Mac
     0x07000020: ['Windows'],      //����Windows
+    0x07000022: ['Speed_SaveTime'],
     0x07000010: ['KB'],
-    0x07000022: ['O_Mode'],
-    0x07000023: ['L_Mode'],
-    0x07000024: ['Touch_Mode'],
+    0x07000012: ['O_Mode'],
+    0x0700000f: ['L_Mode'],
+    0x07000013: ['LED_OFF'],
     //****************************************************************
     //byte0���̶�0x08
     //byte1��0��Ч�л���1��Ч����2��ɫ�л���3�����л���4�ٶ��л���5������Ϸ����¼�ƣ�6��Ϸ���ֱ��棬7¼��/���棬8��λ��9��Чģʽָ��
@@ -1772,12 +1764,10 @@ export const KeyText: Record<number, Array<String>> = {
 
     0x0A000000: ['RK Web'],
 
-    //0x00010006: 'Ctrl+C',
-    //0x00010019: 'Ctrl+V',
+    
     0x00010004: ['Ctrl+A'],
-    //0x0001001b: 'Ctrl+X',
+    
     0x0001001d: ['Ctrl+Z'],
-
     0x00010006: ['shortcuts.copy'],
     0x00010019: ['shortcuts.paste'],
     0x0001001b: ['shortcuts.cut'],
@@ -2288,16 +2278,17 @@ export const KeyText_jp: Record<number, Array<String>> = {
     0x07000008: ['2.4G'],      //2.4Gģʽ
     0x07000009: ['USB'],      //USBģʽ
     0x0700000a: ['EMI Test'],      //���߽������?    
-    0x0700000b: ['LedOnOff'],
-    0x0700000c: ['Battery'],      //电量显示 
-    0x0700000d: ['WinMac'],
-    0x0700000e: ['Win'], 
-    0x0700000f: ['Mac'],          //����Mac
+    0x07000015: ['KB_Mode'],      //电量显示 
+    0x0700000b: ['Screen_Left'],
+    0x0700000c: ['Screen_Right'],
+    0x0700000d: ['SP_Home'],
+    0x07000021: ['Mac'],          //����Mac
     0x07000020: ['Windows'],      //����Windows
+    0x07000022: ['Speed_SaveTime'],
     0x07000010: ['KB'],
-    0x07000022: ['O_Mode'],
-    0x07000023: ['L_Mode'],
-    0x07000024: ['Touch_Mode'],
+    0x07000012: ['O_Mode'],
+    0x0700000f: ['L_Mode'],
+    0x07000013: ['LED_OFF'],
     //****************************************************************
     //byte0���̶�0x08
     //byte1��0��Ч�л���1��Ч����2��ɫ�л���3�����л���4�ٶ��л���5������Ϸ����¼�ƣ�6��Ϸ���ֱ��棬7¼��/���棬8��λ��9��Чģʽָ��
@@ -2429,7 +2420,7 @@ export const KeyText_jp: Record<number, Array<String>> = {
     //0x00010019: 'Ctrl+V',
     0x00010004: ['Ctrl+A'],
     //0x0001001b: 'Ctrl+X',
-    0x0001001d: ['Ctrl+Z'],
+    0x0001001d: ['Ctrl+Z']
 }
 
 export const KeyText_Mac: Record<number, Array<String>> = {
@@ -2693,17 +2684,17 @@ export const KeyText_Mac: Record<number, Array<String>> = {
     0x07000008: ['2.4G'],      //2.4Gģʽ
     0x07000009: ['USB'],      //USBģʽ
     0x0700000a: ['EMI Test'],      //���߽������?    
-    0x0700000b: ['LedOnOff'],
-    0x0700000c: ['Battery'],      //电量显示 
-    0x0700000d: ['WinMac'],
-    0x0700000e: ['Win'], 
-    0x0700000f: ['Mac'],          //����Mac
+    0x07000015: ['KB_Mode'],      //电量显示 
+    0x0700000b: ['Screen_Left'],
+    0x0700000c: ['Screen_Right'],
+    0x0700000d: ['SP_Home'],
+    0x07000021: ['Mac'],          //����Mac
     0x07000020: ['Windows'],      //����Windows
+    0x07000022: ['Speed_SaveTime'],
     0x07000010: ['KB'],
-    0x07000022: ['O_Mode'],
-    0x07000023: ['L_Mode'],
-    0x07000024: ['Touch_Mode'],
-    0x07000025: ['SP_B6Key_Mode'],
+    0x07000012: ['O_Mode'],
+    0x0700000f: ['L_Mode'],
+    0x07000013: ['LED_OFF'],
     //****************************************************************
     //byte0���̶�0x08
     //byte1��0��Ч�л���1��Ч����2��ɫ�л���3�����л���4�ٶ��л���5������Ϸ����¼�ƣ�6��Ϸ���ֱ��棬7¼��/���棬8��λ��9��Чģʽָ��
