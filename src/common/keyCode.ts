@@ -1103,6 +1103,7 @@ export enum KeyDefineEnum {
     KEY_win_shift_3 = 0x000a0000 | KEY_3,
     KEY_win_shift_ctrl_4 = 0x000b0000 | KEY_4,
     KEY_WIN_D = 0x00080000 | KEY_D,
+    KEY_WIN_L = 0x00080000 | KEY_L,
     KEY_WIN_SPACEBAR = 0x00080000 | KEY_SPACEBAR,//SIRI
     KEY_WIN_TAB = 0x00080000 | KEY_TAB,//�����񴰿�
     KEY_WIN_E = 0x00080000 | KEY_E,//�����б�    
@@ -1114,7 +1115,9 @@ export enum KeyDefineEnum {
     KEY_CTRL_A = 0x00010000 | KEY_A,
     KEY_CTRL_Z = 0x00010000 | KEY_Z,
     KEY_CTRL_X = 0x00010000 | KEY_X,
+    KEY_CTRL_S = 0x00010000 | KEY_S,
     KEY_ALT_TAB = 0x0004002B,
+    KEY_ALT_F4 = 0x0004003D,
     //****************************************************************
     //BYTE1:1�����?2�Ҽ���3�м���4ǰ������5���˼���6��ڡ�?7�Ұڡ�8�Ϲ��֡�9�¹��֡�10X����11X���ҡ�12Y���ϡ�13Y����
     //BYTE2:0xff��������0����һ�Σ����·������룬�ͷŷ��ͷ��룩��1˫����2������
@@ -1230,7 +1233,6 @@ export enum KeyDefineEnum {
     SP_TEST_EMI = 0x0700000a,      //���߽������?    
     SP_LedOnOff = 0x0700000b,
     SP_BatView = 0x0700000c,      //电量显示
-    SP_B6Key_Mode = 0x07000025,
     SP_Power_Mode = 0x0700000c,      //电量显示  
     SP_WinMacMode = 0x0700000d,
     SP_Windows_Mode = 0x0700000e,      //����Windows
@@ -1551,10 +1553,7 @@ export const KeyText: Record<number, Array<String>> = {
     //KEY_CTRL_C	  		  : 'Ctrl + C',
     //KEY_CTRL_V	  		  : 'Ctrl + V',
     //KEY_ALT_TAB	  		  : 'Alt + Tab',
-    0x00010006: ['shortcuts.copy'],
-    0x00010019: ['shortcuts.paste'],
-    0x0001001b: ['shortcuts.cut'],
-    0x0004002B: ['shortcuts.switchApp'],
+    
     //****************************************************************
     //BYTE1:1�����?2�Ҽ���3�м���4ǰ������5���˼���6��ڡ�?7�Ұڡ�8�Ϲ��֡�9�¹��֡�10X����11X���ҡ�12Y���ϡ�13Y����
     //BYTE2:0xff��������0����һ�Σ����·������룬�ͷŷ��ͷ��룩��1˫����2������
@@ -1646,7 +1645,6 @@ export const KeyText: Record<number, Array<String>> = {
     0x07000022: ['O_Mode'],
     0x07000023: ['L_Mode'],
     0x07000024: ['Touch_Mode'],
-    0x07000025: ['SP_B6Key_Mode'],
     //****************************************************************
     //byte0���̶�0x08
     //byte1��0��Ч�л���1��Ч����2��ɫ�л���3�����л���4�ٶ��л���5������Ϸ����¼�ƣ�6��Ϸ���ֱ��棬7¼��/���棬8��λ��9��Чģʽָ��
@@ -1778,7 +1776,16 @@ export const KeyText: Record<number, Array<String>> = {
     //0x00010019: 'Ctrl+V',
     0x00010004: ['Ctrl+A'],
     //0x0001001b: 'Ctrl+X',
-    0x0001001d: ['Ctrl+Z']
+    0x0001001d: ['Ctrl+Z'],
+
+    0x00010006: ['shortcuts.copy'],
+    0x00010019: ['shortcuts.paste'],
+    0x0001001b: ['shortcuts.cut'],
+    0x00010016: ['shortcuts.save'],
+    0x0004002b: ['shortcuts.switchApp'],
+    0x00080007: ['shortcuts.desktop'],
+    0x0008000f: ['shortcuts.lock'],
+    0x0004003d: ['shortcuts.close'],
 }
 
 export const KeyText_2: Record<number, Array<String>> = {
@@ -2020,7 +2027,8 @@ export const KeyText_2: Record<number, Array<String>> = {
     0x00010019: ['Ctrl+V'],
     0x00010004: ['Ctrl+A'],
     0x0001001b: ['Ctrl+X'],
-    0x0001001d: ['Ctrl+Z']
+    0x0001001d: ['Ctrl+Z'],
+    0x00010016: ['Ctrl+S'],
 }
 
 export const KeyText_jp: Record<number, Array<String>> = {
@@ -2194,7 +2202,11 @@ export const KeyText_jp: Record<number, Array<String>> = {
     0x00010006: ['shortcuts.copy'],
     0x00010019: ['shortcuts.paste'],
     0x0001001b: ['shortcuts.cut'],
-    0x0004002B: ['shortcuts.switchApp'],
+    0x00010016: ['shortcuts.save'],
+    0x0004002b: ['shortcuts.switchApp'],
+    0x00080007: ['shortcuts.desktop'],
+    0x0008000f: ['shortcuts.lock'],
+    0x0004003d: ['shortcuts.close'],
     //****************************************************************
     //BYTE1:1�����?2�Ҽ���3�м���4ǰ������5���˼���6��ڡ�?7�Ұڡ�8�Ϲ��֡�9�¹��֡�10X����11X���ҡ�12Y���ϡ�13Y����
     //BYTE2:0xff��������0����һ�Σ����·������룬�ͷŷ��ͷ��룩��1˫����2������
@@ -2286,7 +2298,6 @@ export const KeyText_jp: Record<number, Array<String>> = {
     0x07000022: ['O_Mode'],
     0x07000023: ['L_Mode'],
     0x07000024: ['Touch_Mode'],
-    0x07000025: ['SP_B6Key_Mode'],
     //****************************************************************
     //byte0���̶�0x08
     //byte1��0��Ч�л���1��Ч����2��ɫ�л���3�����л���4�ٶ��л���5������Ϸ����¼�ƣ�6��Ϸ���ֱ��棬7¼��/���棬8��λ��9��Чģʽָ��
@@ -2418,7 +2429,7 @@ export const KeyText_jp: Record<number, Array<String>> = {
     //0x00010019: 'Ctrl+V',
     0x00010004: ['Ctrl+A'],
     //0x0001001b: 'Ctrl+X',
-    0x0001001d: ['Ctrl+Z']
+    0x0001001d: ['Ctrl+Z'],
 }
 
 export const KeyText_Mac: Record<number, Array<String>> = {
