@@ -198,6 +198,8 @@ export default {
     menu_11: "波に乗る",
     menu_12: "影の形に従うように",
     menu_13: "サイン光波",
+    menu_14: "七色の滝",
+    menu_15: "ColorfulWaterfall",
     menu_17: "花が咲き富貴である",
     menu_18: "カスタムモード",
     menu_0: "閉じる",

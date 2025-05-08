@@ -199,6 +199,8 @@ export default {
     menu_11: "NeonStream",
     menu_12: "Reaction",
     menu_13: "SineWave",
+    menu_14: "RotatingWindmill",
+    menu_15: "ColorfulWaterfall",
     menu_17: "Blossoming",
     menu_18: "SelfDefine",
     menu_0: "OFF",

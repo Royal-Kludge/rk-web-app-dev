@@ -5,7 +5,7 @@ import { RK_R87_RF, RK_R87_RF_EVENT_DEFINE } from '@/keyboard/rk_r87_rf/rk_r87_r
 import { BoardProfile, FieldEnum } from '@/keyboard/rk_r87_rf/boardProfile';
 import { LedEffect } from '@/keyboard/rk_r87_rf/ledEffect';
 import { LedColors } from '@/keyboard/rk_r87_rf/ledColors';
-import { LightEffectEnum, KeyMatrixLayer, MatrixTable } from '@/keyboard/enum'
+import { LightEffectEnum, KeyMatrixLayer, MatrixTable } from '@/keyboard/rk_r87_rf/enum'
 import { ConnectionEventEnum, ConnectionStatusEnum, ConnectionType } from '@/device/enum'
 import { type LedColor } from '@/keyboard/interface';
 import { KeyDefineEnum } from '@/common/keyCode_r87_rf';
@@ -44,11 +44,12 @@ export const uselightStore = defineStore('lightinfo', () => {
             { light: LightEffectEnum.RainbowWheel, label: 'light.menu_6' },
             { light: LightEffectEnum.RippleShining, label: 'light.menu_7' },
             { light: LightEffectEnum.StarsTwinkle, label: 'light.menu_8' },
-            { light: LightEffectEnum.ShadowDisappear, label: 'light.menu_9' },
             { light: LightEffectEnum.RetroSnake, label: 'light.menu_10' },
             { light: LightEffectEnum.NeonStream, label: 'light.menu_11' },
             { light: LightEffectEnum.Reaction, label: 'light.menu_12' },
             { light: LightEffectEnum.SineWave, label: 'light.menu_13' },
+            { light: LightEffectEnum.RotatingWindmill, label: 'light.menu_14' },
+            { light: LightEffectEnum.ColorfulWaterfall, label: 'light.menu_15' },
             { light: LightEffectEnum.Blossoming, label: 'light.menu_17' },
             { light: LightEffectEnum.SelfDefine, label: 'light.menu_18' },
             { light: LightEffectEnum.OFF, label: 'light.menu_0' },
