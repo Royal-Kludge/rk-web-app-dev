@@ -15,4 +15,5 @@ export const VERSION = '1.13.0'
 //20250418 v1.11.0 Let multiple text display to key
 //20250424 v1.12.0 Add M30 mouse
 //20250506 v1.12.1 Add right click menu
-//20250507 v1.13.0 Add n99 support
+//20250512 v1.12.2 Fix R87-rf issue
+//20250512 v1.13.0 Add n99 support

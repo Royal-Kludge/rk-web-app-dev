@@ -92,7 +92,7 @@ export abstract class Packet_Dongle extends EventTarget implements IPacket {
     crc(): number {
         let crc = REPORT_ID_DONGLE;
         let i: any;
-        for (i = 0; i < this.setReport.length - 2; i++) {
+        for (i = 0; i < this.setReport.length - 1; i++) {
             crc = crc + this.setReport[i];
         }
 
