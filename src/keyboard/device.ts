@@ -172,3 +172,34 @@ export const RK_N_24G_DEFINE: HidDeviceDefine = {
     connectType: ConnectionType.Dongle,
     deviceType: DeviceType.Keyboard,
 }   
+
+export const RK_R98PRO_WIRE_DEFINE: HidDeviceDefine = {
+    name: "rk r98pro wire",
+    vendorId: 0x258A,
+    productId: 0x020C,
+    usagePage: 0xFF00,
+    usage: 0x0001,
+    connectType: ConnectionType.USB,
+    deviceType: DeviceType.Keyboard,
+}   
+
+export const RK_R98PRO_FR_WIRE_DEFINE: HidDeviceDefine = {
+    name: "rk r98pro fr wire",
+    vendorId: 0x258A,
+    productId: 0x0222,
+    usagePage: 0xFF00,
+    usage: 0x0001,
+    connectType: ConnectionType.USB,
+    deviceType: DeviceType.Keyboard,
+}
+
+export const RK_R98PRO_GER_WIRE_DEFINE: HidDeviceDefine = {
+    name: "rk r98pro ger wire",
+    vendorId: 0x258A,
+    productId: 0x0215,
+    usagePage: 0xFF00,
+    usage: 0x0001,
+    connectType: ConnectionType.USB,
+    deviceType: DeviceType.Keyboard,
+}
+
