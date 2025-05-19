@@ -15,6 +15,9 @@ import {
     RK_L_24G_DEFINE,
     RK_M_24G_DEFINE,
     RK_R_24G_DEFINE,
+    RK_R98PRO_WIRE_DEFINE,
+    RK_R98PRO_GER_WIRE_DEFINE,
+    RK_R98PRO_FR_WIRE_DEFINE,
 } from '@/keyboard/device'
 import { 
     RK_M3_WIRE_DEFINE,
@@ -49,6 +52,9 @@ export const DeviceDefineList: Array<HidDeviceDefine> = [
     RK_M30_WIRE_DEFINE,
     RK_M30_24G_DEFINE,
     RK_N99_WIRE_DEFINE,
+    RK_R98PRO_WIRE_DEFINE,
+    RK_R98PRO_GER_WIRE_DEFINE,
+    RK_R98PRO_FR_WIRE_DEFINE,
 ]
 
 export interface State {
