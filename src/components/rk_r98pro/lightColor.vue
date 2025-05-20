@@ -51,7 +51,7 @@
                         </el-scrollbar>
                     </div>
                 </div>
-                <div class="bg-box flex-1" style="border-radius: 0px 0px 10px 0px;" v-if="useLight.state.lightProps.light != 3 && useLight.state.lightProps.light != 17">
+                <div class="bg-box flex-1" style="border-radius: 0px 0px 10px 0px;" v-if="useLight.state.lightProps.light != 3 && useLight.state.lightProps.light != 15">
                     <div class="w-100" style="height: 28vh">
                         <el-scrollbar>
                             <div class="d-flex flex-column ml-5">
@@ -85,7 +85,7 @@
 <script setup lang="ts">
 import Picker from '../picker.vue'
 import { uselightStore } from "@/stores/rk_r98pro/lightStore";
-import { LightEffectEnum } from '@/keyboard/enum'
+import { LightEffectEnum } from '@/keyboard/rk_r98pro/enum'
 import { useKeyStore } from "@/stores/rk_r98pro/keyStore";
 import { type KeyState } from '@/keyboard/interface'
 

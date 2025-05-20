@@ -1,4 +1,4 @@
-import { type LightEffectEnum } from '../enum'
+import { type LightEffectEnum } from './enum'
 import { type LedColor } from '../interface'
 import { LED_COLOR_LENGTH, LED_EFFECT_COLOR_COUNT, LED_EFFECT_COUNT, PACKET_HEAD_LENGTH } from "./packets/packet";
 
