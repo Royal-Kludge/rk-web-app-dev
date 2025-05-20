@@ -191,7 +191,7 @@ import { ref, onMounted, onBeforeUnmount, watch, reactive, computed } from 'vue'
 import type { DropdownInstance } from 'element-plus'
 import { storeToRefs } from "pinia";
 import type { KeyLine, KeyState, KeyTableData } from "@/keyboard/interface";
-import { LightEffectEnum } from '@/keyboard/enum'
+import { LightEffectEnum } from '@/keyboard/rk_r98pro/enum'
 import { useMacroStore } from "@/stores/rk_r98pro/macroStore";
 
 const useMacro = useMacroStore();
