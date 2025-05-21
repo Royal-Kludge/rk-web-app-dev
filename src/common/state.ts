@@ -1,4 +1,4 @@
-export const VERSION = '1.13.0'
+export const VERSION = '1.14.0'
 
 
 //20250102 v1.7.0 Add L75 uk support
@@ -17,3 +17,4 @@ export const VERSION = '1.13.0'
 //20250506 v1.12.1 Add right click menu
 //20250512 v1.12.2 Fix R87-rf issue
 //20250512 v1.13.0 Add n99 support
+//20250521 v1.14.0 Add R98-rf us&ger&fr support

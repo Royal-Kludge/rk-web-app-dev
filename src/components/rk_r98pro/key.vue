@@ -441,6 +441,7 @@ const shortcutStrKey = (key: String[] | undefined) => {
 
 :deep(.el-dropdown) {
     line-height: 1.3 !important;
+    position: static;
 }
 
 .key_remapped {
@@ -505,7 +506,8 @@ const shortcutStrKey = (key: String[] | undefined) => {
 
 .key10 {
     height: 104px;
-    margin-bottom: -57px;
+    position: absolute !important;
+    right: 10px;
 }
 
 .space-l {
@@ -529,7 +531,21 @@ const shortcutStrKey = (key: String[] | undefined) => {
 }
 
 .space-l6 {
-    margin-left: 114px;
+    //margin-left: 114px;
+    position: absolute !important;
+    right: 204px;
+}
+
+.space-l7 {
+    //margin-left: 114px;
+    position: absolute !important;
+    right: 140px;
+}
+
+.space-l8 {
+    //margin-left: 114px;
+    position: absolute !important;
+    right: 76px;
 }
 
 .space-t {

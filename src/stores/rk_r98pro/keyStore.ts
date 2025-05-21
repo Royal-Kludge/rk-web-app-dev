@@ -266,8 +266,8 @@ export const useKeyStore = defineStore('keyinfo_rk_r98pro', () => {
         { key: KeyDefineEnum.KEY_ENTER, style: 'key key3 key_enter p-a', index: getIndex(3, 13), keyData: getKeyData(getIndex(3, 13)), img: '<br/><br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENTER'},
          //{ key: KeyDefineEnum.KEY_Slash, style: 'key key3', index: getIndex(2, 13), keyData: getKeyData(getIndex(2, 13)) },
         { key: KeyDefineEnum.KEY_NUM_7, style: 'key space-l6', index: getIndex(2, 15), keyData: getKeyData(getIndex(2, 15)) },
-        { key: KeyDefineEnum.KEY_NUM_8, style: 'key', index: getIndex(2, 16), keyData: getKeyData(getIndex(2, 16)) },
-        { key: KeyDefineEnum.KEY_NUM_9, style: 'key', index: getIndex(2, 17), keyData: getKeyData(getIndex(2, 17)) },
+        { key: KeyDefineEnum.KEY_NUM_8, style: 'key space-l7', index: getIndex(2, 16), keyData: getKeyData(getIndex(2, 16)) },
+        { key: KeyDefineEnum.KEY_NUM_9, style: 'key space-l8', index: getIndex(2, 17), keyData: getKeyData(getIndex(2, 17)) },
         { key: KeyDefineEnum.KEY_NUM_PLUS, style: 'key key10', index: getIndex(2, 18), keyData: getKeyData(getIndex(2, 18)) },
       ]
     },
@@ -408,8 +408,8 @@ export const useKeyStore = defineStore('keyinfo_rk_r98pro', () => {
         { key: KeyDefineEnum.KEY_ENTER, style: 'key key3 key_enter p-a', index: getIndex(3, 13), keyData: getKeyData(getIndex(3, 13)), img: '<br/><br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Entrée'},
          //{ key: KeyDefineEnum.KEY_Slash, style: 'key key3', index: getIndex(2, 13), keyData: getKeyData(getIndex(2, 13)) },
         { key: KeyDefineEnum.KEY_NUM_7, style: 'key space-l6', index: getIndex(2, 15), keyData: getKeyData(getIndex(2, 15)) },
-        { key: KeyDefineEnum.KEY_NUM_8, style: 'key', index: getIndex(2, 16), keyData: getKeyData(getIndex(2, 16)) },
-        { key: KeyDefineEnum.KEY_NUM_9, style: 'key', index: getIndex(2, 17), keyData: getKeyData(getIndex(2, 17)) },
+        { key: KeyDefineEnum.KEY_NUM_8, style: 'key space-l7', index: getIndex(2, 16), keyData: getKeyData(getIndex(2, 16)) },
+        { key: KeyDefineEnum.KEY_NUM_9, style: 'key space-l8', index: getIndex(2, 17), keyData: getKeyData(getIndex(2, 17)) },
         { key: KeyDefineEnum.KEY_NUM_PLUS, style: 'key key10', index: getIndex(2, 18), keyData: getKeyData(getIndex(2, 18)) },
       ]
     },
