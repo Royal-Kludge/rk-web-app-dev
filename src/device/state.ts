@@ -18,14 +18,14 @@ import {
     RK_R98PRO_WIRE_DEFINE,
     RK_R98PRO_GER_WIRE_DEFINE,
     RK_R98PRO_FR_WIRE_DEFINE,
-} from '@/keyboard/device'
+} from '@/keyboard/beiying/device'
 import { 
     RK_M3_WIRE_DEFINE,
     RK_M3_24G_DEFINE,
     RK_M30_WIRE_DEFINE,
     RK_M30_24G_DEFINE
- } from '@/mouse/device'
-import type { ConnectionType, ConnectionEventEnum, ConnectionStatusEnum } from './enum'
+ } from '@/mouse/beiying/device'
+import type { ConnectionType, ConnectionEventEnum, ConnectionStatusEnum, ProtocolType } from './enum'
 import type { HidDeviceDefine } from './interface'
 
 /**
@@ -62,6 +62,7 @@ export interface State {
     connectType: ConnectionType,
     connectionEvent: ConnectionEventEnum,
     ConnectionStatus: ConnectionStatusEnum,
+    protocolType: ProtocolType,
     productId?: number,
     deviceName?: String,
 }

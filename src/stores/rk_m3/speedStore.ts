@@ -1,9 +1,9 @@
-import { mouse } from "@/mouse/mouse";
-import { LedTable } from "@/mouse/rk_m3/ledTable";
-import { RK_M3 } from "@/mouse/rk_m3/rk_m3";
+import { mouse } from "@/mouse/beiying/mouse";
+import { LedTable } from "@/mouse/beiying/rk_m3/ledTable";
+import { RK_M3 } from "@/mouse/beiying/rk_m3/rk_m3";
 import { defineStore } from "pinia";
 import { reactive, ref } from 'vue';
-import { ps } from '@/mouse/rk_m3/profiles';
+import { ps } from '@/mouse/beiying/rk_m3/profiles';
 
 export const useSpeedStore = defineStore('speedinfo_rk_m3', () => {
     const rk_m3 = ref<RK_M3>();

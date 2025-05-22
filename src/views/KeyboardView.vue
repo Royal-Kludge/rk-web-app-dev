@@ -18,7 +18,7 @@
 </template>
 
 <script setup lang="ts">
-import { keyboard, RK_DONGLE_EVENT_DEFINE } from '@/keyboard/keyboard'
+import { keyboard, RK_DONGLE_EVENT_DEFINE } from '@/keyboard/beiying/keyboard'
 import RK_R87_Page from '@/components/rk_r87/home.vue'
 import RK_R87_RF_Page from '@/components/rk_r87_rf/home.vue'
 import RK_M87_Page from '@/components/rk_m87/home.vue'
@@ -29,14 +29,14 @@ import RK_L98_Page from '@/components/rk_l98/home.vue'
 import RK_N99_Page from '@/components/rk_n99/home.vue'
 import RK_R98PRO_Page from '@/components/rk_r98pro/home.vue'
 import { reactive, ref, onMounted, onBeforeUnmount } from 'vue';
-import { DonglePwdDefineList, KeyboardDefineList } from '@/keyboard/state';
+import { DonglePwdDefineList, KeyboardDefineList } from '@/keyboard/beiying/state';
 import { ConnectionStatusEnum, ConnectionType } from '@/device/enum';
 import { storage } from '@/common/storage';
-import type { Profiles } from '@/keyboard/rk_r87/profiles';
+import type { Profiles } from '@/keyboard/beiying/rk_r87/profiles';
 import { VERSION } from '@/common/state';
 import { ElMessageBox } from 'element-plus'
 import { useI18n } from "vue-i18n";
-import type { Protocol } from '@/keyboard/protocol';
+import type { Protocol } from '@/keyboard/beiying/protocol';
 
 const { t } = useI18n();
 

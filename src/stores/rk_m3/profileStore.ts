@@ -3,11 +3,11 @@ import { reactive, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import fileSaver from "file-saver";
 import { ElMessage } from 'element-plus'
-import { mouse } from '@/mouse/mouse'
-import { RK_M3 } from '@/mouse/rk_m3/rk_m3';
-import { LedTable } from "@/mouse/rk_m3/ledTable";
-import { KeyTable } from "@/mouse/rk_m3/keyTable";
-import { Profile, ps } from '@/mouse/rk_m3/profiles';
+import { mouse } from '@/mouse/beiying/mouse'
+import { RK_M3 } from '@/mouse/beiying/rk_m3/rk_m3';
+import { LedTable } from "@/mouse/beiying/rk_m3/ledTable";
+import { KeyTable } from "@/mouse/beiying/rk_m3/keyTable";
+import { Profile, ps } from '@/mouse/beiying/rk_m3/profiles';
 import { ConnectionStatusEnum } from "@/device/enum";
 
 export const useProfileStore = defineStore('profile_rk_m3', () => {
