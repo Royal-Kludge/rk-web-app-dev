@@ -40,9 +40,9 @@
 <script setup lang="ts">
 import { useKeyStore } from "@/stores/rk_l75/keyStore";
 import { onMounted, onBeforeUnmount } from 'vue';
-import { Macro } from '@/keyboard/rk_l75/macros';
+import { Macro } from '@/keyboard/beiying/rk_l75/macros';
 import { useI18n } from "vue-i18n";
-import { MatrixTable } from "@/keyboard/enum";
+import { MatrixTable } from "@/keyboard/beiying/enum";
 
 const { t } = useI18n();
 

@@ -31,8 +31,8 @@
 import { useMenuStore } from "@/stores/rk_m30/menuStore";
 import { storeToRefs } from "pinia";
 import { reactive, onMounted, onBeforeUnmount } from "vue";
-import { mouse } from '@/mouse/mouse'
-import { RK_MOUSE_EVENT_DEFINE } from '@/mouse/state'
+import { mouse } from '@/mouse/beiying/mouse'
+import { RK_MOUSE_EVENT_DEFINE } from '@/mouse/beiying/state'
 
 const useMenu = useMenuStore();
 const { meunid, menuList } = storeToRefs(useMenu);

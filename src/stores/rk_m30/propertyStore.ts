@@ -1,9 +1,9 @@
 import { defineStore } from "pinia";
 import { reactive, ref } from 'vue';
-import { mouse } from "@/mouse/mouse";
-import { ConfigTable } from "@/mouse/rk_m30/configTable";
-import { RK_M30 } from "@/mouse/rk_m30/rk_m30";
-import { ps } from "@/mouse/rk_m30/profiles";
+import { mouse } from "@/mouse/beiying/mouse";
+import { ConfigTable } from "@/mouse/beiying/rk_m30/configTable";
+import { RK_M30 } from "@/mouse/beiying/rk_m30/rk_m30";
+import { ps } from "@/mouse/beiying/rk_m30/profiles";
 
 export const usePropertyStore = defineStore('propertyinfo_rk_m30', () => {
     const rk_m30 = ref<RK_M30>();

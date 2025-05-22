@@ -87,12 +87,12 @@ import { useProfileStore } from "@/stores/rk_m3/profileStore";
 import type { UploadProps } from 'element-plus'
 import { storeToRefs } from "pinia";
 import { onMounted, onBeforeUnmount } from "vue";
-import { Profile } from '@/mouse/rk_m3/profiles';
+import { Profile } from '@/mouse/beiying/rk_m3/profiles';
 import { useKeyStore } from "@/stores/rk_m3/keyStore";
 import { useSpeedStore } from "@/stores/rk_m3/speedStore";
 import { usePropertyStore } from "@/stores/rk_m3/propertyStore";
-import { mouse } from "@/mouse/mouse";
-import type { RK_M3 } from "@/mouse/rk_m3/rk_m3";
+import { mouse } from "@/mouse/beiying/mouse";
+import type { RK_M3 } from "@/mouse/beiying/rk_m3/rk_m3";
 import { useMenuStore } from "@/stores/rk_m3/menuStore";
 
 const useMenu = useMenuStore();

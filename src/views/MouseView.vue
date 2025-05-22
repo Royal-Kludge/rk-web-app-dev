@@ -11,18 +11,18 @@
 </template>
 
 <script setup lang="ts">
-import { mouse } from '@/mouse/mouse'
-import { RK_MOUSE_EVENT_DEFINE } from '@/mouse/state'
+import { mouse } from '@/mouse/beiying/mouse'
+import { RK_MOUSE_EVENT_DEFINE } from '@/mouse/beiying/state'
 import { reactive, ref, onMounted, onBeforeUnmount } from 'vue';
 import RK_M3_Page from '@/components/rk_m3/home.vue'
 import RK_M30_Page from '@/components/rk_m30/home.vue'
-import { DonglePwdDefineList, MouseDefineList } from '@/mouse/state';
+import { DonglePwdDefineList, MouseDefineList } from '@/mouse/beiying/state';
 import { ConnectionStatusEnum, ConnectionType } from '@/device/enum';
 import { storage } from '@/common/storage';
 import { VERSION } from '@/common/state';
 import { ElMessageBox } from 'element-plus'
 import { useI18n } from "vue-i18n";
-import type { Profiles } from '@/mouse/rk_m3/profiles';
+import type { Profiles } from '@/mouse/beiying/rk_m3/profiles';
 
 const { t } = useI18n();
 

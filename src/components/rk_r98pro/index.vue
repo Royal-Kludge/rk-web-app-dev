@@ -10,8 +10,8 @@
 
 <script setup lang="ts">
 import { reactive, ref, onMounted, onBeforeUnmount } from "vue";
-import { keyboard } from "@/keyboard/keyboard";
-import { RK_R98, RK_R98_EVENT_DEFINE } from "@/keyboard/rk_r98pro/rk_r98pro";
+import { keyboard } from "@/keyboard/beiying/keyboard";
+import { RK_R98, RK_R98_EVENT_DEFINE } from "@/keyboard/beiying/rk_r98pro/rk_r98pro";
 import { ConnectionStatusEnum } from "@/device/enum";
 import Light from "./light.vue";
 import SetFun from "./setfun.vue";

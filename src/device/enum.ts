@@ -35,3 +35,11 @@ export enum DeviceType {
     Keyboard = 'keyboard',
     Mouse = 'mouse'
 }
+
+/**
+ * Device type
+ */
+export enum ProtocolType {
+    BeiYing = 'BeiYing',
+    SparkLink = 'SparkLink'
+}

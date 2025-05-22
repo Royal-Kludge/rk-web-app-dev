@@ -1,8 +1,8 @@
 import { defineStore } from "pinia";
 import { reactive, ref } from 'vue';
-import { Macro, Macros, Action, ActionType } from '@/keyboard/rk_n99/macros';
-import { RK_N99, RK_N99_EVENT_DEFINE } from '@/keyboard/rk_n99/rk_n99';
-import { keyboard } from '@/keyboard/keyboard'
+import { Macro, Macros, Action, ActionType } from '@/keyboard/beiying/rk_n99/macros';
+import { RK_N99, RK_N99_EVENT_DEFINE } from '@/keyboard/beiying/rk_n99/rk_n99';
+import { keyboard } from '@/keyboard/beiying/keyboard'
 import { storage } from '@/common/storage';
 import { ConnectionEventEnum, ConnectionStatusEnum } from "@/device/enum";
 import fileSaver from "file-saver";

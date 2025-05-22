@@ -20,10 +20,10 @@ import { useMenuStore } from "@/stores/rk_m87/menuStore";
 import { storeToRefs } from "pinia";
 import { onMounted, onBeforeUnmount, ref, reactive } from "vue";
 import { useKeyStore } from "@/stores/rk_m87/keyStore";
-import { keyboard } from "@/keyboard/keyboard";
+import { keyboard } from "@/keyboard/beiying/keyboard";
 import { uselightStore } from "@/stores/rk_m87/lightStore";
 import { ConnectionType, ConnectionStatusEnum } from "@/device/enum";
-import { RK_M87, RK_M87_EVENT_DEFINE } from "@/keyboard/rk_m87/rk_m87";
+import { RK_M87, RK_M87_EVENT_DEFINE } from "@/keyboard/beiying/rk_m87/rk_m87";
 
 const useKey = useKeyStore();
 const useMenu = useMenuStore();

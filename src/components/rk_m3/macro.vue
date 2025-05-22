@@ -221,7 +221,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount } from 'vue';
-import { Macro, Action, ActionType } from '@/mouse/rk_m3/macros';
+import { Macro, Action, ActionType } from '@/mouse/beiying/rk_m3/macros';
 import { KeyCodeMap } from '@/common/keyCode'
 import { type KeyCodeTable } from '@/common/interface';
 import { storage } from '@/common/storage';
@@ -232,8 +232,8 @@ import { KeyDefineEnum } from '@/common/keyCode'
 import { ElMessageBox, ElMessage } from 'element-plus'
 import type { Action as ElAction } from 'element-plus';
 import type { UploadProps } from 'element-plus'
-import { mouse } from '@/mouse/mouse';
-import { KeyType } from '@/keyboard/rk_r87/macros';
+import { mouse } from '@/mouse/beiying/mouse';
+import { KeyType } from '@/keyboard/beiying/rk_r87/macros';
 
 // 解构出t方法
 const { t } = useI18n();

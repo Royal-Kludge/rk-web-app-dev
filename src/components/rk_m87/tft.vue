@@ -144,12 +144,12 @@ import { useI18n } from 'vue-i18n';
 import type { UploadProps } from 'element-plus'
 import { ElMessageBox, ElMessage } from 'element-plus'
 import Cropper from '@/components/cropper.vue'
-import { useTftStore } from "../../stores/rk_m87/tftStore";
+import { useTftStore } from "@/stores/rk_m87/tftStore";
 import { storeToRefs } from "pinia";
-import { RK_M87, RK_M87_EVENT_DEFINE } from "../../keyboard/rk_m87/rk_m87";
-import { keyboard } from "../../keyboard/keyboard";
+import { RK_M87, RK_M87_EVENT_DEFINE } from "@/keyboard/beiying/rk_m87/rk_m87";
+import { keyboard } from "@/keyboard/beiying/keyboard";
 import { log } from 'console';
-import { SuperGif } from '../../assets/js/libgif.js'
+import { SuperGif } from '@/assets/js/libgif.js'
 
 const useTft = useTftStore();
 const saveShow = ref({

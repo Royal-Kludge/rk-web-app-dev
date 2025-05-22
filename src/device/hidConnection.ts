@@ -1,9 +1,10 @@
-import { mouse } from "@/mouse/mouse";
 import type { Device } from "./device";
 import { ConnectionEventEnum, DeviceType } from "./enum";
 import type { HidDeviceDefine } from "./interface";
 import { DeviceDefineList } from "./state";
-import { Keyboard, keyboard } from "@/keyboard/keyboard";
+import { keyboard as keyboard_beiying } from "@/keyboard/beiying/keyboard";
+import { keyboard as keyboard_sparklink } from "@/keyboard/sparklink/keyboard";
+import { mouse as mouse_beiying } from "@/mouse/beiying/mouse";
 
 /**
  * Main class.
@@ -44,16 +45,20 @@ export class HidConnection extends EventTarget {
                 }
             }, false);
 
-            keyboard.addEventListener("connection", async (event: Event) => {
-                let keyboard = event.currentTarget as Keyboard
+            const callback = async (event: Event) => {
+                let device = event.currentTarget as Device
 
-                if (keyboard != undefined &&
-                    (keyboard.state.connectionEvent == ConnectionEventEnum.Disconnect || keyboard.state.connectionEvent == ConnectionEventEnum.Close)) {
+                if (device != undefined && device.deviceState != undefined &&
+                    (device.deviceState.connectionEvent == ConnectionEventEnum.Disconnect || device.deviceState.connectionEvent == ConnectionEventEnum.Close)) {
                     this.device = undefined;
                     this.hidDevice = undefined;
                     this.hidDevideDefine = undefined;
                 }
-            });
+            };
+
+            keyboard_beiying.addEventListener("connection", callback);
+            keyboard_sparklink.addEventListener("connection", callback);
+            mouse_beiying.addEventListener("connection", callback);
         }
     }
 
@@ -99,12 +104,12 @@ export class HidConnection extends EventTarget {
 
                         switch (this.hidDevideDefine.deviceType) {
                             case DeviceType.Keyboard:
-                                this.hidDevice = keyboard;
+                                this.hidDevice = keyboard_beiying;
                                 this.hidDevice.device = this.device;
                                 this.hidDevice.hid = this.hid;
                                 break;
                             case DeviceType.Mouse:
-                                this.hidDevice = mouse;
+                                this.hidDevice = mouse_beiying;
                                 this.hidDevice.device = this.device;
                                 this.hidDevice.hid = this.hid;
                                 break;
