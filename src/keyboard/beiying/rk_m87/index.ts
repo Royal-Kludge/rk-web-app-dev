@@ -6,7 +6,7 @@ import { KeyMap_FN1_UK_Win, KeyMap_FN2_UK_Win, KeyMap_Normal_UK_Win, KeyMap_Tap_
 import { KeyText, KeyText_jp } from "@/common/keyCode_m87"
 import { RK_M87_Dongle } from './rk_m87_dongle'
 import { RK_M87_Usb } from './rk_m87_usb'
-import { ConnectionType, DeviceType } from '@/device/enum'
+import { ConnectionType, DeviceType, ProtocolType } from '@/device/enum'
 
 export const RK_M87_USB_DEFINE: KeyboardDefine = {
     name: "RK-M87",
@@ -17,6 +17,7 @@ export const RK_M87_USB_DEFINE: KeyboardDefine = {
     usage: 0x0001,
     connectType: ConnectionType.USB,
     deviceType: DeviceType.Keyboard,
+    protocolType: ProtocolType.BeiYing,
     keyText: KeyText,
     keyMatrixLayer: [
         KeyMatrixLayer.Nomal,
@@ -55,6 +56,7 @@ export const RK_M87_DONGLE_DEFINE: KeyboardDefine = {
     usage: 0x0002,
     connectType: ConnectionType.Dongle,
     deviceType: DeviceType.Keyboard,
+    protocolType: ProtocolType.BeiYing,
     keyText: KeyText,
     keyMatrixLayer: [
         KeyMatrixLayer.Nomal,
@@ -93,6 +95,7 @@ export const RK_M87_JP_USB_DEFINE: KeyboardDefine = {
     usage: 0x0001,
     connectType: ConnectionType.USB,
     deviceType: DeviceType.Keyboard,
+    protocolType: ProtocolType.BeiYing,
     keyText: KeyText_jp,
     keyMatrixLayer: [
         KeyMatrixLayer.Nomal,
@@ -131,6 +134,7 @@ export const RK_M87_JP_DONGLE_DEFINE: KeyboardDefine = {
     usage: 0x0002,
     connectType: ConnectionType.Dongle,
     deviceType: DeviceType.Keyboard,
+    protocolType: ProtocolType.BeiYing,
     keyText: KeyText_jp,
     keyMatrixLayer: [
         KeyMatrixLayer.Nomal,
@@ -169,6 +173,7 @@ export const RK_M87_UK_USB_DEFINE: KeyboardDefine = {
     usage: 0x0001,
     connectType: ConnectionType.USB,
     deviceType: DeviceType.Keyboard,
+    protocolType: ProtocolType.BeiYing,
     keyText: KeyText,
     keyMatrixLayer: [
         KeyMatrixLayer.Nomal,
@@ -207,6 +212,7 @@ export const RK_M87_UK_DONGLE_DEFINE: KeyboardDefine = {
     usage: 0x0002,
     connectType: ConnectionType.Dongle,
     deviceType: DeviceType.Keyboard,
+    protocolType: ProtocolType.BeiYing,
     keyText: KeyText,
     keyMatrixLayer: [
         KeyMatrixLayer.Nomal,

@@ -5,7 +5,7 @@ import { KeyMap_FN1_Win, KeyMap_FN2_Win, KeyMap_Normal_Win, KeyMap_FN1_Mac, KeyM
 import { KeyText } from "@/common/keyCode_n99"
 import { RK_N99_Dongle } from './rk_n99_dongle'
 import { RK_N99_Usb } from './rk_n99_usb'
-import { ConnectionType, DeviceType } from '@/device/enum'
+import { ConnectionType, DeviceType, ProtocolType } from '@/device/enum'
 
 export const RK_N99_USB_DEFINE: KeyboardDefine = {
     name: "RK-N99",
@@ -16,6 +16,7 @@ export const RK_N99_USB_DEFINE: KeyboardDefine = {
     usage: 0x0001,
     connectType: ConnectionType.USB,
     deviceType: DeviceType.Keyboard,
+    protocolType: ProtocolType.BeiYing,
     keyText: KeyText,
     keyMatrixLayer: [
         KeyMatrixLayer.Nomal,
@@ -54,6 +55,7 @@ export const RK_N99_DONGLE_DEFINE: KeyboardDefine = {
     usage: 0x0002,
     connectType: ConnectionType.Dongle,
     deviceType: DeviceType.Keyboard,
+    protocolType: ProtocolType.BeiYing,
     keyText: KeyText,
     keyMatrixLayer: [
         KeyMatrixLayer.Nomal,
