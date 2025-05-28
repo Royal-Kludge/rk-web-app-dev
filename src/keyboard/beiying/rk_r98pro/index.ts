@@ -6,7 +6,7 @@ import { KeyMap_FN1_GER_Win, KeyMap_FN2_GER_Win, KeyMap_Normal_GER_Win, KeyMap_T
 import { KeyMap_FN1_FR_Win, KeyMap_FN2_FR_Win, KeyMap_Normal_FR_Win, KeyMap_Tap_FR_Win, KeyMap_FN1_FR_Mac, KeyMap_FN2_FR_Mac, KeyMap_Normal_FR_Mac, KeyMap_Tap_FR_Mac  } from './layout_fr'
 import { KeyText, KeyText_ger, KeyText_fr} from "@/common/keyCode_r98pro"
 import { RK_R98_Usb } from './rk_r98pro_usb'
-import { ConnectionType, DeviceType } from '@/device/enum'
+import { ConnectionType, DeviceType, ProtocolType } from '@/device/enum'
 
 export const RK_R98PRO_USB_DEFINE: KeyboardDefine = {
     name: "RK-R98PRO",
@@ -17,6 +17,7 @@ export const RK_R98PRO_USB_DEFINE: KeyboardDefine = {
     usage: 0x0001,
     connectType: ConnectionType.USB,
     deviceType: DeviceType.Keyboard,
+    protocolType: ProtocolType.BeiYing,
     keyText: KeyText,
     keyMatrixLayer: [
         KeyMatrixLayer.Nomal,
@@ -56,6 +57,7 @@ export const RK_R98PRO_GER_USB_DEFINE: KeyboardDefine = {
     usage: 0x0001,  
     connectType: ConnectionType.USB,
     deviceType: DeviceType.Keyboard,
+    protocolType: ProtocolType.BeiYing,
     keyText: KeyText_ger,
     keyMatrixLayer: [
         KeyMatrixLayer.Nomal,
@@ -95,6 +97,7 @@ export const RK_R98PRO_FR_USB_DEFINE: KeyboardDefine = {
     usage: 0x0001,  
     connectType: ConnectionType.USB,
     deviceType: DeviceType.Keyboard,
+    protocolType: ProtocolType.BeiYing,
     keyText: KeyText_fr,
     keyMatrixLayer: [
         KeyMatrixLayer.Nomal,

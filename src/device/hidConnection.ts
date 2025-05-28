@@ -1,5 +1,5 @@
 import type { Device } from "./device";
-import { ConnectionEventEnum, DeviceType } from "./enum";
+import { ConnectionEventEnum, DeviceType, ProtocolType } from "./enum";
 import type { HidDeviceDefine } from "./interface";
 import { DeviceDefineList } from "./state";
 import { keyboard as keyboard_beiying } from "@/keyboard/beiying/keyboard";
@@ -104,7 +104,14 @@ export class HidConnection extends EventTarget {
 
                         switch (this.hidDevideDefine.deviceType) {
                             case DeviceType.Keyboard:
-                                this.hidDevice = keyboard_beiying;
+                                switch (this.hidDevideDefine.protocolType) {
+                                    case ProtocolType.BeiYing:
+                                        this.hidDevice = keyboard_beiying;
+                                        break;
+                                    case ProtocolType.SparkLink:
+                                        this.hidDevice = keyboard_sparklink;
+                                        break;
+                                }
                                 this.hidDevice.device = this.device;
                                 this.hidDevice.hid = this.hid;
                                 break;

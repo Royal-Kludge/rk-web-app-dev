@@ -41,4 +41,12 @@ export class RK_C61_Usb extends RK_C61 {
     async sleep(ms: number): Promise<void> {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
+
+    async getMacros(): Promise<void> {
+        this.dispatchEvent(new CustomEvent(RK_C61_EVENT_DEFINE.OnMacrosGotten, { detail: this.data.macros }));
+    }
+
+    async setMacros(): Promise<void> {
+        
+    }
 }

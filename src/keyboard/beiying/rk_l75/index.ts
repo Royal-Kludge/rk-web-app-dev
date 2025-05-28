@@ -6,7 +6,7 @@ import { KeyMap_FN1_UK_Win, KeyMap_FN2_UK_Win, KeyMap_Normal_UK_Win, KeyMap_Tap_
 import { KeyText } from "@/common/keyCode"
 import { RK_L75_Dongle } from './rk_l75_dongle'
 import { RK_L75_Usb } from './rk_l75_usb'
-import { ConnectionType, DeviceType } from '@/device/enum'
+import { ConnectionType, DeviceType, ProtocolType } from '@/device/enum'
 
 export const RK_L75_USB_DEFINE: KeyboardDefine = {
     name: "RK-L75",
@@ -17,6 +17,7 @@ export const RK_L75_USB_DEFINE: KeyboardDefine = {
     usage: 0x0001,
     connectType: ConnectionType.USB,
     deviceType: DeviceType.Keyboard,
+    protocolType: ProtocolType.BeiYing,
     keyText: KeyText,
     keyMatrixLayer: [
         KeyMatrixLayer.Nomal,
@@ -55,6 +56,7 @@ export const RK_L75_DONGLE_DEFINE: KeyboardDefine = {
     usage: 0x0002,
     connectType: ConnectionType.Dongle,
     deviceType: DeviceType.Keyboard,
+    protocolType: ProtocolType.BeiYing,
     keyText: KeyText,
     keyMatrixLayer: [
         KeyMatrixLayer.Nomal,
@@ -93,6 +95,7 @@ export const RK_L75_UK_USB_DEFINE: KeyboardDefine = {
     usage: 0x0001,
     connectType: ConnectionType.USB,
     deviceType: DeviceType.Keyboard,
+    protocolType: ProtocolType.BeiYing,
     keyText: KeyText,
     keyMatrixLayer: [
         KeyMatrixLayer.Nomal,
@@ -131,6 +134,7 @@ export const RK_L75_UK_DONGLE_DEFINE: KeyboardDefine = {
     usage: 0x0002,
     connectType: ConnectionType.Dongle,
     deviceType: DeviceType.Keyboard,
+    protocolType: ProtocolType.BeiYing,
     keyText: KeyText,
     keyMatrixLayer: [
         KeyMatrixLayer.Nomal,

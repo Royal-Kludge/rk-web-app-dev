@@ -5,7 +5,7 @@ import { KeyMap_FN1_Win, KeyMap_FN2_Win, KeyMap_Normal_Win, KeyMap_FN1_Mac, KeyM
 import { KeyText } from "@/common/keyCode"
 import { RK_L98_Dongle } from './rk_l98_dongle'
 import { RK_L98_Usb } from './rk_l98_usb'
-import { ConnectionType, DeviceType } from '@/device/enum'
+import { ConnectionType, DeviceType, ProtocolType } from '@/device/enum'
 
 export const RK_L98_USB_DEFINE: KeyboardDefine = {
     name: "RK-L98",
@@ -16,6 +16,7 @@ export const RK_L98_USB_DEFINE: KeyboardDefine = {
     usage: 0x0001,
     connectType: ConnectionType.USB,
     deviceType: DeviceType.Keyboard,
+    protocolType: ProtocolType.BeiYing,
     keyText: KeyText,
     keyMatrixLayer: [
         KeyMatrixLayer.Nomal,
@@ -54,6 +55,7 @@ export const RK_L98_DONGLE_DEFINE: KeyboardDefine = {
     usage: 0x0002,
     connectType: ConnectionType.Dongle,
     deviceType: DeviceType.Keyboard,
+    protocolType: ProtocolType.BeiYing,
     keyText: KeyText,
     keyMatrixLayer: [
         KeyMatrixLayer.Nomal,
