@@ -1,9 +1,10 @@
-import { Protocol } from '@/keyboard/beiying/protocol'
+import { Protocol } from '@/keyboard/sparklink/protocol'
+import type { Macros } from '@/keyboard/sparklink/macros';
 
 export const RK_C61_EVENT_DEFINE: {
-
+    OnMacrosGotten: string;
 } = {
-
+    OnMacrosGotten: "OnMacrosGotten"
 }
 
 export const COMMAND_ID: {
@@ -13,7 +14,7 @@ export const COMMAND_ID: {
 }
 
 export class RK_C61_Data {
-
+    macros?: Macros;
 }
 
 export abstract class RK_C61 extends Protocol {
@@ -21,7 +22,9 @@ export abstract class RK_C61 extends Protocol {
     data: RK_C61_Data = new RK_C61_Data();
     
     abstract onGetReport(reportId: number, data: DataView): Promise<void>;
-
+    abstract getMacros(): Promise<void>;
+    abstract setMacros(): Promise<void>;
+    
     callback = (e: HIDInputReportEvent) => this.processKeyboardReport(e);
 
     async init(): Promise<void> {

@@ -25,6 +25,9 @@ import {
     RK_M30_WIRE_DEFINE,
     RK_M30_24G_DEFINE
  } from '@/mouse/beiying/device'
+ import { 
+    RK_C61_WIRE_DEFINE
+ } from '@/keyboard/sparklink/device'
 import type { ConnectionType, ConnectionEventEnum, ConnectionStatusEnum, ProtocolType } from './enum'
 import type { HidDeviceDefine } from './interface'
 
@@ -55,6 +58,7 @@ export const DeviceDefineList: Array<HidDeviceDefine> = [
     RK_R98PRO_WIRE_DEFINE,
     RK_R98PRO_GER_WIRE_DEFINE,
     RK_R98PRO_FR_WIRE_DEFINE,
+    RK_C61_WIRE_DEFINE
 ]
 
 export interface State {

@@ -1,16 +1,18 @@
 <template>
-    <KeyboardView v-if="isKeyboardConnect()" />
-    <MouseView v-else-if="isMouseConnect()" />
+    <KeyboardView_Beiying v-if="isBeiyingKeyboardConnect()" />
+    <MouseView_Beiying v-else-if="isBeiyingMouseConnect()" />
+    <KeyboardView_SparkLink v-else-if="isSparkLinkKeyboardConnect()" />
     <Nodevice v-else @on-connect="onConnect" />
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import KeyboardView from './KeyboardView.vue'
-import MouseView from './MouseView.vue'
+import KeyboardView_Beiying from './KeyboardView_Beiying.vue'
+import MouseView_Beiying from './MouseView_Beiying.vue'
+import KeyboardView_SparkLink from './KeyboardView_SparkLink.vue'
 import Nodevice from './NoDevice.vue'
 import { hidConnection } from '@/device/hidConnection'
-import { ConnectionEventEnum, ConnectionStatusEnum, DeviceType } from '@/device/enum'
+import { ConnectionEventEnum, ConnectionStatusEnum, DeviceType, ProtocolType } from '@/device/enum'
 import { ElMessage } from 'element-plus'
 import type { Device } from '@/device/device';
 
@@ -72,11 +74,24 @@ const onConnect = async () => {
     }
 };
 
-const isKeyboardConnect = (): boolean => {
-    return isConnected.value && hidConnection.hidDevideDefine != undefined && hidConnection.hidDevideDefine.deviceType == DeviceType.Keyboard;
+const isBeiyingKeyboardConnect = (): boolean => {
+    return isConnected.value && 
+           hidConnection.hidDevideDefine != undefined && 
+           hidConnection.hidDevideDefine.deviceType == DeviceType.Keyboard && 
+           hidConnection.hidDevideDefine.protocolType == ProtocolType.BeiYing;
 }
 
-const isMouseConnect = (): boolean => {
-    return isConnected.value && hidConnection.hidDevideDefine != undefined && hidConnection.hidDevideDefine.deviceType == DeviceType.Mouse;
+const isBeiyingMouseConnect = (): boolean => {
+    return isConnected.value && 
+           hidConnection.hidDevideDefine != undefined && 
+           hidConnection.hidDevideDefine.deviceType == DeviceType.Mouse &&
+           hidConnection.hidDevideDefine.protocolType == ProtocolType.BeiYing;
+}
+
+const isSparkLinkKeyboardConnect = (): boolean => {
+    return isConnected.value && 
+           hidConnection.hidDevideDefine != undefined && 
+           hidConnection.hidDevideDefine.deviceType == DeviceType.Keyboard && 
+           hidConnection.hidDevideDefine.protocolType == ProtocolType.SparkLink;
 }
 </script>

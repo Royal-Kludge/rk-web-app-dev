@@ -1318,6 +1318,7 @@ export const useKeyStore = defineStore('keyinfo_rk_m87', () => {
     // }
   }
 
+  
   const refresh = () => {
     let line, key: any;
     for (line in state.keyMatrix) {
@@ -1338,7 +1339,6 @@ export const useKeyStore = defineStore('keyinfo_rk_m87', () => {
       (state.profileList as Array<Profile>).push(ps.list[i]);
     }
   }
-
   const refreshKeyMatrixData = () => {
     let key: any;
     let index: any;
