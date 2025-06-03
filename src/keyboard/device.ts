@@ -203,3 +203,12 @@ export const RK_R98PRO_GER_WIRE_DEFINE: HidDeviceDefine = {
     deviceType: DeviceType.Keyboard,
 }
 
+export const RK_S98_WIRE_DEFINE: HidDeviceDefine = {
+    name: "rk s98 wire",
+    vendorId: 0x258A,
+    productId: 0x01AF,
+    usagePage: 0xFF00,
+    usage: 0x0001,
+    connectType: ConnectionType.USB,
+    deviceType: DeviceType.Keyboard,    
+}

@@ -2,6 +2,7 @@
     <div v-if="isMouseConnect()" class="h-100">
         <RK_M3_Page v-if="productId == 1" />
         <RK_M30_Page v-if="productId == 2" />
+        <RK_K3_Page v-if="productId == 3" />
     </div>
     <div class="d-flex flex-column ai-center h-100" v-else>
         <div class="p-5 fs-big m-5 mb-4">No mouse connected to dongle</div>
@@ -16,6 +17,7 @@ import { RK_MOUSE_EVENT_DEFINE } from '@/mouse/state'
 import { reactive, ref, onMounted, onBeforeUnmount } from 'vue';
 import RK_M3_Page from '@/components/rk_m3/home.vue'
 import RK_M30_Page from '@/components/rk_m30/home.vue'
+import RK_K3_Page from '@/components/rk_k3/home.vue'
 import { DonglePwdDefineList, MouseDefineList } from '@/mouse/state';
 import { ConnectionStatusEnum, ConnectionType } from '@/device/enum';
 import { storage } from '@/common/storage';
@@ -79,6 +81,9 @@ onMounted(async () => {
                     break;
                 case 'RK-M30':
                     productId.value = 2
+                    break;
+                case 'RK-K3':
+                    productId.value = 3
                     break;
             }
 
@@ -172,6 +177,9 @@ const passwordGotten = async (event: any) => {
                 break;
             case 'RK-M30':
                 productId.value = 2
+                break;
+            case 'RK-K3':
+                productId.value = 3
                 break;
         }
 
