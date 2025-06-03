@@ -222,8 +222,8 @@ export const useKeyStore = defineStore('keyinfo_rk_m70', () => {
         { key: KeyDefineEnum.KEY_P, style: 'key', index: getIndex(2, 11), keyData: getKeyData(getIndex(2, 11)) },
         { key: KeyDefineEnum.KEY_L_Brackets, style: 'key', index: getIndex(2, 12), keyData: getKeyData(getIndex(2, 12)) },
         { key: KeyDefineEnum.KEY_R_Brackets, style: 'key', index: getIndex(2, 13), keyData: getKeyData(getIndex(2, 13)) },
-        { key: KeyDefineEnum.KEY_ENTER, style: 'key key3 key_enter p-a', index: getIndex(2, 14), keyData: getKeyData(getIndex(2, 14)), img: '<br/><br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENTER' },
-        { key: KeyDefineEnum.KEY_DEL, style: 'key', index: getIndex(2, 16), keyData: getKeyData(getIndex(2, 16)) }
+        { key: KeyDefineEnum.KEY_ENTER, style: 'key key3 key_enter p-a', index: getIndex(3, 14), keyData: getKeyData(getIndex(3, 14)), img: '<br/><br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENTER' },
+        { key: KeyDefineEnum.KEY_DEL, style: 'key space-l7', index: getIndex(3, 16), keyData: getKeyData(getIndex(3, 16)) }
       ]
     },
     {
@@ -676,9 +676,22 @@ export const useKeyStore = defineStore('keyinfo_rk_m70', () => {
       { key: KeyDefineEnum.KEY_VolumI, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_VolumI] },
       { key: KeyDefineEnum.KEY_VolumD, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_VolumD] }
     ],
+    shortcutsKeyOptions: [
+      { key: KeyDefineEnum.KEY_MyComputer, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_MyComputer] },
+      { key: KeyDefineEnum.KEY_Calculator, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Calculator] },
+      { key: KeyDefineEnum.KEY_CTRL_X, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_CTRL_X] },
+      { key: KeyDefineEnum.KEY_CTRL_C, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_CTRL_C] },
+      { key: KeyDefineEnum.KEY_CTRL_V, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_CTRL_V] },
+      { key: KeyDefineEnum.KEY_CTRL_S, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_CTRL_S] },
+      { key: KeyDefineEnum.KEY_WIN_D, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_WIN_D] },
+      { key: KeyDefineEnum.KEY_WIN_L, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_WIN_L] },
+      { key: KeyDefineEnum.KEY_ALT_TAB, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_ALT_TAB] },
+      { key: KeyDefineEnum.KEY_ALT_F4, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_ALT_F4] }
+    ],
     macroDialogShow: false,
     combineKeyDialogShow: false,
     mediaKeyDialogShow: false,
+    shortcutsKeyDialogShow: false,
     macros: macros,
     cycleTypes: [
       { value: 1, label: 'Cycles', strKey: 'key.type_1' },
@@ -689,6 +702,7 @@ export const useKeyStore = defineStore('keyinfo_rk_m70', () => {
     cycleCount: 1,
     keyStr: "",
     mediaKey: KeyDefineEnum.KEY_Media,
+    shortcutsKey: KeyDefineEnum.KEY_MyComputer,
     keyHid: 0x00,
     shiftKey: false,
     ctrlKey: false,
@@ -1585,6 +1599,7 @@ export const useKeyStore = defineStore('keyinfo_rk_m70', () => {
     state.combineKeyDialogShow = false;
   }
 
+
   const setMediaKey = (index: number) => {
     if (state.keyState.length <= 0 || index >= 999) {
       return '';
@@ -1594,6 +1609,14 @@ export const useKeyStore = defineStore('keyinfo_rk_m70', () => {
     state.mediaKeyDialogShow = true;
   }
 
+  const setShortcutKey = (index: number) => {
+    if (state.keyState.length <= 0 || index >= 999) {
+      return '';
+    }
+    state.shortcutsKey = KeyDefineEnum.KEY_MyComputer;
+    keyState.value = (state.keyState as Array<KeyState>)[index];
+    state.shortcutsKeyDialogShow = true;
+  }
   const confirmMediaKey = (keyCode: KeyDefineEnum) => {
     if (keyState.value != undefined && keyCode > 0) {
       keyState.value.KeyData.keyMappingData.keyRaw = keyCode;
@@ -1610,5 +1633,49 @@ export const useKeyStore = defineStore('keyinfo_rk_m70', () => {
     state.mediaKeyDialogShow = false;
   }
 
-  return { profile, state, keyMatrixLayer, keyMatrixTable, getIndex, keyClick, keyColor, isSelected, keybgColor, keyText, keySetToDefault, keySetMacro, mapping, isFunSelected, isMacroSelected, clickMacro, confirmSetMacro, setCombineKey, confirmMediaKey, setMediaKey, confirmSetCombineKey, getKeyMatrix, clickProfile, deleteProfile, onKeyDown, newProfile, handleEditClose, renameProfile, exportProfile, importProfile, init, destroy, getKeyMatrixNomal, saveProfile, keySetToDefaultAll, refresh, refreshKeyMatrixData, setToFactory, unSelected, renameSaveProfile, setFunid, setKeyCode }
+  
+  const confirmShortcutKey = async (keyCode: KeyDefineEnum) => {
+    if (keyState.value != undefined && keyCode > 0) {
+      keyState.value.KeyData.keyMappingData.keyRaw = keyCode;
+      keyState.value.KeyData.keyMappingData.keyCode = keyCode & 0x0000FFFF;
+      keyState.value.KeyData.keyMappingData.keyMappingType = keyCode >> 24;
+      keyState.value.KeyData.keyMappingData.keyMappingPara = (keyCode >> 16) & 0xFF;
+      if (keyboard.keyboardDefine != undefined) {
+        keyState.value.KeyData.keyMappingData.keyStr = keyboard.keyboardDefine.keyText[keyCode].slice();
+      }
+      KeyMatrixData.value[keyMatrixTable.value][keyMatrixLayer.value]?.setKeyMapping(keyState.value.index, keyState.value.KeyData.keyMappingData);
+      await rk_m70.value?.setKeyMatrix(keyMatrixLayer.value, keyMatrixTable.value, 0);
+      saveProfile();
+    }
+
+    state.shortcutsKeyDialogShow = false;
+  }
+
+   const isCombinKey = (keyData: KeyTableData | undefined): boolean => {
+    if (keyData == undefined) return false;
+    let mapping = keyData.keyMappingData;
+
+    if (mapping.keyMappingType == KeyMappingType.KeyBoard && mapping.keyMappingPara > 0) {
+      let keyText = KeyText;
+      let keyType = profile.value?.keyTypes[keyMatrixTable.value][keyMatrixLayer.value][keyData.index];
+  
+      if (keyType == MatrixTable.WIN && keyboard.keyboardDefine != undefined) {
+        keyText = keyboard.keyboardDefine.keyText;
+      } else if (keyType == MatrixTable.MAC) {
+        keyText = KeyText_Mac;
+      }
+
+      return keyText[mapping.keyRaw] == undefined;
+    }
+
+    return false;
+  }
+
+  const keyTipText = (keyData: KeyTableData | undefined): String => {
+    if (keyData == undefined) return '';
+    if (isCombinKey(keyData)) return keyData.keyMappingData.keyStr[0];
+    return '';
+  }
+
+  return { profile, state, keyMatrixLayer, keyMatrixTable, getIndex, keyClick, keyColor, isSelected, keybgColor, keyText, keySetToDefault, keySetMacro, mapping, isFunSelected, isMacroSelected, clickMacro, confirmSetMacro, setCombineKey, confirmMediaKey, setMediaKey, confirmSetCombineKey, getKeyMatrix, clickProfile, deleteProfile, onKeyDown, newProfile, handleEditClose, renameProfile, exportProfile, importProfile, init, destroy, getKeyMatrixNomal, saveProfile, keySetToDefaultAll, refresh, refreshKeyMatrixData, setToFactory, unSelected, renameSaveProfile, setFunid, setKeyCode, isCombinKey, keyTipText, confirmShortcutKey, setShortcutKey }
 })
