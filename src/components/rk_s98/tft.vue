@@ -169,8 +169,8 @@ const imgOption = reactive({
  * 截图配置
  */
 const cropOption = reactive({
-    autoCropWidth: 240,
-    autoCropHeight: 135,
+    autoCropWidth: 320,
+    autoCropHeight: 170,
     deleteLeft: 80,
     updateLeft: 28,
     disabled: false
@@ -496,8 +496,8 @@ const Saving = () => {
 
 const tftPicSetted = (event: any) => {
     console.log('TFT picture setting: ', `frameIndex[${event.detail.frameIndex}] | frameNum[${event.detail.frameNum}] | packageIndex[${event.detail.packageIndex}] | packageNum[${event.detail.packageNum}]`);
-    let totalPkg = event.detail.frameNum * 127;
-    let curPkg = event.detail.frameIndex * 127 + event.detail.packageIndex;
+    let totalPkg = event.detail.frameNum * 213;
+    let curPkg = event.detail.frameIndex * 213 + event.detail.packageIndex;
     percentage.value = Math.floor(curPkg / totalPkg * 100)
     percentage.value = percentage.value >= 100 ? 100 : percentage.value;
     count = 0;
@@ -527,8 +527,8 @@ const tftPicSetted = (event: any) => {
 }
 
 .frame {
-    width: 240px;
-    height: 135px;
+    width: 320px;
+    height: 170px;
     margin: 10px;
     flex-shrink: 0;
 }
