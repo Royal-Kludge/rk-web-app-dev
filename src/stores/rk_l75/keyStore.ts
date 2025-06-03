@@ -1103,6 +1103,16 @@ export const useKeyStore = defineStore('keyinfo_rk_l75', () => {
     return undefined;
   }
 
+  const unSelectFunc = () => {
+    for (var i = 0; i < state.keyFunList.length; i++) {
+      for (var j = 0; j < state.keyFunList[i].keys.length; j++) {
+        if (state.keyFunList[i].keys[j].selected && state.funid == state.keyFunList[i].id) {
+          state.keyFunList[i].keys[j].selected = false;
+        }
+      }
+    }
+  }
+
   const getSelectedTable = (): MatrixTable => {
     for (var i = 0; i < state.keyFunList.length; i++) {
       for (var j = 0; j < state.keyFunList[i].keys.length; j++) {
@@ -1361,7 +1371,7 @@ export const useKeyStore = defineStore('keyinfo_rk_l75', () => {
     return !(state.keyState as Array<KeyState>)[index].selected ? '' : 'selected';
   }
 
-  const keyClick = (index: number) => {
+  const keyClick = async (index: number) => {
     if (state.keyState.length <= 0 || index >= 999) return '';
     let key = (state.keyState as Array<KeyState>)[index];
     let isSelected = key.selected;
@@ -1383,7 +1393,7 @@ export const useKeyStore = defineStore('keyinfo_rk_l75', () => {
         keySetStr(key.KeyData);
       }
       KeyMatrixData.value[keyMatrixTable.value][keyMatrixLayer.value]?.setKeyMapping(key.index, key.KeyData.keyMappingData);
-      rk_l75.value?.setKeyMatrix(keyMatrixLayer.value, keyMatrixTable.value, 0);
+      await rk_l75.value?.setKeyMatrix(keyMatrixLayer.value, keyMatrixTable.value, 0);
 
       saveProfile();
       unSelected();
@@ -1416,7 +1426,10 @@ export const useKeyStore = defineStore('keyinfo_rk_l75', () => {
   const unSelected = (): void => {
     let i: any;
     for (i in state.keyState) {
-      (state.keyState as Array<KeyState>)[i].selected = false;
+      let keyState = (state.keyState as Array<KeyState>)[i];
+      if (keyState.selected) {
+        keyState.selected = false;
+      }
     }
   }
 
@@ -1638,5 +1651,5 @@ export const useKeyStore = defineStore('keyinfo_rk_l75', () => {
     await rk_l75.value?.setWebKeyTab(web);
   }
 
-  return { profile, state, keyMatrixLayer, keyMatrixTable, getIndex, keyClick, keyColor, isSelected, keybgColor, keyText, keySetToDefault, keySetMacro, mapping, isFunSelected, isMacroSelected, clickMacro, confirmSetMacro, setCombineKey, confirmMediaKey, setMediaKey, confirmSetCombineKey, getKeyMatrix, clickProfile, deleteProfile, onKeyDown, newProfile, handleEditClose, renameProfile, exportProfile, importProfile, init, destroy, getKeyMatrixNomal, saveProfile, keySetToDefaultAll, refresh, refreshKeyMatrixData, setToFactory, unSelected, renameSaveProfile, setFunid, setKeyCode, setWebsite }
+  return { profile, state, keyMatrixLayer, keyMatrixTable, getIndex, keyClick, keyColor, isSelected, keybgColor, keyText, keySetToDefault, keySetMacro, mapping, isFunSelected, isMacroSelected, clickMacro, confirmSetMacro, setCombineKey, confirmMediaKey, setMediaKey, confirmSetCombineKey, getKeyMatrix, clickProfile, deleteProfile, onKeyDown, newProfile, handleEditClose, renameProfile, exportProfile, importProfile, init, destroy, getKeyMatrixNomal, saveProfile, keySetToDefaultAll, refresh, refreshKeyMatrixData, setToFactory, unSelected, unSelectFunc, renameSaveProfile, setFunid, setKeyCode, setWebsite }
 })
