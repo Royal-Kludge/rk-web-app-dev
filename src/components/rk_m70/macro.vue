@@ -334,7 +334,8 @@ const onKeyUp = async (event: KeyboardEvent) => {
 
         return;
     }
-
+    keyCodeTable.value = KeyCodeMap[event.code];
+    
     if (keyCodeTable.value != undefined) {
         keyDelay.value = ComputeTimeDiff(keyDate.value);
     }

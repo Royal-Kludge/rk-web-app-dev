@@ -61,7 +61,7 @@ export const DeviceDefineList: Array<HidDeviceDefine> = [
     RK_R98PRO_WIRE_DEFINE,
     RK_R98PRO_GER_WIRE_DEFINE,
     RK_R98PRO_FR_WIRE_DEFINE,
-    RK_S98_WIRE_DEFINE,//wuxianyong24G-M
+    RK_S98_WIRE_DEFINE,
 ]
 
 export interface State {

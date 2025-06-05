@@ -4,30 +4,19 @@
         <div v-else>
             <div class="keybox d-flex flex-column bg-white p-3" style="border-radius: 15px;position: relative;"
                 @contextmenu.prevent @mousedown="handleMouseDown"
-                v-if="useLight.state.lightProps.light == LightEffectEnum.SelfDefine">
+                v-if="(meunid == 3 && useLight.state.lightProps.light == LightEffectEnum.SelfDefine)">
                 <div class="d-flex" v-for="line in useKey.state.keyMatrix as Array<KeyLine>" :class="[`${line.style}`]">
-                    <div :id="`key${key.index}`" trigger="contextmenu" ref="keyMapping"
-                        @visible-change="handleOpen($event, `key${key.index}`)" v-for="key in line.keys"
-                        v-if="meunid == 1">
-                        <div @click="keyClick(key.index)" class="d-flex ai-center jc-center c-p"
-                            :class="[`d-flex p-2 pl-3 ${key.style}`, useKey.keyColor(key.keyData), useKey.isSelected(key.index)]">
-                            <div :class="[`text-white-1`, keyTextColorClass(key.keyData)]"
-                                :style="`word-wrap: break-word;overflow: hidden;text-align: center;${keyTextColorStyle(key.keyData)}`">
-                                <span style="word-wrap: break-word;" v-html="useKey.keyText(key.keyData)"></span>
-                            </div>
-                        </div>
-                    </div>
                     <div :i="key.index" class="item d-flex ai-center jc-center c-p"
                         :class="[`d-flex p-2 pl-3 ${key.style}`, useKey.keyColor(key.keyData), useKey.isSelected(key.index)]"
-                        v-for="key in line.keys" v-else @click="keyClick(key.index)">
+                        v-for="key in line.keys" @click="keyClick(key.index)">
                         <div :class="[`text-white-1`, keyTextColorClass(key.keyData)]"
                             :style="`word-wrap: break-word;overflow: hidden;text-align: center;${keyTextColorStyle(key.keyData)}`">
                             <span style="word-wrap: break-word;" v-html="useKey.keyText(key.keyData)"></span>
                         </div>
                     </div>
-                    <div :style="'width:' + mask_width + 'left:' + mask_left + 'height:' + mask_height + 'top:' + mask_top"
+                </div>
+                <div :style="'width:' + mask_width + 'left:' + mask_left + 'height:' + mask_height + 'top:' + mask_top"
                         class="mask">
-                    </div>
                 </div>
             </div>
             <div class="keybox d-flex flex-column bg-white p-3" style="border-radius: 15px;position: relative;" v-else>
@@ -50,9 +39,6 @@
                             :style="`word-wrap: break-word;overflow: hidden;text-align: center;${keyTextColorStyle(key.keyData)}`">
                             <span style="word-wrap: break-word;" v-html="useKey.keyText(key.keyData)"></span>
                         </div>
-                    </div>
-                    <div :style="'width:' + mask_width + 'left:' + mask_left + 'height:' + mask_height + 'top:' + mask_top"
-                        class="mask">
                     </div>
                 </div>
             </div>
@@ -224,13 +210,11 @@ const keyClick = async (index: number) => {
     if (positionList.is_selected) return;
 
     if (meunid.value == 1 || (meunid.value == 3 && useLight.state.lightProps.light == LightEffectEnum.SelfDefine)) {
-        if (meunid.value == 1) {
-            useKey.unSelected();
-        }
-        useKey.keyClick(index);
+        useKey.unSelected();
+        await useKey.keyClick(index);
     }
 
-    if (meunid.value == 3) {
+    if (meunid.value == 3 && useLight.state.lightProps.light == LightEffectEnum.SelfDefine) {
         useLight.keyChanged(index);
         let key = (useKey.state.keyState[index] as KeyState);
         if (key.selected) {

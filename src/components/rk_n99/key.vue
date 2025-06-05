@@ -343,13 +343,11 @@ const keyClick = async (index: number) => {
     if (positionList.is_selected) return;
 
     if (meunid.value == 1 || (meunid.value == 3 && useLight.state.lightProps.light == LightEffectEnum.SelfDefine)) {
-        if (meunid.value == 1) {
-            useKey.unSelected();
-        }
-        useKey.keyClick(index);
+        useKey.unSelected();
+        await useKey.keyClick(index);
     }
 
-    if (meunid.value == 3) {
+    if (meunid.value == 3 && useLight.state.lightProps.light == LightEffectEnum.SelfDefine) {
         useLight.keyChanged(index);
         let key = (useKey.state.keyState[index] as KeyState);
         if (key.selected) {

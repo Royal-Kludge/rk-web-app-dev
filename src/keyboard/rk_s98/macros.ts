@@ -58,14 +58,15 @@ export class Action {
             case KeyDefineEnum.ALT_R:
             case KeyDefineEnum.WIN_R:
                 this.type = KeyType.ModifyKey;
+                type = KeyType.ModifyKey;
                 break;
-            case KeyDefineEnum.MOUSE_L:
-            case KeyDefineEnum.MOUSE_R:
-            case KeyDefineEnum.MOUSE_M:
-            case KeyDefineEnum.MOUSE_B4:
-            case KeyDefineEnum.MOUSE_B5:
-                this.type = KeyType.MouseKey;
-                break;
+            // case KeyDefineEnum.MOUSE_L:
+            // case KeyDefineEnum.MOUSE_R:
+            // case KeyDefineEnum.MOUSE_M:
+            // case KeyDefineEnum.MOUSE_B4:
+            // case KeyDefineEnum.MOUSE_B5:
+            //     this.type = KeyType.MouseKey;
+            //     break;
         }
 
         this.action = action;

@@ -52,6 +52,7 @@ onBeforeUnmount(() => {
 
 const onMenuClick = async (id: any) => {
   useKey.unSelected();
+  useKey.unSelectFunc();
   useMenu.setMeunid(id)
   if (id == 3) {
     await useLight.saveBoardProfileToDevice();
