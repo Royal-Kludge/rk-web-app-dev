@@ -1,23 +1,23 @@
 import { defineStore } from "pinia";
 import { reactive, ref } from 'vue';
-import { keyboard } from '@/keyboard/keyboard'
-import { RK_R98, RK_R98_EVENT_DEFINE } from '@/keyboard/rk_r98pro/rk_r98pro';
+import { keyboard } from '@/keyboard/beiying/keyboard'
+import { RK_R98, RK_R98_EVENT_DEFINE } from '@/keyboard/beiying/rk_r98pro/rk_r98pro';
 import { KeyCodeEnum, KeyDefineEnum, KeyText, KeyText_Mac} from '@/common/keyCode_r98pro'
-import { type KeyMappingData, type KeyTableData, type KeyState, type KeyLine } from '@/keyboard/interface'
-import { KeyMatrixLayer, MatrixTable } from '@/keyboard/enum'
+import { type KeyMappingData, type KeyTableData, type KeyState, type KeyLine } from '@/keyboard/beiying/interface'
+import { KeyMatrixLayer, MatrixTable } from '@/keyboard/beiying/enum'
 import { KeyMappingType } from '@/common/enum'
 import { ConnectionEventEnum, ConnectionStatusEnum } from '@/device/enum'
-import { KeyMatrix } from '@/keyboard/rk_r98pro/keyMatrix';
-import { Action, Macro, Macros } from '@/keyboard/rk_r98pro/macros';
-import { Profile, ps } from '@/keyboard/rk_r98pro/profiles';
+import { KeyMatrix } from '@/keyboard/beiying/rk_r98pro/keyMatrix';
+import { Action, Macro, Macros } from '@/keyboard/beiying/rk_r98pro/macros';
+import { Profile, ps } from '@/keyboard/beiying/rk_r98pro/profiles';
 import { KeyCodeMap } from '@/common/keyCode_r98pro';
 import fileSaver from "file-saver";
 import { ElMessage } from 'element-plus'
 
 import { storage } from '@/common/storage';
-import { BoardProfile, FieldEnum, PROFILE_DEFAULT_DATA } from '@/keyboard/rk_r98pro/boardProfile';
-import { LedEffect } from '@/keyboard/rk_r98pro/ledEffect';
-import { LedColors } from '@/keyboard/rk_r98pro/ledColors';
+import { BoardProfile, FieldEnum, PROFILE_DEFAULT_DATA } from '@/keyboard/beiying/rk_r98pro/boardProfile';
+import { LedEffect } from '@/keyboard/beiying/rk_r98pro/ledEffect';
+import { LedColors } from '@/keyboard/beiying/rk_r98pro/ledColors';
 import { useI18n } from 'vue-i18n';
 
 export const useKeyStore = defineStore('keyinfo_rk_r98pro', () => {

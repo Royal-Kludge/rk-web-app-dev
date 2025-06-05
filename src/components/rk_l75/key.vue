@@ -63,8 +63,8 @@ import { uselightStore } from "@/stores/rk_l75/lightStore";
 import { ref, onMounted, onBeforeUnmount, watch, reactive, computed } from 'vue';
 import type { DropdownInstance } from 'element-plus'
 import { storeToRefs } from "pinia";
-import type { KeyLine, KeyState, KeyTableData } from "@/keyboard/interface";
-import { LightEffectEnum } from '@/keyboard/enum'
+import type { KeyLine, KeyState, KeyTableData } from "@/keyboard/beiying/interface";
+import { LightEffectEnum } from '@/keyboard/beiying/enum'
 import { useMacroStore } from "@/stores/rk_l75/macroStore";
 
 const useMacro = useMacroStore();
@@ -220,7 +220,7 @@ const keyClick = async (index: number) => {
         await useKey.keyClick(index);
     }
 
-    if (meunid.value == 3&& useLight.state.lightProps.light == LightEffectEnum.SelfDefine) {
+    if (meunid.value == 3 && useLight.state.lightProps.light == LightEffectEnum.SelfDefine) {
         useLight.keyChanged(index);
         let key = (useKey.state.keyState[index] as KeyState);
         if (key.selected) {

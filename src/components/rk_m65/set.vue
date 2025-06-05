@@ -91,7 +91,7 @@ import { storeToRefs } from "pinia";
 import { storage } from '@/common/storage';
 import { useI18n } from 'vue-i18n';
 import axios from 'axios'
-import { keyboard } from '@/keyboard/keyboard'
+import { keyboard } from '@/keyboard/beiying/keyboard'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import type { Action } from 'element-plus'
 import { ConnectionType } from '@/device/enum';

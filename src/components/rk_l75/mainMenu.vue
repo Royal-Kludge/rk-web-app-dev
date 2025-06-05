@@ -78,7 +78,7 @@
 import { useKeyStore } from "@/stores/rk_l75/keyStore";
 import type { UploadProps } from 'element-plus'
 import { uselightStore } from "@/stores/rk_l75/lightStore";
-import { Profile } from '@/keyboard/rk_l75/profiles';
+import { Profile } from '@/keyboard/beiying/rk_l75/profiles';
 import { storeToRefs } from "pinia";
 
 const useKey = useKeyStore();

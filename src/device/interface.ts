@@ -1,4 +1,4 @@
-import type { ConnectionEventEnum, ConnectionStatusEnum, ConnectionType, DeviceType } from "./enum";
+import type { ConnectionEventEnum, ConnectionStatusEnum, ConnectionType, DeviceType, ProtocolType } from "./enum";
 import type { State } from "./state";
 
 export interface HidDeviceDefine {
@@ -8,7 +8,8 @@ export interface HidDeviceDefine {
     usagePage: number,
     usage: number,
     connectType: ConnectionType,
-    deviceType: DeviceType
+    deviceType: DeviceType,
+    protocolType: ProtocolType
 }
 
 export interface IHidDevice {

@@ -217,8 +217,8 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount } from 'vue';
-import { RK_N99 } from '@/keyboard/rk_n99/rk_n99';
-import { Macro, Action, ActionType } from '@/keyboard/rk_n99/macros';
+import { RK_N99 } from '@/keyboard/beiying/rk_n99/rk_n99';
+import { Macro, Action, ActionType } from '@/keyboard/beiying/rk_n99/macros';
 import { KeyCodeMap } from '@/common/keyCode_n99'
 import { type KeyCodeTable } from '@/common/interface';
 import { storage } from '@/common/storage';
@@ -229,7 +229,7 @@ import { KeyDefineEnum } from '@/common/keyCode_n99'
 import { ElMessageBox, ElMessage } from 'element-plus'
 import type { Action as ElAction } from 'element-plus';
 import type { UploadProps } from 'element-plus'
-import { keyboard } from '@/keyboard/keyboard';
+import { keyboard } from '@/keyboard/beiying/keyboard';
 
 // 解构出t方法
 const { t } = useI18n();

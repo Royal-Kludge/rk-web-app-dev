@@ -1,29 +1,29 @@
 import { defineStore } from "pinia";
 import { reactive, ref } from 'vue';
-import { keyboard } from '@/keyboard/keyboard'
-import { RK_L98, RK_L98_EVENT_DEFINE } from '@/keyboard/rk_l98/rk_l98';
+import { keyboard } from '@/keyboard/beiying/keyboard'
+import { RK_L98, RK_L98_EVENT_DEFINE } from '@/keyboard/beiying/rk_l98/rk_l98';
 import { KeyCodeEnum, KeyDefineEnum, KeyText, KeyText_Mac } from '@/common/keyCode'
-import { type KeyMappingData, type KeyTableData, type KeyState, type KeyLine } from '@/keyboard/interface'
-import { KeyMatrixLayer, MatrixTable } from '@/keyboard/enum'
+import { type KeyMappingData, type KeyTableData, type KeyState, type KeyLine } from '@/keyboard/beiying/interface'
+import { KeyMatrixLayer, MatrixTable } from '@/keyboard/beiying/enum'
 import { KeyMappingType } from '@/common/enum'
 import { ConnectionEventEnum, ConnectionStatusEnum } from '@/device/enum'
-import { KeyMatrix } from '@/keyboard/rk_l98/keyMatrix';
-import { Action, Macro, Macros } from '@/keyboard/rk_l98/macros';
-import { Profile, ps } from '@/keyboard/rk_l98/profiles';
+import { KeyMatrix } from '@/keyboard/beiying/rk_l98/keyMatrix';
+import { Action, Macro, Macros } from '@/keyboard/beiying/rk_l98/macros';
+import { Profile, ps } from '@/keyboard/beiying/rk_l98/profiles';
 import { KeyCodeMap } from '@/common/keyCode'
 import fileSaver from "file-saver";
 import { ElMessage } from 'element-plus'
 
 import { storage } from '@/common/storage';
-import { BoardProfile, FieldEnum, PROFILE_DEFAULT_DATA } from '@/keyboard/rk_l98/boardProfile';
-import { LedEffect } from '@/keyboard/rk_l98/ledEffect';
-import { LedColors } from '@/keyboard/rk_l98/ledColors';
+import { BoardProfile, FieldEnum, PROFILE_DEFAULT_DATA } from '@/keyboard/beiying/rk_l98/boardProfile';
+import { LedEffect } from '@/keyboard/beiying/rk_l98/ledEffect';
+import { LedColors } from '@/keyboard/beiying/rk_l98/ledColors';
 import { useI18n } from 'vue-i18n';
 import type { accessSync } from "fs";
 
 export const useKeyStore = defineStore('keyinfo_rk_l98', () => {  
   const rk_l98 = ref<RK_L98>();
-
+  
   const { t } = useI18n();
 
   const macros = ref<Macros>();

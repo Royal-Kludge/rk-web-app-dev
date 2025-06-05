@@ -190,8 +190,8 @@ import { uselightStore } from "@/stores/rk_r98pro/lightStore";
 import { ref, onMounted, onBeforeUnmount, watch, reactive, computed } from 'vue';
 import type { DropdownInstance } from 'element-plus'
 import { storeToRefs } from "pinia";
-import type { KeyLine, KeyState, KeyTableData } from "@/keyboard/interface";
-import { LightEffectEnum } from '@/keyboard/rk_r98pro/enum'
+import type { KeyLine, KeyState, KeyTableData } from "@/keyboard/beiying/interface";
+import { LightEffectEnum } from '@/keyboard/beiying/rk_r98pro/enum'
 import { useMacroStore } from "@/stores/rk_r98pro/macroStore";
 
 const useMacro = useMacroStore();

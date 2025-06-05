@@ -38,9 +38,9 @@
 
 <script setup lang="ts">
 import { useMenuStore } from "@/stores/rk_m70/menuStore";
-import { keyboard } from '@/keyboard/keyboard'
+import { keyboard } from '@/keyboard/beiying/keyboard'
 import RK_M70_Page from '@/components/rk_m70/index.vue'
-import { RK_M70, RK_M70_EVENT_DEFINE } from "@/keyboard/rk_m70/rk_m70";
+import { RK_M70, RK_M70_EVENT_DEFINE } from "@/keyboard/beiying/rk_m70/rk_m70";
 import Meun from "@/components/rk_m70/menu.vue";
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 import { storeToRefs } from "pinia";

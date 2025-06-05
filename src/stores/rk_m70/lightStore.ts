@@ -1,16 +1,16 @@
 import { defineStore } from "pinia";
 import { reactive, ref } from 'vue';
-import { keyboard } from '@/keyboard/keyboard'
-import { RK_M70, RK_M70_EVENT_DEFINE } from '@/keyboard/rk_m70/rk_m70';
-import { BoardProfile, FieldEnum } from '@/keyboard/rk_m70/boardProfile';
-import { LedEffect } from '@/keyboard/rk_m70/ledEffect';
-import { LedColors } from '@/keyboard/rk_m70/ledColors';
-import { LightEffectEnum, KeyMatrixLayer, MatrixTable } from '@/keyboard/enum'
+import { keyboard } from '@/keyboard/beiying/keyboard'
+import { RK_M70, RK_M70_EVENT_DEFINE } from '@/keyboard/beiying/rk_m70/rk_m70';
+import { BoardProfile, FieldEnum } from '@/keyboard/beiying/rk_m70/boardProfile';
+import { LedEffect } from '@/keyboard/beiying/rk_m70/ledEffect';
+import { LedColors } from '@/keyboard/beiying/rk_m70/ledColors';
+import { LightEffectEnum, KeyMatrixLayer, MatrixTable } from '@/keyboard/beiying/enum'
 import { ConnectionEventEnum, ConnectionStatusEnum, ConnectionType} from '@/device/enum'
-import { type LedColor } from '@/keyboard/interface';
+import { type LedColor } from '@/keyboard/beiying/interface';
 import { KeyDefineEnum } from '@/common/keyCode';
-import { type KeyTableData } from '@/keyboard/interface'
-import { ps } from '@/keyboard/rk_m70/profiles';
+import { type KeyTableData } from '@/keyboard/beiying/interface'
+import { ps } from '@/keyboard/beiying/rk_m70/profiles';
 
 export const uselightStore = defineStore('lightinfo_rk_m70', () => {
     const rgb = ref({ r: 0, g: 0, b: 0, color: '#000000' });
