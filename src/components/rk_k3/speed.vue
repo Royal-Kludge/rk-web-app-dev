@@ -146,9 +146,9 @@ import { ref, reactive, onMounted, onBeforeUnmount } from 'vue';
 import { useSpeedStore } from "@/stores/rk_k3/speedStore";
 import MainMeun from "./mainMenu.vue";
 import { storeToRefs } from 'pinia';
-import { mouse } from '@/mouse/mouse'
-import { RK_MOUSE_EVENT_DEFINE } from '@/mouse/state'
-import { RK_K3 } from "@/mouse/rk_k3/rk_k3";
+import { mouse } from '@/mouse/beiying/mouse'
+import { RK_MOUSE_EVENT_DEFINE } from '@/mouse/beiying/state'
+import { RK_K3 } from "@/mouse/beiying/rk_k3/rk_k3";
 
 const useSpeed = useSpeedStore();
 

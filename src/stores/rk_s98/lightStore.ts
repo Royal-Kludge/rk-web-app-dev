@@ -1,17 +1,17 @@
 import { defineStore } from "pinia";
 import { reactive, ref } from 'vue';
-import { keyboard } from '@/keyboard/keyboard'
-import { RK_S98, RK_S98_EVENT_DEFINE } from '@/keyboard/rk_s98/rk_s98';
-import { BoardProfile, FieldEnum } from '@/keyboard/rk_s98/boardProfile';
-import { LedEffect } from '@/keyboard/rk_s98/ledEffect';
-import { LedColors } from '@/keyboard/rk_s98/ledColors';
-import {  KeyMatrixLayer, MatrixTable } from '@/keyboard/enum'
-import { LightEffectEnum } from '@/keyboard/enum'
+import { keyboard } from '@/keyboard/beiying/keyboard'
+import { RK_S98, RK_S98_EVENT_DEFINE } from '@/keyboard/beiying/rk_s98/rk_s98';
+import { BoardProfile, FieldEnum } from '@/keyboard/beiying/rk_s98/boardProfile';
+import { LedEffect } from '@/keyboard/beiying/rk_s98/ledEffect';
+import { LedColors } from '@/keyboard/beiying/rk_s98/ledColors';
+import {  KeyMatrixLayer, MatrixTable } from '@/keyboard/beiying/enum'
+import { LightEffectEnum } from '@/keyboard/beiying/enum'
 import { ConnectionType, ConnectionEventEnum, ConnectionStatusEnum } from '@/device/enum'
-import { type LedColor } from '@/keyboard/interface';
+import { type LedColor } from '@/keyboard/beiying/interface';
 import { KeyDefineEnum } from '@/common/keyCode_s98';
-import { type KeyTableData } from '@/keyboard/interface'
-import { ps } from '@/keyboard/rk_s98/profiles';
+import { type KeyTableData } from '@/keyboard/beiying/interface'
+import { ps } from '@/keyboard/beiying/rk_s98/profiles';
 
 export const uselightStore = defineStore('lightinfo_rk_s98', () => {
     const rgb = ref({ r: 0, g: 0, b: 0, color: '#000000' });

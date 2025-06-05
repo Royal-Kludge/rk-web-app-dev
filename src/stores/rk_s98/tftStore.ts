@@ -1,9 +1,9 @@
 import { defineStore } from "pinia";
 import { reactive, ref } from 'vue';
-import { Frame, Frames } from '@/keyboard/rk_s98/frames';
+import { Frame, Frames } from '@/keyboard/beiying/rk_s98/frames';
 import { storage } from '@/common/storage';
-import { keyboard } from '@/keyboard/keyboard'
-import { RK_S98, RK_S98_EVENT_DEFINE } from '@/keyboard/rk_s98/rk_s98';
+import { keyboard } from '@/keyboard/beiying/keyboard'
+import { RK_S98, RK_S98_EVENT_DEFINE } from '@/keyboard/beiying/rk_s98/rk_s98';
 
 export const useTftStore = defineStore("tftinfo_rk_s98", () => {
     const frames = ref<Frames>();

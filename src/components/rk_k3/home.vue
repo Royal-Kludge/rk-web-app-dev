@@ -30,13 +30,13 @@
 
 <script setup lang="ts">
 import { useMenuStore } from "@/stores/rk_k3/menuStore";
-import { mouse } from '@/mouse/mouse'
-import { RK_MOUSE_EVENT_DEFINE } from '@/mouse/state'
+import { mouse } from '@/mouse/beiying/mouse'
+import { RK_MOUSE_EVENT_DEFINE } from '@/mouse/beiying/state'
 import RK_K3_Page from '@/components/rk_k3/index.vue'
 import Meun from "@/components/rk_k3/menu.vue";
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 import { storeToRefs } from "pinia";
-import type { RK_K3 } from '@/mouse/rk_k3/rk_k3';
+import type { RK_K3 } from '@/mouse/beiying/rk_k3/rk_k3';
 import { useKeyStore } from "@/stores/rk_k3/keyStore";
 import { useProfileStore } from "@/stores/rk_k3/profileStore";
 import { useSpeedStore } from "@/stores/rk_k3/speedStore";

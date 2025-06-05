@@ -1,5 +1,5 @@
 import type { MouseState, MouseDefine, IMouseReport  } from './interface'
-import { ConnectionType, ConnectionEventEnum, ConnectionStatusEnum } from "@/device/enum"
+import { ConnectionType, ConnectionEventEnum, ConnectionStatusEnum, ProtocolType } from "@/device/enum"
 import { RK_M3_USB_DEFINE, RK_M3_DONGLE_DEFINE } from "./rk_m3"
 import { RK_M30_USB_DEFINE, RK_M30_DONGLE_DEFINE } from "./rk_m30"
 import { RK_M3_Mouse_Report } from './rk_m3/rk_m3_mouse_report'
@@ -19,7 +19,8 @@ export const defaultState: MouseState = {
     commandId: 0x00,
     dataChangeFlag: 0,
     batteryStatus: 0,
-    batteryValue: 0
+    batteryValue: 0,
+    protocolType: ProtocolType.BeiYing
 }
 
 export const RK_MOUSE_EVENT_DEFINE: {

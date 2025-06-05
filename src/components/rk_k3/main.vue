@@ -253,9 +253,9 @@ import { useProfileStore } from "@/stores/rk_k3/profileStore";
 import { storeToRefs } from "pinia";
 import { KeyCodeMap } from '@/common/keyCode'
 import { useMacroStore } from "@/stores/rk_k3/macroStore";
-import { Macro } from '@/mouse/rk_k3/macros';
-import { KeyMappingType, KeyFunctionType, MacroLoopEnum } from "@/mouse/enum";
-import { RK_K3 } from '@/mouse/rk_k3/rk_k3';
+import { Macro } from '@/mouse/beiying/rk_k3/macros';
+import { KeyMappingType, KeyFunctionType, MacroLoopEnum } from "@/mouse/beiying/enum";
+import { RK_K3 } from '@/mouse/beiying/rk_k3/rk_k3';
 
 const useMacro = useMacroStore();
 const useProfile = useProfileStore();

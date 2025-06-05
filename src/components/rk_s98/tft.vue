@@ -146,8 +146,8 @@ import { ElMessageBox, ElMessage } from 'element-plus'
 import Cropper from '@/components/cropper.vue'
 import { useTftStore } from "../../stores/rk_s98/tftStore";
 import { storeToRefs } from "pinia";
-import { RK_S98, RK_S98_EVENT_DEFINE } from "../../keyboard/rk_s98/rk_s98";
-import { keyboard } from "../../keyboard/keyboard";
+import { RK_S98, RK_S98_EVENT_DEFINE } from "../../keyboard/beiying/rk_s98/rk_s98";
+import { keyboard } from "../../keyboard/beiying/keyboard";
 import { log } from 'console';
 import { SuperGif } from '../../assets/js/libgif.js'
 

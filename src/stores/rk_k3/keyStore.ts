@@ -1,15 +1,15 @@
 import { defineStore } from "pinia";
 import { reactive, ref } from 'vue';
-import { mouse } from '@/mouse/mouse'
-import { RK_K3 } from '@/mouse/rk_k3/rk_k3';
+import { mouse } from '@/mouse/beiying/mouse'
+import { RK_K3 } from '@/mouse/beiying/rk_k3/rk_k3';
 import { ConnectionEventEnum, ConnectionStatusEnum, ConnectionType } from '@/device/enum'
-import { ps } from '@/mouse/rk_k3/profiles';
-import { KeyTableEnum } from "@/mouse/rk_k3/keyTable";
+import { ps } from '@/mouse/beiying/rk_k3/profiles';
+import { KeyTableEnum } from "@/mouse/beiying/rk_k3/keyTable";
 import { KeyDefineEnum, KeyText } from "@/common/keyCode";
-import { KeyMappingType, KeyFunctionType, MacroLoopEnum, MouseKeyCode } from "@/mouse/enum";
-import type { KeyMappingData, KeyTableData, LeftSideKey } from "@/mouse/interface";
-import { KEY_LAYOUT } from '@/mouse/rk_k3/layout';
-import { Macro } from '@/mouse/rk_k3/macros';
+import { KeyMappingType, KeyFunctionType, MacroLoopEnum, MouseKeyCode } from "@/mouse/beiying/enum";
+import type { KeyMappingData, KeyTableData, LeftSideKey } from "@/mouse/beiying/interface";
+import { KEY_LAYOUT } from '@/mouse/beiying/rk_k3/layout';
+import { Macro } from '@/mouse/beiying/rk_k3/macros';
 import { ElMessageBox } from 'element-plus'
 import { useI18n } from "vue-i18n";
 

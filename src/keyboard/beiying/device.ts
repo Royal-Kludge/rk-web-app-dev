@@ -230,5 +230,6 @@ export const RK_S98_WIRE_DEFINE: HidDeviceDefine = {
     usagePage: 0xFF00,
     usage: 0x0001,
     connectType: ConnectionType.USB,
-    deviceType: DeviceType.Keyboard,    
+    deviceType: DeviceType.Keyboard,
+    protocolType: ProtocolType.BeiYing
 }
