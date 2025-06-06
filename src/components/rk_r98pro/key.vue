@@ -344,13 +344,11 @@ const keyClick = async (index: number) => {
     if (positionList.is_selected) return;
 
     if (meunid.value == 1 || (meunid.value == 3 && useLight.state.lightProps.light == LightEffectEnum.SelfDefine)) {
-        if (meunid.value == 1) {
-            useKey.unSelected();
-        }
-        useKey.keyClick(index);
+        useKey.unSelected();
+        await useKey.keyClick(index);
     }
 
-    if (meunid.value == 3) {
+    if (meunid.value == 3 && useLight.state.lightProps.light == LightEffectEnum.SelfDefine) {
         useLight.keyChanged(index);
         let key = (useKey.state.keyState[index] as KeyState);
         if (key.selected) {
@@ -441,6 +439,7 @@ const shortcutStrKey = (key: String[] | undefined) => {
 
 :deep(.el-dropdown) {
     line-height: 1.3 !important;
+    position: static;
 }
 
 .key_remapped {
@@ -505,7 +504,8 @@ const shortcutStrKey = (key: String[] | undefined) => {
 
 .key10 {
     height: 104px;
-    margin-bottom: -57px;
+    position: absolute !important;
+    right: 10px;
 }
 
 .space-l {
@@ -529,7 +529,21 @@ const shortcutStrKey = (key: String[] | undefined) => {
 }
 
 .space-l6 {
-    margin-left: 114px;
+    //margin-left: 114px;
+    position: absolute !important;
+    right: 204px;
+}
+
+.space-l7 {
+    //margin-left: 114px;
+    position: absolute !important;
+    right: 140px;
+}
+
+.space-l8 {
+    //margin-left: 114px;
+    position: absolute !important;
+    right: 76px;
 }
 
 .space-t {

@@ -19,7 +19,7 @@ export const RK_C61_USB_DEFINE: KeyboardDefine = {
             KeyMatrixLayer.FN0,
             KeyMatrixLayer.FN1,
             KeyMatrixLayer.FN2,
-            KeyMatrixLayer.Tap
+            //KeyMatrixLayer.Tap
         ],
         keyMatrixTable: [
             MatrixTable.WIN,

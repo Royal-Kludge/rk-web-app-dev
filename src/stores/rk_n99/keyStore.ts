@@ -1122,6 +1122,17 @@ export const useKeyStore = defineStore('keyinfo_rk_n99', () => {
     return undefined;
   }
 
+  const unSelectFunc = () => {
+    for (var i = 0; i < state.keyFunList.length; i++) {
+      for (var j = 0; j < state.keyFunList[i].keys.length; j++) {
+        if (state.keyFunList[i].keys[j].selected && state.funid == state.keyFunList[i].id) {
+          state.keyFunList[i].keys[j].selected = false;
+        }
+      }
+    }
+  }
+
+
   const getSelectedTable = (): MatrixTable => {
     for (var i = 0; i < state.keyFunList.length; i++) {
       for (var j = 0; j < state.keyFunList[i].keys.length; j++) {
@@ -1408,7 +1419,7 @@ export const useKeyStore = defineStore('keyinfo_rk_n99', () => {
     return !(state.keyState as Array<KeyState>)[index].selected ? '' : 'selected';
   }
 
-  const keyClick = (index: number) => {
+  const keyClick = async(index: number) => {
     if (state.keyState.length <= 0 || index >= 999) return '';
     let key = (state.keyState as Array<KeyState>)[index];
     let isSelected = key.selected;
@@ -1430,7 +1441,7 @@ export const useKeyStore = defineStore('keyinfo_rk_n99', () => {
         keySetStr(key.KeyData);
       }
       KeyMatrixData.value[keyMatrixTable.value][keyMatrixLayer.value]?.setKeyMapping(key.index, key.KeyData.keyMappingData);
-      rk_n99.value?.setKeyMatrix(keyMatrixLayer.value, keyMatrixTable.value, 0);
+      await rk_n99.value?.setKeyMatrix(keyMatrixLayer.value, keyMatrixTable.value, 0);
 
       saveProfile();
       unSelected();
@@ -1731,5 +1742,5 @@ export const useKeyStore = defineStore('keyinfo_rk_n99', () => {
     return '';
   }
 
-  return { profile, state, keyMatrixLayer, keyMatrixTable, keyClick, keyColor, isSelected, keybgColor, keyText, keySetToDefault, keySetMacro, mapping, isFunSelected, isMacroSelected, clickMacro, confirmSetMacro, setCombineKey, confirmMediaKey, setMediaKey,setShortcutKey, confirmSetCombineKey, confirmShortcutKey, getKeyMatrix, clickProfile, deleteProfile, onKeyDown, newProfile, handleEditClose, renameProfile, exportProfile, importProfile, init, destroy, getKeyMatrixNomal, saveProfile, keySetToDefaultAll, refresh, refreshKeyMatrixData, setToFactory, unSelected, renameSaveProfile, setFunid, isCombinKey, keyTipText }
+  return { profile, state, keyMatrixLayer, keyMatrixTable, keyClick, keyColor, isSelected, keybgColor, keyText, keySetToDefault, keySetMacro, mapping, isFunSelected, isMacroSelected, clickMacro, confirmSetMacro, setCombineKey, confirmMediaKey, setMediaKey,setShortcutKey, confirmSetCombineKey, confirmShortcutKey, getKeyMatrix, clickProfile, deleteProfile, onKeyDown, newProfile, handleEditClose, renameProfile, exportProfile, importProfile, init, destroy, getKeyMatrixNomal, saveProfile, keySetToDefaultAll, refresh, refreshKeyMatrixData, setToFactory, unSelected,unSelectFunc, renameSaveProfile, setFunid, isCombinKey, keyTipText }
 })

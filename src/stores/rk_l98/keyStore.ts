@@ -19,6 +19,7 @@ import { BoardProfile, FieldEnum, PROFILE_DEFAULT_DATA } from '@/keyboard/beiyin
 import { LedEffect } from '@/keyboard/beiying/rk_l98/ledEffect';
 import { LedColors } from '@/keyboard/beiying/rk_l98/ledColors';
 import { useI18n } from 'vue-i18n';
+import type { accessSync } from "fs";
 
 export const useKeyStore = defineStore('keyinfo_rk_l98', () => {  
   const rk_l98 = ref<RK_L98>();
@@ -1095,6 +1096,18 @@ export const useKeyStore = defineStore('keyinfo_rk_l98', () => {
     return style;
   }
 
+  const unSelectFunc = () => {
+    for (var i = 0; i < state.keyFunList.length; i++) {
+      for (var j = 0; j < state.keyFunList[i].keys.length; j++) {
+        if (state.keyFunList[i].keys[j].selected && state.funid == state.keyFunList[i].id) {
+          state.keyFunList[i].keys[j].selected = false;
+        }
+      }
+    }
+  }
+
+
+
   const getSelectedFun = (): KeyDefineEnum | undefined => {
     for (var i = 0; i < state.keyFunList.length; i++) {
       for (var j = 0; j < state.keyFunList[i].keys.length; j++) {
@@ -1363,7 +1376,7 @@ export const useKeyStore = defineStore('keyinfo_rk_l98', () => {
     return !(state.keyState as Array<KeyState>)[index].selected ? '' : 'selected';
   }
 
-  const keyClick = (index: number) => {
+  const keyClick = async(index: number) => {
     if (state.keyState.length <= 0 || index >= 999) return '';
     let key = (state.keyState as Array<KeyState>)[index];
     let isSelected = key.selected;
@@ -1385,7 +1398,7 @@ export const useKeyStore = defineStore('keyinfo_rk_l98', () => {
         keySetStr(key.KeyData);
       }
       KeyMatrixData.value[keyMatrixTable.value][keyMatrixLayer.value]?.setKeyMapping(key.index, key.KeyData.keyMappingData);
-      rk_l98.value?.setKeyMatrix(keyMatrixLayer.value, keyMatrixTable.value, 0);
+      await rk_l98.value?.setKeyMatrix(keyMatrixLayer.value, keyMatrixTable.value, 0);
 
       saveProfile();
       unSelected();
@@ -1418,7 +1431,10 @@ export const useKeyStore = defineStore('keyinfo_rk_l98', () => {
   const unSelected = (): void => {
     let i: any;
     for (i in state.keyState) {
-      (state.keyState as Array<KeyState>)[i].selected = false;
+      let keyState = (state.keyState as Array<KeyState>)[i];
+      if (keyState.selected) {
+        keyState.selected = false;
+      }
     }
   }
 
@@ -1632,5 +1648,5 @@ export const useKeyStore = defineStore('keyinfo_rk_l98', () => {
     state.mediaKeyDialogShow = false;
   }
 
-  return { profile, state, keyMatrixLayer, keyMatrixTable, getIndex, keyClick, keyColor, isSelected, keybgColor, keyText, keySetToDefault, keySetMacro, mapping, isFunSelected, isMacroSelected, clickMacro, confirmSetMacro, setCombineKey, confirmMediaKey, setMediaKey, confirmSetCombineKey, getKeyMatrix, clickProfile, deleteProfile, onKeyDown, newProfile, handleEditClose, renameProfile, exportProfile, importProfile, init, destroy, getKeyMatrixNomal,  saveProfile, keySetToDefaultAll, refresh, refreshKeyMatrixData, setToFactory, unSelected, renameSaveProfile, setFunid, setKeyCode }
+  return { profile, state, keyMatrixLayer, keyMatrixTable, getIndex, keyClick, keyColor, isSelected, keybgColor, keyText, keySetToDefault, keySetMacro, mapping, isFunSelected, isMacroSelected, clickMacro, confirmSetMacro, setCombineKey, confirmMediaKey, setMediaKey, confirmSetCombineKey, getKeyMatrix, clickProfile, deleteProfile, onKeyDown, newProfile, handleEditClose, renameProfile, exportProfile, importProfile, init, destroy, getKeyMatrixNomal,  saveProfile, keySetToDefaultAll, refresh, refreshKeyMatrixData, setToFactory,unSelectFunc, unSelected, renameSaveProfile, setFunid, setKeyCode }
 })

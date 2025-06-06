@@ -9,7 +9,7 @@ import { RK_M70_USB_DEFINE, RK_M70_UK_USB_DEFINE, RK_M70_DONGLE_DEFINE, RK_M70_U
 import { RK_L98_USB_DEFINE, RK_L98_DONGLE_DEFINE } from "./rk_l98"
 import { RK_N99_USB_DEFINE, RK_N99_DONGLE_DEFINE } from "./rk_n99"
 import { RK_R98PRO_USB_DEFINE, RK_R98PRO_FR_USB_DEFINE, RK_R98PRO_GER_USB_DEFINE } from "./rk_r98pro"
-
+import { RK_S98_USB_DEFINE, RK_S98_DONGLE_DEFINE } from "./rk_s98"
 /**
 * Initial lightInfo
 */
@@ -68,6 +68,8 @@ export const KeyboardDefineList: Record<string, KeyboardDefine> = {
     "rk r98pro wire": RK_R98PRO_USB_DEFINE,
     "rk r98pro fr wire": RK_R98PRO_FR_USB_DEFINE,
     "rk r98pro ger wire": RK_R98PRO_GER_USB_DEFINE,
+    "rk s98 usb": RK_S98_USB_DEFINE,
+    "rk s98 24G": RK_S98_DONGLE_DEFINE,
 }
 
 /**
@@ -87,4 +89,5 @@ export const DonglePwdDefineList: Record<number, string> = {
     0x0300031C: "rk m70 uk 24G",
     0x0600004E: "rk l98 24G",
     0x06000029: "rk n99 24G",
+    0x06000023: "rk s98 24G",
 }
