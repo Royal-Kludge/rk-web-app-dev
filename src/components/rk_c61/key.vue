@@ -11,7 +11,8 @@
                         v-for="key in (line as KeyLine).keys" @click="keyClick(key.index)">
                         <div :class="[`text-white-1`, keyTextColorClass(key.keyData)]"
                             :style="`z-index:1;word-wrap: break-word;overflow: hidden;text-align: center;${keyTextColorStyle(key.keyData)}`">
-                            <span v-if="useKey.isCombinKey(key.keyData)" style="word-wrap: break-word;">{{ $t('key.menu_3') }}</span>
+                            <span v-if="useKey.isCombinKey(key.keyData)" style="word-wrap: break-word;">{{
+                                $t('key.menu_3') }}</span>
                             <span v-else style="word-wrap: break-word;" v-html="useKey.keyText(key.keyData)"></span>
                         </div>
                     </div>
@@ -22,7 +23,8 @@
             </div>
             <div class="keybox d-flex flex-column bg-white p-3" style="border-radius: 15px;position: relative;" v-else>
                 <div class="d-flex" v-for="line in useKey.state.keyMatrix as Array<KeyLine>" :class="[`${line.style}`]">
-                    <el-tooltip effect="light" :disabled="!useKey.isCombinKey(key.keyData)" :content="useKey.keyTipText(key.keyData)" placement="top" popper-class="tip_font"
+                    <el-tooltip effect="light" :disabled="!useKey.isCombinKey(key.keyData)"
+                        :content="useKey.keyTipText(key.keyData)" placement="top" popper-class="tip_font"
                         v-for="key in (line as KeyLine).keys" v-if="meunid == 1">
                         <el-dropdown :id="`key${key.index}`" trigger="contextmenu" ref="keyMapping"
                             @visible-change="handleOpen($event, `key${key.index}`)">
@@ -30,37 +32,65 @@
                                 :class="[`d-flex p-2 pl-3 ${key.style}`, useKey.keyColor(key.keyData), useKey.isSelected(key.index)]">
                                 <div :class="[`text-white-1`, keyTextColorClass(key.keyData)]"
                                     :style="`z-index:1;word-wrap: break-word;overflow: hidden;text-align: center;${keyTextColorStyle(key.keyData)}`">
-                                    <span v-if="useKey.isCombinKey(key.keyData)" style="word-wrap: break-word;">{{ $t('key.menu_3') }}</span>
-                                    <span v-else style="word-wrap: break-word;" v-html="useKey.keyText(key.keyData)"></span>
+                                    <span v-if="useKey.isCombinKey(key.keyData)" style="word-wrap: break-word;">{{
+                                        $t('key.menu_3') }}</span>
+                                    <span v-else style="word-wrap: break-word;"
+                                        v-html="useKey.keyText(key.keyData)"></span>
                                 </div>
                             </div>
                             <template #dropdown>
-                                    <el-dropdown-menu style="padding: 0px;">
-                                        <el-dropdown-item @click="keySetToDefault(key.index)" style="height: min-content;">
-                                            {{ $t('key.menu_1') }}
-                                        </el-dropdown-item>
-                                        <el-dropdown-item @click="useKey.keySetMacro(key.index)" style="height: min-content;">
-                                            {{ $t('key.menu_2') }}
-                                        </el-dropdown-item>
-                                        <el-dropdown-item @click="useKey.setCombineKey(key.index)" style="height: min-content;">
-                                            {{ $t('key.menu_3') }}
-                                        </el-dropdown-item>
-                                        <el-dropdown-item @click="useKey.setMediaKey(key.index)" style="height: min-content;">
-                                            {{ $t('key.menu_4') }}
-                                        </el-dropdown-item>
-                                        <el-dropdown-item @click="useKey.setShortcutKey(key.index)" style="height: min-content;">
-                                            {{ $t('key.menu_5') }}
-                                        </el-dropdown-item>
-                                    </el-dropdown-menu>
-                                </template>
+                                <el-dropdown-menu style="padding: 0px;">
+                                    <el-dropdown-item @click="keySetToDefault(key.index)" style="height: min-content;">
+                                        {{ $t('key.menu_1') }}
+                                    </el-dropdown-item>
+                                    <el-dropdown-item @click="useKey.keySetMacro(key.index)"
+                                        style="height: min-content;">
+                                        {{ $t('key.menu_2') }}
+                                    </el-dropdown-item>
+                                </el-dropdown-menu>
+                            </template>
                         </el-dropdown>
                     </el-tooltip>
+
+                    <el-popover placement="right" :width="450" trigger="click"
+                        popper-style="background: #6A6A77;--el-bg-color-overlay:##6A6A77;--el-border-color-light:transparent;--el-popover-padding:0px"
+                        v-for="key in (line as KeyLine).keys" v-else-if="meunid == 3">
+                        <template #reference>
+                            <div @click="keyClick(key.index)" class="d-flex ai-center jc-center c-p"
+                                :class="[`d-flex p-2 pl-3 ${key.style}`, useKey.keyColor(key.keyData), useKey.isSelected(key.index)]">
+                                <div :class="[`text-white-1`, keyTextColorClass(key.keyData)]"
+                                    :style="`z-index:1;word-wrap: break-word;overflow: hidden;text-align: center;${keyTextColorStyle(key.keyData)}`">
+                                    <span v-if="useKey.isCombinKey(key.keyData)" style="word-wrap: break-word;">{{
+                                        $t('key.menu_3') }}</span>
+                                    <span v-else style="word-wrap: break-word;"
+                                        v-html="useKey.keyText(key.keyData)"></span>
+                                </div>
+                            </div>
+                        </template>
+                        <template #default>
+                            <div class="py-3">
+                                <div class="d-flex p-3 ai-center c-p" v-for="item in TitleList"
+                                    @click="advTypeClick(item.id, key.keyData)"
+                                    :class="{ 'bg-select': item.id === titleid }" style="height: 36px;">
+                                    <div class="d-flex jc-center ai-center mx-3"
+                                        style="border-right: 3px solid #ea5413; width: 32px;">
+                                        <img :src="item.src" class="mr-4" style="width: 24px;" />
+                                    </div>
+                                    <div class="text-white-1">
+                                        <span class="text-warn">{{ item.title }}：</span>{{ item.des }}
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+                    </el-popover>
+
                     <div :i="key.index" class="item d-flex ai-center jc-center c-p p-r"
                         :class="[`d-flex p-2 pl-3 ${key.style}`, useKey.keyColor(key.keyData), useKey.isSelected(key.index)]"
                         v-for="key in line.keys" v-else @click="keyClick(key.index)">
                         <div :class="[`text-white-1`, keyTextColorClass(key.keyData)]"
                             :style="`z-index:1;word-wrap: break-word;overflow: hidden;text-align: center;${keyTextColorStyle(key.keyData)}`">
-                            <span v-if="useKey.isCombinKey(key.keyData)" style="word-wrap: break-word;">{{ $t('key.menu_3') }}</span>
+                            <span v-if="useKey.isCombinKey(key.keyData)" style="word-wrap: break-word;">{{
+                                $t('key.menu_3') }}</span>
                             <span v-else style="word-wrap: break-word;" v-html="useKey.keyText(key.keyData)"></span>
                         </div>
                     </div>
@@ -70,111 +100,39 @@
                 </div>
             </div>
             <el-dialog v-model="useKey.state.macroDialogShow" top="18vh" width="680px"
-                    style="--el-dialog-padding-primary:3px;">
-                    <div class="d-flex flex-column" style="margin-top: 35px;">
-                        <div class="d-flex flex-column flex-1 bg-white-1"
-                            style="border-radius: 0px 0px 10px 10px;height: 100%;">
-                            <div class="list flex-1 bg-warn-1">
-                                <div style="height: 30vh">
-                                    <el-scrollbar>
-                                        <div :class="['p-1 c-p', useKey.isMacroSelected(macro)]"
-                                            v-for=" macro in useKey.state.macros?.get()"
-                                            @click="useKey.clickMacro(macro)">
-                                            {{ macro.name }}
-                                        </div>
-                                    </el-scrollbar>
-                                </div>
-                            </div>
-                            <div class="m-3">
-                                <span class="mr-3">{{ $t('key.title_1') }}</span>
-                                <el-select v-model="useKey.state.cycleType" placeholder="Select" style="width: 240px;">
-                                    <el-option v-for="item in useKey.state.cycleTypes" :key="item.value"
-                                        :label="$t(item.strKey)" :value="item.value" />
-                                </el-select>
-                            </div>
-                            <div class="m-3">
-                                <span class="mr-3">{{ $t('key.title_2') }}</span>
-                                <el-input-number v-model="useKey.state.cycleCount" style="width: 150px" type="number" />
-                            </div>
-                            <div class="d-flex p-4 jc-center" style="border-radius: 0px 0px 10px 10px">
-                                <div class="py-1 px-5 but-green text-white mx-3 c-p" @click="useKey.confirmSetMacro">
-                                    {{ $t('key.but_3') }}
-                                </div>
+                style="--el-dialog-padding-primary:3px;">
+                <div class="d-flex flex-column" style="margin-top: 35px;">
+                    <div class="d-flex flex-column flex-1 bg-white-1"
+                        style="border-radius: 0px 0px 10px 10px;height: 100%;">
+                        <div class="list flex-1 bg-warn-1">
+                            <div style="height: 30vh">
+                                <el-scrollbar>
+                                    <div :class="['p-1 c-p', useKey.isMacroSelected(macro)]"
+                                        v-for="macro in useKey.state.macros?.get()" @click="useKey.clickMacro(macro)">
+                                        {{ macro.name }}
+                                    </div>
+                                </el-scrollbar>
                             </div>
                         </div>
-                    </div>
-                </el-dialog>
-                <el-dialog v-model="useKey.state.combineKeyDialogShow" top="20vh" width="480px"
-                    style="--el-dialog-padding-primary:3px;" @opened="dialogOpened" @closed="dialogClosed" :close-on-press-escape="false" :close-on-click-modal="false">
-                    <div class="d-flex flex-column ml-4">
-                        <div class="m-3" id="input">
-                            <span class="mr-3">Input</span>
-                            <el-input style="width: 150px" v-model="useKey.state.keyStr" aria-placeholder="Please input"
-                                :readonly="true" maxlength="1" />
+                        <div class="m-3">
+                            <span class="mr-3">{{ $t('key.title_1') }}</span>
+                            <el-select v-model="useKey.state.cycleType" placeholder="Select" style="width: 240px;">
+                                <el-option v-for="item in useKey.state.cycleTypes" :key="item.value"
+                                    :label="$t(item.strKey)" :value="item.value" />
+                            </el-select>
                         </div>
-                        <div class="d-flex m-3">
-                            <el-checkbox v-model="useKey.state.shiftKey" label="Shift" />
-                            <el-checkbox v-model="useKey.state.ctrlKey" label="Ctrl" />
-                            <el-checkbox v-model="useKey.state.winKey" label="Win" />
-                            <el-checkbox v-model="useKey.state.altKey" label="Alt" />
+                        <div class="m-3">
+                            <span class="mr-3">{{ $t('key.title_2') }}</span>
+                            <el-input-number v-model="useKey.state.cycleCount" style="width: 150px" type="number" />
                         </div>
                         <div class="d-flex p-4 jc-center" style="border-radius: 0px 0px 10px 10px">
-                            <div class="py-1 px-5 but-green text-white mx-3 c-p" @click="useKey.confirmSetCombineKey">
+                            <div class="py-1 px-5 but-green text-white mx-3 c-p" @click="useKey.confirmSetMacro">
                                 {{ $t('key.but_3') }}
                             </div>
                         </div>
                     </div>
-                </el-dialog>
-                <el-dialog v-model="useKey.state.mediaKeyDialogShow" top="24vh" width="380px"
-                    style="--el-dialog-padding-primary:3px;" @opened="dialogOpened" @closed="dialogClosed" :close-on-press-escape="false" :close-on-click-modal="false">
-                    <div class="d-flex flex-column ml-4">
-                        <div class="m-3" id="input">
-                            <el-select
-                                v-model="useKey.state.mediaKey"
-                                :placeholder="$t('key.select')"
-                                size="large"
-                                style="width: 240px"
-                                >
-                                <el-option class="fs-xxxl"
-                                    v-for="item in useKey.state.mediaKeyOptions"
-                                    :key="item.key"
-                                    :label="$t(mediaStrKey(item.text))"
-                                    :value="item.key"
-                                />
-                                </el-select>
-                        </div>
-                        <div class="d-flex p-4 " style="border-radius: 0px 0px 10px 10px">
-                            <div class="py-1 px-5 but-green text-white mx-3 c-p" @click="useKey.confirmMediaKey(useKey.state.mediaKey)">
-                                {{ $t('key.but_3') }}
-                            </div>
-                        </div>
-                    </div>
-                </el-dialog>
-                <el-dialog v-model="useKey.state.shortcutsKeyDialogShow" top="24vh" width="380px"
-                    style="--el-dialog-padding-primary:3px;" @opened="dialogOpened" @closed="dialogClosed" :close-on-press-escape="false" :close-on-click-modal="false">
-                    <div class="d-flex flex-column ml-4">
-                        <div class="m-3" id="input">
-                            <el-select
-                                v-model="useKey.state.shortcutsKey"
-                                :placeholder="$t('key.select')"
-                                size="large"
-                                style="width: 240px"
-                                >
-                                <el-option class="fs-xxxl"
-                                    v-for="item in useKey.state.shortcutsKeyOptions"
-                                    :key="item.key"
-                                    :label="$t(shortcutStrKey(item.text))"
-                                    :value="item.key"
-                                />
-                                </el-select>
-                        </div>
-                        <div class="d-flex p-4 " style="border-radius: 0px 0px 10px 10px">
-                            <div class="py-1 px-5 but-green text-white mx-3 c-p" @click="useKey.confirmShortcutKey(useKey.state.shortcutsKey)">
-                                {{ $t('key.but_3') }}
-                            </div>
-                        </div>
-                    </div>
-                </el-dialog>
+                </div>
+            </el-dialog>
             <div class="d-flex jc-center mt-3" v-if="meunid == 1">
                 <div class="py-1 px-3 but-red text-white c-p" @click="useKey.keySetToDefaultAll">
                     {{ $t('light.title_8') }}
@@ -184,22 +142,27 @@
     </div>
 </template>
 <script setup lang="ts">
-import { useKeyStore } from "@/stores/rk_m87/keyStore";
-import { useMenuStore } from "@/stores/rk_m87/menuStore";
-import { uselightStore } from "@/stores/rk_m87/lightStore";
+import { useKeyStore } from "@/stores/rk_c61/keyStore";
+import { useMenuStore } from "@/stores/rk_c61/menuStore";
+import { uselightStore } from "@/stores/rk_c61/lightStore";
 import { ref, onMounted, onBeforeUnmount, watch, reactive, computed } from 'vue';
 import type { DropdownInstance } from 'element-plus'
 import { storeToRefs } from "pinia";
-import type { KeyLine, KeyState, KeyTableData } from "@/keyboard/beiying/interface";
-import { LightEffectEnum } from '@/keyboard/beiying/enum'
-import { useMacroStore } from "@/stores/rk_m87/macroStore";
+import type { KeyLine, KeyState, KeyTableData } from "@/keyboard/sparklink/interface";
+import { LightEffectEnum } from '@/keyboard/sparklink/enum'
+import { useMacroStore } from "@/stores/rk_c61/macroStore";
+import { useAdvKeyStore } from "@/stores/rk_c61/advKeyStore";
+import { ElMessage } from 'element-plus'
 
+const useAdvKey = useAdvKeyStore();
 const useMacro = useMacroStore();
 const useMenu = useMenuStore();
-const { meunid } = storeToRefs(useMenu);
-
 const useKey = useKeyStore();
 const useLight = uselightStore();
+
+const { meunid } = storeToRefs(useMenu);
+const { titleid, TitleList } = storeToRefs(useAdvKey);
+
 const screenWidth = ref(0);
 const isMin = ref(false);
 
@@ -223,6 +186,28 @@ const mask_height = computed(() => (`${Math.abs(positionList.end_y - positionLis
 const mask_left = computed(() => (`${Math.min(positionList.start_x, positionList.end_x) - positionList.box_screen_left}px;`))
 const mask_top = computed(() => (`${Math.min(positionList.start_y, positionList.end_y) - positionList.box_screen_top}px;`))
 
+const advTypeClick = (id: number, key: KeyTableData | undefined) => {
+    if (useKey.advanceKeys != undefined && useKey.advanceKeys?.length >= 40) {
+        ElMessage({
+            showClose: true,
+            message: '最多只能添加40个高级键。',
+            type: 'warning'
+        });
+        return;
+    }
+    useAdvKey.setTitleid(id);
+    switch (id) {
+        case 1:
+            useKey.addDKS(key);
+            break;
+        case 2:
+            useKey.addMT(key);
+            break;
+        case 3:
+            useKey.addTGL(key);
+            break;
+    }
+}
 onMounted(async () => {
     await useKey.init();
     await useLight.init();
@@ -349,18 +334,18 @@ const keyClick = async (index: number) => {
         useKey.keyClick(index);
     }
 
-    if (meunid.value == 3) {
-        useLight.keyChanged(index);
-        let key = (useKey.state.keyState[index] as KeyState);
-        if (key.selected) {
-            useLight.setSelectedKeyColor(key.index);
-            await useLight.saveLedColorsToDevice();
-        } else {
-            useLight.SelfDefineDefault();
-        }
+    // if (meunid.value == 3) {
+    //     useLight.keyChanged(index);
+    //     let key = (useKey.state.keyState[index] as KeyState);
+    //     if (key.selected) {
+    //         useLight.setSelectedKeyColor(key.index);
+    //         await useLight.saveLedColorsToDevice();
+    //     } else {
+    //         useLight.SelfDefineDefault();
+    //     }
 
-        await useKey.saveProfile();
-    }
+    //     await useKey.saveProfile();
+    // }
 }
 
 const keyTextColorClass = (key: KeyTableData | undefined): string => {
@@ -426,6 +411,10 @@ const shortcutStrKey = (key: String[] | undefined) => {
     /* Standard syntax */
 }
 
+.bg-select {
+    background-color: #989aab !important;
+}
+
 .mask {
     position: absolute;
     background: #4743A7;
@@ -437,6 +426,7 @@ const shortcutStrKey = (key: String[] | undefined) => {
 :deep(.el-dialog__body) {
     padding: 0px !important;
 }
+
 :deep(.el-dropdown) {
     line-height: 1.3 !important;
     position: static;
@@ -573,7 +563,8 @@ const shortcutStrKey = (key: String[] | undefined) => {
     }
 }
 
-@media screen and (max-width: 1600px),screen and (max-height: 900px) {
+@media screen and (max-width: 1600px),
+screen and (max-height: 900px) {
     .bg {
         width: 886px;
         padding: 18px;
@@ -695,7 +686,8 @@ const shortcutStrKey = (key: String[] | undefined) => {
     }
 }
 
-@media screen and (max-width: 1200px),screen and (max-height: 768px) {
+@media screen and (max-width: 1200px),
+screen and (max-height: 768px) {
     .bg {
         width: 715px;
         padding: 10px;
