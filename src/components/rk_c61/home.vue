@@ -6,15 +6,16 @@
         </div>
         <div class="flex-1">
             <RK_C61_Page v-if="meunid > 0" />
-            <div class="d-flex flex-column jc-center ai-center">
+            <div v-else class="d-flex flex-column jc-center ai-center">
                 <div class="d-flex flex-column jc-center ai-center">
                     <div class="text-black my-4" style="font-size: 120px; font-weight: bold">
-                       RK-C61
+                        RK-C61
                     </div>
                     <div class="my-4 c-p" @click="setMeunid();">
                         <el-tooltip effect="light" :content="$t('home.title_tip')" placement="top"
                             popper-class="tip_font2">
-                            <img :src="`../../src/assets/images/${keyboard.keyboardDefine?.image}`" width="914hv" height="420hv" />
+                            <img :src="`../../src/assets/images/${keyboard.keyboardDefine?.image}`" width="914hv"
+                                height="420hv" />
                         </el-tooltip>
                     </div>
                     <div class="d-flex my-4">
@@ -33,7 +34,7 @@ import { keyboard } from '@/keyboard/sparklink/keyboard'
 import { RK_C61 } from "@/keyboard/sparklink/rk_c61/rk_c61";
 import RK_C61_Page from '@/components/rk_c61/index.vue'
 import Meun from "@/components/rk_c61/menu.vue";
-import { useMenuStore } from "@/stores/rk_l75/menuStore";
+import { useMenuStore } from "@/stores/rk_c61/menuStore";
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 import { storeToRefs } from "pinia";
 
