@@ -1229,9 +1229,13 @@ export const useKeyStore = defineStore('keyinfo_rk_l98', () => {
     let keyText = KeyText;
     let keyType = profile.value?.keyTypes[keyMatrixTable.value][keyMatrixLayer.value][keyData.index];
 
-    if (keyType == MatrixTable.WIN && keyboard.keyboardDefine != undefined) {
-      keyText = keyboard.keyboardDefine.keyText;
-    } else if (keyType == MatrixTable.MAC) {
+    if (keyMatrixTable.value == MatrixTable.WIN) {
+      if (keyType == MatrixTable.WIN && keyboard.keyboardDefine != undefined) {
+        keyText = keyboard.keyboardDefine.keyText;
+      } else if (keyType == MatrixTable.MAC) {
+        keyText = KeyText_Mac;
+      }
+    } else if (keyMatrixTable.value == MatrixTable.MAC) {
       keyText = KeyText_Mac;
     }
 
@@ -1286,12 +1290,7 @@ export const useKeyStore = defineStore('keyinfo_rk_l98', () => {
 
   const keyText = (keyData: KeyTableData | undefined): String => {
     if (keyData == undefined) return '';
-
-    let keyType = profile.value?.keyTypes[keyMatrixTable.value][keyMatrixLayer.value][keyData.index];
-    if (keyType != null && keyType != undefined && keyType == MatrixTable.MAC) {
-      return keyData.keyMappingData.keyStr[0];
-    }
-
+    
     let keyStr = '';
     let index = 0;
     let texts = [];
@@ -1306,11 +1305,24 @@ export const useKeyStore = defineStore('keyinfo_rk_l98', () => {
           case KeyMappingType.SpecialFun:
           case KeyMappingType.LightSwitch:
           case KeyMappingType.Pc:
-            if (KeyText[keyData.keyMappingData.keyRaw] != undefined) {
-              keyData.keyMappingData.keyStr[index] = t(KeyText[keyData.keyMappingData.keyRaw][index].valueOf());
+            let keyText = KeyText;
+            let keyType = profile.value?.keyTypes[keyMatrixTable.value][keyMatrixLayer.value][keyData.index];
+            
+            if (keyMatrixTable.value == MatrixTable.WIN) {
+              if (keyType == MatrixTable.WIN && keyboard.keyboardDefine != undefined) {
+                keyText = keyboard.keyboardDefine.keyText;
+              } else if (keyType == MatrixTable.MAC) {
+                keyText = KeyText_Mac;
+              }
+            } else if (keyMatrixTable.value == MatrixTable.MAC) {
+              keyText = KeyText_Mac;
+            }
+            
+            if (keyText[keyData.keyMappingData.keyRaw] != undefined) {
+              keyData.keyMappingData.keyStr[index] = (keyText[keyData.keyMappingData.keyRaw].length > index) ? t(keyText[keyData.keyMappingData.keyRaw][index].valueOf()) : "";
             }
             break;
-          }
+        }
         texts.push(keyData.keyMappingData.keyStr[index])
       }
     }

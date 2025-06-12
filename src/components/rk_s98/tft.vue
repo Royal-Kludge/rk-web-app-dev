@@ -170,7 +170,7 @@ const imgOption = reactive({
  */
 const cropOption = reactive({
     autoCropWidth: 320,
-    autoCropHeight: 170,
+    autoCropHeight: 172,
     deleteLeft: 80,
     updateLeft: 28,
     disabled: false
@@ -528,7 +528,7 @@ const tftPicSetted = (event: any) => {
 
 .frame {
     width: 320px;
-    height: 170px;
+    height: 172px;
     margin: 10px;
     flex-shrink: 0;
 }

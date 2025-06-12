@@ -1,4 +1,4 @@
-export const VERSION = '1.14.1'
+export const VERSION = '1.15.5'
 
 
 //20250102 v1.7.0 Add L75 uk support
@@ -19,3 +19,9 @@ export const VERSION = '1.14.1'
 //20250512 v1.13.0 Add n99 support
 //20250521 v1.14.0 Add R98-rf us & ger & fr support
 //20250523 v1.14.1 Add m70 shortcut key support
+//20250606 v1.15.0 Add K3 & S98_US support
+//20250607 v1.15.1 Add S98_TH support
+//20250609 v1.15.2 Fixe S98_TH 2.4G connect & Delete tft in 2.4G
+//20250609 v1.15.3 Add S98_RU support
+//20250610 v1.15.4 Add S98_JP & S98_ES support
+//20250612 v1.15.5 Add Win/Mac switch

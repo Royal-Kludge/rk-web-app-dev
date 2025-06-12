@@ -233,3 +233,47 @@ export const RK_S98_WIRE_DEFINE: HidDeviceDefine = {
     deviceType: DeviceType.Keyboard,
     protocolType: ProtocolType.BeiYing
 }
+
+export const RK_S98_TH_WIRE_DEFINE: HidDeviceDefine = {
+    name: "rk s98 th wire",
+    vendorId: 0x258A,
+    productId: 0x0223,
+    usagePage: 0xFF00,
+    usage: 0x0001,
+    connectType: ConnectionType.USB,
+    deviceType: DeviceType.Keyboard,
+    protocolType: ProtocolType.BeiYing
+}
+
+export const RK_S98_RU_WIRE_DEFINE: HidDeviceDefine = {
+    name: "rk s98 ru wire",
+    vendorId: 0x258A,
+    productId: 0x0230,
+    usagePage: 0xFF00,
+    usage: 0x0001,
+    connectType: ConnectionType.USB,
+    deviceType: DeviceType.Keyboard,
+    protocolType: ProtocolType.BeiYing
+}
+
+export const RK_S98_JP_WIRE_DEFINE: HidDeviceDefine = {
+    name: "rk s98 jp wire",
+    vendorId: 0x258A,
+    productId: 0x022F,
+    usagePage: 0xFF00,
+    usage: 0x0001,
+    connectType: ConnectionType.USB,
+    deviceType: DeviceType.Keyboard,
+    protocolType: ProtocolType.BeiYing
+}
+
+export const RK_S98_ES_WIRE_DEFINE: HidDeviceDefine = {
+    name: "rk s98 es wire",
+    vendorId: 0x258A,
+    productId: 0x022B,
+    usagePage: 0xFF00,
+    usage: 0x0001,
+    connectType: ConnectionType.USB,
+    deviceType: DeviceType.Keyboard,
+    protocolType: ProtocolType.BeiYing
+}

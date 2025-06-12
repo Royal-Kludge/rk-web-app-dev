@@ -122,6 +122,10 @@ onMounted(async () => {
                     productId.value = 9
                     break;
                 case 'RK-S98':
+                case 'RK-S98 TH':
+                case 'RK-S98 RU':
+                case 'RK-S98 JP':
+                case 'RK-S98 ES':
                     productId.value = 10
                     break;
             }
@@ -244,6 +248,10 @@ const passwordGotten = async (event: any) => {
                 productId.value = 9
                 break;
             case 'RK-S98':
+            case 'RK-S98 TH':
+            case 'RK-S98 RU':
+            case 'RK-S98 JP':
+            case 'RK-S98 ES':
                 productId.value = 10
                 break;
         }

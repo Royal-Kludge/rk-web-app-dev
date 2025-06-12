@@ -1520,7 +1520,8 @@ export const useKeyStore = defineStore('keyinfo_rk_r98pro', () => {
           case KeyMappingType.LightSwitch:
           case KeyMappingType.Pc:
             if (KeyText[keyData.keyMappingData.keyRaw] != undefined) {
-              keyData.keyMappingData.keyStr[index] = t(KeyText[keyData.keyMappingData.keyRaw][index].valueOf());
+              keyData.keyMappingData.keyStr[index] = (KeyText[keyData.keyMappingData.keyRaw].length > index) ? t(KeyText[keyData.keyMappingData.keyRaw][index].valueOf()) : "";
+
             }
             break;
           case KeyMappingType.KeyBoard:
@@ -1528,14 +1529,18 @@ export const useKeyStore = defineStore('keyinfo_rk_r98pro', () => {
               let keyText = KeyText;
               let keyType = profile.value?.keyTypes[keyMatrixTable.value][keyMatrixLayer.value][keyData.index];
             
-              if (keyType == MatrixTable.WIN && keyboard.keyboardDefine != undefined) {
-                keyText = keyboard.keyboardDefine.keyText;
-              } else if (keyType == MatrixTable.MAC) {
+              if (keyMatrixTable.value == MatrixTable.WIN) {
+                if (keyType == MatrixTable.WIN && keyboard.keyboardDefine != undefined) {
+                  keyText = keyboard.keyboardDefine.keyText;
+                } else if (keyType == MatrixTable.MAC) {
+                  keyText = KeyText_Mac;
+                }
+              } else if (keyMatrixTable.value == MatrixTable.MAC) {
                 keyText = KeyText_Mac;
               }
           
-              if (keyText[keyData.keyMappingData.keyRaw] != undefined && keyData.keyMappingData.keyCode != 0) {
-                keyData.keyMappingData.keyStr[index] = t(keyText[keyData.keyMappingData.keyRaw][index].valueOf());
+              if (keyText[keyData.keyMappingData.keyRaw] != undefined) {
+                keyData.keyMappingData.keyStr[index] = (keyText[keyData.keyMappingData.keyRaw].length > index) ? t(keyText[keyData.keyMappingData.keyRaw][index].valueOf()) : "";
               }
             }
             break;

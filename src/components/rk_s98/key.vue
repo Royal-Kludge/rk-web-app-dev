@@ -508,6 +508,16 @@ const shortcutStrKey = (key: String[] | undefined) => {
     margin-bottom: -57px;
 }
 
+
+.key5_jp {
+    width: 164px;
+}
+
+.key6_jp {
+    width: 65px;
+}
+
+
 .space-l {
     margin-left: 18px;
 }
@@ -522,6 +532,10 @@ const shortcutStrKey = (key: String[] | undefined) => {
 
 .space-l4 {
     margin-left: 54px;
+}
+
+.space-l5 {
+    margin-left: 34px;
 }
 
 .space-t {
@@ -562,6 +576,44 @@ const shortcutStrKey = (key: String[] | undefined) => {
     top: 10px;
     //right: 39px;
     //top: 20px;
+}
+
+.key-right1 {
+    position: absolute !important;
+    right: 283px;
+}
+
+.key-right2 {
+    position: absolute !important;
+    right: 204px;
+}
+
+.key-right3 {
+    position: absolute !important;
+    right: 140px;
+}
+
+.key-right4 {
+    position: absolute !important;
+    right: 75px;
+}
+
+.key-right5 {
+    position: absolute !important;
+    right: 10px;
+}
+
+.key_enter {
+    &::before {
+        content: "";
+        position: absolute;
+        top: 0px;
+        right: 0;
+        bottom: -59px;
+        width: 61px;
+        background: inherit;
+        border-radius: 3px;
+    }
 }
 
 @media screen and (max-width: 1600px),screen and (max-height: 900px) {
@@ -623,6 +675,14 @@ const shortcutStrKey = (key: String[] | undefined) => {
         margin-bottom: -47px;
     }
 
+    .key5_jp {
+        width: 160px;
+    }
+
+    .key6_jp {
+        width: 49px;
+    }
+
     .space-l {
         margin-left: 15px;
     }
@@ -665,6 +725,45 @@ const shortcutStrKey = (key: String[] | undefined) => {
     .key-right {
         right: 5px;
         top: 5px;
+    }
+
+
+    .key-right1 {
+        position: absolute !important;
+        right: 238px;
+    }
+
+    .key-right2 {
+        position: absolute !important;
+        right: 171px;
+    }
+
+    .key-right3 {
+        position: absolute !important;
+        right: 117px;
+    }
+
+    .key-right4 {
+        position: absolute !important;
+        right: 64px;
+    }
+
+    .key-right5 {
+        position: absolute !important;
+        right: 10px;
+    }
+
+    .key_enter {
+        &::before {
+            content: "";
+            position: absolute;
+            top: 0px;
+            right: 0;
+            bottom: -48px;
+            width: 51px;
+            background: inherit;
+            border-radius: 3px;
+        }
     }
 }
 
@@ -727,6 +826,14 @@ const shortcutStrKey = (key: String[] | undefined) => {
         margin-bottom: -47px;
     }
 
+    .key5_jp {
+        width: 105px;
+    }
+
+    .key6_jp {
+        width: 39px;
+    }
+
     .space-l {
         margin-left: 11px;
     }
@@ -775,6 +882,44 @@ const shortcutStrKey = (key: String[] | undefined) => {
         position: absolute;
         right: 5px;
         top: 3px;
+    }
+
+    .key-right1 {
+        position: absolute;
+        right: 191px;
+    }
+
+    .key-right2 {
+        position: absolute;
+        right: 139px;
+    }
+
+    .key-right3 {
+        position: absolute;
+        right: 96px;
+    }
+
+    .key-right4 {
+        position: absolute;
+        right: 53px;
+    }
+
+    .key-right5 {
+        position: absolute;
+        right: 10px;
+    }
+
+    .key_enter {
+        &::before {
+            content: "";
+            position: absolute;
+            top: 0px;
+            right: 0;
+            bottom: -37px;
+            width: 41px;
+            background: inherit;
+            border-radius: 3px;
+        }
     }
 }
 </style>
