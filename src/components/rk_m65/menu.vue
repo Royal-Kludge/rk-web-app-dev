@@ -16,10 +16,10 @@
   </div>
 </template>
 <script setup lang="ts">
-import { useMenuStore } from "@/stores/rk_m87/menuStore";
+import { useMenuStore } from "@/stores/rk_m65/menuStore";
 import { storeToRefs } from "pinia";
 import { onMounted, onBeforeUnmount, ref, reactive } from "vue";
-import { useKeyStore } from "@/stores/rk_m87/keyStore";
+import { useKeyStore } from "@/stores/rk_m65/keyStore";
 import { keyboard } from "@/keyboard/beiying/keyboard";
 import { uselightStore } from "@/stores/rk_m65/lightStore";
 import { ConnectionType, ConnectionStatusEnum } from "@/device/enum";

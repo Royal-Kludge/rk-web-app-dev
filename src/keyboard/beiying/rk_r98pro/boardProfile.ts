@@ -13,7 +13,7 @@ export enum FieldEnum {
     LedColor = 34,           // 统一控制的颜色
     LedModeSelection = 9,   // 选择当前LED模式是否是游戏模式，非0为游戏模式，0为其他模式
     LedMode = 33,           // LED模式
-    LedGameMode = 11,       // Led游戏模式
+    LedGameMode = 10,       // Led游戏模式(原为11，因低延迟enum不同，显示如影随形)
     WirelessChannel = 13,   // 无线通道0为2.4，1-3蓝牙通道
     KbConnectMode = 14,     // 键盘处于有线还是无线模式，0为有线，1为2.4，2为蓝牙
     WinLock = 11,           // WIN锁
