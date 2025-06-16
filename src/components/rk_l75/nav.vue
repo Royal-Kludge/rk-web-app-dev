@@ -80,7 +80,7 @@ const useKey = useKeyStore();
 const isLayer = ref(false);
 const isTouchPad = ref(true);
 const layer = ref(0);
-const isLayoutTableSupport = ref(true);
+const isLayoutTableSupport = ref(false);
 const www = ref('')
 const isSetWebSite = ref<boolean>(false);
 

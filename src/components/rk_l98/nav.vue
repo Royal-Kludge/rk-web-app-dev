@@ -54,7 +54,7 @@ const useLight = useLightStore();
 const useKey = useKeyStore();
 const isLayer = ref(false);
 const layer = ref(0);
-const isLayoutTableSupport = ref(true);
+const isLayoutTableSupport = ref(false);
 
 const LayerChanged = () => {
   if (!isLayer.value) {
