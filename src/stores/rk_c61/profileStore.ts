@@ -2,7 +2,7 @@ import { Profiles, type Profile } from "@/keyboard/sparklink/profiles";
 import { defineStore } from "pinia";
 import { reactive, ref } from 'vue';
 
-export const useProfileStore = defineStore('keyinfo_rk_c61', () => {
+export const useProfileStore = defineStore('profileStore_rk_c61', () => {
 
     const profile = ref<Profile>();
     const ps = ref<Profiles>();
