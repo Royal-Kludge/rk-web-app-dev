@@ -508,6 +508,14 @@ const shortcutStrKey = (key: String[] | undefined) => {
     right: 10px;
 }
 
+.key5_jp {
+    width: 138px;
+}
+
+.key6_jp {
+    width: 65px;
+}
+
 .space-l {
     margin-left: 18px;
 }
@@ -660,6 +668,14 @@ const shortcutStrKey = (key: String[] | undefined) => {
         margin-bottom: -47px;
     }
 
+    .key5_jp {
+        width: 160px;
+    }
+
+    .key6_jp {
+        width: 50px;
+    }
+
     .space-l {
         margin-left: 15px;
     }
@@ -682,6 +698,21 @@ const shortcutStrKey = (key: String[] | undefined) => {
 
     .space-t {
         margin-top: 20px;
+    }
+
+    .space-l6 {
+        position: absolute !important;
+        right: 172px;
+    }
+
+    .space-l7 {
+        position: absolute !important;
+        right: 118px;
+    }
+
+    .space-l8 {
+        position: absolute !important;
+        right: 64px;
     }
 
     .p-r {
@@ -781,6 +812,14 @@ const shortcutStrKey = (key: String[] | undefined) => {
         margin-bottom: -47px;
     }
 
+    .key5_jp {
+        width: 104px;
+    }
+
+    .key6_jp {
+        width: 39px;
+    }
+
     .space-l {
         margin-left: 11px;
     }
@@ -799,6 +838,21 @@ const shortcutStrKey = (key: String[] | undefined) => {
     
     .space-l5 {
         margin-left: 21px;
+    }
+
+    .space-l6 {
+        position: absolute !important;
+        right: 140px;
+    }
+
+    .space-l7 {
+        position: absolute !important;
+        right: 97px;
+    }
+
+    .space-l8 {
+        position: absolute !important;
+        right: 54px;
     }
 
     .space-t {

@@ -223,6 +223,17 @@ export const RK_R98PRO_GER_WIRE_DEFINE: HidDeviceDefine = {
     protocolType: ProtocolType.BeiYing
 }
 
+export const RK_R98PRO_JP_WIRE_DEFINE: HidDeviceDefine = {
+    name: "rk r98pro jp wire",
+    vendorId: 0x258A,
+    productId: 0x0225,
+    usagePage: 0xFF00,
+    usage: 0x0001,
+    connectType: ConnectionType.USB,
+    deviceType: DeviceType.Keyboard,
+    protocolType: ProtocolType.BeiYing
+}
+
 export const RK_S98_WIRE_DEFINE: HidDeviceDefine = {
     name: "rk s98 wire",
     vendorId: 0x258A,
