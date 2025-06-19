@@ -131,8 +131,8 @@ const getVer = () => {
             // 请求失败处理
             console.error(error);
         });
-    }/* else if (pid == 0x021E) {
-        axios.get('/down/work/RKWEB/firmware/N99/N99_firmware_uk.json').then(response => {
+    } else if (pid == 0x0223) {
+        axios.get('/down/work/RKWEB/firmware/S98/S98_firmware_3_th.json').then(response => {
             // 请求成功处理
             version.value = response.data.version
             url.value = response.data.url
@@ -142,7 +142,41 @@ const getVer = () => {
             // 请求失败处理
             console.error(error);
         });
-    }*/
+
+    }else if(pid == 0x0230){
+        axios.get('/down/work/RKWEB/firmware/S98/S98_firmware_3_ru.json').then(response => {
+            // 请求成功处理
+            version.value = response.data.version
+            url.value = response.data.url
+            checkVer();
+            console.log(version.value);
+        }).catch(error => {
+            // 请求失败处理
+            console.error(error);
+        });
+    }else if(pid == 0x022F){
+        axios.get('/down/work/RKWEB/firmware/S98/S98_firmware_3_jp.json').then(response => {
+            // 请求成功处理
+            version.value = response.data.version
+            url.value = response.data.url
+            checkVer();
+            console.log(version.value);
+        }).catch(error => {
+            // 请求失败处理
+            console.error(error);
+        });
+    }else if(pid == 0x022B){
+        axios.get('/down/work/RKWEB/firmware/S98/S98_firmware_3_es.json').then(response => {
+            // 请求成功处理
+            version.value = response.data.version
+            url.value = response.data.url
+            checkVer();
+            console.log(version.value);
+        }).catch(error => {
+            // 请求失败处理
+            console.error(error);
+        });
+    }
 }
 
 const checkVer = (flag: boolean = false) => {
