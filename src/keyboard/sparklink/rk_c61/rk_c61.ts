@@ -1,19 +1,74 @@
 import { Protocol } from '@/keyboard/sparklink/protocol'
 import type { Macros } from '@/keyboard/sparklink/macros';
 
-export const RK_C61_EVENT_DEFINE: {
-    OnMacrosGotten: string;
-} = {
+export const RK_C61_EVENT_DEFINE = {
     OnMacrosGotten: "OnMacrosGotten"
 }
 
-export const COMMAND_ID: {
+export const COMMAND_ID = {
+    KB2_CMD: 0x00,
+    KB2_CMD_SYNC: 0x01, // 同步
+    KB2_CMD_KEY: 0x23, // 层数
+    KB2_CMD_DB: 0x29, // 全局行程
+    KB2_CMD_DEFKEY: 0x2b, // 默认键值
+    KB2_CMD_RM6X21: 0x12, // 矩阵
+    KB2_CMD_MT: 0x24, // MT
+    KB2_CMD_TGL: 0x25, // TGL
+    KB2_CMD_TDKS: 0x26, // TDKS
+    KB2_CMD_DDKS: 0x27, // DDKS
+    KB2_CMD_END: 0x28, // END
+    KB2_CMD_MACRO: 0x20, // MACRO
+    KB2_CMD_MACROMODE: 0x21, // macro mode
+    KB2_CMD_SOCD: 0x2c, // SOCD
+    KB2_CMD_RS: 0x2d, // RS
+    KB2_CMD_PRGB: 0x18, // PRGB
+    KB2_CMD_LOGORGB: 0x19, // rgb灯
+    KB2_CMD_KRGB: 0x2a, // KRGB参数
 
-} = {
+    // 固件升级
+    KB2_BL_SIGN: 0x08, // 签名
+    KB2_BL_ERASE: 0x09, // 擦除
+    KB2_BL_REBOOT: 0x0a, // 重启
+    KB2_BL_TOAPP: 0x0b, // 跳转到app
+    KB2_BL_WRITE: 0x0c, // 写指令
+    KB2_BL_READ: 0x0d, // 读指令
+    KB2_BL_RCRC: 0x0e, // 获取校验
 
+    KB2_CMD_PIC: 0x30, // 屏幕图片大小
+    KB2_CMD_PIC_WRITE: 0x31, // 写入屏幕图片
+
+    KB2_BL_ERASE_SCREEN: 0x32, // 擦除屏幕固件
+    KB2_BL_WRITE_SCREEN: 0x33, // 写屏幕固件
+    KB2_BL_TOBOOT_SCREEN: 0x34, // 屏幕跳转到boot
+
+    KB2_CMD_FAIL: 0xff, // 错误
+}
+
+export class BoardId {
+    id?: number;
+    kbLayout?: number;
+    axisType?: number;
+}
+
+export class HwVersion {
+    version?: String;
+    major?: number;
+    minor?: number;
+    patch?: number;
+    fwSize: number = 0;
+}
+
+export class FwVersion {
+    appVersion?: string;
+    buildDate?: string;
 }
 
 export class RK_C61_Data {
+    boardId?: BoardId;
+    runMode?: number;
+    sn?: string;
+    hwVersion?: HwVersion;
+    fwVersion?: FwVersion
     macros?: Macros;
 }
 

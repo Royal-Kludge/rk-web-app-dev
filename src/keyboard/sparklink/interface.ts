@@ -61,7 +61,7 @@ export interface IProtocol {
 }
 
 export interface IPacket {
-    fromReportData(buffer: DataView) : IPacket;
+    fromReportData(buffer: DataView) : Promise<void>;
 }
 
 export interface Key {
