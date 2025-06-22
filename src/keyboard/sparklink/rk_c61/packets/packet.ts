@@ -1,3 +1,4 @@
+import { ErrorCodeEnum } from "../../enum";
 import type { IPacket } from "../../interface";
 
 export const REPORT_HEAD_LENGTH: number = 4;
@@ -21,6 +22,8 @@ export abstract class Packet extends EventTarget implements IPacket {
     len: number = 0x00;
     cmd: number;
     crc: number = 0x00;
+
+    errCode: ErrorCodeEnum = ErrorCodeEnum.Success;
 
     callback?: (event: any) => void
 
@@ -55,6 +58,7 @@ export abstract class Packet extends EventTarget implements IPacket {
         this.len = buffer.getUint8(1);
         if (buffer.byteLength == this.len + REPORT_HEAD_LENGTH) {
             this.recivedBuffer = new DataView(buffer.buffer.slice(4, this.len + REPORT_HEAD_LENGTH));
+            this.errCode = this.recivedBuffer.getUint8(0);
         }
     }
 

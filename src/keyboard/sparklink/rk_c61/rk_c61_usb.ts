@@ -3,20 +3,23 @@ import { REPORT_HEAD, REPORT_HEAD_LENGTH, REPORT_ID_USB, REPORT_LENGTH } from '.
 import { ConnectionStatusEnum, ConnectionType } from '@/device/enum';
 import { BoardId, COMMAND_ID, FwVersion, HwVersion, RK_C61, RK_C61_EVENT_DEFINE } from './rk_c61';
 
-import { KB2_CMD_SYNC } from './packets/usb/KB2_CMD_SYNC';
 import { LOG_TYPE, Logging } from '@/common/logging';
+import { KB2_CMD_SYNC } from './packets/usb/KB2_CMD_SYNC';
+import { KB2_CMD_FAIL } from './packets/usb/KB2_CMD_FAIL';
 
 const worker = new Worker(new URL('@/common/communication.ts', import.meta.url));
 
 export class RK_C61_Usb extends RK_C61 {
 
     KB2_CMD_SYNC: KB2_CMD_SYNC;
+    KB2_CMD_FAIL: KB2_CMD_FAIL;
 
     constructor(state: KeyboardState, device: HIDDevice) {
         super(state, device);
         state.connectType = ConnectionType.USB;
 
         this.KB2_CMD_SYNC = new KB2_CMD_SYNC(this.onSyncCmd.bind(this));
+        this.KB2_CMD_FAIL = new KB2_CMD_FAIL(this.onFailCmd.bind(this));
     }
 
     static async create(state: KeyboardState, device: HIDDevice) {
@@ -60,7 +63,7 @@ export class RK_C61_Usb extends RK_C61 {
 
     async Sync() : Promise<void> {
         worker.postMessage(this.KB2_CMD_SYNC.command());
-        console.log(`Push profile data to queue.`);
+        Logging.console(LOG_TYPE.INFO, `Push profile data to queue.`);
     }
 
     async getMacros(): Promise<void> {
@@ -72,6 +75,13 @@ export class RK_C61_Usb extends RK_C61 {
     }
 
     //#region Data analysis
+    private onFailCmd(event: any) {
+        let ackCmd: number = event.detail.ackCmd;
+        let sArg: Uint8Array = event.detail.ackCmd;
+
+        Logging.console(LOG_TYPE.ERROR, `Comand fail [${ackCmd}] arg [${sArg.toString()}]`);
+    }
+
     private onSyncCmd(event: any) {
         let boardId: BoardId = {
             id: event.detail.boardId,

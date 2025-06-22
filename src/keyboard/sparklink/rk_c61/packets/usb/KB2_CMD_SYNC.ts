@@ -1,3 +1,4 @@
+import { ErrorCodeEnum } from "@/keyboard/sparklink/enum";
 import type { IPacket } from "@/keyboard/sparklink/interface";
 import { Packet } from "@/keyboard/sparklink/rk_c61/packets/packet";
 
@@ -30,7 +31,7 @@ export class KB2_CMD_SYNC extends Packet {
     async fromReportData(buffer: DataView) : Promise<void> {
         super.fromReportData(buffer);
         
-        if (this.recivedBuffer != undefined && this.recivedBuffer.byteLength == this.len) {
+        if (this.recivedBuffer != undefined && this.recivedBuffer.byteLength == this.len && this.errCode == ErrorCodeEnum.Success) {
             let boardId = this.recivedBuffer.getUint32(1, true);
             let kbLayout = this.recivedBuffer.getUint8(4);
             let axisType = this.recivedBuffer.getUint8(3);
@@ -39,8 +40,8 @@ export class KB2_CMD_SYNC extends Packet {
             let kbSn = this.recivedBuffer.buffer.slice(9, 25);
             let fwVersion = this.recivedBuffer.buffer.slice(26, 54);
 
-            this.dispatchEvent(new CustomEvent('onReportDataRecvied',
-                { detail: { boardId: boardId, kbLayout: kbLayout, axisType: axisType, runMode: runMode, hwVersion: hwVersion, kbSn: kbSn, fwVersion: fwVersion } 
+            this.dispatchEvent(new CustomEvent('onReportDataRecvied', { 
+                detail: { boardId: boardId, kbLayout: kbLayout, axisType: axisType, runMode: runMode, hwVersion: hwVersion, kbSn: kbSn, fwVersion: fwVersion } 
             }));
         }
     }
