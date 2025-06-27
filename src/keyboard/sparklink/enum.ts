@@ -9,6 +9,11 @@ export enum MatrixTable {
   MAC = 0x01,
 }
 
+export enum RWTypeEnum {
+  Read = 0x00,
+  Write = 0x01,
+}
+
 export enum LightModeEnum {
   Disable = 0,
   Static = 1,
@@ -167,4 +172,25 @@ export enum LayoutTypeEnum {
   KeyAxis = 0x19,   // 单键轴体
   MacroInterrupt = 0x1A,   // 宏中断标志，重复次数
   MacroRepeat = 0x1B,   // 宏重复次数
+}
+
+export enum KeyTouchModeEnum {
+  GlobalMode = 0x00,
+  SingleMode = 0x01,
+  QuickMode = 0x02
+}
+
+export enum LightSwitchEnum {
+  On = 0x01,
+  Off = 0x00
+}
+
+export enum LightDirectionEnum {
+  Forward = 0x02,
+  Reverse = 0x00
+}
+
+export enum SuperResponseEnum {
+  On = 0x10,
+  Off = 0x00
 }

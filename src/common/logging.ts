@@ -9,7 +9,7 @@ export const LOG_TYPE = {
 
 export class Logging {
 
-    static console(type?: any, message?: any, ...optionalParams: any[]) {
+    static async console(type?: any, message?: any, ...optionalParams: any[]): Promise<void> {
         if (LOGGING_FLAG) {
 
             const now = new Date();
@@ -30,19 +30,19 @@ export class Logging {
             switch (type) {
                 case LOG_TYPE.INFO:
                     logType = 'INFO';
-                    cssStyle = 'color: blue;';
+                    cssStyle = 'color: #3d3dd5;';
                     break;
                 case LOG_TYPE.SUCCESS:
                     logType = 'SUCCESS';
-                    cssStyle = 'color: green;';
+                    cssStyle = 'color: #4fc84f;';
                     break;
                 case LOG_TYPE.WARNING:
                     logType = 'WARNING';
-                    cssStyle = 'color: orange;';
+                    cssStyle = 'color: #edbf5e;';
                     break;
                 case LOG_TYPE.ERROR:
                     logType = 'ERROR';
-                    cssStyle = 'color: red; font-weight: bold;';
+                    cssStyle = 'color: #e74c4c; font-weight: bold;';
                     break;
                 default:
                     logType = 'LOG';

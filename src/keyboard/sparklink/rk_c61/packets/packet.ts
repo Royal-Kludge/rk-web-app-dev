@@ -44,7 +44,7 @@ export abstract class Packet extends EventTarget implements IPacket {
 
         if (this.cmdBuffer != undefined) {
             for (let i = 0; i < this.cmdBuffer.length; i++) {
-                this.setReport[i + 3] = this.cmdBuffer[i];
+                this.setReport[i + 4] = this.cmdBuffer[i];
             }
         }
 
@@ -56,7 +56,7 @@ export abstract class Packet extends EventTarget implements IPacket {
     async fromReportData(buffer: DataView) : Promise<void> {
         this.recivedBuffer = undefined;
         this.len = buffer.getUint8(1);
-        if (buffer.byteLength == this.len + REPORT_HEAD_LENGTH) {
+        if (buffer.byteLength >= this.len + REPORT_HEAD_LENGTH) {
             this.recivedBuffer = new DataView(buffer.buffer.slice(4, this.len + REPORT_HEAD_LENGTH));
             this.errCode = this.recivedBuffer.getUint8(0);
         }

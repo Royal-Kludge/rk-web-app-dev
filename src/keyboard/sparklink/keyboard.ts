@@ -4,6 +4,8 @@ import type { HidDeviceDefine, IHidDevice } from '@/device/interface';
 import { Device } from '@/device/device';
 import type { IProtocol, KeyboardDefine, KeyTableData } from './interface';
 import { defaultState } from './state';
+import type { KeyInfoData } from './keyInfoData';
+import { LayoutTypeEnum } from './enum';
 
 /**
  * Main class.
@@ -65,8 +67,23 @@ export class Keyboard extends Device {
         }
     }
 
-    loadDefaultValue(keyTableDatas: Record<number, Record<number, Array<KeyTableData>>>) {
-            
+    loadValue(keyInfoData: KeyInfoData) {
+        if (this.keyboardDefine != null) {
+            for (let row = 0; row < 6; row++) {
+                for (let col = 0; col < 21; col++) {
+                    const keyInfo = keyInfoData.getKeyInfo(row, col);
+                    if (keyInfo != null) {
+                        let index = row * 21 + col;
+                        this.state.keyTableData[index] = {
+                            keyStr: this.keyboardDefine.keyText[keyInfo?.keyValue],
+                            keyCode: keyInfo.keyValue,
+                            index: index,
+                            keyInfo: keyInfo
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 

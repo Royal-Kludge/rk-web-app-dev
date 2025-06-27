@@ -946,6 +946,7 @@ export const KeyCodeName: Record<number, String> = {
 
 export enum KeyDefineEnum {
     NONE = 0x00,
+    SPARKLINK_FN = 0x01,
     KEY_A = 0x04,
     KEY_B = 0x05,
     KEY_C = 0x06,
@@ -1388,6 +1389,7 @@ export enum KeyDefineEnum {
 
 export const KeyText: Record<number, Array<String>> = {
     0x00: [''],
+    0x01: ['Fn'],
     0x04: ['A'],
     0x05: ['B'],
     0x06: ['C'],
@@ -1530,12 +1532,12 @@ export const KeyText: Record<number, Array<String>> = {
     0xe7: ['R-Win'],
     //****************************************************************
     //macro�е�mouse key����
-    0x01: ['Mouse-L'],
-    0x02: ['Mouse-R'],
+    //0x01: ['Mouse-L'],
+    //0x02: ['Mouse-R'],
     //0x04: 'Mouse-M',
     //0x08: 'Mouse-B4',
     //0x10: 'Mouse-B5',
-    0xff: ['Mouse-LT'],
+    //0xff: ['Mouse-LT'],
     //0x01: 'Mouse-RT',
     //0xff: 'Mouse-UP',
     //0x01: 'Mouse-DN',

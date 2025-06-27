@@ -60,7 +60,7 @@ onMounted(async () => {
             }
 
             keyboard.protocol = await keyboard.keyboardDefine.protocol(keyboard.state, keyboard.device);
-            keyboard.loadDefaultValue(keyboard.state.keyTableData);
+            //keyboard.loadDefaultValue(keyboard.state.keyTableData);
 
             await keyboard.protocol?.init();
 

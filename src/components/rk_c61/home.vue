@@ -1,5 +1,5 @@
 <template>
-    <div class="d-flex h-100" v-loading="loading" :element-loading-text="$t('home.title_1')"
+    <div class="d-flex h-100" v-loading="isLoading()" :element-loading-text="$t('home.title_1')"
         element-loading-background="rgba(0, 0, 0, 0.7)">
         <div style="min-width: 70px">
             <Meun />
@@ -37,11 +37,18 @@ import Meun from "@/components/rk_c61/menu.vue";
 import { useMenuStore } from "@/stores/rk_c61/menuStore";
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 import { storeToRefs } from "pinia";
+import { LOG_TYPE, Logging } from '@/common/logging';
 
 const useMenu = useMenuStore();
 const { meunid } = storeToRefs(useMenu);
 
 const loading = ref(false)
+
+const dataLoading = ref({
+    defaultLayout: true,
+    values: true,
+    rgb: true,
+})
 
 const rk_c61 = ref<RK_C61>();
 
@@ -54,14 +61,39 @@ const setMeunid = () => {
 
 onMounted(async () => {
     rk_c61.value = keyboard.protocol as RK_C61;
+    rk_c61.value.addEventListener("OnKeyDefaultLayoutGotten", onKeyDefaultLayoutGotten);
+    rk_c61.value.addEventListener("OnKeyValuesGotten", onKeyValuesGotten);
+    rk_c61.value.addEventListener("OnKeyRgbGotten", onKeyRgbGotten);
 });
 
 onBeforeUnmount(() => {
     if (rk_c61.value != undefined) {
-
+        rk_c61.value.removeEventListener("OnKeyDefaultLayoutGotten", onKeyDefaultLayoutGotten);
+        rk_c61.value.removeEventListener("OnKeyValuesGotten", onKeyValuesGotten);
+        rk_c61.value.removeEventListener("OnKeyRgbGotten", onKeyRgbGotten);
     }
 });
 
+const onKeyDefaultLayoutGotten = (event: any) => {
+    dataLoading.value.defaultLayout = false;
+    Logging.console(LOG_TYPE.SUCCESS, `Key default layout data Gotten!`)
+
+    keyboard.loadValue(event.detail);
+}
+
+const onKeyValuesGotten = () => {
+    dataLoading.value.values = false;
+    Logging.console(LOG_TYPE.SUCCESS, `Key values data Gotten!`)
+}
+
+const onKeyRgbGotten = () => {
+    dataLoading.value.rgb = false;
+    Logging.console(LOG_TYPE.SUCCESS, `Key rgb data Gotten!`)
+}
+
+const isLoading = (): boolean => {
+    return loading.value || dataLoading.value.defaultLayout || dataLoading.value.values || dataLoading.value.rgb;
+}
 
 const reportStart = async (event: any) => {
     if (event != undefined && event.detail != undefined) {

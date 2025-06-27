@@ -1,9 +1,16 @@
 import { Protocol } from '@/keyboard/sparklink/protocol'
 import type { Macros } from '@/keyboard/sparklink/macros';
 import { LOG_TYPE, Logging } from '@/common/logging';
+import type { Axis, KeyboardState, KeyInfo, KeyTableData, LedColor, LightSetting, PerformanceData } from '../interface';
+import type { KeyCodeEnum, KeyDefineEnum } from '@/common/keyCode';
+import type { MatrixTable } from '../enum';
+import { KeyInfoData } from '../keyInfoData';
 
 export const RK_C61_EVENT_DEFINE = {
-    OnMacrosGotten: "OnMacrosGotten"
+    OnMacrosGotten: "OnMacrosGotten",
+    OnKeyDefaultLayoutGotten: "OnKeyDefaultLayoutGotten",
+    OnKeyValuesGotten: "OnKeyValuesGotten",
+    OnKeyRgbGotten: "OnKeyRgbGotten"
 }
 
 export const COMMAND_ID = {
@@ -65,12 +72,64 @@ export class FwVersion {
 }
 
 export class RK_C61_Data {
+    keyboardName?: string;
+    protocolVersion?: string;
     boardId?: BoardId;
     runMode?: number;
     sn?: string;
     hwVersion?: HwVersion;
-    fwVersion?: FwVersion
+    fwVersion?: FwVersion;
+    configId?: number;
+    axisList?: Array<Axis>;
+    reportRate?: number;
+    kbWinMacMode?: MatrixTable;
+    isWinMacSupport: number = 0;
+    topDeadSwitch: boolean = false;
+    performanceData: PerformanceData;
+    lightSetting?: LightSetting;
+    keyInfoData: KeyInfoData;
     macros?: Macros;
+    //kbTableDatas?: Record<KeyDefineEnum, KeyTableData>;
+
+    constructor() {
+        this.keyInfoData = new KeyInfoData();
+        // this.travelData = {
+        //     precision: 0,
+        //     decimalPlace: 0,
+        //     minTouchTravel: 0,
+        //     maxTouchTravel: 0
+        // };
+        // this.dbParam = {
+        //     globalTouchTravel: 0,
+        //     pressDead: 0,
+        //     releaseDead: 0
+        // }
+        this.performanceData = {
+            PerformancePage: 0,
+            precision: 0.1, // 键盘行程精度
+            decimalPlace: 2, // 行程显示的小数位
+            minTouchTravel: 0.1, // 最小触发行程(方法中有使用，待移植方法)
+            maxTouchTravel: 4.0, // 最大触发行程(方法中有使用，待移植方法)
+            globalTouchTravel: 1.5, // 全局触发行程
+            singleTouchTravel: 1.5, // 单键触发行程
+            singleTouchRelease: 1.5, // 单键释放行程(特殊)
+            pressDead: 0.2, // 按压死区
+            releaseDead: 0.2, // 抬起死区
+            topDeadSwitch: false, // 顶部死区开关
+            pressDeadOptimizeSwitch: false, // 按压死区优化
+            releaseDesdOptimizeSwitch: false, // 抬起死区优化
+            rateOfReturn: -1, // 回报率
+            quickTouchPress: 0.3, // 快速触发按下行程
+            quickTouchRelease: 0.3, // 快速触发抬起行程
+            quickTouchSwitchDisable: true, // (方法中有使用，待移植方法)
+            quickTouchSwitch: false, // (方法中有使用，待移植方法)
+            isAdjusting: false, // 是否开启校准
+            adjustingCount: 1, // 校准计数触发器
+            travelTestOn: false, // 行程测试
+            keyPressTestCount: 1, // 按键测试计数触发器
+            hasAxisSetting: false,
+        }
+    }
 }
 
 export abstract class RK_C61 extends Protocol {
@@ -101,12 +160,12 @@ export abstract class RK_C61 extends Protocol {
 
     async setFeature(reportId: number, data: Uint8Array): Promise<void> {
         await this.device.sendFeatureReport(reportId, data);
-        Logging.console(`SetFeature [${data.byteLength}] bytes -> ${data.toString()}`);
+        Logging.console(LOG_TYPE.INFO, `SetFeature [${data.byteLength}] bytes -> ${data.toString()}`);
     }
 
     async setReport(reportId: number, data: Uint8Array): Promise<void> {
         await this.device.sendReport(reportId, data);
-        Logging.console(`SetReport [${data.byteLength}] bytes -> ${data.toString()}`);
+        Logging.console(LOG_TYPE.INFO, `SetReport [${data.byteLength}] bytes -> ${data.toString()}`);
     }
 
     private async processKeyboardReport(report: HIDInputReportEvent) {
@@ -115,7 +174,7 @@ export abstract class RK_C61 extends Protocol {
 
         try {
             let u8 = new Uint8Array(data.buffer, 0, data.buffer.byteLength);
-            Logging.console(`GetReport [${data.byteLength}] bytes -> ${u8.toString()}`);
+            Logging.console(LOG_TYPE.INFO, `GetReport [${data.byteLength}] bytes -> ${u8.toString()}`);
     
             if (this.onGetReport != null) {
                 await this.onGetReport(reportId, data);
