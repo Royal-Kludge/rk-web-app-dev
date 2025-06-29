@@ -13,13 +13,13 @@ export enum RWTypeEnum {
   Read = 0x00,
   Write = 0x01,
 }
-
 export enum LightModeEnum {
   Disable = 0,
   Static = 1,
   Dynamics = 2,
   Custom = 3,
 }
+
 
 export enum LightEffectEnum {
   Off = 0,

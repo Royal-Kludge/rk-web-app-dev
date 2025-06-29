@@ -1,4 +1,4 @@
-import { type KeyInfo, type Axis, type KeyboardState, type KeyTableData, type LedColor } from '../interface'
+import { type KeyInfo, type Axis, type KeyboardState, type LedColor } from '../interface'
 import { REPORT_HEAD, REPORT_HEAD_LENGTH, REPORT_ID_USB, REPORT_LENGTH } from './packets/packet';
 import { ConnectionStatusEnum, ConnectionType } from '@/device/enum';
 import { BoardId, COMMAND_ID, FwVersion, HwVersion, RK_C61, RK_C61_EVENT_DEFINE } from './rk_c61';

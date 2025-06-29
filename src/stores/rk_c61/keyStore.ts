@@ -4,7 +4,7 @@ import { keyboard } from "@/keyboard/sparklink/keyboard";
 import { RK_C61, RK_C61_EVENT_DEFINE } from "@/keyboard/sparklink/rk_c61/rk_c61";
 import { KeyCodeEnum, KeyDefineEnum, KeyText, KeyText_Mac } from "@/common/keyCode";
 import { type KeyState, type KeyLine } from "@/keyboard/sparklink/interface";
-import { KeyMatrixLayer, MatrixTable } from "@/keyboard/sparklink/enum";
+import { KeyMatrixLayer, LayoutTypeEnum, MatrixTable } from "@/keyboard/sparklink/enum";
 import { Profile, ps } from "@/keyboard/sparklink/profiles";
 import { Action, Macro, Macros } from "@/keyboard/sparklink/macros";
 import { ConnectionEventEnum, ConnectionStatusEnum } from "@/device/enum";
@@ -761,8 +761,10 @@ export const useKeyStore = defineStore("keyinfo_rk_c61", () => {
     };
 
     const keySetStr = (keyData: KeyTableData) => {
-        let mapping = keyData.keyMappingData;
+        let layout: any = keyMatrixLayer.value;
+        let keyCode = keyData.getLayoutMapping(layout as LayoutTypeEnum);
         let keyText = KeyText;
+        keyData.keyStr = keyText[keyCode];
     };
 
     const mapping = (keyCode: KeyDefineEnum, table: MatrixTable) => {
@@ -777,21 +779,13 @@ export const useKeyStore = defineStore("keyinfo_rk_c61", () => {
 
         setSelected(keyCode);
 
-        //if ((state.keyState as Array<KeyState>)[i] != undefined) {
         if (key != undefined) {
-            //let key = (state.keyState as Array<KeyState>)[i];
-            key.KeyData.keyMappingData.keyRaw = keyCode;
-            key.KeyData.keyMappingData.keyCode = keyCode & 0x0000ffff;
-            key.KeyData.keyMappingData.keyMappingType = keyCode >> 24;
-            key.KeyData.keyMappingData.keyMappingPara = (keyCode >> 16) & 0xff;
+            let layout: any = keyMatrixLayer.value;
+            key.KeyData.setLayoutMapping(keyCode, layout as LayoutTypeEnum);
             if (keyboard.keyboardDefine != undefined) {
                 keySetStr(key.KeyData);
             }
-            // if (profile.value != undefined) {
-            //   profile.value.keyTypes[keyMatrixTable.value][keyMatrixLayer.value][key.index] = table;
-            // }
-            // KeyMatrixData.value[keyMatrixTable.value][keyMatrixLayer.value]?.setKeyMapping(key.index, key.KeyData.keyMappingData);
-            // rk_c61.value?.setKeyMatrix(keyMatrixLayer.value, keyMatrixTable.value, 0);
+
             unSelected();
             setUnselected(keyCode);
         }
