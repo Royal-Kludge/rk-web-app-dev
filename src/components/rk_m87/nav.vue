@@ -3,7 +3,7 @@
     <div class="fw-b fs-xxl">{{ useKey.profile?.name }}</div>
     <div class="d-flex mt-4">
       <div class="d-flex ai-center mr-4">
-        <el-radio-group v-if="isLayoutTableSupport" v-model="useKey.keyMatrixTable" class="mr-4" @change="useKey.getKeyMatrix">
+        <el-radio-group v-if="isLayoutTableSupport" v-model="useKey.keyMatrixTable" class="mr-4" @change="useKey.keyMatrixChange">
           <el-radio-button v-for="item in useKey.state.MatrixTable" :value="item.value" :label="item.value">
             <img :src="item.img" width="32" />
           </el-radio-button>
