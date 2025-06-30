@@ -26,7 +26,8 @@ export enum FieldEnum {
 	TapDelay = 22,          // tap层delay时间，0为关闭，后7位为有效DELAY时间
 	SleepTime = 24,         // 休眠时间 例 1==30 秒，默认 10 为 5 分钟，0 是不休
 	LedModeMemery = 26,     // 光灯模式记忆
-	Logo2Mode = 27          // logo2灯模式
+	Logo2Mode = 27,         // logo2灯模式
+    WinMacMode = 54         // Win/Mac模式切换
 }
 
 const LED_PARAMETER_INDEX: number = 56; // 2个byte表示颜色亮度速度，前面一个byte为亮度（亮度共20级0-19），后一个byte低4bit颜色，高4bit为速度

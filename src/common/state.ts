@@ -1,5 +1,5 @@
 export const VERSION = '1.14.1'
-
+export const LOGGING_FLAG = true
 
 //20250102 v1.7.0 Add L75 uk support
 //20250110 v1.8.0 Add M87 jp & uk support

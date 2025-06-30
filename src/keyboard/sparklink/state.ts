@@ -13,7 +13,7 @@ export const defaultState: KeyboardState = {
     protocolType: ProtocolType.SparkLink,
     deviceName: undefined,
     fwVersion: undefined,
-    keyTableData: {},
+    keyTableData: Array.from({ length: 6 * 21}),
 }
 
 /**
