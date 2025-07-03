@@ -1059,6 +1059,7 @@ export const useKeyStore = defineStore('keyinfo_rk_r98pro', () => {
     "RK-R98PRO JP": [],
     "RK-R98PRO GER": [KeyDefineEnum.KEY_CODE131, KeyDefineEnum.KEY_CODE132, KeyDefineEnum.KEY_CODE133, KeyDefineEnum.KEY_CODE14],
     "RK-R98PRO FR": [KeyDefineEnum.KEY_CODE131, KeyDefineEnum.KEY_CODE132, KeyDefineEnum.KEY_CODE133, KeyDefineEnum.KEY_CODE14],
+    "RK-R98PRO 3": [KeyDefineEnum.KEY_CODE131, KeyDefineEnum.KEY_CODE132, KeyDefineEnum.KEY_CODE133, KeyDefineEnum.KEY_CODE14],
   }
 
   const isInited = ref(false);
@@ -1089,6 +1090,9 @@ export const useKeyStore = defineStore('keyinfo_rk_r98pro', () => {
           break;
         case "RK-R98PRO JP":
           tmp = keyMatrix_jp;
+          break;
+        case "RK-R98PRO 3":
+          tmp = keyMatrix_us;
           break;
       }
 

@@ -164,6 +164,17 @@ const getVer = () => {
             // 请求失败处理
             console.error(error);
         });
+    } else if (pid == 0x0210) {
+        axios.get('/down/work/RKWEB/firmware/R98pro/one_mode/R98pro_firmware_3_US.json').then(response => {
+            // 请求成功处理
+            version.value = response.data.version
+            url.value = response.data.url
+            checkVer()
+            console.log(version.value);
+        }).catch(error => {
+            // 请求失败处理
+            console.error(error);
+        });
     }
 }
 

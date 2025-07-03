@@ -4,6 +4,7 @@ import CN from "./zh-cn";
 import TW from "./zh-tw";
 import JA from "./ja";
 import KR from "./ko-kr";
+import RU from "./ru";
 
 // 获取浏览器界面语言，默认语言
 let currentLanguage = navigator.language.toLowerCase();
@@ -28,6 +29,9 @@ const messages = {
   },
   kr: {
     ...KR,
+  },
+  ru: {
+    ...RU,
   },
 };
 let lang = 'en';

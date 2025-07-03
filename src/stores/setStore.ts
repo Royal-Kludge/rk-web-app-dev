@@ -22,6 +22,10 @@ export const useSetStore = defineStore("setstore", {
                 value: "kr",
                 label: "韩語",
             },
+            {
+                value: "ru",
+                label: "Русский",
+            },
         ] as any
     }),
     actions: {},
