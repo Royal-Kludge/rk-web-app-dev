@@ -1188,6 +1188,12 @@ export const useKeyStore = defineStore('keyinfo_rk_m87', () => {
     getKeyFunMatrix()
   }
 
+  const keyMatrixChange = async () => {
+    await getKeyMatrix();
+    rk_m87.value?.data?.boardProfile?.setFieldValue(FieldEnum.WinMacMode, keyMatrixTable.value);
+    rk_m87.value?.setProfile(0);
+  }
+
   const setSelected = (keyCode: KeyDefineEnum) => {
     // for (var i = 0; i < state.keyFunState.length; i++) {
     //   if (state.keyFunState[i].key === keyCode) {
@@ -1890,5 +1896,5 @@ export const useKeyStore = defineStore('keyinfo_rk_m87', () => {
     return '';
   }
 
-  return { profile, state, keyMatrixLayer, keyMatrixTable, keyClick, keyColor, isSelected, keybgColor, keyText, keySetToDefault, keySetMacro, mapping, isFunSelected, isMacroSelected, clickMacro, confirmSetMacro, setCombineKey, confirmMediaKey, setMediaKey, setShortcutKey, confirmSetCombineKey, confirmShortcutKey, getKeyMatrix, clickProfile, deleteProfile, onKeyDown, newProfile, handleEditClose, renameProfile, exportProfile, importProfile, init, destroy, getKeyMatrixNomal, saveProfile, keySetToDefaultAll, refresh, refreshKeyMatrixData, setToFactory, unSelected,unSelectFunc, renameSaveProfile, setFunid, isFunKeyVisibility, isCombinKey, keyTipText }
+  return { profile, state, keyMatrixLayer, keyMatrixTable, keyClick, keyColor, isSelected, keybgColor, keyText, keySetToDefault, keySetMacro, mapping, isFunSelected, isMacroSelected, clickMacro, confirmSetMacro, setCombineKey, confirmMediaKey, setMediaKey, setShortcutKey, confirmSetCombineKey, confirmShortcutKey, getKeyMatrix, keyMatrixChange, clickProfile, deleteProfile, onKeyDown, newProfile, handleEditClose, renameProfile, exportProfile, importProfile, init, destroy, getKeyMatrixNomal, saveProfile, keySetToDefaultAll, refresh, refreshKeyMatrixData, setToFactory, unSelected,unSelectFunc, renameSaveProfile, setFunid, isFunKeyVisibility, isCombinKey, keyTipText }
 })
