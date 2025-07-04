@@ -140,7 +140,7 @@ export const useTftStore = defineStore("tftinfo_rk_s98", () => {
 
             //3，设置背景的宽高
             Imgcanvas.width = 320;
-            Imgcanvas.height = 170;
+            Imgcanvas.height = 172;
             
             const Img2 = new Image();
             Img2.src = canvas.toDataURL("image/png");
@@ -219,7 +219,7 @@ export const useTftStore = defineStore("tftinfo_rk_s98", () => {
         
         //3，设置背景的宽高
         ImgCanvas.width = 320;
-        ImgCanvas.height = 170;
+        ImgCanvas.height = 172;
         
         const Img = new Image();
         Img.src = frame.url;

@@ -87,7 +87,7 @@
                 </div>
                 <div class="my-3"> </div>
                 <div class="my-3 text-center">
-                    <el-input-number style="width: 150px" v-model="state.debounceTime" type="number" :min="1" max="99"
+                    <el-input-number style="width: 150px" v-model="state.debounceTime" type="number" :min="1" max="20"
                         @change="useProperty.setDebounceTime(state.debounceTime)" /> ms
                 </div>
             </div>

@@ -223,10 +223,76 @@ export const RK_R98PRO_GER_WIRE_DEFINE: HidDeviceDefine = {
     protocolType: ProtocolType.BeiYing
 }
 
+export const RK_R98PRO_JP_WIRE_DEFINE: HidDeviceDefine = {
+    name: "rk r98pro jp wire",
+    vendorId: 0x258A,
+    productId: 0x0225,
+    usagePage: 0xFF00,
+    usage: 0x0001,
+    connectType: ConnectionType.USB,
+    deviceType: DeviceType.Keyboard,
+    protocolType: ProtocolType.BeiYing
+}
+
 export const RK_S98_WIRE_DEFINE: HidDeviceDefine = {
     name: "rk s98 wire",
     vendorId: 0x258A,
     productId: 0x01AF,
+    usagePage: 0xFF00,
+    usage: 0x0001,
+    connectType: ConnectionType.USB,
+    deviceType: DeviceType.Keyboard,
+    protocolType: ProtocolType.BeiYing
+}
+
+export const RK_S98_TH_WIRE_DEFINE: HidDeviceDefine = {
+    name: "rk s98 th wire",
+    vendorId: 0x258A,
+    productId: 0x0223,
+    usagePage: 0xFF00,
+    usage: 0x0001,
+    connectType: ConnectionType.USB,
+    deviceType: DeviceType.Keyboard,
+    protocolType: ProtocolType.BeiYing
+}
+
+export const RK_S98_RU_WIRE_DEFINE: HidDeviceDefine = {
+    name: "rk s98 ru wire",
+    vendorId: 0x258A,
+    productId: 0x0230,
+    usagePage: 0xFF00,
+    usage: 0x0001,
+    connectType: ConnectionType.USB,
+    deviceType: DeviceType.Keyboard,
+    protocolType: ProtocolType.BeiYing
+}
+
+export const RK_S98_JP_WIRE_DEFINE: HidDeviceDefine = {
+    name: "rk s98 jp wire",
+    vendorId: 0x258A,
+    productId: 0x022F,
+    usagePage: 0xFF00,
+    usage: 0x0001,
+    connectType: ConnectionType.USB,
+    deviceType: DeviceType.Keyboard,
+    protocolType: ProtocolType.BeiYing
+}
+
+export const RK_S98_ES_WIRE_DEFINE: HidDeviceDefine = {
+    name: "rk s98 es wire",
+    vendorId: 0x258A,
+    productId: 0x022B,
+    usagePage: 0xFF00,
+    usage: 0x0001,
+    connectType: ConnectionType.USB,
+    deviceType: DeviceType.Keyboard,
+    protocolType: ProtocolType.BeiYing
+}
+
+export const RK_R98PRO_3_WIRE_DEFINE: HidDeviceDefine = {
+    name: "rk r98pro 3 wire",
+    vendorId: 0x258A,
+    productId: 0x0210,
     usagePage: 0xFF00,
     usage: 0x0001,
     connectType: ConnectionType.USB,
