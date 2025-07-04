@@ -7,7 +7,7 @@ import type { KeyTableData } from "./keyTableData"
 export interface KeyState {
     index: number,
     selected: boolean,
-    KeyData: KeyTableData
+    keyData: KeyTableData
 }
 
 /**
@@ -27,6 +27,7 @@ export interface KeyboardDefine extends HidDeviceDefine {
     //keyMatrixLayer: Array<KeyMatrixLayer>,
     //keyMatrixTable: Array<MatrixTable>,
     //keyLayout: Record<number, Record<number, Array<number>>>,
+    keyLayout: Array<Array<KeyInfo | null>>,
     protocol: (state: KeyboardState, device: HIDDevice) => Promise<IProtocol>
 }
 
@@ -120,6 +121,12 @@ export interface SOCDInfo {
 
 export interface RSInfo {
     DKS: Array<number>
+}
+
+export interface KeyCmdValue {
+    keyCode: KeyDefineEnum,
+    value: number,
+    layout: LayoutTypeEnum
 }
 
 export interface KeyInfo {

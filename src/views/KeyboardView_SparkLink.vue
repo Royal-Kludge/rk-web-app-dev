@@ -20,6 +20,7 @@ import { VERSION } from '@/common/state';
 import { ElMessageBox } from 'element-plus'
 import { useI18n } from "vue-i18n";
 import type { Protocol } from '@/keyboard/sparklink/protocol';
+import type { Profiles } from '@/keyboard/sparklink/profiles';
 
 const { t } = useI18n();
 
@@ -95,20 +96,20 @@ const isKeyboardConnect = (): boolean => {
 };
 
 const checkProfileVersion = () => {
-    // let tmp = storage.get(`${keyboard.keyboardDefine?.name}_profile`) as Profiles;
-    // if (tmp != null && (tmp.version == undefined || tmp.version != VERSION)) {
-    //     ElMessageBox.confirm(
-    //         t('home.profile'),
-    //         t('home.profile_out'),
-    //         {
-    //             confirmButtonText: t('home.profile_reset'),
-    //             cancelButtonText: t('home.profile_goon'),
-    //             customClass: 'set-to-default',
-    //         }
-    //     ).then(async () => {
-    //         storage.clear();
-    //     });
-    // }
+    let tmp = storage.get(`${keyboard.keyboardDefine?.name}_profile`) as Profiles;
+    if (tmp != null && (tmp.version == undefined || tmp.version != VERSION)) {
+        ElMessageBox.confirm(
+            t('home.profile'),
+            t('home.profile_out'),
+            {
+                confirmButtonText: t('home.profile_reset'),
+                cancelButtonText: t('home.profile_goon'),
+                customClass: 'set-to-default',
+            }
+        ).then(async () => {
+            storage.clear();
+        });
+    }
 };
 
 </script>

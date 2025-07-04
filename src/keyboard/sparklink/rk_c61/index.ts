@@ -1,8 +1,9 @@
 import type { KeyboardDefine  } from '../interface'
-import { KeyText } from "@/common/keyCode"
+import { KeyText } from "@/common/keyCode_sparklink"
 import { RK_C61_Usb } from './rk_c61_usb'
 import { ConnectionType, DeviceType, ProtocolType } from '@/device/enum'
 import { KeyMatrixLayer, MatrixTable } from '../enum'
+import defaultValue from './default.json'
 
 export const RK_C61_USB_DEFINE: KeyboardDefine = {
     name: "RK-C61",
@@ -15,6 +16,7 @@ export const RK_C61_USB_DEFINE: KeyboardDefine = {
     deviceType: DeviceType.Keyboard,
     protocolType: ProtocolType.SparkLink,
     keyText: KeyText,
+    keyLayout: defaultValue,
     // keyMatrixLayer: [
     //     KeyMatrixLayer.FN0,
     //     KeyMatrixLayer.FN1,

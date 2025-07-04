@@ -9,22 +9,20 @@
                     <div class="w-100" style="height: 28vh">
                         <el-scrollbar>
                             <div class="d-flex flex-column jc-between" style="padding-left: 15%;">
-                                <div class="d-flex m-3"
-                                    v-if="useLight.state.lightProps.mode != LightModeEnum.Custom">
+                                <div class="d-flex m-3">
                                     <div class="d-flex flex-column">
                                         <div>
-                                            <el-slider style="width: 360px" :step="1" :max="20" :min="1"
+                                            <el-slider style="width: 360px" :step="1" :max="4" :min="0"
                                                 v-model="useLight.state.lightProps.brightness" @change="ligtChanged" />
                                         </div>
                                         <div class="d-flex jc-center">{{ $t('light.title_3') }}</div>
                                     </div>
                                     <div class="ml-4 mt-1">{{ useLight.state.lightProps.brightness }}</div>
                                 </div>
-                                <div class="d-flex m-3"
-                                    v-if="useLight.state.lightProps.mode != LightModeEnum.Custom">
+                                <div class="d-flex m-3">
                                     <div class="d-flex flex-column">
                                         <div>
-                                            <el-slider style="width: 360px" :step="1" :max="4" :min="1"
+                                            <el-slider style="width: 360px" :step="1" :max="4" :min="0"
                                                 v-model="useLight.state.lightProps.speed" @change="ligtChanged" />
                                         </div>
                                         <div class="d-flex jc-center">{{ $t('light.title_4') }}</div>
@@ -34,7 +32,7 @@
                                 <div class="d-flex m-3">
                                     <div class="d-flex flex-column">
                                         <div>
-                                            <el-slider style="width: 360px" :step="1" :max="30" :min="0"
+                                            <el-slider style="width: 360px" :step="1" :max="120" :min="0"
                                                 v-model="useLight.state.lightProps.sleep" @change="ligtChanged" />
                                         </div>
                                         <div class="d-flex jc-center">{{ $t('light.title_5') }}</div>
@@ -49,7 +47,7 @@
                     </div>
                 </div>
                 <div class="bg-box flex-1" style="border-radius: 0px 0px 10px 0px;"
-                    v-if="useLight.state.lightProps.light != 3 && useLight.state.lightProps.light != 17">
+                    v-if="useLight.state.lightProps.light == LightEffectEnum.Static || useLight.state.lightProps.light == LightEffectEnum.SelfDefine">
                     <div class="w-100" style="height: 28vh">
                         <el-scrollbar>
                             <div class="d-flex flex-column ml-5">
@@ -58,16 +56,29 @@
                                         <el-tag :color="`rgb(${useLight.rgb.r}, ${useLight.rgb.g}, ${useLight.rgb.b})`"
                                             style="border-width: 0px; border-radius: 5px;width: 42px;height: 42px;" />
                                     </div>
-                                    <div v-if="useLight.state.lightProps.mode != LightModeEnum.Custom">
-                                        <el-checkbox v-model="useLight.state.lightProps.mixing"
-                                            :label="$t('light.title_7')" size="large" @change="ligtChanged" />
-                                    </div>
-                                    <div v-else>
+                                    <div v-if="useLight.state.lightProps.mode == LightModeEnum.Custom">
                                         <div class="py-1 px-3 but-red text-white c-p"
-                                            @click="useLight.SelfDefineDefaultAll">
+                                            @click="setAllToDefault">
                                             {{ $t('light.title_8') }}
                                         </div>
                                     </div>
+                                    <el-select v-else v-model="useLight.state.lightProps.staticIndex" placeholder="Select" style="width: 120px" @change="lightModeChange">
+                                        <el-option
+                                            v-for="item in useLight.state.lightProps.staticColors"
+                                            :key="item.index"
+                                            :label="item.text"
+                                            :value="item.index"
+                                        >
+                                        <div class="flex items-center">
+                                            <el-tag :color="item.color.color" style="margin-right: 2px" />
+                                            <span>{{ item.text }}</span>
+                                        </div>
+                                        </el-option>
+                                        <template #label="{ text, color }">
+                                            <el-tag :color="color.color" />
+                                            <span>{{ text }}</span>
+                                        </template>
+                                    </el-select>
                                 </div>
                                 <div>
                                     <Picker @onpick="onPicking" @picked="onPicked" :rgb="useLight.rgb" />
@@ -85,32 +96,60 @@ import Picker from '../picker.vue'
 import { uselightStore } from "@/stores/rk_c61/lightStore";
 import { LightEffectEnum, LightModeEnum } from '@/keyboard/sparklink/enum'
 import { useKeyStore } from "@/stores/rk_c61/keyStore";
-import { type KeyState } from '@/keyboard/sparklink/interface'
+import { type KeyState, type KeyInfo, type LedColor } from '@/keyboard/sparklink/interface'
 
 const useLight = uselightStore();
 const useKey = useKeyStore();
 
 const onPicking = () => {
-    // if (useLight.state.lightProps.mode == LightEffectEnum) {
-        // let i: any;
-        // for (i in useKey.state.keyState) {
-            // if ((useKey.state.keyState as Array<KeyState>)[i].selected) {
-                // useLight.onPicking(useLight.rgb.r, useLight.rgb.g, useLight.rgb.b, Number((useKey.state.keyState as Array<KeyState>)[i].index));
-            // }
-        // }
-    // } else {
-        // useLight.onPicking(useLight.rgb.r, useLight.rgb.g, useLight.rgb.b, 0);
-    // }
+    if (useLight.state.lightProps.light == LightEffectEnum.SelfDefine) {
+        let keyStates = useKey.state.keyState as Array<KeyState>;
+        for (let i in keyStates) {
+            if (keyStates[i].selected) {
+                useLight.onPicking(useLight.rgb.r, useLight.rgb.g, useLight.rgb.b, keyStates[i].keyData.keyInfo);
+            }
+        }
+    } else if (useLight.state.lightProps.light == LightEffectEnum.Static) {
+        useLight.onPicking(useLight.rgb.r, useLight.rgb.g, useLight.rgb.b, null);
+    }
 }
 
 const onPicked = async () => {
-    await useLight.onPicked()
+    let keyInfos: Array<KeyInfo> = [];
+    let keyStates = useKey.state.keyState as Array<KeyState>;
+    for (let i in keyStates) {
+        if (keyStates[i].selected) {
+            keyInfos.push(keyStates[i].keyData.keyInfo);
+        }
+    }
+
+    await useLight.onPicked(keyInfos)
     useKey.saveProfile()
 }
 
 const ligtChanged = async () => {
     await useLight.ligtChanged();
     useKey.saveProfile()
+}
+
+const setAllToDefault = async () => {
+    let keyInfos: Array<KeyInfo> = [];
+    let keyStates = useKey.state.keyState as Array<KeyState>;
+    for (let i in keyStates) {
+        if (keyStates[i].keyData != undefined) {
+            keyInfos.push(keyStates[i].keyData.keyInfo);
+        }
+    }
+
+    if (keyInfos.length > 0) {
+        await useLight.setAllToDefault(keyInfos);
+        useKey.saveProfile();
+    }
+}
+
+const lightModeChange = async (value: any) => {
+    await useLight.lightModeChange(value);
+    useKey.saveProfile();
 }
 </script>
 <style scoped lang="scss"></style>

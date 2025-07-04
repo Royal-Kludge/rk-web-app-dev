@@ -1,16 +1,18 @@
 import { Protocol } from '@/keyboard/sparklink/protocol'
 import type { Macros } from '@/keyboard/sparklink/macros';
 import { LOG_TYPE, Logging } from '@/common/logging';
-import type { Axis, KeyboardState, KeyInfo, KeyTableData, LedColor, LightSetting, PerformanceData } from '../interface';
-import type { KeyCodeEnum, KeyDefineEnum } from '@/common/keyCode';
-import type { MatrixTable } from '../enum';
+import type { Axis, KeyboardState, KeyCmdValue, KeyInfo, LedColor, LightSetting, PerformanceData } from '../interface';
+import type { KeyCodeEnum, KeyDefineEnum } from '@/common/keyCode_sparklink';
+import { LightDirectionEnum, LightEffectEnum, LightModeEnum, LightSwitchEnum, SuperResponseEnum, type LayoutTypeEnum, type MatrixTable } from '../enum';
 import { KeyInfoData } from '../keyInfoData';
+import type { KeyTableData } from '../keyTableData';
 
 export const RK_C61_EVENT_DEFINE = {
     OnMacrosGotten: "OnMacrosGotten",
     OnKeyDefaultLayoutGotten: "OnKeyDefaultLayoutGotten",
     OnKeyValuesGotten: "OnKeyValuesGotten",
-    OnKeyRgbGotten: "OnKeyRgbGotten"
+    OnKeyRgbGotten: "OnKeyRgbGotten",
+    OnSynced: "OnSynced"
 }
 
 export const COMMAND_ID = {
@@ -86,24 +88,27 @@ export class RK_C61_Data {
     isWinMacSupport: number = 0;
     topDeadSwitch: boolean = false;
     performanceData: PerformanceData;
-    lightSetting?: LightSetting;
+    lightSetting: LightSetting;
     keyInfoData: KeyInfoData;
     macros?: Macros;
     //kbTableDatas?: Record<KeyDefineEnum, KeyTableData>;
 
     constructor() {
         this.keyInfoData = new KeyInfoData();
-        // this.travelData = {
-        //     precision: 0,
-        //     decimalPlace: 0,
-        //     minTouchTravel: 0,
-        //     maxTouchTravel: 0
-        // };
-        // this.dbParam = {
-        //     globalTouchTravel: 0,
-        //     pressDead: 0,
-        //     releaseDead: 0
-        // }
+
+        this.lightSetting = {
+            lightColorList: new Array<LedColor>,
+            lightSwitch: LightSwitchEnum.Off,
+            lightMode: LightEffectEnum.Off,
+            lightBigMode: LightModeEnum.Disable,
+            lightBrightness: 0,
+            lightSpeed: 0,
+            lightSleepDelay: 0,
+            lightDirection: LightDirectionEnum.Forward,
+            superResponse: SuperResponseEnum.Off,
+            staticLightMode: 0
+        };
+
         this.performanceData = {
             PerformancePage: 0,
             precision: 0.1, // 键盘行程精度
@@ -128,7 +133,7 @@ export class RK_C61_Data {
             travelTestOn: false, // 行程测试
             keyPressTestCount: 1, // 按键测试计数触发器
             hasAxisSetting: false,
-        }
+        };
     }
 }
 
@@ -137,7 +142,13 @@ export abstract class RK_C61 extends Protocol {
     data: RK_C61_Data = new RK_C61_Data();
     
     abstract onGetReport(reportId: number, data: DataView): Promise<void>;
+    abstract loadData(): Promise<void>;
     abstract getMacros(): Promise<void>;
+    abstract setKeyValues(keyCmdValues: Array<KeyCmdValue>): Promise<void>;
+    abstract setPrgb(): Promise<void>;
+    abstract setKrgb(): Promise<void>;
+    abstract setKeyKrgb(keyInfos: Array<KeyInfo>): Promise<void>;
+    abstract setDB(): Promise<void>;
     abstract setMacros(): Promise<void>;
     
     callback = (e: HIDInputReportEvent) => this.processKeyboardReport(e);

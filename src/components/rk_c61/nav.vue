@@ -3,31 +3,16 @@
     <div class="fw-b fs-xxl">{{ useKey.profile?.name }}</div>
     <div class="d-flex mt-4">
       <div class="d-flex ai-center mr-4">
-        <el-radio-group class="ml-4" v-model="useKey.keyMatrixLayer" text-color="#00ffff" fill="#ffff00"
-          @change="useKey.getKeyMatrix">
+          <el-radio-group v-if="isLayoutTableSupport" v-model="useKey.keyMatrixTable" class="mr-4" @change="useKey.keyMatrixChange">
+          <el-radio-button v-for="item in useKey.state.MatrixTable" :value="item.value" :label="item.value">
+            <img :src="item.img" width="32" />
+          </el-radio-button>
+        </el-radio-group>
+        <el-radio-group class="ml-4" v-model="useKey.keyMatrixLayer" text-color="#00ffff" fill="#ffff00" @change="useKey.getKeyMatrix">
           <el-radio v-for="item in useKey.state.MatrixLayers" :value="item.value" :label="item.value">
             <span>{{ $t(item.label) }}</span>
           </el-radio>
         </el-radio-group>
-      </div>
-      <div class="d-flex ml-4">
-        <div>
-          <el-popover effect="light" :width="440" placement="bottom">
-            <div class="d-flex flex-column">
-              <span>{{ $t('tip.tape1') }}</span>
-              <span>{{ $t('tip.tape2') }}</span>
-              <span>{{ $t('tip.tape3') }}</span>
-            </div>
-            <template #reference>
-              <el-checkbox v-model="isLayer" :label="$t('set.layer_1')" style="width: 100%;" @change="LayerChanged">
-                {{ $t('set.layer_1') }}
-              </el-checkbox>
-            </template>
-          </el-popover>
-        </div>
-        <div class="ml-2 px-3" v-if="isLayer">
-          <el-slider style="width: 180px" v-model="layer" :min="1" :max="127" @change="setLayer" />
-        </div>
       </div>
     </div>
   </div>
@@ -41,6 +26,7 @@ const useLight = uselightStore();
 const useKey = useKeyStore();
 const isLayer = ref(false);
 const layer = ref(0);
+const isLayoutTableSupport = ref(true);
 
 const LayerChanged = () => {
   if (!isLayer.value) {

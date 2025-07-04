@@ -38,9 +38,12 @@ import { useMenuStore } from "@/stores/rk_c61/menuStore";
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 import { storeToRefs } from "pinia";
 import { LOG_TYPE, Logging } from '@/common/logging';
+import { Profile, ps } from "@/keyboard/sparklink/profiles";
+import { useI18n } from 'vue-i18n';
 
 const useMenu = useMenuStore();
 const { meunid } = storeToRefs(useMenu);
+const { t } = useI18n();
 
 const loading = ref(false)
 
@@ -64,6 +67,8 @@ onMounted(async () => {
     rk_c61.value.addEventListener("OnKeyDefaultLayoutGotten", onKeyDefaultLayoutGotten);
     rk_c61.value.addEventListener("OnKeyValuesGotten", onKeyValuesGotten);
     rk_c61.value.addEventListener("OnKeyRgbGotten", onKeyRgbGotten);
+    rk_c61.value.addEventListener("OnSynced", onSynced);
+
 });
 
 onBeforeUnmount(() => {
@@ -76,19 +81,56 @@ onBeforeUnmount(() => {
 
 const onKeyDefaultLayoutGotten = (event: any) => {
     dataLoading.value.defaultLayout = false;
-    Logging.console(LOG_TYPE.SUCCESS, `Key default layout data Gotten!`)
-
+    Logging.console(LOG_TYPE.SUCCESS, `Key default layout data Gotten!`);
     keyboard.loadValue(event.detail);
 }
 
-const onKeyValuesGotten = () => {
+const onKeyValuesGotten = (event: any) => {
     dataLoading.value.values = false;
-    Logging.console(LOG_TYPE.SUCCESS, `Key values data Gotten!`)
+    Logging.console(LOG_TYPE.SUCCESS, `Key values data Gotten!`);
 }
 
-const onKeyRgbGotten = () => {
+const onKeyRgbGotten = (event: any) => {
     dataLoading.value.rgb = false;
-    Logging.console(LOG_TYPE.SUCCESS, `Key rgb data Gotten!`)
+    Logging.console(LOG_TYPE.SUCCESS, `Key rgb data Gotten!`);
+
+    // let str = JSON.stringify(event.detail.keyInfoArray);
+    // Logging.console(LOG_TYPE.INFO, str);
+
+    if (rk_c61.value != undefined) {
+        ps.init(
+            t("Profile.default"), 
+            rk_c61.value.data.keyInfoData.keyInfoArray,
+            rk_c61.value.data.performanceData,
+            rk_c61.value.data.lightSetting,
+        );
+    }
+}
+
+const onSynced = async (event: any) => {
+    if (rk_c61.value != undefined) {
+        if (ps.load()) {
+            let keyInfoArray = ps.list[ps.curIndex].keyInfoArray;
+            for (let row = 0; row < keyInfoArray.length; row++) {
+                for (let col = 0; col < keyInfoArray[row].length; col++) {
+                    rk_c61.value.data.keyInfoData.updateKeyInfo(row, col, keyInfoArray[row][col]);
+                }
+            }
+            rk_c61.value.data.keyInfoData.keyInfoArray = ps.list[ps.curIndex].keyInfoArray;
+            rk_c61.value.data.keyInfoData.globalTouchTravel = ps.list[ps.curIndex].performanceData.globalTouchTravel;
+            rk_c61.value.data.keyInfoData.maxTouchTravel = ps.list[ps.curIndex].performanceData.maxTouchTravel;
+            rk_c61.value.data.performanceData = ps.list[ps.curIndex].performanceData;
+            rk_c61.value.data.lightSetting = ps.list[ps.curIndex].lightSetting;
+
+            keyboard.loadValue(rk_c61.value.data.keyInfoData);
+
+            dataLoading.value.defaultLayout = false;
+            dataLoading.value.values = false;
+            dataLoading.value.rgb = false;
+        } else {
+            await rk_c61.value.loadData();
+        }
+    }
 }
 
 const isLoading = (): boolean => {

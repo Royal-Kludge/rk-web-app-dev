@@ -20,9 +20,8 @@ export enum LightModeEnum {
   Custom = 3,
 }
 
-
 export enum LightEffectEnum {
-  Off = 0,
+  Off = 99,
   M1 = 1,
   M2 = 2,
   M3 = 3,
@@ -43,6 +42,7 @@ export enum LightEffectEnum {
   M18 = 18,
   M19 = 19,
   M20 = 20,
+  Static = 0,
   SelfDefine = 21,
 }
 
@@ -193,4 +193,27 @@ export enum LightDirectionEnum {
 export enum SuperResponseEnum {
   On = 0x10,
   Off = 0x00
+}
+
+export enum AdvKeyTypeEnum {
+  DKS = 0x01,
+  MPT = 0x02,
+  MT = 0x03,
+  TGL = 0x04,
+  END = 0x05,
+  MACRO = 0x06,
+  SOCD = 0x08,
+  RS = 0x09
+}
+
+export enum KeyMappingType {
+    KeyBoard = 0,
+    Consumer = 1,
+    GameControls = 2,
+    SportControls = 3,
+    VRControls = 4,
+    GenericDesktop = 5,
+    MultiAndMix = 6,
+    Mouse = 7,
+    SparkLinkKbFun = 15,
 }
