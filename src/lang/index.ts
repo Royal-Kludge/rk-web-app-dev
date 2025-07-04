@@ -5,6 +5,13 @@ import TW from "./zh-tw";
 import JA from "./ja";
 import KR from "./ko-kr";
 import RU from "./ru";
+import PT_BR from "./pt_br";
+import DE from "./de";
+import ES from "./es";
+import TR from "./tr";
+import IT from "./it";
+import AR from "./ar";
+import TH from "./th";
 
 // 获取浏览器界面语言，默认语言
 let currentLanguage = navigator.language.toLowerCase();
@@ -32,6 +39,27 @@ const messages = {
   },
   ru: {
     ...RU,
+  },
+  pt_br: {
+    ...PT_BR,
+  },
+  de: {
+    ...DE,
+  },
+  es: {
+    ...ES,
+  },
+  tr: {
+    ...TR,
+  },
+  it: {
+    ...IT,
+  },
+  ar: {
+    ...AR,
+  },
+  th: {
+    ...TH,
   },
 };
 let lang = 'en';

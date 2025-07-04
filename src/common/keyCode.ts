@@ -2562,13 +2562,13 @@ export const KeyText_Mac: Record<number, Array<String>> = {
     //****************************************************************
     //Modify key
     0x00010000: ['<img class="keyimg" src="/src/assets/images/mac/control.png" />'],
-    0x00020000: ['L-Shift'],
+    0x00020000: ['<img class="keyimg" src="/src/assets/images/mac/shift.png" />'],
     0x00040000: ['<img class="keyimg" src="/src/assets/images/mac/option.png" />'],
     0x00080000: ['<img class="keyimg" src="/src/assets/images/mac/command.png" />'],
-    0x00100000: ['Control'],
-    0x00200000: ['R-Shift'],
-    0x00400000: ['Option'],
-    0x00800000: ['Command'],
+    0x00100000: ['<img class="keyimg" src="/src/assets/images/mac/control.png" />'],
+    0x00200000: ['<img class="keyimg" src="/src/assets/images/mac/shift.png" />'],
+    0x00400000: ['<img class="keyimg" src="/src/assets/images/mac/option.png" />'],
+    0x00800000: ['<img class="keyimg" src="/src/assets/images/mac/command.png" />'],
     //****************************************************************
     //macro�е�modify key����
     0xe0: ['Control'],
