@@ -63,12 +63,13 @@ const setMeunid = () => {
 };
 
 onMounted(async () => {
-    rk_c61.value = keyboard.protocol as RK_C61;
-    rk_c61.value.addEventListener("OnKeyDefaultLayoutGotten", onKeyDefaultLayoutGotten);
-    rk_c61.value.addEventListener("OnKeyValuesGotten", onKeyValuesGotten);
-    rk_c61.value.addEventListener("OnKeyRgbGotten", onKeyRgbGotten);
-    rk_c61.value.addEventListener("OnSynced", onSynced);
-
+    if (rk_c61.value == undefined) {
+        rk_c61.value = keyboard.protocol as RK_C61;
+        rk_c61.value.addEventListener("OnKeyDefaultLayoutGotten", onKeyDefaultLayoutGotten);
+        rk_c61.value.addEventListener("OnKeyValuesGotten", onKeyValuesGotten);
+        rk_c61.value.addEventListener("OnKeyRgbGotten", onKeyRgbGotten);
+        rk_c61.value.addEventListener("OnSynced", onSynced);
+    }
 });
 
 onBeforeUnmount(() => {

@@ -49,11 +49,11 @@
                                     <el-slider style="width: 280px" :step="travelStep" :max="performanceData.maxTouchTravel" :min="performanceData.minTouchTravel"
                                         v-model="performanceData.singleTouchTravel" 
                                         :disabled="isDisabel"
-                                        @change="usePerformance.singleTouchTravelChange" />
+                                        @change="singleTouchTravelChange" />
                                     <el-input-number v-model="performanceData.singleTouchTravel" :min="performanceData.minTouchTravel" :max="performanceData.maxTouchTravel"
                                         :precision="performanceData?.decimalPlace"
                                         :disabled="isDisabel"
-                                        @change="usePerformance.singleTouchTravelChange"
+                                        @change="singleTouchTravelChange"
                                         class="ml-3" />
                                 </div>
                             </div>
@@ -73,11 +73,11 @@
                                     <el-slider style="width: 280px" :step="travelStep" :max="performanceData.maxTouchTravel" :min="performanceData.minTouchTravel"
                                         v-model="performanceData.singleTouchTravel"
                                         :disabled="isDisabel"
-                                        @change="usePerformance.RTFirstTouchTravelChange"/>
+                                        @change="RTFirstTouchTravelChange"/>
                                     <el-input-number v-model="performanceData.singleTouchTravel" :min="performanceData.minTouchTravel" :max="performanceData.maxTouchTravel"
                                         :precision="performanceData?.decimalPlace"
                                         :disabled="isDisabel"
-                                        @change="usePerformance.RTFirstTouchTravelChange"
+                                        @change="RTFirstTouchTravelChange"
                                         class="ml-3" />
                                 </div>
                             </div>
@@ -96,11 +96,11 @@
                                     <el-slider style="width: 280px" :step="travelStep" :max="performanceData.maxTouchTravel" :min="performanceData.minTouchTravel"
                                         v-model="performanceData.quickTouchPress"
                                         :disabled="isDisabel" 
-                                        @change="usePerformance.quickTouchPressTravelChange" />
+                                        @change="quickTouchPressTravelChange" />
                                     <el-input-number v-model="performanceData.quickTouchPress" :min="performanceData.minTouchTravel" :max="performanceData.maxTouchTravel"
                                         :precision="performanceData.decimalPlace"
                                         :disabled="isDisabel"
-                                        @change="usePerformance.quickTouchPressTravelChange"
+                                        @change="quickTouchPressTravelChange"
                                         class="ml-3" />
                                 </div>
                             </div>
@@ -120,11 +120,11 @@
                                     <el-slider style="width: 280px" :step="travelStep" :max="performanceData.maxTouchTravel" :min="performanceData.minTouchTravel"
                                         v-model="performanceData.quickTouchRelease"
                                         :disabled="isDisabel"
-                                        @change="usePerformance.quickTouchReleaseTravelChange"/>
+                                        @change="quickTouchReleaseTravelChange"/>
                                     <el-input-number v-model="performanceData.quickTouchRelease" :min="performanceData.minTouchTravel" :max="performanceData.maxTouchTravel"
                                         :precision="performanceData.decimalPlace"
                                         :disabled="isDisabel"
-                                        @change="usePerformance.quickTouchReleaseTravelChange"
+                                        @change="quickTouchReleaseTravelChange"
                                         class="ml-3" />
                                 </div>
                             </div>
@@ -143,10 +143,12 @@
                                 <div class="m-3 d-flex">
                                     <el-slider style="width: 280px" :step="0.01" :max="1.00" :min="pressDeadMin"
                                         v-model="performanceData.pressDead"
-                                        :disabled="isDisabel"/>
+                                        :disabled="isDisabel"
+                                        @change="deadPressChange" />
                                     <el-input-number v-model="performanceData.pressDead" :min="pressDeadMin" :max="1.00"
                                         :precision="2"
                                         :disabled="isDisabel"
+                                        @change="deadPressChange" 
                                         class="ml-3" />
                                 </div>
                                 <div class="d-flex fs-lg m-3">
@@ -155,10 +157,12 @@
                                 <div class="m-3 d-flex">
                                     <el-slider style="width: 280px" :step="0.01" :max="1.00" :min="pressDeadMin"
                                         v-model="performanceData.releaseDead"
-                                        :disabled="isDisabel"/>
+                                        :disabled="isDisabel"
+                                        @change="deadReleaseChange" />
                                     <el-input-number v-model="performanceData.releaseDead" :min="pressDeadMin" :max="1.00"
                                         :precision="2"
                                         :disabled="isDisabel"
+                                        @change="deadPressChange" 
                                         class="ml-3" />
                                 </div>
                             </div>
@@ -168,7 +172,7 @@
                                     回报率
                                 </div>
                                 <div class="d-flex fs-lg m-3">
-                                    <el-select v-model="performanceData.rateOfReturn" placeholder="Select">
+                                    <el-select v-model="performanceData.rateOfReturn" placeholder="Select" @change="usePerformance.reportRateChange">
                                         <el-option v-for="item in usePerformance.state.rewardList" :key="item.value"
                                             :label="item.label" :value="item.value" />
                                     </el-select>
@@ -199,7 +203,7 @@
                                 行程测试
                             </div>
                             <div>
-                                <el-switch v-model="usePerformance.state.tripTest" inline-prompt size="large" />
+                                <el-switch v-model="performanceData.travelTestOn" inline-prompt size="large" @change="changePressTestSwitch"/>
                             </div>
                         </div>
                         <div class="d-flex jc-center">
@@ -227,7 +231,7 @@
                     <div class="p-2 m-2 bg-warn-1 text-grey-1 text-center br-2 b-grey c-p but" @click="useKey.unSelected()">
                         取消选中
                     </div>
-                    <div class="p-2 m-2 bg-warn-1 text-grey-1 text-center br-2 b-grey c-p but" @click="usePerformance.resetToGlobalTravel()">
+                    <div class="p-2 m-2 bg-warn-1 text-grey-1 text-center br-2 b-grey c-p but" @click="resetToGlobalTravel()">
                         重置行程
                     </div>
                 </div>
@@ -241,15 +245,20 @@ import { useKeyStore } from "@/stores/rk_c61/keyStore";
 import { computed, ref, reactive, onMounted, nextTick, onBeforeUnmount, watch } from "vue";
 import * as echarts from 'echarts'
 import { storeToRefs } from 'pinia'
+import { keyboard } from "@/keyboard/sparklink/keyboard";
+import type { RK_C61 } from "@/keyboard/sparklink/rk_c61/rk_c61";
+import type { KeyState } from "@/keyboard/sparklink/interface";
+
+const rk_c61 = ref<RK_C61>();
 
 const chart = ref(null);
 const usePerformance = usePerformanceStore();
 const useKey = useKeyStore();
-const count = ref(0);
+const count = ref(30);
 const travelStep = ref(0.001);
 const pressDeadMin = ref(0.0);
 
-const {adjustingCount, state, performanceData } = storeToRefs(usePerformance);
+const { adjustingCount, keyPressTestCount, state, travelTestOn, performanceData } = storeToRefs(usePerformance);
 
 let chartInstance: any = null;
 let data: any = [];
@@ -258,6 +267,11 @@ const maxCount = 400;
 const isDisabel = ref(false);
 
 onMounted(async () => {
+    if (rk_c61.value == undefined) {
+        rk_c61.value = keyboard.protocol as RK_C61;
+        rk_c61.value.addEventListener("OnAdjustingMMDataGotten", onAdjustingMMDataGotten);
+    }
+
     usePerformance.init();
     if (performanceData.value != undefined) {
         travelStep.value = 1 / (10 ** performanceData.value.decimalPlace);
@@ -268,20 +282,38 @@ watch(useKey.state.keyState, async () => {
     isDisabel.value = !useKey.isAnyKeyChecked();
 })
 
-watch(adjustingCount, async () => {
-    if (count.value > maxCount) {
-        option.xAxis.max = count.value;
-        option.xAxis.min = count.value - maxCount;
+watch(travelTestOn, async () => {
+    if (travelTestOn.value) {
+        performanceData.value.keyPressTestCount = 0;
+        keyPressTestCount.value = performanceData.value.keyPressTestCount;
     }
-    count.value++;
-    data.push([count.value, adjustingCount.value.toFixed(2)]);
-    option.series[0].data = data;
-    if (option.series[0].data.length > maxCount) {
-        option.series[0].data.shift();
+})
+
+watch(keyPressTestCount, async () => {
+    if (!travelTestOn.value) return;
+
+    if (rk_c61.value != undefined) {
+        await rk_c61.value.getAdustingData(0x03, 0);
+        await rk_c61.value.getAdustingData(0x02, 1);
+
+        const value = rk_c61.value.data.keyInfoData.getMaxPressTravel();
+        state.value.maxMM = value.max;
+        state.value.pressStatus = value.press;
     }
-    if (chartInstance) {
-        chartInstance.setOption(option);
-    }
+
+    // if (count.value > maxCount) {
+    //     option.xAxis.max = count.value;
+    //     option.xAxis.min = count.value - maxCount;
+    // }
+    // count.value++;
+    // data.push([count.value, keyPressTestCount.value.toFixed(2)]);
+    // option.series[0].data = data;
+    // if (option.series[0].data.length > maxCount) {
+    //     option.series[0].data.shift();
+    // }
+    // if (chartInstance) {
+    //     chartInstance.setOption(option);
+    // }
 })
 
 const option = reactive({
@@ -404,10 +436,15 @@ onBeforeUnmount(() => {
     if (chartInstance) {
         chartInstance.dispose();
     }
+
+    if (rk_c61.value != undefined) {
+        rk_c61.value.removeEventListener("OnAdjustingMMDataGotten", onAdjustingMMDataGotten);
+        rk_c61.value = undefined;
+    }
 });
 
 const maxTravelHeight = computed(() => {
-    const testHeight = (usePerformance.state.maxTouchTravel / 4.0) * 190;
+    const testHeight = (performanceData.value.maxTouchTravel / 4.0) * 190;
     return { height: `${testHeight}px`, };
 });
 
@@ -427,6 +464,100 @@ const testStyle = computed(() => {
         backgroundColor: `rgb(${r}, ${g}, ${b})`,
     };
 });
+
+const changePressTestSwitch = (value: boolean) => {
+    //const switchElement = event.target;
+    //switchElement.blur();
+    travelTestOn.value = value;
+
+    if (!travelTestOn.value) keyPressTestCount.value = -1;
+};
+
+const onAdjustingMMDataGotten = (event: any) => {
+    keyPressTestCount.value = event.detail;
+}
+
+const singleTouchTravelChange = (value: number) => {
+    for (let i = 0; i < useKey.state.keyState.length; i ++) {
+        let key = useKey.state.keyState[i] as KeyState;
+        if (key.keyData != undefined && key.keyData.keyInfo != null && key.keyData.keyInfo.isCheck) {
+            key.keyData.keyInfo.isSingleTouch = true;
+            key.keyData.keyInfo.touchTravel = value;
+        }
+    }
+
+    usePerformance.singleTouchTravelChange(value);
+};
+
+const RTFirstTouchTravelChange = (value: number) => {
+    for (let i = 0; i < useKey.state.keyState.length; i ++) {
+        let key = useKey.state.keyState[i] as KeyState;
+        if (key.keyData != undefined && key.keyData.keyInfo != null && key.keyData.keyInfo.isCheck) {
+            key.keyData.keyInfo.isSingleTouch = true;
+            key.keyData.keyInfo.touchTravel = value;
+        }
+    }
+
+    usePerformance.RTFirstTouchTravelChange(value);
+};
+
+const quickTouchPressTravelChange = (value: number) => {
+    for (let i = 0; i < useKey.state.keyState.length; i ++) {
+        let key = useKey.state.keyState[i] as KeyState;
+        if (key.keyData != undefined && key.keyData.keyInfo != null && key.keyData.keyInfo.isCheck) {
+            key.keyData.keyInfo.isQuickTouch = true;
+            key.keyData.keyInfo.quickTouchPress = value;
+        }
+    }
+
+    usePerformance.quickTouchPressTravelChange(value);
+};
+
+const quickTouchReleaseTravelChange = (value: number) => {
+    for (let i = 0; i < useKey.state.keyState.length; i ++) {
+        let key = useKey.state.keyState[i] as KeyState;
+        if (key.keyData != undefined && key.keyData.keyInfo != null && key.keyData.keyInfo.isCheck) {
+            key.keyData.keyInfo.isQuickTouch = true;
+            key.keyData.keyInfo.quickTouchRelease = value;
+        }
+    }
+
+    usePerformance.quickTouchReleaseTravelChange(value);
+};
+
+const deadPressChange = (value: number) => {
+    for (let i = 0; i < useKey.state.keyState.length; i ++) {
+        let key = useKey.state.keyState[i] as KeyState;
+        if (key.keyData != undefined && key.keyData.keyInfo != null && key.keyData.keyInfo.isCheck) {
+            key.keyData.keyInfo.deadPress = value;
+        }
+    }
+
+    usePerformance.deadPressChange(value);
+};
+
+const deadReleaseChange = (value: number) => {
+    for (let i = 0; i < useKey.state.keyState.length; i ++) {
+        let key = useKey.state.keyState[i] as KeyState;
+        if (key.keyData != undefined && key.keyData.keyInfo != null && key.keyData.keyInfo.isCheck) {
+            key.keyData.keyInfo.deadRelease = value;
+        }
+    }
+
+    usePerformance.deadReleaseChange(value);
+};
+
+const resetToGlobalTravel = () => {
+    for (let i = 0; i < useKey.state.keyState.length; i ++) {
+        let key = useKey.state.keyState[i] as KeyState;
+        if (key.keyData != undefined && key.keyData.keyInfo != null && key.keyData.keyInfo.isCheck) {
+            key.keyData.keyInfo.isSingleTouch = false;
+            key.keyData.keyInfo.isQuickTouch = false;
+        }
+    }
+    
+    usePerformance.resetToGlobalTravel();
+};
 
 </script>
 <style scoped lang="scss">

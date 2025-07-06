@@ -659,6 +659,7 @@ export const useKeyStore = defineStore("keyinfo_rk_c61", () => {
             for (index in keyboard.state.keyTableData) {
                 (state.keyState as Array<KeyState>).push({
                     selected: false,
+                    isHover: false,
                     index: Number(index),
                     keyData: keyboard.state.keyTableData[Number(index)],
                 });
@@ -781,6 +782,16 @@ export const useKeyStore = defineStore("keyinfo_rk_c61", () => {
             }
         }
     };
+
+    const keyHover = (index: number, isHover: boolean) => {
+        let keyState = (state.keyState as Array<KeyState>)[index];
+        keyState.isHover = isHover;
+    }
+
+    const isKeyHover = (index: number): boolean => {
+        let keyState = (state.keyState as Array<KeyState>)[index];
+        return keyState.isHover;
+    }
 
     const saveProfile = () => {
         ps.save();
@@ -1159,5 +1170,46 @@ export const useKeyStore = defineStore("keyinfo_rk_c61", () => {
         selectAdvancedKeyIndex.value = key.index;
     };
 
-    return { profile, state, advanceKeys, keyMatrixLayer, keyMatrixTable, init, destroy, setFunid, isFunSelected, setUnselected, unSelected, selected, mapping, saveProfile, getKeyMatrix, keyMatrixChange, refresh, keySetToDefaultAll, keySetToDefault, keyClick, keybgColor, onKeyDown, keyColor, isSelected, isCombinKey, keyText, keyTipText, keySetMacro, confirmSetMacro, isMacroSelected, clickMacro, addDKS, addMT, addTGL, unSelectAdvanced, selectAdvanced, deleteAdvKey, isAnyKeyChecked };
+    return {
+        profile,
+        state,
+        advanceKeys,
+        keyMatrixLayer,
+        keyMatrixTable,
+        init,
+        destroy,
+        setFunid,
+        isFunSelected,
+        setUnselected,
+        unSelected,
+        selected,
+        mapping,
+        saveProfile,
+        getKeyMatrix,
+        keyMatrixChange,
+        refresh,
+        keySetToDefaultAll,
+        keySetToDefault,
+        keyClick,
+        keybgColor,
+        onKeyDown,
+        keyColor,
+        isSelected,
+        keyHover,
+        isKeyHover,
+        isCombinKey,
+        keyText,
+        keyTipText,
+        keySetMacro,
+        confirmSetMacro,
+        isMacroSelected,
+        clickMacro,
+        addDKS,
+        addMT,
+        addTGL,
+        unSelectAdvanced,
+        selectAdvanced,
+        deleteAdvKey,
+        isAnyKeyChecked
+    };
 });

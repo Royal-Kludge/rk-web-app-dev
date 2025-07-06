@@ -5,11 +5,14 @@ import type { RK_C61 } from "@/keyboard/sparklink/rk_c61/rk_c61";
 import { ps } from "@/keyboard/sparklink/profiles";
 import { defineStore } from "pinia";
 import { reactive, ref } from "vue";
+import type { KeyTableData } from "@/keyboard/sparklink/keyTableData";
 
 export const usePerformanceStore = defineStore("Performanceinfo_rk_c61", () => {
     const rk_c61 = ref<RK_C61>();
     const isInited = ref(false);
-    const adjustingCount = ref(0);
+    const adjustingCount = ref(-1);
+    const keyPressTestCount = ref(-1);
+    const travelTestOn = ref(false);
     const performanceData = ref<PerformanceData>({
             PerformancePage: 0,
             precision: 0.1, // 键盘行程精度
@@ -30,13 +33,12 @@ export const usePerformanceStore = defineStore("Performanceinfo_rk_c61", () => {
             quickTouchSwitchDisable: true, // (方法中有使用，待移植方法)
             quickTouchSwitch: false, // (方法中有使用，待移植方法)
             isAdjusting: false, // 是否开启校准
-            adjustingCount: 1, // 校准计数触发器
+            adjustingCount: 0, // 校准计数触发器
             travelTestOn: false, // 行程测试
-            keyPressTestCount: 1, // 按键测试计数触发器
+            keyPressTestCount: 0, // 按键测试计数触发器
             hasAxisSetting: false,
         });
     const state = reactive({
-        maxTouchTravel: 4.0,
         isEnabel: true,
         pressStatus: 0,
         maxMM: 0,
@@ -49,43 +51,40 @@ export const usePerformanceStore = defineStore("Performanceinfo_rk_c61", () => {
         ],
         rewardList: [
             {
-                value: "8000",
+                value: 0,
                 label: "8KHz",
             },
             {
-                value: "4000",
+                value: 1,
                 label: "4KHz",
             },
             {
-                value: "2000",
+                value: 2,
                 label: "2KHz",
             },
             {
-                value: "1000",
+                value: 3,
                 label: "1KHz",
             },
             {
-                value: "500",
+                value: 4,
                 label: "500Hz",
             },
             {
-                value: "250",
+                value: 5,
                 label: "250Hz",
             },
             {
-                value: "4000",
-                label: "4KHz",
+                value: 6,
+                label: "125Hz",
             },
         ],
-        reward: "8KHz",
-        globalKey: 0,
-        oneKey: 0,
-        tripTest: false,
+        reward: "8KHz"
     });
 
-    setInterval(function () {
-        adjustingCount.value = Math.random() * 3;
-    }, 1000);
+    // setInterval(function () {
+    //     adjustingCount.value = Math.random() * 3;
+    // }, 1000);
 
     const init = async () => {
         if (rk_c61.value == undefined) {
@@ -168,6 +167,33 @@ export const usePerformanceStore = defineStore("Performanceinfo_rk_c61", () => {
         }
     };
 
+    const deadPressChange = (value: number) => {
+        if (rk_c61.value != undefined) {
+            let cmd = rk_c61.value.data.keyInfoData.updateKeyCheckedDeadPress(value);
+            if (cmd.length > 0) {
+                rk_c61.value.setKeyValues(cmd);
+                ps.save();
+            }
+        }
+    };
+    
+    const deadReleaseChange = (value: number) => {
+        if (rk_c61.value != undefined) {
+            let cmd = rk_c61.value.data.keyInfoData.updateKeyCheckedDeadRelease(value);
+            if (cmd.length > 0) {
+                rk_c61.value.setKeyValues(cmd);
+                ps.save();
+            }
+        }
+    };
+
+    const reportRateChange = (value: number) => {
+        if (rk_c61.value != undefined) {
+            ps.save();
+            rk_c61.value.setReportRate();
+        }
+    };
+
     const keyTravelModeText = (keyInfo: KeyInfo | undefined): String => {
         let str = 'performance.keyTip.globalTravel';
 
@@ -192,9 +218,21 @@ export const usePerformanceStore = defineStore("Performanceinfo_rk_c61", () => {
         }
     };
 
+    const isSingleTouch = (keyData: KeyTableData | undefined): boolean => {
+        if (keyData == undefined) return false;
+        return keyData.keyInfo.isSingleTouch;
+    };
+
+    const isQuickTouch = (keyData: KeyTableData | undefined): boolean => {
+        if (keyData == undefined) return false;
+        return keyData.keyInfo.isQuickTouch;
+    };
+
     return { 
         state,
         adjustingCount,
+        keyPressTestCount,
+        travelTestOn,
         performanceData,
         setMenuid,
         init,
@@ -204,6 +242,11 @@ export const usePerformanceStore = defineStore("Performanceinfo_rk_c61", () => {
         RTFirstTouchTravelChange,
         quickTouchPressTravelChange,
         quickTouchReleaseTravelChange,
+        deadPressChange,
+        deadReleaseChange,
+        reportRateChange,
         keyTravelModeText,
+        isSingleTouch,
+        isQuickTouch
     };
 });

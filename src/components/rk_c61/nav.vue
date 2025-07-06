@@ -28,19 +28,19 @@ const isLayer = ref(false);
 const layer = ref(0);
 const isLayoutTableSupport = ref(true);
 
-const LayerChanged = () => {
-  if (!isLayer.value) {
-    useLight.setLayer(0)
-  } else {
-    useLight.setLayer(layer.value)
-  }
-  useKey.saveProfile();
-}
+// const LayerChanged = () => {
+//   if (!isLayer.value) {
+//     useLight.setLayer(0)
+//   } else {
+//     useLight.setLayer(layer.value)
+//   }
+//   useKey.saveProfile();
+// }
 
-const setLayer = () => {
-  useLight.setLayer(layer.value);
-  useKey.saveProfile();
-}
+// const setLayer = () => {
+//   useLight.setLayer(layer.value);
+//   useKey.saveProfile();
+// }
 
 onMounted(async () => {
   await useKey.init();

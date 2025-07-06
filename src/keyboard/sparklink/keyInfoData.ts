@@ -574,6 +574,50 @@ export class KeyInfoData {
         }
     }
 
+    // 更新选中按键的按下死区
+    updateKeyCheckedDeadPress(pressTravel: number): Array<KeyCmdValue> {
+        let keyCmdValues: Array<KeyCmdValue> = [];
+        for (let row = 0; row < 6; row++) {
+            for (let col = 0; col < 21; col++) {
+                let keyInfo = this.keyInfoArray[row][col];
+                if (keyInfo != null && keyInfo.isCheck) {
+                    keyInfo.deadPress = pressTravel;
+
+                    keyCmdValues.push({
+                        keyCode: keyInfo.keyValue,
+                        value: keyInfo.deadPress * 1000,
+                        layout: LayoutTypeEnum.PressDeadZone
+                    })
+
+                }
+            }
+        }
+
+        return keyCmdValues;
+    }
+
+    // 更新选中按键的抬起死区
+    updateKeyCheckedDeadRelease(releaseTravel: number): Array<KeyCmdValue> {
+        let keyCmdValues: Array<KeyCmdValue> = [];
+        for (let row = 0; row < 6; row++) {
+            for (let col = 0; col < 21; col++) {
+                let keyInfo = this.keyInfoArray[row][col];
+                if (keyInfo != null && keyInfo.isCheck) {
+                    keyInfo.deadRelease = releaseTravel;
+
+                    keyCmdValues.push({
+                        keyCode: keyInfo.keyValue,
+                        value: keyInfo.deadRelease * 1000,
+                        layout: LayoutTypeEnum.PressDeadZone
+                    })
+
+                }
+            }
+        }
+
+        return keyCmdValues;
+    }
+
     // 更新按键行程-RT首次触发行程
     updateKeyInfoRTFirstTouchTravel(firstTouchTravel: number): Array<KeyCmdValue> {
         let keyCmdValues: Array<KeyCmdValue> = [];
@@ -740,5 +784,23 @@ export class KeyInfoData {
         }
 
         return keyCmdValues;
+    }
+
+    // 按键行程测试：获取当前最大按下行程
+    getMaxPressTravel() {
+        let max = 0;
+        let press = 0;
+        for (let row = 0; row < 6; row++) {
+            for (let col = 0; col < 21; col++) {
+                let keyInfo = this.keyInfoArray[row][col];
+                if (keyInfo != null) {
+                    if (max < keyInfo.adjustingMM) {
+                        max = keyInfo.adjustingMM;
+                        press = keyInfo.adjustingPress;
+                    }
+                }
+            }
+        }
+        return { max, press };
     }
 }

@@ -7,6 +7,7 @@ import type { KeyTableData } from "./keyTableData"
 export interface KeyState {
     index: number,
     selected: boolean,
+    isHover: boolean,
     keyData: KeyTableData
 }
 
@@ -185,8 +186,8 @@ export interface PerformanceData {
     quickTouchSwitchDisable: boolean, // (方法中有使用，待移植方法)
     quickTouchSwitch: boolean, // (方法中有使用，待移植方法)
     isAdjusting: boolean, // 是否开启校准
-    adjustingCount: 1, // 校准计数触发器
-    travelTestOn: boolean, // 行程测试
-    keyPressTestCount: 1, // 按键测试计数触发器
+    adjustingCount: number, // 校准计数触发器
+    travelTestOn: any, // 行程测试
+    keyPressTestCount: number, // 按键测试计数触发器
     hasAxisSetting: boolean,
 }

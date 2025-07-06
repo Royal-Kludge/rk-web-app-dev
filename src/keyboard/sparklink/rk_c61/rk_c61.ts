@@ -12,7 +12,10 @@ export const RK_C61_EVENT_DEFINE = {
     OnKeyDefaultLayoutGotten: "OnKeyDefaultLayoutGotten",
     OnKeyValuesGotten: "OnKeyValuesGotten",
     OnKeyRgbGotten: "OnKeyRgbGotten",
-    OnSynced: "OnSynced"
+    OnSynced: "OnSynced",
+    OnAdjustingMMDataGotten: "OnAdjustingMMDataGotten",
+    OnAdjustingPressDataGotten: "OnAdjustingPressDataGotten",
+    OnAdjustingAdcDataGotten: "OnAdjustingAdcDataDataGotten",
 }
 
 export const COMMAND_ID = {
@@ -83,7 +86,6 @@ export class RK_C61_Data {
     fwVersion?: FwVersion;
     configId?: number;
     axisList?: Array<Axis>;
-    reportRate?: number;
     kbWinMacMode?: MatrixTable;
     isWinMacSupport: number = 0;
     topDeadSwitch: boolean = false;
@@ -129,9 +131,9 @@ export class RK_C61_Data {
             quickTouchSwitchDisable: true, // (方法中有使用，待移植方法)
             quickTouchSwitch: false, // (方法中有使用，待移植方法)
             isAdjusting: false, // 是否开启校准
-            adjustingCount: 1, // 校准计数触发器
+            adjustingCount: 0, // 校准计数触发器
             travelTestOn: false, // 行程测试
-            keyPressTestCount: 1, // 按键测试计数触发器
+            keyPressTestCount: 0, // 按键测试计数触发器
             hasAxisSetting: false,
         };
     }
@@ -143,12 +145,14 @@ export abstract class RK_C61 extends Protocol {
     
     abstract onGetReport(reportId: number, data: DataView): Promise<void>;
     abstract loadData(): Promise<void>;
+    abstract getAdustingData(type: number, page: number): Promise<void>;
     abstract getMacros(): Promise<void>;
     abstract setKeyValues(keyCmdValues: Array<KeyCmdValue>): Promise<void>;
     abstract setPrgb(): Promise<void>;
     abstract setKrgb(): Promise<void>;
     abstract setKeyKrgb(keyInfos: Array<KeyInfo>): Promise<void>;
     abstract setDB(): Promise<void>;
+    abstract setReportRate(): Promise<void>;
     abstract setMacros(): Promise<void>;
     
     callback = (e: HIDInputReportEvent) => this.processKeyboardReport(e);

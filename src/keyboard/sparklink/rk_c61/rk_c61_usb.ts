@@ -14,7 +14,7 @@ import { KB2_CMD_KRGB } from './packets/usb/KB2_CMD_KRGB';
 import { KB2_CMD_DB } from './packets/usb/KB2_CMD_DB';
 import { KB2_CMD_PRGB } from './packets/usb/KB2_CMD_PRGB';
 import { KB2_CMD_DEFKEY } from './packets/usb/KB2_CMD_DEFKEY';
-import type { KeyTableData } from '../keyTableData';
+import { KB2_CMD_RM6X21 } from './packets/usb/KB2_CMD_RM6X21';
 
 const worker = new Worker(new URL('@/common/communication.ts', import.meta.url));
 
@@ -28,6 +28,7 @@ export class RK_C61_Usb extends RK_C61 {
     KB2_CMD_DB: KB2_CMD_DB;
     KB2_CMD_PRGB: KB2_CMD_PRGB;
     KB2_CMD_DEFKEY: KB2_CMD_DEFKEY;
+    KB2_CMD_RM6X21: KB2_CMD_RM6X21;
 
     constructor(state: KeyboardState, device: HIDDevice) {
         super(state, device);
@@ -41,6 +42,7 @@ export class RK_C61_Usb extends RK_C61 {
         this.KB2_CMD_DB = new KB2_CMD_DB(this.onDbCmd.bind(this));
         this.KB2_CMD_PRGB = new KB2_CMD_PRGB(this.onPrgbCmd.bind(this));
         this.KB2_CMD_DEFKEY = new KB2_CMD_DEFKEY(this.onDefKeyCmd.bind(this));
+        this.KB2_CMD_RM6X21 = new KB2_CMD_RM6X21(this.onRm6x21.bind(this));
     }
 
     static async create(state: KeyboardState, device: HIDDevice) {
@@ -61,7 +63,7 @@ export class RK_C61_Usb extends RK_C61 {
                 }
             }
         };
-        
+
         worker.postMessage('start');
 
         await this.sync();
@@ -81,31 +83,56 @@ export class RK_C61_Usb extends RK_C61 {
         // await this.getKeyDefLayout(4, 5);
     }
 
+    buffer: Uint8Array | null = null;
+
     async onGetReport(reportId: number, data: DataView): Promise<void> {
-        if (reportId == REPORT_ID_USB && data.byteLength == REPORT_LENGTH && data.getUint8(0) == REPORT_HEAD) {
-            let cmd = data.getUint8(2) - 0x80;
-            switch (cmd) {
-                case COMMAND_ID.KB2_CMD_SYNC:
-                    this.KB2_CMD_SYNC.fromReportData(data);
-                    break;
-                case COMMAND_ID.KB2_CMD:
-                    this.KB2_CMD.fromReportData(data);
-                    break;
-                case COMMAND_ID.KB2_CMD_KEY:
-                    this.KB2_CMD_KEY.fromReportData(data);
-                    break;
-                case COMMAND_ID.KB2_CMD_DB:
-                    this.KB2_CMD_DB.fromReportData(data);
-                    break;
-                case COMMAND_ID.KB2_CMD_PRGB:
-                    this.KB2_CMD_PRGB.fromReportData(data);
-                    break;
-                case COMMAND_ID.KB2_CMD_KRGB:
-                    this.KB2_CMD_KRGB.fromReportData(data);
-                    break;
-                case COMMAND_ID.KB2_CMD_DEFKEY:
-                    this.KB2_CMD_DEFKEY.fromReportData(data);
-                    break;
+        if (reportId == REPORT_ID_USB && data.byteLength == REPORT_LENGTH) {
+            if (data.getUint8(0) == REPORT_HEAD) {
+                let cmd = data.getUint8(2) - 0x80;
+                switch (cmd) {
+                    case COMMAND_ID.KB2_CMD_SYNC:
+                        this.KB2_CMD_SYNC.fromReportData(data);
+                        break;
+                    case COMMAND_ID.KB2_CMD:
+                        this.KB2_CMD.fromReportData(data);
+                        break;
+                    case COMMAND_ID.KB2_CMD_KEY:
+                        this.KB2_CMD_KEY.fromReportData(data);
+                        break;
+                    case COMMAND_ID.KB2_CMD_DB:
+                        this.KB2_CMD_DB.fromReportData(data);
+                        break;
+                    case COMMAND_ID.KB2_CMD_PRGB:
+                        this.KB2_CMD_PRGB.fromReportData(data);
+                        break;
+                    case COMMAND_ID.KB2_CMD_KRGB:
+                        this.KB2_CMD_KRGB.fromReportData(data);
+                        break;
+                    case COMMAND_ID.KB2_CMD_DEFKEY:
+                        this.KB2_CMD_DEFKEY.fromReportData(data);
+                        break;
+                    case COMMAND_ID.KB2_CMD_RM6X21:
+                        // const array = new Uint8Array(data.buffer);
+                        // const buf = new Uint8Array(array.length);
+                        // buf.set(array, 0)
+                        // buf[1] == 192;
+                        // this.buffer = buf;
+                        this.buffer = new Uint8Array(data.buffer);
+                        this.buffer[1] = 188;
+                        break;
+                }
+            } else if (this.buffer != null && this.buffer[2] - 0x80 == COMMAND_ID.KB2_CMD_RM6X21) {
+                const recData = new Uint8Array(data.buffer);
+                const buf = new Uint8Array(this.buffer.length + recData.length);
+                buf.set(this.buffer, 0);
+                buf.set(recData, this.buffer.length);
+                this.buffer = buf;
+                if (this.buffer[1] <= this.buffer.length) {
+                    // 长度足够
+                    this.KB2_CMD_RM6X21.fromReportData(new DataView(this.buffer.buffer));
+                    // 数据用完，清空
+                    this.buffer = null;
+                }
             }
             worker.postMessage("report");
         }
@@ -116,19 +143,19 @@ export class RK_C61_Usb extends RK_C61 {
     }
 
     //#region GetCommand
-    async sync() : Promise<void> {
+    async sync(): Promise<void> {
         worker.postMessage(this.KB2_CMD_SYNC.command());
         Logging.console(LOG_TYPE.INFO, `Push KB2_CMD_SYNC data to queue.`);
     }
 
-    async cmd(order: OrderTypeEnum, arg: number) : Promise<void> {
+    async cmd(order: OrderTypeEnum, arg: number): Promise<void> {
         this.KB2_CMD.order = order;
         this.KB2_CMD.arg = arg;
         worker.postMessage(this.KB2_CMD.command());
         Logging.console(LOG_TYPE.INFO, `Push KB2_CMD data to queue.`);
     }
 
-    async loadData() : Promise<void> {
+    async loadData(): Promise<void> {
         await this.getDbParam();
         await this.getPrgb();
         await this.getKeyDefLayout(0, 1);
@@ -136,19 +163,19 @@ export class RK_C61_Usb extends RK_C61 {
         await this.getKeyDefLayout(4, 5);
     }
 
-    async getDbParam() : Promise<void> {
+    async getDbParam(): Promise<void> {
         this.KB2_CMD_DB.rw = RWTypeEnum.Read;
         worker.postMessage(this.KB2_CMD_DB.command());
         Logging.console(LOG_TYPE.INFO, `Push KB2_CMD_DB data to queue.`);
     }
-    
-    async getPrgb() : Promise<void> {
+
+    async getPrgb(): Promise<void> {
         this.KB2_CMD_PRGB.rw = RWTypeEnum.Read;
         worker.postMessage(this.KB2_CMD_PRGB.command());
         Logging.console(LOG_TYPE.INFO, `Push KB2_CMD_PRGB data to queue.`);
     }
 
-    async getKeyDefLayout(rowX: number, rowY: number) : Promise<void> {
+    async getKeyDefLayout(rowX: number, rowY: number): Promise<void> {
         this.KB2_CMD_DEFKEY.rw = RWTypeEnum.Read;
         this.KB2_CMD_DEFKEY.rowX = rowX;
         this.KB2_CMD_DEFKEY.rowY = rowY;
@@ -276,6 +303,13 @@ export class RK_C61_Usb extends RK_C61 {
         this.KB2_CMD_KRGB.b = B;
         worker.postMessage(this.KB2_CMD_KRGB.command());
         Logging.console(LOG_TYPE.INFO, `Push KB2_CMD_KRGB data to queue.`);
+    }
+
+    async getAdustingData(type: number, page: number) {
+        this.KB2_CMD_RM6X21.type = type;
+        this.KB2_CMD_RM6X21.page = page;
+        worker.postMessage(this.KB2_CMD_RM6X21.command());
+        Logging.console(LOG_TYPE.INFO, `Push KB2_CMD_RM6X21 data to queue.`);
     }
 
     async getMacros(): Promise<void> {
@@ -458,8 +492,15 @@ export class RK_C61_Usb extends RK_C61 {
         Logging.console(LOG_TYPE.INFO, `Push KB2_CMD_DB data to queue.`);
     }
 
+    async setReportRate(): Promise<void> {
+        this.KB2_CMD.order = OrderTypeEnum.SetReportRate;
+        this.KB2_CMD.arg = this.data.performanceData.rateOfReturn;
+        worker.postMessage(this.KB2_CMD.command());
+        Logging.console(LOG_TYPE.INFO, `Push KB2_CMD data to queue.`);
+    }
+
     async setMacros(): Promise<void> {
-        
+
     }
     //#endregion
 
@@ -515,7 +556,7 @@ export class RK_C61_Usb extends RK_C61 {
 
     private onKeyCmd(event: any) {
         let isLastKey: boolean = false;
-        
+
         let keyValue: KeyDefineEnum = event.detail.keyValue;
         let layout: LayoutTypeEnum = event.detail.layout;
         let value: number = event.detail.value;
@@ -628,7 +669,7 @@ export class RK_C61_Usb extends RK_C61 {
         let g: number = event.detail.g;
         let b: number = event.detail.b;
 
-        let isLast = this.data.keyInfoData.updateKeyColor(keyCode, r, g, b); 
+        let isLast = this.data.keyInfoData.updateKeyColor(keyCode, r, g, b);
         let R = r.toString(16).toUpperCase().padStart(2, '0');
         let G = g.toString(16).toUpperCase().padStart(2, '0');
         let B = b.toString(16).toUpperCase().padStart(2, '0');
@@ -702,8 +743,8 @@ export class RK_C61_Usb extends RK_C61 {
                 Logging.console(LOG_TYPE.SUCCESS, `\nSupport axis: ${this.data.axisList.toString()}`);
                 break;
             case OrderTypeEnum.SetReportRate:
-                this.data.reportRate = s_arg[0];
-                Logging.console(LOG_TYPE.SUCCESS, `\nReport rate: ${this.data.reportRate}`);
+                this.data.performanceData.rateOfReturn = s_arg[0];
+                Logging.console(LOG_TYPE.SUCCESS, `\nReport rate: ${this.data.performanceData.rateOfReturn}`);
                 break;
             case OrderTypeEnum.QueryWinMode:
                 if (s_arg[0] == 1) {
@@ -785,6 +826,86 @@ StaticMode: ${this.data.lightSetting.staticLightMode}`);
                 this.dispatchEvent(new CustomEvent(RK_C61_EVENT_DEFINE.OnKeyDefaultLayoutGotten, { detail: this.data.keyInfoData }));
                 this.getKeyValues();
             }
+        }
+    }
+
+    private onRm6x21(event: any) {
+        // 判断当前页数
+        let page = 0;
+        if (this.data.performanceData.isAdjusting) {
+            page = (this.data.performanceData.adjustingCount % 2) + 1;
+        } else {
+            page = (this.data.performanceData.keyPressTestCount % 2) + 1;
+        }
+
+        // 开始取值的位置
+        let index = 0;
+        let buff = 0;
+        let i = 0;
+        let j = 0;
+
+        let dataType = event.detail.dataType as number;
+        let data = new DataView(event.detail.values);
+
+        let add = page == 1 ? 0 : 3;
+        
+        switch (dataType) {
+            case 0x02:
+                for (i = 0; i < 3; i++) {
+                    for (j = 0; j < 21; j++) {
+                        buff = (data.getUint8(index + 1) << 8) | data.getUint8(index);
+                        let keyInfo = this.data.keyInfoData.getKeyInfo(i + add, j);
+                        if (keyInfo != undefined && keyInfo != null) {
+                            keyInfo.adjustingMM = buff / 1000;
+                        }
+                        index += 2;
+                    }
+                }
+
+                this.data.performanceData.keyPressTestCount += 1;
+                                
+                if (page == 1) {
+                    this.getAdustingData(dataType, 2);
+                } else if (page == 2) {
+                    this.dispatchEvent(new CustomEvent(RK_C61_EVENT_DEFINE.OnAdjustingMMDataGotten, { detail: this.data.performanceData.keyPressTestCount }));
+                }
+                break;
+            case 0x03:
+                for (i = 0; i < 6; i++) {
+                    for (j = 0; j < 21; j++) {
+                        buff = data.getUint8(index);;
+                        let keyInfo = this.data.keyInfoData.getKeyInfo(i, j);
+                        if (keyInfo != undefined && keyInfo != null) {
+                             keyInfo.adjustingPress = buff;
+                        }
+                        index += 1;
+                    }
+                }
+                this.dispatchEvent(new CustomEvent(RK_C61_EVENT_DEFINE.OnAdjustingPressDataGotten, { detail: this.data.keyInfoData }));
+                break;
+            case 0x06:
+                if (page == 1 || page == 2) {
+                    let add = page == 1 ? 0 : 3;
+                    for (i = 0; i < 3; i++) {
+                        for (j = 0; j < 21; j++) {
+                            buff = (data.getUint8(index + 1) << 8) | data.getUint8(index);
+                            let keyInfo = this.data.keyInfoData.getKeyInfo(i + add, j);
+                            if (keyInfo != undefined && keyInfo != null) {
+                                keyInfo.adjustingADC = buff / 1000;
+                            }
+                            index += 2;
+                        }
+                    }
+                }
+
+                this.data.performanceData.adjustingCount += 1;
+
+                if (page == 1) {
+                    this.getAdustingData(dataType, 2);
+                } else if (page == 2) {
+                    this.dispatchEvent(new CustomEvent(RK_C61_EVENT_DEFINE.OnAdjustingAdcDataGotten, { detail: this.data.performanceData.adjustingCount }));
+                }
+                break;
         }
     }
     //#endregion

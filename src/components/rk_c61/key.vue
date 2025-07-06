@@ -84,7 +84,7 @@
                         </template>
                     </el-popover>
 
-                    <el-tooltip effect="light" v-for="key in line.keys" v-else placement="top" popper-class="tip_font" :enterabl="false">
+                    <el-tooltip effect="light" v-for="key in line.keys" v-else placement="top" popper-class="tip_font" :enterabl="false" :visible="useKey.isKeyHover(key.index)">
                         <template #content>
                             <div style="display: grid;">
                                 <span>{{ $t('performance.keyTip.travelMode') }}: {{ $t(usePerformance.keyTravelModeText(key.keyData?.keyInfo).valueOf()) }}</span>
@@ -99,12 +99,24 @@
                         </template>
                         <div :i="key.index" class="item d-flex ai-center jc-center c-p p-r" @click="keyClick(key.index)"
                             :class="[`d-flex p-2 pl-3 ${key.style}`, useKey.keyColor(key.keyData), useKey.isSelected(key.index)]"
-                            @contextmenu.prevent @mousedown="handleMouseDown">
+                            @contextmenu.prevent @mousedown="handleMouseDown"
+                            @mouseenter="useKey.keyHover(key.index, true)" @mouseleave="useKey.keyHover(key.index, false)">
                             <div :class="[`text-white-1`, keyTextColorClass(key.keyData)]"
                                 :style="`z-index:1;word-wrap: break-word;overflow: hidden;text-align: center;${keyTextColorStyle(key.keyData)}`">
                                 <span v-if="useKey.isCombinKey(key.keyData)" style="word-wrap: break-word;">{{
                                     $t('key.menu_3') }}</span>
                                 <span v-else style="word-wrap: break-word;" v-html="useKey.keyText(key.keyData)"></span>
+                            </div>
+                            <div>
+                                <div v-if="usePerformance.state.menuid == 1 || usePerformance.state.menuid == 2" style="display: grid">
+                                    <span style="color: green;font-size: x-small;" v-if="usePerformance.isSingleTouch(key.keyData) || usePerformance.isQuickTouch(key.keyData)">{{ key.keyData?.keyInfo.touchTravel }}</span>
+                                    <span style="color: blue;font-size: x-small;" v-if="usePerformance.isQuickTouch(key.keyData)">{{ key.keyData?.keyInfo.quickTouchPress }}</span>
+                                    <span style="color: red;font-size: x-small;" v-if="usePerformance.isQuickTouch(key.keyData)">{{ key.keyData?.keyInfo.quickTouchRelease }}</span>
+                                </div>
+                                <div v-if="usePerformance.state.menuid == 3" style="display: grid">
+                                    <span style="color: green;font-size: x-small;">{{ key.keyData?.keyInfo.deadPress }}</span>
+                                    <span style="color: blue;font-size: x-small;">{{ key.keyData?.keyInfo.deadRelease }}</span>
+                                </div>
                             </div>
                         </div>
                     </el-tooltip>
@@ -376,6 +388,8 @@ const keyClick = async (index: number) => {
             usePerformance.performanceData.singleTouchTravel = key.keyData.keyInfo.touchTravel;
             usePerformance.performanceData.quickTouchPress = key.keyData.keyInfo.quickTouchPress;
             usePerformance.performanceData.quickTouchRelease = key.keyData.keyInfo.quickTouchRelease;
+            usePerformance.performanceData.pressDead = key.keyData.keyInfo.deadPress;
+            usePerformance.performanceData.releaseDead = key.keyData.keyInfo.deadRelease;
         }
     }
 }
