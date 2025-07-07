@@ -875,7 +875,7 @@ StaticMode: ${this.data.lightSetting.staticLightMode}`);
 
                 this.data.performanceData.keyPressTestCount += 1;
                                 
-                if (page == 1) {
+                if (page == 1 && (this.data.performanceData.isAdjusting || this.data.performanceData.travelTestOn)) {
                     this.getAdustingData(dataType, 2);
                 } else if (page == 2) {
                     this.dispatchEvent(new CustomEvent(RK_C61_EVENT_DEFINE.OnAdjustingMMDataGotten, { detail: this.data.performanceData.keyPressTestCount }));
@@ -912,7 +912,7 @@ StaticMode: ${this.data.lightSetting.staticLightMode}`);
 
                 this.data.performanceData.adjustingCount += 1;
 
-                if (page == 1) {
+                if (page == 1 && this.data.performanceData.isAdjusting) {
                     this.getAdustingData(dataType, 2);
                 } else if (page == 2) {
                     this.dispatchEvent(new CustomEvent(RK_C61_EVENT_DEFINE.OnAdjustingAdcDataGotten, { detail: this.data.performanceData.adjustingCount }));
