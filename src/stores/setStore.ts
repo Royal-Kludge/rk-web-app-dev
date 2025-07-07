@@ -13,14 +13,47 @@ export const useSetStore = defineStore("setstore", {
             },
             {
                 value: "tw",
-                label: "繁体中文",
+                label: "繁體中文",
             },
             {
                 value: "ja",
                 label: "日本語",
-            },{
+            },
+            {
                 value: "kr",
-                label: "韩語",
+                label: "한국어",
+            },
+            {
+                value: "ru",
+                label: "Русский",
+            },
+            {
+                value: "pt_br",
+                label: "Português (Brasil)",
+            },
+            {
+                value: "de",
+                label: "Deutsch",
+            },
+            {
+                value: "th",
+                label: "ไทย",
+            },
+            {
+                value: "es",
+                label: "Español",
+            },
+            {
+                value: "tr",
+                label: "Türkçe",
+            },
+            {
+                value: "it",
+                label: "Italiano",
+            },
+            {
+                value: "ar",
+                label: "العربية",
             },
         ] as any
     }),

@@ -481,6 +481,153 @@ export const useKeyStore = defineStore('keyinfo_rk_r98pro', () => {
       ]
     },
   ];
+
+  const keyMatrix_jp = [
+    {
+      line: 1,
+      style: "space-t",
+      keys: [
+        { key: KeyDefineEnum.KEY_ESC, style: 'key', index: getIndex(0, 0), keyData: getKeyData(getIndex(0, 0)) },
+        { key: KeyDefineEnum.KEY_F1, style: 'key space-l', index: getIndex(0, 1), keyData: getKeyData(getIndex(0, 1)) },
+        { key: KeyDefineEnum.KEY_F2, style: 'key', index: getIndex(0, 2), keyData: getKeyData(getIndex(0, 2)) },
+        { key: KeyDefineEnum.KEY_F3, style: 'key', index: getIndex(0, 3), keyData: getKeyData(getIndex(0, 3)) },
+        { key: KeyDefineEnum.KEY_F4, style: 'key', index: getIndex(0, 4), keyData: getKeyData(getIndex(0, 4)) },
+        { key: KeyDefineEnum.KEY_F5, style: 'key space-l', index: getIndex(0, 5), keyData: getKeyData(getIndex(0, 5)) },
+        { key: KeyDefineEnum.KEY_F6, style: 'key', index: getIndex(0, 6), keyData: getKeyData(getIndex(0, 6)) },
+        { key: KeyDefineEnum.KEY_F7, style: 'key', index: getIndex(0, 7), keyData: getKeyData(getIndex(0, 7)) },
+        { key: KeyDefineEnum.KEY_F8, style: 'key', index: getIndex(0, 8), keyData: getKeyData(getIndex(0, 8)) },
+        { key: KeyDefineEnum.KEY_F9, style: 'key space-l', index: getIndex(0, 9), keyData: getKeyData(getIndex(0, 9)) },
+        { key: KeyDefineEnum.KEY_F10, style: 'key', index: getIndex(0, 10), keyData: getKeyData(getIndex(0, 10)) },
+        { key: KeyDefineEnum.KEY_F11, style: 'key', index: getIndex(0, 11), keyData: getKeyData(getIndex(0, 11)) },
+        { key: KeyDefineEnum.KEY_F12, style: 'key', index: getIndex(0, 12), keyData: getKeyData(getIndex(0, 12)) },
+        { key: KeyDefineEnum.KEY_DEL, style: 'key space-l', index: getIndex(0, 13), keyData: getKeyData(getIndex(0, 13)) },
+        { key: KeyDefineEnum.KEY_PRINT, style: 'key space-l', index: getIndex(0, 15), keyData: getKeyData(getIndex(0, 15)) },
+        { key: KeyDefineEnum.KEY_PGUP, style: 'key', index: getIndex(0, 16), keyData: getKeyData(getIndex(0, 16)) },
+        { key: KeyDefineEnum.KEY_PGDN, style: 'key', index: getIndex(0, 17), keyData: getKeyData(getIndex(0, 17)) },
+        { key: KeyDefineEnum.KEY_END, style: 'key', index: getIndex(0, 18), keyData: getKeyData(getIndex(0, 18)) },
+      ]
+    },
+    {
+      line: 2,
+      style: "space-t",
+      keys: [
+        { key: KeyDefineEnum.KEY_TILDE, style: 'key', index: getIndex(1, 0), keyData: getKeyData(getIndex(1, 0)) },
+        { key: KeyDefineEnum.KEY_1, style: 'key', index: getIndex(1, 1), keyData: getKeyData(getIndex(1, 1)) },
+        { key: KeyDefineEnum.KEY_2, style: 'key', index: getIndex(1, 2), keyData: getKeyData(getIndex(1, 2)) },
+        { key: KeyDefineEnum.KEY_3, style: 'key', index: getIndex(1, 3), keyData: getKeyData(getIndex(1, 3)) },
+        { key: KeyDefineEnum.KEY_4, style: 'key', index: getIndex(1, 4), keyData: getKeyData(getIndex(1, 4)) },
+        { key: KeyDefineEnum.KEY_5, style: 'key', index: getIndex(1, 5), keyData: getKeyData(getIndex(1, 5)) },
+        { key: KeyDefineEnum.KEY_6, style: 'key', index: getIndex(1, 6), keyData: getKeyData(getIndex(1, 6)) },
+        { key: KeyDefineEnum.KEY_7, style: 'key', index: getIndex(1, 7), keyData: getKeyData(getIndex(1, 7)) },
+        { key: KeyDefineEnum.KEY_8, style: 'key', index: getIndex(1, 8), keyData: getKeyData(getIndex(1, 8)) },
+        { key: KeyDefineEnum.KEY_9, style: 'key', index: getIndex(1, 9), keyData: getKeyData(getIndex(1, 9)) },
+        { key: KeyDefineEnum.KEY_0, style: 'key', index: getIndex(1, 10), keyData: getKeyData(getIndex(1, 10)) },
+        { key: KeyDefineEnum.KEY_Underscore, style: 'key', index: getIndex(1, 11), keyData: getKeyData(getIndex(1, 11)) },
+        { key: KeyDefineEnum.KEY_EqualSign, style: 'key', index: getIndex(1, 12), keyData: getKeyData(getIndex(1, 12)) },
+        { key: KeyDefineEnum.KEY_CODE14, style: 'key', index: getIndex(1, 13), keyData: getKeyData(getIndex(1, 13)) },
+        { key: KeyDefineEnum.KEY_Backspace, style: 'key', index: getIndex(1, 14), keyData: getKeyData(getIndex(1, 14)) },
+        { key: KeyDefineEnum.KEY_NUMLOCK, style: 'key space-l', index: getIndex(1, 15), keyData: getKeyData(getIndex(1, 15)) },
+        { key: KeyDefineEnum.KEY_NUM_DIV, style: 'key', index: getIndex(1, 16), keyData: getKeyData(getIndex(1, 16)) },
+        { key: KeyDefineEnum.KEY_NUM_MUL, style: 'key', index: getIndex(1, 17), keyData: getKeyData(getIndex(1, 17)) },
+        { key: KeyDefineEnum.KEY_NUM_MINUS, style: 'key', index: getIndex(1, 18), keyData: getKeyData(getIndex(1, 18)) },
+      ]
+    },
+    {
+      line: 3,
+      style: "",
+      keys: [
+        { key: KeyDefineEnum.KEY_TAB, style: 'key key3', index: getIndex(2, 0), keyData: getKeyData(getIndex(2, 0)) },
+        { key: KeyDefineEnum.KEY_Q, style: 'key', index: getIndex(2, 1), keyData: getKeyData(getIndex(2, 1)) },
+        { key: KeyDefineEnum.KEY_W, style: 'key', index: getIndex(2, 2), keyData: getKeyData(getIndex(2, 2)) },
+        { key: KeyDefineEnum.KEY_E, style: 'key', index: getIndex(2, 3), keyData: getKeyData(getIndex(2, 3)) },
+        { key: KeyDefineEnum.KEY_R, style: 'key', index: getIndex(2, 4), keyData: getKeyData(getIndex(2, 4)) },
+        { key: KeyDefineEnum.KEY_T, style: 'key', index: getIndex(2, 5), keyData: getKeyData(getIndex(2, 5)) },
+        { key: KeyDefineEnum.KEY_Y, style: 'key', index: getIndex(2, 6), keyData: getKeyData(getIndex(2, 6)) },
+        { key: KeyDefineEnum.KEY_U, style: 'key', index: getIndex(2, 7), keyData: getKeyData(getIndex(2, 7)) },
+        { key: KeyDefineEnum.KEY_I, style: 'key', index: getIndex(2, 8), keyData: getKeyData(getIndex(2, 8)) },
+        { key: KeyDefineEnum.KEY_O, style: 'key', index: getIndex(2, 9), keyData: getKeyData(getIndex(2, 9)) },
+        { key: KeyDefineEnum.KEY_P, style: 'key', index: getIndex(2, 10), keyData: getKeyData(getIndex(2, 10)) },
+        { key: KeyDefineEnum.KEY_L_Brackets, style: 'key', index: getIndex(2, 11), keyData: getKeyData(getIndex(2, 11)) },
+        { key: KeyDefineEnum.KEY_R_Brackets, style: 'key', index: getIndex(2, 12), keyData: getKeyData(getIndex(2, 12)) },
+        { key: KeyDefineEnum.KEY_ENTER, style: 'key key3 key_enter p-a', index: getIndex(3, 13), keyData: getKeyData(getIndex(3, 13)), img: '<br/><br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Entrée'},
+         //{ key: KeyDefineEnum.KEY_Slash, style: 'key key3', index: getIndex(2, 13), keyData: getKeyData(getIndex(2, 13)) },
+        { key: KeyDefineEnum.KEY_NUM_7, style: 'key space-l6', index: getIndex(2, 15), keyData: getKeyData(getIndex(2, 15)) },
+        { key: KeyDefineEnum.KEY_NUM_8, style: 'key space-l7', index: getIndex(2, 16), keyData: getKeyData(getIndex(2, 16)) },
+        { key: KeyDefineEnum.KEY_NUM_9, style: 'key space-l8', index: getIndex(2, 17), keyData: getKeyData(getIndex(2, 17)) },
+        { key: KeyDefineEnum.KEY_NUM_PLUS, style: 'key key10', index: getIndex(2, 18), keyData: getKeyData(getIndex(2, 18)) },
+      ]
+    },
+    {
+      line: 4,
+      style: "",
+      keys: [
+        { key: KeyDefineEnum.KEY_CAPSLOCK, style: 'key key2', index: getIndex(3, 0), keyData: getKeyData(getIndex(3, 0)) },
+        { key: KeyDefineEnum.KEY_A, style: 'key', index: getIndex(3, 1), keyData: getKeyData(getIndex(3, 1)) },
+        { key: KeyDefineEnum.KEY_S, style: 'key', index: getIndex(3, 2), keyData: getKeyData(getIndex(3, 2)) },
+        { key: KeyDefineEnum.KEY_D, style: 'key', index: getIndex(3, 3), keyData: getKeyData(getIndex(3, 3)) },
+        { key: KeyDefineEnum.KEY_F, style: 'key', index: getIndex(3, 4), keyData: getKeyData(getIndex(3, 4)) },
+        { key: KeyDefineEnum.KEY_G, style: 'key', index: getIndex(3, 5), keyData: getKeyData(getIndex(3, 5)) },
+        { key: KeyDefineEnum.KEY_H, style: 'key', index: getIndex(3, 6), keyData: getKeyData(getIndex(3, 6)) },
+        { key: KeyDefineEnum.KEY_J, style: 'key', index: getIndex(3, 7), keyData: getKeyData(getIndex(3, 7)) },
+        { key: KeyDefineEnum.KEY_K, style: 'key', index: getIndex(3, 8), keyData: getKeyData(getIndex(3, 8)) },
+        { key: KeyDefineEnum.KEY_L, style: 'key', index: getIndex(3, 9), keyData: getKeyData(getIndex(3, 9)) },
+        { key: KeyDefineEnum.KEY_Semicolon, style: 'key', index: getIndex(3, 10), keyData: getKeyData(getIndex(3, 10)) },
+        { key: KeyDefineEnum.KEY_Quotation, style: 'key', index: getIndex(3, 11), keyData: getKeyData(getIndex(3, 11)) },
+        { key: KeyDefineEnum.KEY_CODE42, style: 'key', index: getIndex(3, 12), keyData: getKeyData(getIndex(3, 12))},
+        //{ key: KeyDefineEnum.KEY_ENTER, style: 'key key3 key_enter p-a', index: getIndex(3, 13), keyData: getKeyData(getIndex(3, 13)), img: '<br/><br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENTER' },
+        { key: KeyDefineEnum.KEY_NUM_4, style: 'key space-l3', index: getIndex(3, 15), keyData: getKeyData(getIndex(3, 15)) },
+        { key: KeyDefineEnum.KEY_NUM_5, style: 'key', index: getIndex(3, 16), keyData: getKeyData(getIndex(3, 16)) },
+        { key: KeyDefineEnum.KEY_NUM_6, style: 'key', index: getIndex(3, 17), keyData: getKeyData(getIndex(3, 17)) },
+        //{ key: KeyDefineEnum.KEY_Mute, style: 'key', index: getIndex(3, 18), keyData: getKeyData(getIndex(3, 18)) },
+       
+      ]
+    },
+    {
+      line: 5,
+      style: "",
+      keys: [
+        { key: KeyDefineEnum.SHIFT_L, style: 'key key3', index: getIndex(4, 0), keyData: getKeyData(getIndex(4, 0)) },
+        { key: KeyDefineEnum.KEY_CODE45, style: 'key', index: getIndex(4, 1), keyData: getKeyData(getIndex(4, 1)) },
+        { key: KeyDefineEnum.KEY_Z, style: 'key', index: getIndex(4, 2), keyData: getKeyData(getIndex(4, 2)) },
+        { key: KeyDefineEnum.KEY_X, style: 'key', index: getIndex(4, 3), keyData: getKeyData(getIndex(4, 3)) }, 
+        { key: KeyDefineEnum.KEY_C, style: 'key', index: getIndex(4, 4), keyData: getKeyData(getIndex(4, 4)) },
+        { key: KeyDefineEnum.KEY_V, style: 'key', index: getIndex(4, 5), keyData: getKeyData(getIndex(4, 5)) },
+        { key: KeyDefineEnum.KEY_B, style: 'key', index: getIndex(4, 6), keyData: getKeyData(getIndex(4, 6)) },
+        { key: KeyDefineEnum.KEY_N, style: 'key', index: getIndex(4, 7), keyData: getKeyData(getIndex(4, 7)) },
+        { key: KeyDefineEnum.KEY_M, style: 'key', index: getIndex(4, 8), keyData: getKeyData(getIndex(4, 8)) },
+        { key: KeyDefineEnum.KEY_COMMA, style: 'key', index: getIndex(4, 9), keyData: getKeyData(getIndex(4, 9)) },
+        { key: KeyDefineEnum.KEY_PERIOD, style: 'key', index: getIndex(4, 10), keyData: getKeyData(getIndex(4, 10)) },
+        { key: KeyDefineEnum.KEY_Interrogation, style: 'key', index: getIndex(4, 11), keyData: getKeyData(getIndex(4, 11)) },
+        { key: KeyDefineEnum.SHIFT_R, style: 'key key7', index: getIndex(4, 13), keyData: getKeyData(getIndex(4, 13)) },
+        { key: KeyDefineEnum.KEY_UpArrow, style: 'key', index: getIndex(4, 14), keyData: getKeyData(getIndex(4, 14)) },
+        { key: KeyDefineEnum.KEY_NUM_1, style: 'key space-l', index: getIndex(4, 15), keyData: getKeyData(getIndex(4, 15)) },
+        { key: KeyDefineEnum.KEY_NUM_2, style: 'key', index: getIndex(4, 16), keyData: getKeyData(getIndex(4, 16)) },
+        { key: KeyDefineEnum.KEY_NUM_3, style: 'key', index: getIndex(4, 17), keyData: getKeyData(getIndex(4, 17)) },
+        { key: KeyDefineEnum.KEY_NUM_ENTER, style: 'key key10', index: getIndex(4, 18), keyData: getKeyData(getIndex(4, 18)) },
+      ]
+    },
+    {
+      line: 6,
+      style: "",
+      keys: [
+        { key: KeyDefineEnum.CTRL_L, style: 'key key6', index: getIndex(5, 0), keyData: getKeyData(getIndex(5, 0)) },
+        { key: KeyDefineEnum.WIN_L, style: 'key key6', index: getIndex(5, 1), keyData: getKeyData(getIndex(5, 1)) },
+        { key: KeyDefineEnum.ALT_L, style: 'key key6', index: getIndex(5, 2), keyData: getKeyData(getIndex(5, 2)) },
+        { key: KeyDefineEnum.KEY_CODE131, style: 'key', index: getIndex(5, 3), keyData: getKeyData(getIndex(5, 3)) },
+        { key: KeyDefineEnum.KEY_SPACEBAR, style: 'key key5_jp', index: getIndex(5, 5), keyData: getKeyData(getIndex(5, 5)) },
+        { key: KeyDefineEnum.KEY_CODE132, style: 'key', index: getIndex(5, 6), keyData: getKeyData(getIndex(5, 6)) },
+        { key: KeyDefineEnum.KEY_CODE133, style: 'key', index: getIndex(5, 7), keyData: getKeyData(getIndex(5, 7)) },
+        { key: KeyDefineEnum.ALT_R, style: 'key key6_jp', index: getIndex(5, 8), keyData: getKeyData(getIndex(5, 8)) },
+        { key: KeyDefineEnum.KEY_Fn1, style: 'key key6_jp', index: getIndex(5, 9), keyData: getKeyData(getIndex(5, 9)) },
+        { key: KeyDefineEnum.KEY_LeftArrow, style: 'key space-l4', index: getIndex(5, 13), keyData: getKeyData(getIndex(5, 13)) },
+        { key: KeyDefineEnum.KEY_DownArrow, style: 'key', index: getIndex(5, 14), keyData: getKeyData(getIndex(5, 14)) },
+        { key: KeyDefineEnum.KEY_RightArrow, style: 'key', index: getIndex(5, 15), keyData: getKeyData(getIndex(5, 15)) },
+        { key: KeyDefineEnum.KEY_NUM_0, style: 'key space-l', index: getIndex(5, 16), keyData: getKeyData(getIndex(5, 16)) },
+        { key: KeyDefineEnum.KEY_NUM_DOT, style: 'key', index: getIndex(5, 17), keyData: getKeyData(getIndex(5, 17)) },
+        
+      ]
+    },
+  ];
   const state = reactive({
     funid: 1,
     funMenuList: [
@@ -638,10 +785,10 @@ export const useKeyStore = defineStore('keyinfo_rk_r98pro', () => {
       keys: [
         { key: KeyDefineEnum.KEY_Fn1, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Fn1], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
         { key: KeyDefineEnum.KEY_Fn2, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Fn2], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
-        //{ key: KeyDefineEnum.KEY_CODE131, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_CODE131], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
-        //{ key: KeyDefineEnum.KEY_CODE132, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_CODE132], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
-        //{ key: KeyDefineEnum.KEY_CODE133, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_CODE133], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
-        //{ key: KeyDefineEnum.KEY_CODE14, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_CODE14], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_CODE131, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_CODE131], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_CODE132, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_CODE132], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_CODE133, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_CODE133], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
+        { key: KeyDefineEnum.KEY_CODE14, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_CODE14], style: "key", selected: false, tip: '', type: MatrixTable.WIN },
       ],
     },
     {
@@ -907,11 +1054,13 @@ export const useKeyStore = defineStore('keyinfo_rk_r98pro', () => {
     altKey: false
   });
 
-  /*const collapsedFunKeys: Record<string, Array<KeyDefineEnum>> = {
-    "RK-M87": [KeyDefineEnum.KEY_CODE131, KeyDefineEnum.KEY_CODE132, KeyDefineEnum.KEY_CODE133, KeyDefineEnum.KEY_CODE14],
-    "RK-M87 JP": [],
-    "RK-M87 UK": [KeyDefineEnum.KEY_CODE131, KeyDefineEnum.KEY_CODE132, KeyDefineEnum.KEY_CODE133, KeyDefineEnum.KEY_CODE14],
-  }*/
+  const collapsedFunKeys: Record<string, Array<KeyDefineEnum>> = {
+    "RK-R98PRO": [KeyDefineEnum.KEY_CODE131, KeyDefineEnum.KEY_CODE132, KeyDefineEnum.KEY_CODE133, KeyDefineEnum.KEY_CODE14],
+    "RK-R98PRO JP": [],
+    "RK-R98PRO GER": [KeyDefineEnum.KEY_CODE131, KeyDefineEnum.KEY_CODE132, KeyDefineEnum.KEY_CODE133, KeyDefineEnum.KEY_CODE14],
+    "RK-R98PRO FR": [KeyDefineEnum.KEY_CODE131, KeyDefineEnum.KEY_CODE132, KeyDefineEnum.KEY_CODE133, KeyDefineEnum.KEY_CODE14],
+    "RK-R98PRO 3": [KeyDefineEnum.KEY_CODE131, KeyDefineEnum.KEY_CODE132, KeyDefineEnum.KEY_CODE133, KeyDefineEnum.KEY_CODE14],
+  }
 
   const isInited = ref(false);
 
@@ -938,6 +1087,12 @@ export const useKeyStore = defineStore('keyinfo_rk_r98pro', () => {
           break;
         case "RK-R98PRO FR":
           tmp = keyMatrix_fr;
+          break;
+        case "RK-R98PRO JP":
+          tmp = keyMatrix_jp;
+          break;
+        case "RK-R98PRO 3":
+          tmp = keyMatrix_us;
           break;
       }
 
@@ -1520,7 +1675,7 @@ export const useKeyStore = defineStore('keyinfo_rk_r98pro', () => {
           case KeyMappingType.LightSwitch:
           case KeyMappingType.Pc:
             if (KeyText[keyData.keyMappingData.keyRaw] != undefined) {
-              keyData.keyMappingData.keyStr[index] = t(KeyText[keyData.keyMappingData.keyRaw][index].valueOf());
+              keyData.keyMappingData.keyStr[index] = (KeyText[keyData.keyMappingData.keyRaw].length > index) ? t(KeyText[keyData.keyMappingData.keyRaw][index].valueOf()) : "";
             }
             break;
           case KeyMappingType.KeyBoard:
@@ -1535,7 +1690,7 @@ export const useKeyStore = defineStore('keyinfo_rk_r98pro', () => {
               }
           
               if (keyText[keyData.keyMappingData.keyRaw] != undefined && keyData.keyMappingData.keyCode != 0) {
-                keyData.keyMappingData.keyStr[index] = t(keyText[keyData.keyMappingData.keyRaw][index].valueOf());
+                keyData.keyMappingData.keyStr[index] = (KeyText[keyData.keyMappingData.keyRaw].length > index) ? t(KeyText[keyData.keyMappingData.keyRaw][index].valueOf()) : "";
               }
             }
             break;
@@ -1884,7 +2039,7 @@ export const useKeyStore = defineStore('keyinfo_rk_r98pro', () => {
     state.shortcutsKeyDialogShow = false;
   }
 
-  /*const isFunKeyVisibility = (keyCode: KeyDefineEnum): boolean => {
+  const isFunKeyVisibility = (keyCode: KeyDefineEnum): boolean => {
     if (keyboard.keyboardDefine != undefined) {
       let collapsedKeys = collapsedFunKeys[keyboard.keyboardDefine.name.valueOf()];
       let i = 0;
@@ -1895,7 +2050,7 @@ export const useKeyStore = defineStore('keyinfo_rk_r98pro', () => {
       }
     }
     return true;
-  }*/
+  }
 
     const isCombinKey = (keyData: KeyTableData | undefined): boolean => {
       if (keyData == undefined) return false;
@@ -1923,5 +2078,5 @@ export const useKeyStore = defineStore('keyinfo_rk_r98pro', () => {
       return '';
     }
   
-    return { profile, state, keyMatrixLayer, keyMatrixTable, keyClick, keyColor, isSelected, keybgColor, keyText, keySetToDefault, keySetMacro, mapping, isFunSelected, isMacroSelected, clickMacro, confirmSetMacro, setCombineKey, confirmMediaKey, setMediaKey, confirmSetCombineKey, getKeyMatrix, clickProfile, deleteProfile, onKeyDown, newProfile, handleEditClose, renameProfile, exportProfile, importProfile, init, destroy, getKeyMatrixNomal, saveProfile, keySetToDefaultAll, refresh, refreshKeyMatrixData, setToFactory, unSelected,unSelectFunc, renameSaveProfile, setFunid,setShortcutKey,confirmShortcutKey,isCombinKey, keyTipText }
+    return { profile, state, keyMatrixLayer, keyMatrixTable, keyClick, keyColor, isSelected, keybgColor, keyText, keySetToDefault, keySetMacro, mapping, isFunSelected, isMacroSelected, clickMacro, confirmSetMacro, setCombineKey, confirmMediaKey, setMediaKey, confirmSetCombineKey, getKeyMatrix, clickProfile, deleteProfile, onKeyDown, newProfile, handleEditClose, renameProfile, exportProfile, importProfile, init, destroy, getKeyMatrixNomal, saveProfile, keySetToDefaultAll, refresh, refreshKeyMatrixData, setToFactory, unSelected,unSelectFunc, renameSaveProfile, setFunid,setShortcutKey,confirmShortcutKey,isCombinKey, keyTipText, isFunKeyVisibility }
 })

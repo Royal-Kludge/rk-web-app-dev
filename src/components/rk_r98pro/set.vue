@@ -122,7 +122,7 @@ const VerTips = computed(() => (ver.value !== version.value ? t('set.title_3') +
 const getVer = () => {
     let pid = keyboard.keyboardDefine?.productId;
     if (pid == 0x020C) {
-        axios.get('/down/work/RKWEB/firmware/R98pro/one_mode/R98pro_firmware_1_us.json').then(response => {
+        axios.get('/down/work/RKWEB/firmware/R98pro/one_mode/R98pro_firmware_1_US.json').then(response => {
             // 请求成功处理
             version.value = response.data.version
             url.value = response.data.url
@@ -132,7 +132,7 @@ const getVer = () => {
             console.error(error);
         });
     } else if (pid == 0x0215) {
-        axios.get('/down/work/RKWEB/firmware/R98pro/one_mode/R98pro_firmware_1_GER.json').then(response => {
+        axios.get('/down/work/RKWEB/firmware/R98pro/one_mode/R98pro_firmware_1_DE.json').then(response => {
             // 请求成功处理
             version.value = response.data.version
             url.value = response.data.url
@@ -144,6 +144,28 @@ const getVer = () => {
         });
     } else if (pid == 0x0222) {
         axios.get('/down/work/RKWEB/firmware/R98pro/one_mode/R98pro_firmware_1_FR.json').then(response => {
+            // 请求成功处理
+            version.value = response.data.version
+            url.value = response.data.url
+            checkVer()
+            console.log(version.value);
+        }).catch(error => {
+            // 请求失败处理
+            console.error(error);
+        });
+    } else if (pid == 0x0225) {
+        axios.get('/down/work/RKWEB/firmware/R98pro/one_mode/R98pro_firmware_1_JP.json').then(response => {
+            // 请求成功处理
+            version.value = response.data.version
+            url.value = response.data.url
+            checkVer()
+            console.log(version.value);
+        }).catch(error => {
+            // 请求失败处理
+            console.error(error);
+        });
+    } else if (pid == 0x0210) {
+        axios.get('/down/work/RKWEB/firmware/R98pro/one_mode/R98pro_firmware_3_US.json').then(response => {
             // 请求成功处理
             version.value = response.data.version
             url.value = response.data.url

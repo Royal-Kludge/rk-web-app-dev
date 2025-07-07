@@ -8,8 +8,8 @@ import { RK_M65_USB_DEFINE, RK_M65_DONGLE_DEFINE, RK_M65_UK_USB_DEFINE, RK_M65_U
 import { RK_M70_USB_DEFINE, RK_M70_UK_USB_DEFINE, RK_M70_DONGLE_DEFINE, RK_M70_UK_DONGLE_DEFINE } from "./rk_m70"
 import { RK_L98_USB_DEFINE, RK_L98_DONGLE_DEFINE } from "./rk_l98"
 import { RK_N99_USB_DEFINE, RK_N99_DONGLE_DEFINE } from "./rk_n99"
-import { RK_R98PRO_USB_DEFINE, RK_R98PRO_FR_USB_DEFINE, RK_R98PRO_GER_USB_DEFINE } from "./rk_r98pro"
-import { RK_S98_USB_DEFINE, RK_S98_DONGLE_DEFINE } from "./rk_s98"
+import { RK_R98PRO_USB_DEFINE, RK_R98PRO_FR_USB_DEFINE, RK_R98PRO_GER_USB_DEFINE, RK_R98PRO_JP_USB_DEFINE, RK_R98PRO_3_USB_DEFINE, RK_R98PRO_3_DONGLE_DEFINE } from "./rk_r98pro"
+import { RK_S98_USB_DEFINE, RK_S98_DONGLE_DEFINE, RK_S98_TH_USB_DEFINE, RK_S98_RU_USB_DEFINE, RK_S98_TH_DONGLE_DEFINE, RK_S98_RU_DONGLE_DEFINE, RK_S98_JP_USB_DEFINE, RK_S98_JP_DONGLE_DEFINE, RK_S98_ES_USB_DEFINE, RK_S98_ES_DONGLE_DEFINE } from "./rk_s98"
 /**
 * Initial lightInfo
 */
@@ -68,8 +68,19 @@ export const KeyboardDefineList: Record<string, KeyboardDefine> = {
     "rk r98pro wire": RK_R98PRO_USB_DEFINE,
     "rk r98pro fr wire": RK_R98PRO_FR_USB_DEFINE,
     "rk r98pro ger wire": RK_R98PRO_GER_USB_DEFINE,
-    "rk s98 usb": RK_S98_USB_DEFINE,
+    "rk r98pro jp wire": RK_R98PRO_JP_USB_DEFINE,
+    "rk r98pro 3 wire": RK_R98PRO_3_USB_DEFINE,
+    "rk r98pro 3 24G": RK_R98PRO_3_DONGLE_DEFINE,
+    "rk s98 wire": RK_S98_USB_DEFINE,
     "rk s98 24G": RK_S98_DONGLE_DEFINE,
+    "rk s98 th wire": RK_S98_TH_USB_DEFINE,
+    "rk s98 th 24G": RK_S98_TH_DONGLE_DEFINE,
+    "rk s98 ru wire": RK_S98_RU_USB_DEFINE,
+    "rk s98 ru 24G": RK_S98_RU_DONGLE_DEFINE,
+    "rk s98 jp wire": RK_S98_JP_USB_DEFINE,
+    "rk s98 jp 24G": RK_S98_JP_DONGLE_DEFINE,
+    "rk s98 es wire": RK_S98_ES_USB_DEFINE,
+    "rk s98 es 24G": RK_S98_ES_DONGLE_DEFINE,
 }
 
 /**
@@ -89,5 +100,10 @@ export const DonglePwdDefineList: Record<number, string> = {
     0x0300031C: "rk m70 uk 24G",
     0x0600004E: "rk l98 24G",
     0x06000029: "rk n99 24G",
+    0x0A000020: "rk r98pro 3 wire",
     0x06000023: "rk s98 24G",
+    0x0600006d: "rk s98 th 24G",
+    0x06000074: "rk s98 ru 24G",
+    0x06000073: "rk s98 jp 24G",
+    0x06000072: "rk s98 es 24G",
 }

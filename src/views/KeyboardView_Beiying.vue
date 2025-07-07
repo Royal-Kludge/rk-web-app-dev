@@ -119,9 +119,15 @@ onMounted(async () => {
                 case 'RK-R98PRO':
                 case 'RK-R98PRO FR':
                 case 'RK-R98PRO GER':
+                case 'RK-R98PRO JP':
+                case 'RK-R98PRO 3':
                     productId.value = 9
                     break;
                 case 'RK-S98':
+                case 'RK-S98 TH':
+                case 'RK-S98 RU':
+                case 'RK-S98 JP':
+                case 'RK-S98 ES':
                     productId.value = 10
                     break;
             }
@@ -241,9 +247,15 @@ const passwordGotten = async (event: any) => {
             case 'RK-R98PRO':
             case 'RK-R98PRO FR':
             case 'RK-R98PRO GER':
+            case 'RK-R98PRO JP':
+            case 'RK-R98PRO 3':
                 productId.value = 9
                 break;
             case 'RK-S98':
+            case 'RK-S98 TH':
+            case 'RK-S98 RU':
+            case 'RK-S98 JP':
+            case 'RK-S98 ES':
                 productId.value = 10
                 break;
         }
