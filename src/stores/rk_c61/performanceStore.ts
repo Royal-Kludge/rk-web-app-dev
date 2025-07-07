@@ -13,6 +13,7 @@ export const usePerformanceStore = defineStore("Performanceinfo_rk_c61", () => {
     const adjustingCount = ref(-1);
     const keyPressTestCount = ref(-1);
     const travelTestOn = ref(false);
+    const isAdjusting = ref(false);
     const performanceData = ref<PerformanceData>({
             PerformancePage: 0,
             precision: 0.1, // 键盘行程精度
@@ -39,7 +40,6 @@ export const usePerformanceStore = defineStore("Performanceinfo_rk_c61", () => {
             hasAxisSetting: false,
         });
     const state = reactive({
-        isEnabel: true,
         pressStatus: 0,
         maxMM: 0,
         menuid: 1,
@@ -227,12 +227,19 @@ export const usePerformanceStore = defineStore("Performanceinfo_rk_c61", () => {
         if (keyData == undefined) return false;
         return keyData.keyInfo.isQuickTouch;
     };
+    
+    const resetAdjustingData = () => {
+        if (rk_c61.value != undefined) {
+            rk_c61.value.data.keyInfoData.clearAdjustingSuccessData();
+        }
+    };
 
     return { 
         state,
         adjustingCount,
         keyPressTestCount,
         travelTestOn,
+        isAdjusting,
         performanceData,
         setMenuid,
         init,
@@ -247,6 +254,7 @@ export const usePerformanceStore = defineStore("Performanceinfo_rk_c61", () => {
         reportRateChange,
         keyTravelModeText,
         isSingleTouch,
-        isQuickTouch
+        isQuickTouch,
+        resetAdjustingData
     };
 });

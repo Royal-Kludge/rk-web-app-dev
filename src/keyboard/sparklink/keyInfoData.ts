@@ -485,7 +485,7 @@ export class KeyInfoData {
     }
 
     getSwitchMaxTravel(id: number) {
-      if (AxisList.length !== 0 && tool.isFeatureSupported('signalSwitch')) {
+      if (AxisList.length !== 0 && tool.isFeatureSupported('signalSwitch', this.protocolVersion)) {
         return AxisList[id].maxTravel / 1000;
       }
       return this.maxTouchTravel;
@@ -802,5 +802,17 @@ export class KeyInfoData {
             }
         }
         return { max, press };
+    }
+
+    // 清空校准成功缓存：点击开始校准时调用
+    clearAdjustingSuccessData() {
+        for (let row = 0; row < 6; row++) {
+            for (let col = 0; col < 21; col++) {
+                let keyInfo = this.keyInfoArray[row][col];
+                if (keyInfo != null) {
+                    keyInfo.adjustingSuccess = false;
+                }
+            }
+        }
     }
 }

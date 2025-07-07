@@ -15,7 +15,8 @@ export const RK_C61_EVENT_DEFINE = {
     OnSynced: "OnSynced",
     OnAdjustingMMDataGotten: "OnAdjustingMMDataGotten",
     OnAdjustingPressDataGotten: "OnAdjustingPressDataGotten",
-    OnAdjustingAdcDataGotten: "OnAdjustingAdcDataDataGotten",
+    OnAdjustingAdcDataGotten: "OnAdjustingAdcDataGotten",
+    OnAdjustingAdcValueUpdate: "OnAdjustingAdcValueUpdate",
 }
 
 export const COMMAND_ID = {
@@ -153,6 +154,8 @@ export abstract class RK_C61 extends Protocol {
     abstract setKeyKrgb(keyInfos: Array<KeyInfo>): Promise<void>;
     abstract setDB(): Promise<void>;
     abstract setReportRate(): Promise<void>;
+    abstract setAdjustingOn(): Promise<void>;
+    abstract setAdjustingOff(): Promise<void>;
     abstract setMacros(): Promise<void>;
     
     callback = (e: HIDInputReportEvent) => this.processKeyboardReport(e);

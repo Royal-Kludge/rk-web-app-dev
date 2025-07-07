@@ -186,8 +186,11 @@
                                 </div>
                                 <div class="d-flex fs-lg">
                                     <div>校准时请用正常力度按下按键。注意：快速的按下并抬起按键会导致校准的结果不准确。</div>
-                                    <div class="p-2 m-2 bg-warn-1 text-grey-1 text-center br-2 b-grey c-p but">
-                                        开始校准
+                                    <div v-if="!isAdjusting" class="p-2 m-2 bg-warn-1 text-grey-1 text-center br-2 b-grey c-p but" @click="isAdjusting = true">
+                                        {{ isSaving ? `正在保存` : `开始校准` }}
+                                    </div>
+                                    <div v-if="isAdjusting" class="p-2 m-2 bg-warn-1 text-grey-1 text-center br-2 b-grey c-p but" @click="isAdjusting = false">
+                                        保存校准
                                     </div>
                                 </div>
                                 <div ref="chart" class="chart-container"></div>
@@ -248,21 +251,23 @@ import { storeToRefs } from 'pinia'
 import { keyboard } from "@/keyboard/sparklink/keyboard";
 import type { RK_C61 } from "@/keyboard/sparklink/rk_c61/rk_c61";
 import type { KeyState } from "@/keyboard/sparklink/interface";
+import { LOG_TYPE, Logging } from "@/common/logging";
+import tool from "@/keyboard/sparklink/tool";
 
 const rk_c61 = ref<RK_C61>();
 
 const chart = ref(null);
 const usePerformance = usePerformanceStore();
 const useKey = useKeyStore();
-const count = ref(30);
+const count = ref(0);
 const travelStep = ref(0.001);
 const pressDeadMin = ref(0.0);
+const isSaving = ref(false);
 
-const { adjustingCount, keyPressTestCount, state, travelTestOn, performanceData } = storeToRefs(usePerformance);
+const { adjustingCount, keyPressTestCount, state, travelTestOn, isAdjusting, performanceData } = storeToRefs(usePerformance);
 
 let chartInstance: any = null;
 let data: any = [];
-const maxCount = 400;
 
 const isDisabel = ref(false);
 
@@ -270,6 +275,8 @@ onMounted(async () => {
     if (rk_c61.value == undefined) {
         rk_c61.value = keyboard.protocol as RK_C61;
         rk_c61.value.addEventListener("OnAdjustingMMDataGotten", onAdjustingMMDataGotten);
+        rk_c61.value.addEventListener("OnAdjustingAdcDataGotten", onAdjustingAdcDataGotten);
+        rk_c61.value.addEventListener("OnAdjustingAdcValueUpdate", onAdjustingAdcValueUpdate);
     }
 
     usePerformance.init();
@@ -283,6 +290,7 @@ watch(useKey.state.keyState, async () => {
 })
 
 watch(travelTestOn, async () => {
+    performanceData.value.travelTestOn = travelTestOn.value;
     if (travelTestOn.value) {
         performanceData.value.keyPressTestCount = 0;
         keyPressTestCount.value = performanceData.value.keyPressTestCount;
@@ -300,20 +308,82 @@ watch(keyPressTestCount, async () => {
         state.value.maxMM = value.max;
         state.value.pressStatus = value.press;
     }
+})
 
-    // if (count.value > maxCount) {
-    //     option.xAxis.max = count.value;
-    //     option.xAxis.min = count.value - maxCount;
-    // }
-    // count.value++;
-    // data.push([count.value, keyPressTestCount.value.toFixed(2)]);
-    // option.series[0].data = data;
-    // if (option.series[0].data.length > maxCount) {
-    //     option.series[0].data.shift();
-    // }
-    // if (chartInstance) {
-    //     chartInstance.setOption(option);
-    // }
+watch(isAdjusting, async () => {
+    try {
+        if (isAdjusting.value) {
+            usePerformance.resetAdjustingData();
+            count.value = 0;
+            option.series[0].data = [];
+            option.xAxis.min = 0;
+            option.xAxis.max = 400;
+            if (chartInstance) {
+                chartInstance.setOption(option);
+            }
+
+            if (travelTestOn.value) {
+                travelTestOn.value = false;
+                performanceData.value.travelTestOn = travelTestOn.value;
+            }
+
+            if (rk_c61.value != undefined) {
+                await rk_c61.value.setAdjustingOn();
+            }
+
+            performanceData.value.adjustingCount = 0;
+            adjustingCount.value = performanceData.value.adjustingCount;
+        } else {
+            isSaving.value = true;
+            if (rk_c61.value != undefined) {
+                await rk_c61.value.setAdjustingOff();
+            }
+
+            setTimeout(() => {
+                isSaving.value = false;
+            }, 500);
+
+            adjustingCount.value = -1;
+        }
+    } catch (error: any) {
+        Logging.console(LOG_TYPE.ERROR, error);
+        isAdjusting.value = false;
+        isSaving.value = false;
+    }
+
+    performanceData.value.isAdjusting = isAdjusting.value;
+})
+
+watch(adjustingCount, async () => {
+    if (!isAdjusting.value) return;
+
+    if (rk_c61.value != undefined) {
+        const value = rk_c61.value.data.keyInfoData.getMaxPressTravel();
+        let mmBuff = 0;
+        if (tool.isFeatureSupported('signalSwitch', rk_c61.value.data.protocolVersion)) {
+            mmBuff = value.max;
+        } else {
+            mmBuff = performanceData.value.maxTouchTravel - value.max;
+        }
+
+        const maxCount = 400;
+        if (count.value > maxCount) {
+            option.xAxis.max = count.value;
+            option.xAxis.min = count.value - maxCount;
+        }
+        count.value++;
+        data.push([count.value, mmBuff]);
+        option.series[0].data = data;
+        if (option.series[0].data.length > maxCount) {
+            option.series[0].data.shift();
+        }
+        if (chartInstance) {
+            chartInstance.setOption(option);
+        }
+
+        await rk_c61.value.getAdustingData(0x02, 1);
+        await rk_c61.value.getAdustingData(0x06, 1);
+    }
 })
 
 const option = reactive({
@@ -419,6 +489,13 @@ const option = reactive({
 
 const setMenuid = async (id: number) => {
     usePerformance.setMenuid(id)
+
+    if (id == 4 && travelTestOn.value) {
+        travelTestOn.value = false;
+    } else if (id != 4 && isAdjusting.value) {
+        isAdjusting.value = false;
+    }
+
     if (id === 4) {
         // 添加一个小延时确保 DOM 完全渲染
         await nextTick();
@@ -439,6 +516,7 @@ onBeforeUnmount(() => {
 
     if (rk_c61.value != undefined) {
         rk_c61.value.removeEventListener("OnAdjustingMMDataGotten", onAdjustingMMDataGotten);
+        rk_c61.value.removeEventListener("OnAdjustingAdcDataGotten", onAdjustingAdcDataGotten);
         rk_c61.value = undefined;
     }
 });
@@ -466,15 +544,24 @@ const testStyle = computed(() => {
 });
 
 const changePressTestSwitch = (value: boolean) => {
-    //const switchElement = event.target;
-    //switchElement.blur();
     travelTestOn.value = value;
-
     if (!travelTestOn.value) keyPressTestCount.value = -1;
 };
 
 const onAdjustingMMDataGotten = (event: any) => {
     keyPressTestCount.value = event.detail;
+}
+
+const onAdjustingAdcDataGotten = (event: any) => {
+    adjustingCount.value = event.detail;
+}
+
+const onAdjustingAdcValueUpdate = (event: any) => {
+    let index = event.detail.row * 21 + event.detail.col;
+    let key = useKey.state.keyState[index] as KeyState;
+    if (key.keyData != undefined && key.keyData.keyInfo != null) {
+        key.keyData.keyInfo.adjustingADC = event.detail.value;
+    }
 }
 
 const singleTouchTravelChange = (value: number) => {

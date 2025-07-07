@@ -152,7 +152,7 @@ export class RK_C61_Usb extends RK_C61 {
         this.KB2_CMD.order = order;
         this.KB2_CMD.arg = arg;
         worker.postMessage(this.KB2_CMD.command());
-        Logging.console(LOG_TYPE.INFO, `Push KB2_CMD data to queue.`);
+        Logging.console(LOG_TYPE.INFO, `Push KB2_CMD [${this.KB2_CMD.arg}] data to queue.`);
     }
 
     async loadData(): Promise<void> {
@@ -496,7 +496,21 @@ export class RK_C61_Usb extends RK_C61 {
         this.KB2_CMD.order = OrderTypeEnum.SetReportRate;
         this.KB2_CMD.arg = this.data.performanceData.rateOfReturn;
         worker.postMessage(this.KB2_CMD.command());
-        Logging.console(LOG_TYPE.INFO, `Push KB2_CMD data to queue.`);
+        Logging.console(LOG_TYPE.INFO, `Push KB2_CMD [${this.KB2_CMD.arg}] data to queue.`);
+    }
+
+    async setAdjustingOn(): Promise<void> {
+        this.KB2_CMD.order = OrderTypeEnum.EnableCalibration;
+        this.KB2_CMD.arg = 0xff;
+        worker.postMessage(this.KB2_CMD.command());
+        Logging.console(LOG_TYPE.INFO, `Push KB2_CMD [${this.KB2_CMD.arg}] data to queue.`);
+    }
+
+    async setAdjustingOff(): Promise<void> {
+        this.KB2_CMD.order = OrderTypeEnum.DisableCalibration;
+        this.KB2_CMD.arg = 0xff;
+        worker.postMessage(this.KB2_CMD.command());
+        Logging.console(LOG_TYPE.INFO, `Push KB2_CMD [${this.KB2_CMD.arg}] data to queue.`);
     }
 
     async setMacros(): Promise<void> {
@@ -854,10 +868,7 @@ StaticMode: ${this.data.lightSetting.staticLightMode}`);
                 for (i = 0; i < 3; i++) {
                     for (j = 0; j < 21; j++) {
                         buff = (data.getUint8(index + 1) << 8) | data.getUint8(index);
-                        let keyInfo = this.data.keyInfoData.getKeyInfo(i + add, j);
-                        if (keyInfo != undefined && keyInfo != null) {
-                            keyInfo.adjustingMM = buff / 1000;
-                        }
+                        this.data.keyInfoData.updateAdjustingMM(i + add, j, buff /1000);
                         index += 2;
                     }
                 }
@@ -873,11 +884,8 @@ StaticMode: ${this.data.lightSetting.staticLightMode}`);
             case 0x03:
                 for (i = 0; i < 6; i++) {
                     for (j = 0; j < 21; j++) {
-                        buff = data.getUint8(index);;
-                        let keyInfo = this.data.keyInfoData.getKeyInfo(i, j);
-                        if (keyInfo != undefined && keyInfo != null) {
-                             keyInfo.adjustingPress = buff;
-                        }
+                        buff = data.getUint8(index);
+                        this.data.keyInfoData.updateAdjustingPress(i, j, buff);
                         index += 1;
                     }
                 }
@@ -889,10 +897,14 @@ StaticMode: ${this.data.lightSetting.staticLightMode}`);
                     for (i = 0; i < 3; i++) {
                         for (j = 0; j < 21; j++) {
                             buff = (data.getUint8(index + 1) << 8) | data.getUint8(index);
-                            let keyInfo = this.data.keyInfoData.getKeyInfo(i + add, j);
-                            if (keyInfo != undefined && keyInfo != null) {
-                                keyInfo.adjustingADC = buff / 1000;
-                            }
+                            this.dispatchEvent(new CustomEvent(RK_C61_EVENT_DEFINE.OnAdjustingAdcValueUpdate, { 
+                                detail: {
+                                    row: i + add,
+                                    col: j,
+                                    value: buff
+                                }
+                            }));
+                            //this.data.keyInfoData.updateAdjustingADC(i + add, j, buff);
                             index += 2;
                         }
                     }
