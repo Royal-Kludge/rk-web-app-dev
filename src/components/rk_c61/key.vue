@@ -112,7 +112,6 @@
                                     <span style="color: green;font-size: x-small;" v-if="usePerformance.isSingleTouch(key.keyData) || usePerformance.isQuickTouch(key.keyData)">{{ key.keyData?.keyInfo.touchTravel }}</span>
                                     <span style="color: blue;font-size: x-small;" v-if="usePerformance.isQuickTouch(key.keyData)">{{ key.keyData?.keyInfo.quickTouchPress }}</span>
                                     <span style="color: red;font-size: x-small;" v-if="usePerformance.isQuickTouch(key.keyData)">{{ key.keyData?.keyInfo.quickTouchRelease }}</span>
-                                    <span style="color: red;font-size: x-small;" v-if="usePerformance.isQuickTouch(key.keyData)">{{ key.keyData?.keyInfo.quickTouchRelease }}</span>
                                 </div>
                                 <div v-if="usePerformance.state.menuid == 3" style="display: grid">
                                     <span style="color: green;font-size: x-small;">{{ key.keyData?.keyInfo.deadPress }}</span>
