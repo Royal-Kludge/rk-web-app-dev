@@ -612,6 +612,35 @@ export const useKeyStore = defineStore("keyinfo_rk_c61", () => {
         altKey: false,
     });
 
+    const WASD = [getIndex(2, 2), getIndex(3, 1), getIndex(3, 2), getIndex(3, 3)];
+    const DIGIT = [getIndex(1, 1), getIndex(1, 2), getIndex(1, 3), getIndex(1, 4), getIndex(1, 5), getIndex(1, 6), getIndex(1, 7), getIndex(1, 8), getIndex(1, 9), getIndex(1, 10)];
+    const LETTER = [getIndex(2, 1),
+                    getIndex(2, 2),
+                    getIndex(2, 3),
+                    getIndex(2, 4),
+                    getIndex(2, 5),
+                    getIndex(2, 6),
+                    getIndex(2, 7),
+                    getIndex(2, 8),
+                    getIndex(2, 9),
+                    getIndex(2, 10),
+                    getIndex(3, 1),
+                    getIndex(3, 2),
+                    getIndex(3, 3),
+                    getIndex(3, 4),
+                    getIndex(3, 5),
+                    getIndex(3, 6),
+                    getIndex(3, 7),
+                    getIndex(3, 8),
+                    getIndex(3, 9),
+                    getIndex(4, 2),
+                    getIndex(4, 3),
+                    getIndex(4, 4),
+                    getIndex(4, 5),
+                    getIndex(4, 6),
+                    getIndex(4, 7),
+                    getIndex(4, 8)];
+
     const isAnyKeyChecked = (): boolean => {
         if (rk_c61.value != undefined) {
             return rk_c61.value.data.keyInfoData.getKeyCheckedCount() > 0;
@@ -1170,6 +1199,27 @@ export const useKeyStore = defineStore("keyinfo_rk_c61", () => {
         selectAdvancedKeyIndex.value = key.index;
     };
 
+    const selectWASD = () => {
+        for (let i = 0; i < WASD.length; i++) {
+            (state.keyState as Array<KeyState>)[WASD[i]].selected = true;
+            (state.keyState as Array<KeyState>)[WASD[i]].keyData.keyInfo.isCheck = true;
+        }
+    };
+
+    const selectDIGIT = () => {
+        for (let i = 0; i < DIGIT.length; i++) {
+            (state.keyState as Array<KeyState>)[DIGIT[i]].selected = true;
+            (state.keyState as Array<KeyState>)[DIGIT[i]].keyData.keyInfo.isCheck = true;
+        }
+    };
+
+    const selectLETTER = () => {
+        for (let i = 0; i < LETTER.length; i++) {
+            (state.keyState as Array<KeyState>)[LETTER[i]].selected = true;
+            (state.keyState as Array<KeyState>)[LETTER[i]].keyData.keyInfo.isCheck = true;
+        }
+    };
+
     return {
         profile,
         state,
@@ -1210,6 +1260,9 @@ export const useKeyStore = defineStore("keyinfo_rk_c61", () => {
         unSelectAdvanced,
         selectAdvanced,
         deleteAdvKey,
-        isAnyKeyChecked
+        isAnyKeyChecked,
+        selectWASD,
+        selectDIGIT,
+        selectLETTER
     };
 });

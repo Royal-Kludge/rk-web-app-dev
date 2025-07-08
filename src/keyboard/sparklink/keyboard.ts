@@ -76,6 +76,7 @@ export class Keyboard extends Device {
                     if (keyInfo != null && keyInfo != undefined) {
                         let index = row * 21 + col;
                         let keyText: Array<String> = new Array<String>();
+                        keyInfo.isCheck = false;
                         if (this.keyboardDefine.keyText[keyInfo.keyValue] != undefined) {
                             for (let i = 0; i < this.keyboardDefine.keyText[keyInfo.keyValue].length; i++) {
                                 keyText.push(this.keyboardDefine.keyText[keyInfo.keyValue][i].valueOf());

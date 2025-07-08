@@ -233,13 +233,16 @@
                         @click="useKey.selected()">
                         全选
                     </div>
-                    <div class="p-2 m-2 bg-warn-1 text-grey-1 text-center br-2 b-grey c-p but">
+                    <div class="p-2 m-2 bg-warn-1 text-grey-1 text-center br-2 b-grey c-p but"
+                        @click="useKey.selectWASD()">
                         WASD
                     </div>
-                    <div class="p-2 m-2 bg-warn-1 text-grey-1 text-center br-2 b-grey c-p but">
+                    <div class="p-2 m-2 bg-warn-1 text-grey-1 text-center br-2 b-grey c-p but"
+                        @click="useKey.selectDIGIT()">
                         数字键
                     </div>
-                    <div class="p-2 m-2 bg-warn-1 text-grey-1 text-center br-2 b-grey c-p but">
+                    <div class="p-2 m-2 bg-warn-1 text-grey-1 text-center br-2 b-grey c-p but"
+                        @click="useKey.selectLETTER()">
                         字母键
                     </div>
                     <div class="p-2 m-2 bg-warn-1 text-grey-1 text-center br-2 b-grey c-p but"
