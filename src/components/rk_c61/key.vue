@@ -102,24 +102,22 @@
                             @contextmenu.prevent @mousedown="handleMouseDown"
                             @mouseenter="useKey.keyHover(key.index, true)" @mouseleave="useKey.keyHover(key.index, false)">
                             <div :class="[`text-white-1`, keyTextColorClass(key.keyData)]"
-                                :style="`z-index:1;word-wrap: break-word;overflow: hidden;text-align: center;${keyTextColorStyle(key.keyData)}`">
+                                :style="`z-index:1;word-wrap: break-word;overflow: hidden;text-align: center;${keyTextColorStyle(key.keyData)}`">                                
                                 <span v-if="useKey.isCombinKey(key.keyData)" style="word-wrap: break-word;">{{
                                     $t('key.menu_3') }}</span>
                                 <span v-else style="word-wrap: break-word;" v-html="useKey.keyText(key.keyData)"></span>
-                            </div>
-                            <div>
-                                <div v-if="usePerformance.state.menuid == 1 || usePerformance.state.menuid == 2" style="display: grid">
-                                    <span style="color: green;font-size: x-small;" v-if="usePerformance.isSingleTouch(key.keyData) || usePerformance.isQuickTouch(key.keyData)">{{ key.keyData?.keyInfo.touchTravel }}</span>
-                                    <span style="color: blue;font-size: x-small;" v-if="usePerformance.isQuickTouch(key.keyData)">{{ key.keyData?.keyInfo.quickTouchPress }}</span>
-                                    <span style="color: red;font-size: x-small;" v-if="usePerformance.isQuickTouch(key.keyData)">{{ key.keyData?.keyInfo.quickTouchRelease }}</span>
+                                <div v-if="usePerformance.state.menuid == 1 || usePerformance.state.menuid == 2">
+                                    <span class="key_green" v-if="usePerformance.isSingleTouch(key.keyData) || usePerformance.isQuickTouch(key.keyData)">{{ key.keyData?.keyInfo.touchTravel }}</span>
+                                    <span class="key_blue" v-if="usePerformance.isQuickTouch(key.keyData)">{{ key.keyData?.keyInfo.quickTouchPress }}</span>
+                                    <span class="key_red" v-if="usePerformance.isQuickTouch(key.keyData)">{{ key.keyData?.keyInfo.quickTouchRelease }}</span>
                                 </div>
-                                <div v-if="usePerformance.state.menuid == 3" style="display: grid">
-                                    <span style="color: green;font-size: x-small;">{{ key.keyData?.keyInfo.deadPress }}</span>
-                                    <span style="color: blue;font-size: x-small;">{{ key.keyData?.keyInfo.deadRelease }}</span>
+                                <div v-if="usePerformance.state.menuid == 3">
+                                    <span class="key_green">{{ key.keyData?.keyInfo.deadPress }}</span>
+                                    <span class="key_blue">{{ key.keyData?.keyInfo.deadRelease }}</span>
                                 </div>
-                                <div v-if="usePerformance.state.menuid == 4" style="display: grid">
-                                    <span style="color: green;font-size: x-small;" v-if="usePerformance.isAdjusting && key.keyData?.keyInfo.adjustingSuccess">{{ key.keyData?.keyInfo.adjustingADC }}</span>
-                                    <span style="color: red;font-size: x-small;" v-if="usePerformance.isAdjusting && !key.keyData?.keyInfo.adjustingSuccess">{{ key.keyData?.keyInfo.adjustingADC }}</span>
+                                <div v-if="usePerformance.state.menuid == 4">
+                                    <span class="key_green" v-if="usePerformance.isAdjusting && key.keyData?.keyInfo.adjustingSuccess">{{ key.keyData?.keyInfo.adjustingADC }}</span>
+                                    <span class="key_red" v-if="usePerformance.isAdjusting && !key.keyData?.keyInfo.adjustingSuccess">{{ key.keyData?.keyInfo.adjustingADC }}</span>
                                 </div>
                             </div>
                         </div>
@@ -497,6 +495,29 @@ const shortcutStrKey = (key: String[] | undefined) => {
 .key:hover {
     background: #4743A7;
     opacity: 0.8;
+}
+.key_green{
+  position: absolute;
+  top :0px;
+  left: 1px;
+  color: rgb(0, 158, 0);
+  font-size: 80%;
+}
+
+.key_blue{
+  position: absolute;
+  bottom: 1px;
+  left: 1px;
+  color: rgb(0, 125, 224); 
+  font-size: 80%; 
+}
+
+.key_red{
+  position: absolute;
+  bottom :1px;
+  right: 2px;
+  color: rgb(255, 115, 0);
+  font-size: 80%; 
 }
 
 .key {

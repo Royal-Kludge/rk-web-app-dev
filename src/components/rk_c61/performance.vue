@@ -14,101 +14,99 @@
         <div class="d-flex flex-1 ml-3">
             <div style="height: 100vh;" class="bg-white w-100 d-flex">
                 <div class="d-flex flex-column bg-box m-2"
-                    style="width: 55%;height: 30vh;border-radius: 0px 0px 0px 10px;">
-                    <el-scrollbar style="width: 100%;" class="d-flex ai-center jc-center mr-3">
+                    style="width: 65%;height: 37vh;border-radius: 0px 0px 0px 10px;">
+                    <el-scrollbar style="width: 100%; " class="d-flex ai-center jc-center">
                         <div v-if="usePerformance.state.menuid == 1">
-                            <div class="m-3">
-                                <div class="fw-b m-3">
+                            <div class="m-2">
+                                <div class="fw-b m-2">
                                     全局触发
                                 </div>
-                                <div class="d-flex fs-lg m-3">
+                                <div class="d-flex fs-lg m-2">
                                     <div
                                         style="width: 5px; height: 16px; border-radius: 2px; background-color: rgb(0, 158, 0);">
                                     </div>
                                     <div>设置全局触发行程，非单键触发和RT触发的按键生效，行程不会在按键上显示。</div>
                                 </div>
-                                <div class="m-3 d-flex">
-                                    <el-slider style="width: 280px" :step="travelStep" :max="performanceData.maxTouchTravel" :min="performanceData.minTouchTravel"
+                                <div class="m-2 d-flex ml-3">
+                                    <el-slider style="width: 450px" :step="travelStep"
+                                        :max="performanceData.maxTouchTravel" :min="performanceData.minTouchTravel"
                                         v-model="performanceData.globalTouchTravel"
                                         @change="usePerformance.globalTouchTravelChange" />
-                                    <el-input-number v-model="performanceData.globalTouchTravel" :min="performanceData.minTouchTravel" :max="performanceData.maxTouchTravel"
+                                    <el-input-number v-model="performanceData.globalTouchTravel"
+                                        :min="performanceData.minTouchTravel" :max="performanceData.maxTouchTravel"
                                         :precision="performanceData?.decimalPlace"
-                                        @change="usePerformance.globalTouchTravelChange"
-                                        class="ml-3" />
+                                        @change="usePerformance.globalTouchTravelChange" class="ml-3" />
                                 </div>
                             </div>
 
-                            <div class="m-3">
-                                <div class="fw-b m-3">
+                            <div class="m-2">
+                                <div class="fw-b m-2">
                                     单键触发（选中按键）
                                 </div>
-                                <div class="d-flex fs-lg m-3">
+                                <div class="d-flex fs-lg m-2">
                                     设置单键触发行程，按键左上角显示绿色行程值为已设置。
                                 </div>
-                                <div class="m-3 d-flex">
-                                    <el-slider style="width: 280px" :step="travelStep" :max="performanceData.maxTouchTravel" :min="performanceData.minTouchTravel"
-                                        v-model="performanceData.singleTouchTravel" 
-                                        :disabled="isDisabel"
+                                <div class="m-2 d-flex ml-3">
+                                    <el-slider style="width: 450px" :step="travelStep"
+                                        :max="performanceData.maxTouchTravel" :min="performanceData.minTouchTravel"
+                                        v-model="performanceData.singleTouchTravel" :disabled="isDisabel"
                                         @change="singleTouchTravelChange" />
-                                    <el-input-number v-model="performanceData.singleTouchTravel" :min="performanceData.minTouchTravel" :max="performanceData.maxTouchTravel"
-                                        :precision="performanceData?.decimalPlace"
-                                        :disabled="isDisabel"
-                                        @change="singleTouchTravelChange"
-                                        class="ml-3" />
+                                    <el-input-number v-model="performanceData.singleTouchTravel"
+                                        :min="performanceData.minTouchTravel" :max="performanceData.maxTouchTravel"
+                                        :precision="performanceData?.decimalPlace" :disabled="isDisabel"
+                                        @change="singleTouchTravelChange" class="ml-3" />
                                 </div>
                             </div>
                         </div>
                         <div v-else-if="usePerformance.state.menuid == 2">
-                            <div class="m-3">
-                                <div class="fw-b m-3">
+                            <div class="m-2">
+                                <div class="fw-b m-2">
                                     首次触发行程（选中的按键生效）
                                 </div>
-                                <div class="d-flex fs-lg m-3">
+                                <div class="d-flex fs-lg m-2">
                                     <div
                                         style="width: 5px; height: 16px; border-radius: 2px; background-color: rgb(0, 158, 0);">
                                     </div>
                                     <div>设置首次触发行程，按键左上角显示绿色行程值为已设置。</div>
                                 </div>
-                                <div class="m-3 d-flex">
-                                    <el-slider style="width: 280px" :step="travelStep" :max="performanceData.maxTouchTravel" :min="performanceData.minTouchTravel"
-                                        v-model="performanceData.singleTouchTravel"
-                                        :disabled="isDisabel"
-                                        @change="RTFirstTouchTravelChange"/>
-                                    <el-input-number v-model="performanceData.singleTouchTravel" :min="performanceData.minTouchTravel" :max="performanceData.maxTouchTravel"
-                                        :precision="performanceData?.decimalPlace"
-                                        :disabled="isDisabel"
-                                        @change="RTFirstTouchTravelChange"
-                                        class="ml-3" />
+                                <div class="m-2 d-flex ml-3">
+                                    <el-slider style="width: 450px" :step="travelStep"
+                                        :max="performanceData.maxTouchTravel" :min="performanceData.minTouchTravel"
+                                        v-model="performanceData.singleTouchTravel" :disabled="isDisabel"
+                                        @change="RTFirstTouchTravelChange" />
+                                    <el-input-number v-model="performanceData.singleTouchTravel"
+                                        :min="performanceData.minTouchTravel" :max="performanceData.maxTouchTravel"
+                                        :precision="performanceData?.decimalPlace" :disabled="isDisabel"
+                                        @change="RTFirstTouchTravelChange" class="ml-3" />
                                 </div>
                             </div>
 
-                            <div class="m-3">
-                                <div class="fw-b m-3">
+                            <div class="m-2">
+                                <div class="fw-b m-2">
                                     动态触发行程(按下)
                                 </div>
-                                <div class="d-flex fs-lg m-3">
+                                <div class="d-flex fs-lg m-2">
                                     <div
                                         style="width: 5px; height: 16px; border-radius: 2px; background-color: rgb(0, 125, 224);">
                                     </div>
                                     <div>设置RT触发行程，按键左下角显示蓝色行程值为已设置。</div>
                                 </div>
-                                <div class="m-3 d-flex">
-                                    <el-slider style="width: 280px" :step="travelStep" :max="performanceData.maxTouchTravel" :min="performanceData.minTouchTravel"
-                                        v-model="performanceData.quickTouchPress"
-                                        :disabled="isDisabel" 
+                                <div class="m-2 d-flex ml-3">
+                                    <el-slider style="width: 450px" :step="travelStep"
+                                        :max="performanceData.maxTouchTravel" :min="performanceData.minTouchTravel"
+                                        v-model="performanceData.quickTouchPress" :disabled="isDisabel"
                                         @change="quickTouchPressTravelChange" />
-                                    <el-input-number v-model="performanceData.quickTouchPress" :min="performanceData.minTouchTravel" :max="performanceData.maxTouchTravel"
-                                        :precision="performanceData.decimalPlace"
-                                        :disabled="isDisabel"
-                                        @change="quickTouchPressTravelChange"
-                                        class="ml-3" />
+                                    <el-input-number v-model="performanceData.quickTouchPress"
+                                        :min="performanceData.minTouchTravel" :max="performanceData.maxTouchTravel"
+                                        :precision="performanceData.decimalPlace" :disabled="isDisabel"
+                                        @change="quickTouchPressTravelChange" class="ml-3" />
                                 </div>
                             </div>
-                            <div class="m-3">
-                                <div class="fw-b m-3">
+                            <div class="m-2">
+                                <div class="fw-b m-2">
                                     动态重置行程(抬起)
                                 </div>
-                                <div class="d-flex fs-lg m-3">
+                                <div class="d-flex fs-lg m-2">
                                     <div
                                         style="width: 5px; height: 16px; border-radius: 2px; background-color: rgb(255, 115, 0);">
                                     </div>
@@ -116,80 +114,89 @@
                                         设置RT重置行程，按键右下角显示橙红色行程值为已设置。
                                     </div>
                                 </div>
-                                <div class="m-3 d-flex">
-                                    <el-slider style="width: 280px" :step="travelStep" :max="performanceData.maxTouchTravel" :min="performanceData.minTouchTravel"
-                                        v-model="performanceData.quickTouchRelease"
-                                        :disabled="isDisabel"
-                                        @change="quickTouchReleaseTravelChange"/>
-                                    <el-input-number v-model="performanceData.quickTouchRelease" :min="performanceData.minTouchTravel" :max="performanceData.maxTouchTravel"
-                                        :precision="performanceData.decimalPlace"
-                                        :disabled="isDisabel"
-                                        @change="quickTouchReleaseTravelChange"
-                                        class="ml-3" />
+                                <div class="m-2 d-flex ml-3">
+                                    <el-slider style="width: 450px" :step="travelStep"
+                                        :max="performanceData.maxTouchTravel" :min="performanceData.minTouchTravel"
+                                        v-model="performanceData.quickTouchRelease" :disabled="isDisabel"
+                                        @change="quickTouchReleaseTravelChange" />
+                                    <el-input-number v-model="performanceData.quickTouchRelease"
+                                        :min="performanceData.minTouchTravel" :max="performanceData.maxTouchTravel"
+                                        :precision="performanceData.decimalPlace" :disabled="isDisabel"
+                                        @change="quickTouchReleaseTravelChange" class="ml-3" />
                                 </div>
                             </div>
                         </div>
                         <div v-else-if="usePerformance.state.menuid == 3">
-                            <div class="m-3" style="border-bottom: 1px solid #6A6A77;">
-                                <div class="fw-b m-3">
+                            <div style="border-bottom: 1px solid #6A6A77;">
+                                <div class="fw-b m-2">
                                     死区设置
                                 </div>
-                                <div class="d-flex fs-lg m-3">
+                                <div class="d-flex fs-lg m-2">
                                     <div>死区设置为全局设置，为防止误触或断触，推荐将死区设置为 0.2mm</div>
                                 </div>
-                                <div class="d-flex fs-lg m-3">
+                                <div class="d-flex fs-lg m-2">
                                     <div>顶部按下</div>
                                 </div>
-                                <div class="m-3 d-flex">
-                                    <el-slider style="width: 280px" :step="0.01" :max="1.00" :min="pressDeadMin"
-                                        v-model="performanceData.pressDead"
-                                        :disabled="isDisabel"
+                                <div class="m-2 d-flex ml-3">
+                                    <el-slider style="width: 450px" :step="0.01" :max="1.00" :min="pressDeadMin"
+                                        v-model="performanceData.pressDead" :disabled="isDisabel"
                                         @change="deadPressChange" />
                                     <el-input-number v-model="performanceData.pressDead" :min="pressDeadMin" :max="1.00"
-                                        :precision="2"
-                                        :disabled="isDisabel"
-                                        @change="deadPressChange" 
-                                        class="ml-3" />
+                                        :precision="2" :disabled="isDisabel" @change="deadPressChange" class="ml-3" />
                                 </div>
-                                <div class="d-flex fs-lg m-3">
+                                <div class="d-flex fs-lg m-2">
                                     <div>底部抬起</div>
                                 </div>
-                                <div class="m-3 d-flex">
-                                    <el-slider style="width: 280px" :step="0.01" :max="1.00" :min="pressDeadMin"
-                                        v-model="performanceData.releaseDead"
-                                        :disabled="isDisabel"
+                                <div class="m-2 d-flex ml-3 mb-4">
+                                    <el-slider style="width: 450px" :step="0.01" :max="1.00" :min="pressDeadMin"
+                                        v-model="performanceData.releaseDead" :disabled="isDisabel"
                                         @change="deadReleaseChange" />
-                                    <el-input-number v-model="performanceData.releaseDead" :min="pressDeadMin" :max="1.00"
-                                        :precision="2"
-                                        :disabled="isDisabel"
-                                        @change="deadPressChange" 
+                                    <el-input-number v-model="performanceData.releaseDead" :min="pressDeadMin"
+                                        :max="1.00" :precision="2" :disabled="isDisabel" @change="deadPressChange"
                                         class="ml-3" />
                                 </div>
                             </div>
 
-                            <div class="m-3">
-                                <div class="fw-b m-3">
+                            <div class="m-2">
+                                <div class="fw-b m-2">
                                     回报率
                                 </div>
-                                <div class="d-flex fs-lg m-3">
-                                    <el-select v-model="performanceData.rateOfReturn" placeholder="Select" @change="usePerformance.reportRateChange">
+                                <div class="d-flex fs-lg m-2">
+                                    <el-select v-model="performanceData.rateOfReturn" placeholder="Select"
+                                        @change="dialogReportRate = true">
                                         <el-option v-for="item in usePerformance.state.rewardList" :key="item.value"
                                             :label="item.label" :value="item.value" />
                                     </el-select>
                                 </div>
+
+                                <el-dialog v-model="dialogReportRate" title="提示" width="500">
+                                    <span>切换回报率将会重启键盘并重新连接，是否确认切换回报率?</span>
+                                    <template #footer>
+                                        <div class="dialog-footer">
+                                            <el-button @click="dialogReportRate = false">取消</el-button>
+                                            <el-button type="primary" @click="usePerformance.reportRateChange">
+                                                确认
+                                            </el-button>
+                                        </div>
+                                    </template>
+                                </el-dialog>
                             </div>
                         </div>
                         <div v-else-if="usePerformance.state.menuid == 4">
-                            <div class="m-3">
-                                <div class="fw-b m-3">
+                            <div class="m-2">
+                                <div class="fw-b m-2">
                                     校准说明
                                 </div>
                                 <div class="d-flex fs-lg">
                                     <div>校准时请用正常力度按下按键。注意：快速的按下并抬起按键会导致校准的结果不准确。</div>
-                                    <div v-if="!isAdjusting" class="p-2 m-2 bg-warn-1 text-grey-1 text-center br-2 b-grey c-p but" @click="isAdjusting = true">
+                                    <div v-if="!isAdjusting"
+                                        class="p-2 m-2 bg-warn-1 text-grey-1 text-center br-2 b-grey c-p but"
+                                        @click="isAdjusting = true">
                                         {{ isSaving ? `正在保存` : `开始校准` }}
                                     </div>
-                                    <div v-if="isAdjusting" class="p-2 m-2 bg-warn-1 text-grey-1 text-center br-2 b-grey c-p but" @click="isAdjusting = false">
+                                    <div v-if="isAdjusting"
+                                        class="p-2 m-2 bg-warn-1 text-grey-1 text-center br-2 b-grey c-p but"
+                                        @click="isAdjusting = false">
                                         保存校准
                                     </div>
                                 </div>
@@ -199,27 +206,31 @@
                     </el-scrollbar>
                 </div>
                 <div class="d-flex flex-column bg-box jc-center m-2"
-                    style="width: 30%;height: 30vh; border-radius: 0px 0px 0px 10px;">
+                    style="width: 20%;height: 37vh; border-radius: 0px 0px 0px 10px;" v-loading="loading"
+                    element-loading-background="rgba(122, 122, 122, 0.8)">
                     <el-scrollbar>
-                        <div class="d-flex ai-center jc-between m-3">
-                            <div class="fw-b m-3">
+                        <div class="d-flex ai-center jc-between m-2 mx-4">
+                            <div class="fw-b">
                                 行程测试
                             </div>
                             <div>
-                                <el-switch v-model="performanceData.travelTestOn" inline-prompt size="large" @change="changePressTestSwitch"/>
+                                <el-switch v-model="performanceData.travelTestOn" inline-prompt size="large"
+                                    @change="changePressTestSwitch" />
                             </div>
                         </div>
                         <div class="d-flex jc-center">
                             <div class="vertical-progress" :style="maxTravelHeight">
                                 <div class="travel-progress" :style="testStyle"></div>
                             </div>
-                            <div class="d-flex ml-3" style="height: 190px;"><img src="@/assets/images/kedu-C61.png">
+                            <div class="d-flex ml-3 mb-3" style="height: 190px;"><img
+                                    src="@/assets/images/kedu-C61.png">
                             </div>
                         </div>
                     </el-scrollbar>
                 </div>
                 <div class="d-flex flex-column ai-center flex-1">
-                    <div class="p-2 m-2 bg-warn-1 text-grey-1 text-center br-2 b-grey c-p but" @click="useKey.selected()">
+                    <div class="p-2 m-2 bg-warn-1 text-grey-1 text-center br-2 b-grey c-p but"
+                        @click="useKey.selected()">
                         全选
                     </div>
                     <div class="p-2 m-2 bg-warn-1 text-grey-1 text-center br-2 b-grey c-p but">
@@ -231,10 +242,12 @@
                     <div class="p-2 m-2 bg-warn-1 text-grey-1 text-center br-2 b-grey c-p but">
                         字母键
                     </div>
-                    <div class="p-2 m-2 bg-warn-1 text-grey-1 text-center br-2 b-grey c-p but" @click="useKey.unSelected()">
+                    <div class="p-2 m-2 bg-warn-1 text-grey-1 text-center br-2 b-grey c-p but"
+                        @click="useKey.unSelected()">
                         取消选中
                     </div>
-                    <div class="p-2 m-2 bg-warn-1 text-grey-1 text-center br-2 b-grey c-p but" @click="resetToGlobalTravel()">
+                    <div class="p-2 m-2 bg-warn-1 text-grey-1 text-center br-2 b-grey c-p but"
+                        @click="resetToGlobalTravel()">
                         重置行程
                     </div>
                 </div>
@@ -263,6 +276,7 @@ const count = ref(0);
 const travelStep = ref(0.001);
 const pressDeadMin = ref(0.0);
 const isSaving = ref(false);
+const dialogReportRate = ref(false);
 
 const { adjustingCount, keyPressTestCount, state, travelTestOn, isAdjusting, performanceData } = storeToRefs(usePerformance);
 
@@ -284,6 +298,8 @@ onMounted(async () => {
         travelStep.value = 1 / (10 ** performanceData.value.decimalPlace);
     }
 });
+
+const loading = computed(() => (usePerformance.state.menuid == 4 ? true : false))
 
 watch(useKey.state.keyState, async () => {
     isDisabel.value = !useKey.isAnyKeyChecked();
@@ -565,7 +581,7 @@ const onAdjustingAdcValueUpdate = (event: any) => {
 }
 
 const singleTouchTravelChange = (value: number) => {
-    for (let i = 0; i < useKey.state.keyState.length; i ++) {
+    for (let i = 0; i < useKey.state.keyState.length; i++) {
         let key = useKey.state.keyState[i] as KeyState;
         if (key.keyData != undefined && key.keyData.keyInfo != null && key.keyData.keyInfo.isCheck) {
             key.keyData.keyInfo.isSingleTouch = true;
@@ -577,7 +593,7 @@ const singleTouchTravelChange = (value: number) => {
 };
 
 const RTFirstTouchTravelChange = (value: number) => {
-    for (let i = 0; i < useKey.state.keyState.length; i ++) {
+    for (let i = 0; i < useKey.state.keyState.length; i++) {
         let key = useKey.state.keyState[i] as KeyState;
         if (key.keyData != undefined && key.keyData.keyInfo != null && key.keyData.keyInfo.isCheck) {
             key.keyData.keyInfo.isSingleTouch = true;
@@ -589,7 +605,7 @@ const RTFirstTouchTravelChange = (value: number) => {
 };
 
 const quickTouchPressTravelChange = (value: number) => {
-    for (let i = 0; i < useKey.state.keyState.length; i ++) {
+    for (let i = 0; i < useKey.state.keyState.length; i++) {
         let key = useKey.state.keyState[i] as KeyState;
         if (key.keyData != undefined && key.keyData.keyInfo != null && key.keyData.keyInfo.isCheck) {
             key.keyData.keyInfo.isQuickTouch = true;
@@ -601,7 +617,7 @@ const quickTouchPressTravelChange = (value: number) => {
 };
 
 const quickTouchReleaseTravelChange = (value: number) => {
-    for (let i = 0; i < useKey.state.keyState.length; i ++) {
+    for (let i = 0; i < useKey.state.keyState.length; i++) {
         let key = useKey.state.keyState[i] as KeyState;
         if (key.keyData != undefined && key.keyData.keyInfo != null && key.keyData.keyInfo.isCheck) {
             key.keyData.keyInfo.isQuickTouch = true;
@@ -613,7 +629,7 @@ const quickTouchReleaseTravelChange = (value: number) => {
 };
 
 const deadPressChange = (value: number) => {
-    for (let i = 0; i < useKey.state.keyState.length; i ++) {
+    for (let i = 0; i < useKey.state.keyState.length; i++) {
         let key = useKey.state.keyState[i] as KeyState;
         if (key.keyData != undefined && key.keyData.keyInfo != null && key.keyData.keyInfo.isCheck) {
             key.keyData.keyInfo.deadPress = value;
@@ -624,7 +640,7 @@ const deadPressChange = (value: number) => {
 };
 
 const deadReleaseChange = (value: number) => {
-    for (let i = 0; i < useKey.state.keyState.length; i ++) {
+    for (let i = 0; i < useKey.state.keyState.length; i++) {
         let key = useKey.state.keyState[i] as KeyState;
         if (key.keyData != undefined && key.keyData.keyInfo != null && key.keyData.keyInfo.isCheck) {
             key.keyData.keyInfo.deadRelease = value;
@@ -635,19 +651,23 @@ const deadReleaseChange = (value: number) => {
 };
 
 const resetToGlobalTravel = () => {
-    for (let i = 0; i < useKey.state.keyState.length; i ++) {
+    for (let i = 0; i < useKey.state.keyState.length; i++) {
         let key = useKey.state.keyState[i] as KeyState;
         if (key.keyData != undefined && key.keyData.keyInfo != null && key.keyData.keyInfo.isCheck) {
             key.keyData.keyInfo.isSingleTouch = false;
             key.keyData.keyInfo.isQuickTouch = false;
         }
     }
-    
+
     usePerformance.resetToGlobalTravel();
 };
 
 </script>
 <style scoped lang="scss">
+:deep(.el-loading-spinner) {
+    display: none;
+}
+
 .chart-container {
     height: 180px;
     min-height: auto;
