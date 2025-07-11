@@ -54,6 +54,7 @@ const useMacro = useMacroStore();
 
 onMounted(async () => {
     await useKey.init();
+    await useAdvKey.init();
 });
 
 onBeforeUnmount(() => {

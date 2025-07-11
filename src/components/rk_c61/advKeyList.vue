@@ -15,6 +15,11 @@
                                                 style="border-right: 3px solid #ea5413; width: 32px;height: 32px;">
                                                 <img :src="advKeyIcon(item.advType)" />
                                             </div>
+                                            <div class="d-flex ai-center jc-center m-2 bg-grey"
+                                                style="border: 1px solid #929292; width: 30px;height: 30px; overflow: hidden;">
+                                                <span style="word-wrap: break-word;filter: drop-shadow(#6a6a77 99999px 0);position: relative;left: -99999px;color:#6a6a77"
+                                                    v-html="useKey.keyText(item.key)"></span>
+                                            </div>
                                             <div v-if="item.advType == MagKeyAdvanceTypeEnum.MACRO && (item as AdvKeyMacro).macro != null"
                                                 class="d-flex ai-center jc-center m-2 bg-grey p-2">
                                                 {{ item.data.name }}
@@ -22,7 +27,7 @@
                                             <div v-else-if="item.advType == MagKeyAdvanceTypeEnum.SOCD && (item as AdvKeySOCD).value == 1"
                                                 v-for="key in item.data.slice(0, 2)"
                                                 class="d-flex ai-center jc-center m-2 bg-grey"
-                                                style="width: 32px;height: 32px;overflow: hidden;">
+                                                style="width: 32px;height: 32px; overflow: hidden;">
                                                 <span
                                                     style="word-wrap: break-word;filter: drop-shadow(#6a6a77 99999px 0);position: relative;left: -99999px;color:#6a6a77"
                                                     v-html="useKey.itemText(key.key)"></span>
@@ -37,8 +42,8 @@
                                         </div>
                                         <div class="d-flex ai-center jc-center"
                                             style="border-left: 1px solid #929292; ">
-                                            <div class="m-2 c-p" @click="advKeyDelete(item)">
-                                                <img src="../../assets/images/title/del.png" style="width: 24px;" />
+                                            <div class="m-2 c-p ai-center jc-center" @click="advKeyDelete(item)">
+                                                <img src="../../assets/images/title/del.png" style="width: 16px;" />
                                             </div>
                                         </div>
                                     </div>

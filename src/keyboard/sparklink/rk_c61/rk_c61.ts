@@ -156,6 +156,7 @@ export abstract class RK_C61 extends Protocol {
     abstract setReportRate(): Promise<void>;
     abstract setAdjustingOn(): Promise<void>;
     abstract setAdjustingOff(): Promise<void>;
+    abstract setDks(keyInfos: Array<KeyInfo>): Promise<void>;
     abstract setMacros(): Promise<void>;
     
     callback = (e: HIDInputReportEvent) => this.processKeyboardReport(e);

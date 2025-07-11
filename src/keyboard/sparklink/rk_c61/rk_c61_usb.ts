@@ -15,6 +15,7 @@ import { KB2_CMD_DB } from './packets/usb/KB2_CMD_DB';
 import { KB2_CMD_PRGB } from './packets/usb/KB2_CMD_PRGB';
 import { KB2_CMD_DEFKEY } from './packets/usb/KB2_CMD_DEFKEY';
 import { KB2_CMD_RM6X21 } from './packets/usb/KB2_CMD_RM6X21';
+import { KB2_CMD_DKS } from './packets/usb/KB2_CMD_DKS';
 
 const worker = new Worker(new URL('@/common/communication.ts', import.meta.url));
 
@@ -29,6 +30,7 @@ export class RK_C61_Usb extends RK_C61 {
     KB2_CMD_PRGB: KB2_CMD_PRGB;
     KB2_CMD_DEFKEY: KB2_CMD_DEFKEY;
     KB2_CMD_RM6X21: KB2_CMD_RM6X21;
+    KB2_CMD_DKS: KB2_CMD_DKS;
 
     constructor(state: KeyboardState, device: HIDDevice) {
         super(state, device);
@@ -43,6 +45,7 @@ export class RK_C61_Usb extends RK_C61 {
         this.KB2_CMD_PRGB = new KB2_CMD_PRGB(this.onPrgbCmd.bind(this));
         this.KB2_CMD_DEFKEY = new KB2_CMD_DEFKEY(this.onDefKeyCmd.bind(this));
         this.KB2_CMD_RM6X21 = new KB2_CMD_RM6X21(this.onRm6x21.bind(this));
+        this.KB2_CMD_DKS = new KB2_CMD_DKS(this.onCmdCallback.bind(this));
     }
 
     static async create(state: KeyboardState, device: HIDDevice) {
@@ -112,13 +115,11 @@ export class RK_C61_Usb extends RK_C61 {
                         this.KB2_CMD_DEFKEY.fromReportData(data);
                         break;
                     case COMMAND_ID.KB2_CMD_RM6X21:
-                        // const array = new Uint8Array(data.buffer);
-                        // const buf = new Uint8Array(array.length);
-                        // buf.set(array, 0)
-                        // buf[1] == 192;
-                        // this.buffer = buf;
                         this.buffer = new Uint8Array(data.buffer);
                         this.buffer[1] = 188;
+                        break;
+                    case COMMAND_ID.KB2_CMD_TDKS:
+                        this.KB2_CMD_DKS.fromReportData(data);
                         break;
                 }
             } else if (this.buffer != null && this.buffer[2] - 0x80 == COMMAND_ID.KB2_CMD_RM6X21) {
@@ -513,17 +514,42 @@ export class RK_C61_Usb extends RK_C61 {
         Logging.console(LOG_TYPE.INFO, `Push KB2_CMD [${this.KB2_CMD.arg}] data to queue.`);
     }
 
+    async setDks(keyInfos: Array<KeyInfo>): Promise<void> {
+        let keys = [];
+        let dksInfos = [];
+        
+        for (let i = 0; i < keyInfos.length; i++) {
+            keys.push(keyInfos[i].keyValue);
+            dksInfos.push(keyInfos[i].DKSInfo);
+        }
+
+        this.KB2_CMD_DKS.rw = RWTypeEnum.Write;
+        this.KB2_CMD_DKS.keys = keys;
+        this.KB2_CMD_DKS.dksInfo = dksInfos;
+        this.KB2_CMD_DKS.version = this.data.protocolVersion;
+        worker.postMessage(this.KB2_CMD_DKS.command());
+        Logging.console(LOG_TYPE.INFO, `Push KB2_CMD_DKS data to queue.`);
+    }
+
     async setMacros(): Promise<void> {
 
     }
     //#endregion
 
     //#region Data analysis
+    private onCmdCallback(event: any) {
+        if (event.detail.errCode == 0) {
+            Logging.console(LOG_TYPE.SUCCESS, `Command [${event.detail.cmd}] was response success`);
+        } else {
+            Logging.console(LOG_TYPE.ERROR, `Command [${event.detail.cmd}] was response error [${event.detail.errCode}]`);
+        }
+    }
+
     private onFailCmd(event: any) {
         let ackCmd: number = event.detail.ackCmd;
         let sArg: Uint8Array = event.detail.ackCmd;
 
-        Logging.console(LOG_TYPE.ERROR, `Comand fail [${ackCmd}] arg [${sArg.toString()}]`);
+        Logging.console(LOG_TYPE.ERROR, `Command fail [${ackCmd}] arg [${sArg.toString()}]`);
     }
 
     private onSyncCmd(event: any) {

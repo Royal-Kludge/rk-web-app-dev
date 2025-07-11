@@ -233,7 +233,9 @@ export class DKSType {
         if (this.value[3]) this.num |= 24;
         if (this.value[4]) this.num |= 32;
         if (this.value[5]) this.num |= 64;
+        if (this.value[6]) this.num |= 128;
     }
+    
     isSelected(): string {
         return this.IsSelected ? 'selected' : '';
     }
