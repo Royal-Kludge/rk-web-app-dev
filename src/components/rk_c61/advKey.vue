@@ -24,11 +24,10 @@
                         :disabled="item.tip == ''" :content="itemTipText(item)" placement="bottom"
                         popper-class="tip_font">
                         <div :class="[`c-p d-flex ai-center jc-center p-2 m-1 bg-grey br-1`, useKey.isFunSelected(item.key)]"
-                            @click="useKey.mapping(item.key, item.type)"
-                            style="min-width: 36px;min-height: 32px;font-size: 14px;">
+                            @click="clickKey(item)" style="min-width: 36px;min-height: 32px;font-size: 14px;">
                             <span
                                 style="word-wrap: break-word;filter: drop-shadow(#6a6a77 99999px 0);position: relative;left: -99999px;color:#6a6a77"
-                                v-html="itemText(item)"></span>
+                                v-html="useKey.itemText(item)"></span>
                         </div>
                     </el-tooltip>
                 </div>
@@ -43,6 +42,11 @@ import { Macro } from '@/keyboard/sparklink/macros';
 import { MatrixTable } from "@/keyboard/sparklink/enum";
 import { useI18n } from "vue-i18n";
 import { onMounted, onBeforeUnmount } from 'vue';
+import { useAdvKeyStore } from "@/stores/rk_c61/advKeyStore";
+import { storeToRefs } from "pinia";
+import { MagKeyAdvanceTypeEnum } from "@/keyboard/sparklink/enum";
+const useAdvKey = useAdvKeyStore();
+const { titleid } = storeToRefs(useAdvKey);
 
 const { t } = useI18n();
 const useKey = useKeyStore();
@@ -56,60 +60,33 @@ onBeforeUnmount(() => {
     useKey.destroy();
 });
 
+const clickKey = (item: any) => {
+    useKey.mapping(item.key, item.type)
+    switch (titleid.value) {
+        case MagKeyAdvanceTypeEnum.DKS:
+            useAdvKey.setDKS(item)
+            break;
+        case MagKeyAdvanceTypeEnum.MT:
+            useAdvKey.setMT(item)
+            break;
+        case MagKeyAdvanceTypeEnum.TGL:
+            useAdvKey.setTGL(item)
+            break;
+        case MagKeyAdvanceTypeEnum.MPT:
+            useAdvKey.setMPT(item)
+            break;
+        case MagKeyAdvanceTypeEnum.END:
+            useAdvKey.setEND(item)
+            break;
+        case MagKeyAdvanceTypeEnum.SOCD:
+            useAdvKey.setSOCD(item)
+            break;
+    }
+}
+
 const clickMacro = (obj: Macro) => {
     // useKey.clickMacro(obj)
     // useKey.confirmSetMacro()
-}
-
-const itemText = (item: any) => {
-    if (item.type == MatrixTable.MAC) return item.text[0] as string;
-    if (item.tip != '') return t(item.text[0] as string);
-    if ((item.key >> 24) == 8) return t(item.text[0] as string);
-
-    let str = '';
-    let i = 0;
-    let texts = [];
-    for (i = 0; i < item.text.length; i++) {
-        str = `${str}${item.text[i]}`
-        if (item.text[i] != '' && item.text[i] != undefined) {
-            texts.push(item.text[i])
-        }
-    }
-    if (texts.length == 4) {
-        str = `<div class='d-flex'>
-        <div>
-            <div>${texts[1]}</div>
-            <div>${texts[0]}</div>
-        </div>
-        <div class='ml-3'>
-            <div>${texts[3]}</div>
-            <div>${texts[2]}</div>
-        </div>
-        </div>`
-    } else if (texts.length == 3) {
-        str = `<div class='d-flex'>
-        <div>
-            <div>${texts[1]}</div>
-            <div>${texts[0]}</div>
-        </div>
-        <div class='ml-3'>
-            <div>&nbsp;</div>
-            <div>${texts[2]}</div>
-        </div>
-        </div>`
-    } else if (texts.length == 2) {
-        str = `<div class='d-flex'>
-        <div>
-            <div>${texts[0]}</div>
-            <div>&nbsp;</div>
-        </div>
-          <div class='ml-3'>
-            <div>&nbsp;</div>
-            <div>${texts[1]}</div>
-        </div>
-        </div>`
-    }
-    return str;
 }
 
 const itemTipText = (item: any) => {

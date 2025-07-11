@@ -55,7 +55,11 @@ export enum DKSActionTypeEnum {
 export enum MagKeyAdvanceTypeEnum {
   DKS = 1,
   MT = 2,
-  TGL = 3
+  TGL = 3,
+  MPT = 4,
+  END = 5,
+  SOCD = 6,
+  MACRO = 7
 }
 
 export enum OrderTypeEnum {
@@ -207,13 +211,13 @@ export enum AdvKeyTypeEnum {
 }
 
 export enum KeyMappingType {
-    KeyBoard = 0,
-    Consumer = 1,
-    GameControls = 2,
-    SportControls = 3,
-    VRControls = 4,
-    GenericDesktop = 5,
-    MultiAndMix = 6,
-    Mouse = 7,
-    SparkLinkKbFun = 15,
+  KeyBoard = 0,
+  Consumer = 1,
+  GameControls = 2,
+  SportControls = 3,
+  VRControls = 4,
+  GenericDesktop = 5,
+  MultiAndMix = 6,
+  Mouse = 7,
+  SparkLinkKbFun = 15,
 }

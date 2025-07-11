@@ -70,11 +70,11 @@
                         <template #default>
                             <div class="py-3">
                                 <div class="d-flex p-3 ai-center c-p" v-for="item in TitleList"
-                                    @click="advTypeClick(item.id, key.keyData)"
+                                    @click="useAdvKey.advTypeClick(item.id, key.keyData)"
                                     :class="{ 'bg-select': item.id === titleid }" style="height: 36px;">
                                     <div class="d-flex jc-center ai-center mx-3"
-                                        style="border-right: 3px solid #ea5413; width: 32px;">
-                                        <img :src="item.src" class="mr-4" style="width: 24px;" />
+                                        style="border-right: 3px solid #ffffff; width: 32px;">
+                                        <img :src="item.src" class="mr-4" style="filter: drop-shadow(#ffffff 99999px 0);position: relative;left: -99999px;color:#ffffff;width: 24px;" />
                                     </div>
                                     <div class="text-white-1">
                                         <span class="text-warn">{{ item.title }}：</span>{{ item.des }}
@@ -84,40 +84,54 @@
                         </template>
                     </el-popover>
 
-                    <el-tooltip effect="light" v-for="key in line.keys" v-else placement="top" popper-class="tip_font" :enterabl="false" :visible="useKey.isKeyHover(key.index)">
+                    <el-tooltip effect="light" v-for="key in line.keys" v-else placement="top" popper-class="tip_font"
+                        :enterabl="false" :visible="useKey.isKeyHover(key.index)">
                         <template #content>
                             <div style="display: grid;">
-                                <span>{{ $t('performance.keyTip.travelMode') }}: {{ $t(usePerformance.keyTravelModeText(key.keyData?.keyInfo).valueOf()) }}</span>
-                                <span>{{ $t('performance.keyTip.touchTravel') }}: {{ key.keyData?.keyInfo.touchTravel }}mm</span>
+                                <span>{{ $t('performance.keyTip.travelMode') }}: {{
+                                    $t(usePerformance.keyTravelModeText(key.keyData?.keyInfo).valueOf()) }}</span>
+                                <span>{{ $t('performance.keyTip.touchTravel') }}: {{ key.keyData?.keyInfo.touchTravel
+                                    }}mm</span>
                                 <span v-show="key.keyData?.keyInfo.isQuickTouch">
-                                    {{ $t('performance.keyTip.pressTravel') }}: {{ key.keyData?.keyInfo.quickTouchPress }}mm
+                                    {{ $t('performance.keyTip.pressTravel') }}: {{ key.keyData?.keyInfo.quickTouchPress
+                                    }}mm
                                 </span>
                                 <span v-show="key.keyData?.keyInfo.isQuickTouch">
-                                    {{ $t('performance.keyTip.releaseTravel') }}: {{ key.keyData?.keyInfo.quickTouchRelease }}mm
+                                    {{ $t('performance.keyTip.releaseTravel') }}: {{
+                                        key.keyData?.keyInfo.quickTouchRelease }}mm
                                 </span>
                             </div>
                         </template>
                         <div :i="key.index" class="item d-flex ai-center jc-center c-p p-r" @click="keyClick(key.index)"
                             :class="[`d-flex p-2 pl-3 ${key.style}`, useKey.keyColor(key.keyData), useKey.isSelected(key.index)]"
                             @contextmenu.prevent @mousedown="handleMouseDown"
-                            @mouseenter="useKey.keyHover(key.index, true)" @mouseleave="useKey.keyHover(key.index, false)">
+                            @mouseenter="useKey.keyHover(key.index, true)"
+                            @mouseleave="useKey.keyHover(key.index, false)">
                             <div :class="[`text-white-1`, keyTextColorClass(key.keyData)]"
-                                :style="`z-index:1;word-wrap: break-word;overflow: hidden;text-align: center;${keyTextColorStyle(key.keyData)}`">                                
+                                :style="`z-index:1;word-wrap: break-word;overflow: hidden;text-align: center;${keyTextColorStyle(key.keyData)}`">
                                 <span v-if="useKey.isCombinKey(key.keyData)" style="word-wrap: break-word;">{{
                                     $t('key.menu_3') }}</span>
                                 <span v-else style="word-wrap: break-word;" v-html="useKey.keyText(key.keyData)"></span>
                                 <div v-if="usePerformance.state.menuid == 1 || usePerformance.state.menuid == 2">
-                                    <span class="key_green" v-if="usePerformance.isSingleTouch(key.keyData) || usePerformance.isQuickTouch(key.keyData)">{{ key.keyData?.keyInfo.touchTravel }}</span>
-                                    <span class="key_blue" v-if="usePerformance.isQuickTouch(key.keyData)">{{ key.keyData?.keyInfo.quickTouchPress }}</span>
-                                    <span class="key_red" v-if="usePerformance.isQuickTouch(key.keyData)">{{ key.keyData?.keyInfo.quickTouchRelease }}</span>
+                                    <span class="key_green"
+                                        v-if="usePerformance.isSingleTouch(key.keyData) || usePerformance.isQuickTouch(key.keyData)">{{
+                                            key.keyData?.keyInfo.touchTravel }}</span>
+                                    <span class="key_blue" v-if="usePerformance.isQuickTouch(key.keyData)">{{
+                                        key.keyData?.keyInfo.quickTouchPress }}</span>
+                                    <span class="key_red" v-if="usePerformance.isQuickTouch(key.keyData)">{{
+                                        key.keyData?.keyInfo.quickTouchRelease }}</span>
                                 </div>
                                 <div v-if="usePerformance.state.menuid == 3">
                                     <span class="key_green">{{ key.keyData?.keyInfo.deadPress }}</span>
                                     <span class="key_blue">{{ key.keyData?.keyInfo.deadRelease }}</span>
                                 </div>
                                 <div v-if="usePerformance.state.menuid == 4">
-                                    <span class="key_green" v-if="usePerformance.isAdjusting && key.keyData?.keyInfo.adjustingSuccess">{{ key.keyData?.keyInfo.adjustingADC }}</span>
-                                    <span class="key_red" v-if="usePerformance.isAdjusting && !key.keyData?.keyInfo.adjustingSuccess">{{ key.keyData?.keyInfo.adjustingADC }}</span>
+                                    <span class="key_green"
+                                        v-if="usePerformance.isAdjusting && key.keyData?.keyInfo.adjustingSuccess">{{
+                                            key.keyData?.keyInfo.adjustingADC }}</span>
+                                    <span class="key_red"
+                                        v-if="usePerformance.isAdjusting && !key.keyData?.keyInfo.adjustingSuccess">{{
+                                            key.keyData?.keyInfo.adjustingADC }}</span>
                                 </div>
                             </div>
                         </div>
@@ -216,29 +230,6 @@ const mask_width = computed(() => (`${Math.abs(positionList.end_x - positionList
 const mask_height = computed(() => (`${Math.abs(positionList.end_y - positionList.start_y)}px;`))
 const mask_left = computed(() => (`${Math.min(positionList.start_x, positionList.end_x) - positionList.box_screen_left}px;`))
 const mask_top = computed(() => (`${Math.min(positionList.start_y, positionList.end_y) - positionList.box_screen_top}px;`))
-
-const advTypeClick = (id: number, key: KeyTableData | undefined) => {
-    if (useKey.advanceKeys != undefined && useKey.advanceKeys?.length >= 40) {
-        ElMessage({
-            showClose: true,
-            message: '最多只能添加40个高级键。',
-            type: 'warning'
-        });
-        return;
-    }
-    useAdvKey.setTitleid(id);
-    switch (id) {
-        case 1:
-            useKey.addDKS(key);
-            break;
-        case 2:
-            useKey.addMT(key);
-            break;
-        case 3:
-            useKey.addTGL(key);
-            break;
-    }
-}
 
 onMounted(async () => {
     await useKey.init();
@@ -366,8 +357,8 @@ const handleOpen = (e: boolean, id: string) => {
 const keyClick = async (index: number) => {
     if (positionList.is_selected) return;
 
-    if (meunid.value == 1 || (meunid.value == 5 && useLight.state.lightProps.light == LightEffectEnum.SelfDefine)) {
-        if (meunid.value == 1) {
+    if (meunid.value == 1 || meunid.value == 3 || (meunid.value == 5 && useLight.state.lightProps.light == LightEffectEnum.SelfDefine)) {
+        if (meunid.value == 1 || meunid.value == 3) {
             useKey.unSelected();
         }
         useKey.keyClick(index);
@@ -496,28 +487,29 @@ const shortcutStrKey = (key: String[] | undefined) => {
     background: #4743A7;
     opacity: 0.8;
 }
-.key_green{
-  position: absolute;
-  top :0px;
-  left: 1px;
-  color: rgb(0, 158, 0);
-  font-size: 80%;
+
+.key_green {
+    position: absolute;
+    top: 0px;
+    left: 1px;
+    color: rgb(0, 158, 0);
+    font-size: 80%;
 }
 
-.key_blue{
-  position: absolute;
-  bottom: 1px;
-  left: 1px;
-  color: rgb(0, 125, 224); 
-  font-size: 80%; 
+.key_blue {
+    position: absolute;
+    bottom: 1px;
+    left: 1px;
+    color: rgb(0, 125, 224);
+    font-size: 80%;
 }
 
-.key_red{
-  position: absolute;
-  bottom :1px;
-  right: 2px;
-  color: rgb(255, 115, 0);
-  font-size: 80%; 
+.key_red {
+    position: absolute;
+    bottom: 1px;
+    right: 2px;
+    color: rgb(255, 115, 0);
+    font-size: 80%;
 }
 
 .key {

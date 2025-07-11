@@ -23,46 +23,12 @@ export const useKeyStore = defineStore("keyinfo_rk_c61", () => {
     const rk_c61 = ref<RK_C61>();
 
     const { t } = useI18n();
-    const selectAdvancedKeyIndex = ref(-1);
-    const advanceKeys = ref<Array<MagKeyAdvanced>>();
     const macros = ref<Macros>();
     const macro = ref<Macro>();
     const profile = ref<Profile>();
     const keyState = ref<KeyState>();
     const keyMatrixLayer = ref<KeyMatrixLayer>(KeyMatrixLayer.FN0);
     const keyMatrixTable = ref<MatrixTable>(MatrixTable.WIN);
-
-    const deleteAdvKey = (magKey: MagKeyAdvanced) => {
-        if (advanceKeys.value != undefined) {
-            let index = advanceKeys.value.findIndex((item) => item === magKey);
-            if (index !== -1) {
-                advanceKeys.value.splice(index, 1);
-            }
-            let i: number;
-
-            for (i = 0; i < advanceKeys.value.length; i++) {
-                advanceKeys.value[i].index = i;
-            }
-
-            // if (rk_c61.value != undefined && keyboard.keyboardDefine != undefined) {
-            //   for (i = 0; i < rk_c61.value.data.keyMatrixData[KeyMatrixLayer.Nomal].length; i++) {
-            //     let keyData = rk_c61.value.data.keyMatrixData[KeyMatrixLayer.Nomal][i];
-            //     if (keyData != undefined && keyData.keyMappingData.keyMappingType == KeyMappingType.MageAxisDKS) {
-            //       if (keyData.keyMappingData.param1 == magKey.index) {
-            //         keyData.keyMappingData.keyStr = keyboard.keyboardDefine.keyText[keyData.keyCode];
-            //         keyData.keyMappingData.keyCode = keyData.keyCode;
-            //         (keyData.keyMappingData.keyMappingType = KeyMappingType.Keyboard), (keyData.keyMappingData.param1 = keyData.keyCode);
-            //         keyData.keyMappingData.param2 = 0x00;
-            //         keyData.keyMappingData.param3 = 0x00;
-            //         keyData.keyMappingData.keyRaw = ((KeyMappingType.Keyboard << 24) & 0xff000000) | ((keyData.keyCode << 16) & 0x00ff0000);
-            //       } else if (keyData.keyMappingData.param1 > magKey.index) {
-            //         keyData.keyMappingData.param1 = keyData.keyMappingData.param1 - 1;
-            //       }
-            //     }
-            //   }
-            // }
-        }
-    };
 
     const getKeyData = (index: number): KeyTableData | undefined => {
         let keyData = undefined;
@@ -615,31 +581,31 @@ export const useKeyStore = defineStore("keyinfo_rk_c61", () => {
     const WASD = [getIndex(2, 2), getIndex(3, 1), getIndex(3, 2), getIndex(3, 3)];
     const DIGIT = [getIndex(1, 1), getIndex(1, 2), getIndex(1, 3), getIndex(1, 4), getIndex(1, 5), getIndex(1, 6), getIndex(1, 7), getIndex(1, 8), getIndex(1, 9), getIndex(1, 10)];
     const LETTER = [getIndex(2, 1),
-                    getIndex(2, 2),
-                    getIndex(2, 3),
-                    getIndex(2, 4),
-                    getIndex(2, 5),
-                    getIndex(2, 6),
-                    getIndex(2, 7),
-                    getIndex(2, 8),
-                    getIndex(2, 9),
-                    getIndex(2, 10),
-                    getIndex(3, 1),
-                    getIndex(3, 2),
-                    getIndex(3, 3),
-                    getIndex(3, 4),
-                    getIndex(3, 5),
-                    getIndex(3, 6),
-                    getIndex(3, 7),
-                    getIndex(3, 8),
-                    getIndex(3, 9),
-                    getIndex(4, 2),
-                    getIndex(4, 3),
-                    getIndex(4, 4),
-                    getIndex(4, 5),
-                    getIndex(4, 6),
-                    getIndex(4, 7),
-                    getIndex(4, 8)];
+    getIndex(2, 2),
+    getIndex(2, 3),
+    getIndex(2, 4),
+    getIndex(2, 5),
+    getIndex(2, 6),
+    getIndex(2, 7),
+    getIndex(2, 8),
+    getIndex(2, 9),
+    getIndex(2, 10),
+    getIndex(3, 1),
+    getIndex(3, 2),
+    getIndex(3, 3),
+    getIndex(3, 4),
+    getIndex(3, 5),
+    getIndex(3, 6),
+    getIndex(3, 7),
+    getIndex(3, 8),
+    getIndex(3, 9),
+    getIndex(4, 2),
+    getIndex(4, 3),
+    getIndex(4, 4),
+    getIndex(4, 5),
+    getIndex(4, 6),
+    getIndex(4, 7),
+    getIndex(4, 8)];
 
     const isAnyKeyChecked = (): boolean => {
         if (rk_c61.value != undefined) {
@@ -857,8 +823,8 @@ export const useKeyStore = defineStore("keyinfo_rk_c61", () => {
                 keySetStr(key.keyData);
             }
             rk_c61.value?.setKeyValues([
-                { 
-                    keyCode: key.keyData.keyInfo.keyValue, 
+                {
+                    keyCode: key.keyData.keyInfo.keyValue,
                     value: key.keyData.getLayoutMapping(layout as LayoutTypeEnum),
                     layout: layout as LayoutTypeEnum
                 }]);
@@ -919,8 +885,8 @@ export const useKeyStore = defineStore("keyinfo_rk_c61", () => {
         if (keyInfo != null) {
             kState.keyData.setKeyInfo(keyInfo);
             rk_c61.value?.setKeyValues([
-                { 
-                    keyCode: kState.keyData.keyInfo.keyValue, 
+                {
+                    keyCode: kState.keyData.keyInfo.keyValue,
                     value: kState.keyData.getLayoutMapping(layout as LayoutTypeEnum),
                     layout: layout as LayoutTypeEnum
                 }]);
@@ -940,16 +906,16 @@ export const useKeyStore = defineStore("keyinfo_rk_c61", () => {
         if (keyCode != undefined) {
             let layout: any = keyMatrixLayer.value;
             key.keyData.setLayoutMapping(keyCode, layout as LayoutTypeEnum);
-            rk_c61.value?.setKeyValues([{ 
-                    keyCode: key.keyData.keyInfo.keyValue, 
-                    value: key.keyData.getLayoutMapping(layout as LayoutTypeEnum),
-                    layout: layout as LayoutTypeEnum
-                }]);
+            rk_c61.value?.setKeyValues([{
+                keyCode: key.keyData.keyInfo.keyValue,
+                value: key.keyData.getLayoutMapping(layout as LayoutTypeEnum),
+                layout: layout as LayoutTypeEnum
+            }]);
             //key.KeyData.keyMappingData.keyStr = keyboard.keyboardDefine.keyText[keyCode];
-                // let table = getSelectedTable();
-                // if (profile.value != undefined) {
-                //   profile.value.keyTypes[keyMatrixTable.value][keyMatrixLayer.value][key.index] = table;
-                // }
+            // let table = getSelectedTable();
+            // if (profile.value != undefined) {
+            //   profile.value.keyTypes[keyMatrixTable.value][keyMatrixLayer.value][key.index] = table;
+            // }
             //keySetStr(key.KeyData);
 
             // KeyMatrixData.value[keyMatrixTable.value][keyMatrixLayer.value]?.setKeyMapping(key.index, key.KeyData.keyMappingData);
@@ -1155,49 +1121,6 @@ export const useKeyStore = defineStore("keyinfo_rk_c61", () => {
         // rk_m87.value?.setProfile(0);
     }
 
-    const addTGL = (key: KeyTableData | undefined) => {
-        if (advanceKeys.value != undefined) {
-            // actionTGL.value = new MagKeyTGL();
-            // actionTGL.value.index = advanceKeys.value.length;
-            // actionTGL.value.keyCode = KeyCodeEnum.None;
-            // keyData.value = key;
-        }
-    };
-
-    const addMT = (key: KeyTableData | undefined) => {
-        if (advanceKeys.value != undefined) {
-            // actionMT.value = new MagKeyMT();
-            // actionMT.value.index = advanceKeys.value.length;
-            // actionMT.value.longPressKeyCode = KeyCodeEnum.None;
-            // actionMT.value.shortPressKeyCode = KeyCodeEnum.None;
-            // actionMT.value.tapTime = 10;
-            // keyData.value = key;
-        }
-    };
-
-    const addDKS = (key: KeyTableData | undefined) => {
-        if (advanceKeys.value != undefined) {
-            // actionDKS.value = new MagKeyDKS();
-            // actionDKS.value.index = advanceKeys.value.length;
-            // let index: number;
-            // for (index = 0; index < actionDKS.value.dksActions.length; index++) {
-            //   actionDKS.value.dksActions[index].keyCode = KeyCodeEnum.None;
-            //   actionDKS.value.dksActions[index].downAction1 = 0;
-            //   actionDKS.value.dksActions[index].downAction2 = 0;
-            //   actionDKS.value.dksActions[index].upAction1 = 0;
-            //   actionDKS.value.dksActions[index].upAction2 = 0;
-            // }
-            // keyData.value = key;
-        }
-    };
-
-    const unSelectAdvanced = () => {
-        selectAdvancedKeyIndex.value = -1;
-    };
-
-    const selectAdvanced = (key: MagKeyAdvanced) => {
-        selectAdvancedKeyIndex.value = key.index;
-    };
 
     const selectWASD = () => {
         for (let i = 0; i < WASD.length; i++) {
@@ -1220,10 +1143,62 @@ export const useKeyStore = defineStore("keyinfo_rk_c61", () => {
         }
     };
 
+    const itemText = (item: any) => {
+        if (item == null) return ''
+        if (item.type == MatrixTable.MAC) return item.text[0] as string;
+        if (item.tip != '') return t(item.text[0] as string);
+        if ((item.key >> 24) == 8) return t(item.text[0] as string);
+
+        let str = '';
+        let i = 0;
+        let texts = [];
+        for (i = 0; i < item.text.length; i++) {
+            str = `${str}${item.text[i]}`
+            if (item.text[i] != '' && item.text[i] != undefined) {
+                texts.push(item.text[i])
+            }
+        }
+        if (texts.length == 4) {
+            str = `<div class='d-flex'>
+        <div>
+            <div>${texts[1]}</div>
+            <div>${texts[0]}</div>
+        </div>
+        <div class='ml-3'>
+            <div>${texts[3]}</div>
+            <div>${texts[2]}</div>
+        </div>
+        </div>`
+        } else if (texts.length == 3) {
+            str = `<div class='d-flex'>
+        <div>
+            <div>${texts[1]}</div>
+            <div>${texts[0]}</div>
+        </div>
+        <div class='ml-3'>
+            <div>&nbsp;</div>
+            <div>${texts[2]}</div>
+        </div>
+        </div>`
+        } else if (texts.length == 2) {
+            str = `<div class='d-flex'>
+        <div>
+            <div>${texts[0]}</div>
+            <div>&nbsp;</div>
+        </div>
+          <div class='ml-3'>
+            <div>&nbsp;</div>
+            <div>${texts[1]}</div>
+        </div>
+        </div>`
+        }
+        return str;
+    }
+
     return {
         profile,
         state,
-        advanceKeys,
+        keyState,
         keyMatrixLayer,
         keyMatrixTable,
         init,
@@ -1254,15 +1229,10 @@ export const useKeyStore = defineStore("keyinfo_rk_c61", () => {
         confirmSetMacro,
         isMacroSelected,
         clickMacro,
-        addDKS,
-        addMT,
-        addTGL,
-        unSelectAdvanced,
-        selectAdvanced,
-        deleteAdvKey,
         isAnyKeyChecked,
         selectWASD,
         selectDIGIT,
-        selectLETTER
+        selectLETTER,
+        itemText,
     };
 });

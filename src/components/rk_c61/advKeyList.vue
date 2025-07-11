@@ -5,37 +5,40 @@
                 <div style="height: 30vh;">
                     <el-scrollbar>
                         <div style="width: 100%;">
-                            <div class="d-flex mt-4 ml-5 flex-wrap">
-                                <div v-for="advKey in advanceKeys">
-                                    <div class="d-flex m-2 b-grey br-1 item" :class="[isSelectStyle(advKey)]"
-                                        @mouseover="useKey.selectAdvanced(advKey)"
-                                        @mouseout="useKey.unSelectAdvanced()">
-                                        <div class="d-flex" @click="advKeyClick(advKey)">
-                                            <div class="mx-3 m-2"
+                            <div class="d-flex flex-wrap">
+                                <div v-for="item in useAdvKey.$state.advanceKeys">
+                                    <div class="d-flex m-2 b-grey br-1 item" :class="[item.isSelected()]"
+                                        @mouseover="useAdvKey.selectAdvanced(item)"
+                                        @mouseout="useAdvKey.unSelectAdvanced()">
+                                        <div class="d-flex c-p" @click="useAdvKey.advKeyClick(item)">
+                                            <div class="d-flex p-2 ai-center jc-center"
                                                 style="border-right: 3px solid #ea5413; width: 32px;height: 32px;">
-                                                <img :src="advKeyIcon(advKey.advType)" class="mr-4" />
+                                                <img :src="advKeyIcon(item.advType)" />
                                             </div>
-                                            <div class="d-flex ai-center jc-center m-2 bg-grey"
-                                                v-if="isShowKey(advKey, 0)" style="width: 32px;height: 32px">
-                                                {{ key1(advKey) }}
+                                            <div v-if="item.advType == MagKeyAdvanceTypeEnum.MACRO && (item as AdvKeyMacro).macro != null"
+                                                class="d-flex ai-center jc-center m-2 bg-grey p-2">
+                                                {{ item.data.name }}
                                             </div>
-                                            <div class="d-flex ai-center jc-center m-2 bg-grey"
-                                                v-if="isShowKey(advKey, 1)" style="width: 32px;height: 32px">
-                                                {{ key2(advKey) }}
+                                            <div v-else-if="item.advType == MagKeyAdvanceTypeEnum.SOCD && (item as AdvKeySOCD).value == 1"
+                                                v-for="key in item.data.slice(0, 2)"
+                                                class="d-flex ai-center jc-center m-2 bg-grey"
+                                                style="width: 32px;height: 32px;overflow: hidden;">
+                                                <span
+                                                    style="word-wrap: break-word;filter: drop-shadow(#6a6a77 99999px 0);position: relative;left: -99999px;color:#6a6a77"
+                                                    v-html="useKey.itemText(key.key)"></span>
                                             </div>
-                                            <div class="d-flex ai-center jc-center m-2 bg-grey"
-                                                v-if="isShowKey(advKey, 2)" style="width: 32px;height: 32px">
-                                                {{ key3(advKey) }}
-                                            </div>
-                                            <div class="d-flex ai-center jc-center m-2 bg-grey"
-                                                v-if="isShowKey(advKey, 3)" style="width: 32px;height: 32px">
-                                                {{ key4(advKey) }}
+                                            <div v-else v-for="key in item.data"
+                                                class="d-flex ai-center jc-center m-2 bg-grey"
+                                                style="width: 32px;height: 32px;overflow: hidden;">
+                                                <span
+                                                    style="word-wrap: break-word;filter: drop-shadow(#6a6a77 99999px 0);position: relative;left: -99999px;color:#6a6a77"
+                                                    v-html="useKey.itemText(key.key)"></span>
                                             </div>
                                         </div>
                                         <div class="d-flex ai-center jc-center"
                                             style="border-left: 1px solid #929292; ">
-                                            <div class="m-3 c-p" @click="advKeyDelete(advKey)">
-                                                <img src="../assets/images/title/del.png" />
+                                            <div class="m-2 c-p" @click="advKeyDelete(item)">
+                                                <img src="../../assets/images/title/del.png" style="width: 24px;" />
                                             </div>
                                         </div>
                                     </div>
@@ -71,12 +74,12 @@ import { MatrixTable, MagKeyAdvanceTypeEnum } from "@/keyboard/sparklink/enum";
 import { storeToRefs } from "pinia";
 
 import { MagKeyAdvanced, MagKeyDKS, MagKeyMT, MagKeyTGL } from "@/keyboard/sparklink/rk_c61/advanceKeys";
+import { AdvKeyMacro, AdvKeySOCD, AdvKey } from "@/keyboard/sparklink/rk_c61/AdvKeys";
 const { t } = useI18n();
 
 const useKey = useKeyStore();
 const useAdvKey = useAdvKeyStore();
 
-const { advanceKeys } = storeToRefs(useKey);
 const { titleid, TitleList } = storeToRefs(useAdvKey);
 
 const isShowKey = (key: MagKeyAdvanced, id: number): boolean => {
@@ -126,8 +129,8 @@ const isSelectStyle = (key: MagKeyAdvanced) => {
         return ''
     }
 }
-const advKeyDelete = (key: MagKeyAdvanced) => {
-    useKey.deleteAdvKey(key);
+const advKeyDelete = (key: AdvKey) => {
+    useAdvKey.deleteAdvKey(key);
 }
 onMounted(async () => {
     await useKey.init();
@@ -140,95 +143,6 @@ onBeforeUnmount(() => {
 const clickMacro = (obj: Macro) => {
     // useKey.clickMacro(obj)
     // useKey.confirmSetMacro()
-}
-
-const itemText = (item: any) => {
-    if (item.type == MatrixTable.MAC) return item.text[0] as string;
-    if (item.tip != '') return t(item.text[0] as string);
-    if ((item.key >> 24) == 8) return t(item.text[0] as string);
-
-    let str = '';
-    let i = 0;
-    let texts = [];
-    for (i = 0; i < item.text.length; i++) {
-        str = `${str}${item.text[i]}`
-        if (item.text[i] != '' && item.text[i] != undefined) {
-            texts.push(item.text[i])
-        }
-    }
-    if (texts.length == 4) {
-        str = `<div class='d-flex'>
-        <div>
-            <div>${texts[1]}</div>
-            <div>${texts[0]}</div>
-        </div>
-        <div class='ml-3'>
-            <div>${texts[3]}</div>
-            <div>${texts[2]}</div>
-        </div>
-        </div>`
-    } else if (texts.length == 3) {
-        str = `<div class='d-flex'>
-        <div>
-            <div>${texts[1]}</div>
-            <div>${texts[0]}</div>
-        </div>
-        <div class='ml-3'>
-            <div>&nbsp;</div>
-            <div>${texts[2]}</div>
-        </div>
-        </div>`
-    } else if (texts.length == 2) {
-        str = `<div class='d-flex'>
-        <div>
-            <div>${texts[0]}</div>
-            <div>&nbsp;</div>
-        </div>
-          <div class='ml-3'>
-            <div>&nbsp;</div>
-            <div>${texts[1]}</div>
-        </div>
-        </div>`
-    }
-    return str;
-}
-
-const itemTipText = (item: any) => {
-    if (item.tip != '') return t(item.tip);
-    return '';
-}
-
-const advKeyClick = (key: MagKeyAdvanced) => {
-    let index = 0;
-    let isJumpEditor = true;
-
-    if (advanceKeys.value != undefined) {
-        for (index = 0; index < advanceKeys.value.length; index++) {
-            advanceKeys.value[index].isSelected = false;
-        }
-
-        key.isSelected = true;
-
-        // for (index = 0; index < state.value.keyState.length; index++) {
-        //     if ((state.value.keyState[index] as any).selected) {
-        //         let keyData = (state.value.keyState[index] as any).KeyData as KeyTableData;
-        //         if (keyData != undefined) {
-
-        //             if (keyData.keyMappingData.keyMappingType != KeyMappingType.MageAxisDKS || 
-        //                 (keyData.keyMappingData.keyMappingType == KeyMappingType.MageAxisDKS && keyData.keyMappingData.param1 != key.index)) {
-        //                 keyData.keyMappingData.keyMappingType = KeyMappingType.MageAxisDKS;
-        //                 keyData.keyMappingData.param1 = key.index;
-        //                 keyData.keyMappingData.param2 = 0x00;
-        //                 keyData.keyMappingData.param3 = 0x00;
-        //                 keyData.keyMappingData.keyRaw = KeyMappingType.MageAxisDKS << 24 | key.index << 16;
-        //                 isJumpEditor = false;
-        //             }
-        //         }
-        //     }
-        // }
-    }
-
-    //if (isJumpEditor) advKey.editAdvKey(key);
 }
 
 </script>

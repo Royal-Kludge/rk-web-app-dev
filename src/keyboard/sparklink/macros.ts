@@ -282,6 +282,10 @@ export class Macros {
         this.macroList = new Array<Macro>();
     }
 
+    find(index: any): Macro | undefined {
+        return this.macroList.find(obj => obj.index === index);
+    }
+
     add(macro: Macro) {
         macro.index = this.macroList.length;
         this.macroList.push(macro);
