@@ -3,7 +3,7 @@ import type { Macros } from '@/keyboard/sparklink/macros';
 import { LOG_TYPE, Logging } from '@/common/logging';
 import type { Axis, KeyboardState, KeyCmdValue, KeyInfo, LedColor, LightSetting, PerformanceData } from '../interface';
 import type { KeyCodeEnum, KeyDefineEnum } from '@/common/keyCode_sparklink';
-import { LightDirectionEnum, LightEffectEnum, LightModeEnum, LightSwitchEnum, SuperResponseEnum, type LayoutTypeEnum, type MatrixTable } from '../enum';
+import { LightDirectionEnum, LightEffectEnum, LightModeEnum, LightSwitchEnum, OrderTypeEnum, SuperResponseEnum, type LayoutTypeEnum, type MatrixTable } from '../enum';
 import { KeyInfoData } from '../keyInfoData';
 import type { KeyTableData } from '../keyTableData';
 
@@ -78,6 +78,7 @@ export class FwVersion {
 }
 
 export class RK_C61_Data {
+    isSynced: boolean = false;
     keyboardName?: string;
     protocolVersion?: string;
     boardId?: BoardId;
@@ -145,6 +146,7 @@ export abstract class RK_C61 extends Protocol {
     data: RK_C61_Data = new RK_C61_Data();
     
     abstract onGetReport(reportId: number, data: DataView): Promise<void>;
+    abstract cmd(order: OrderTypeEnum, arg: number): Promise<void>;
     abstract loadData(): Promise<void>;
     abstract getAdustingData(type: number, page: number): Promise<void>;
     abstract getMacros(): Promise<void>;
@@ -157,6 +159,11 @@ export abstract class RK_C61 extends Protocol {
     abstract setAdjustingOn(): Promise<void>;
     abstract setAdjustingOff(): Promise<void>;
     abstract setDks(keyInfos: Array<KeyInfo>): Promise<void>;
+    abstract setMt(keyInfos: Array<KeyInfo>): Promise<void>;
+    abstract setTgl(keyInfos: Array<KeyInfo>): Promise<void>;
+    abstract setMpt(keyInfos: Array<KeyInfo>): Promise<void>;
+    abstract setEnd(keyInfos: Array<KeyInfo>): Promise<void>;
+    abstract setSocd(keyInfos: Array<KeyInfo>): Promise<void>;
     abstract setMacros(): Promise<void>;
     
     callback = (e: HIDInputReportEvent) => this.processKeyboardReport(e);

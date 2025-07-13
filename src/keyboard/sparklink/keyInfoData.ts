@@ -53,6 +53,19 @@ export class KeyInfoData {
         return this.keyInfoArray[row][col];
     }
 
+    getKeyInfoByKey(keyCode: KeyDefineEnum): KeyInfo | null {
+        for (let i = 0; i < 6; i++) {
+            for (let j = 0; j < 21; j++) {
+                let keyInfo = this.keyInfoArray[i][j];
+                if (keyInfo != undefined && keyInfo != null && keyInfo.keyValue == keyCode) {
+                    return keyInfo;
+                }
+            }
+        }
+
+        return null
+    }
+
     getKeyDefValue(row: number, col: number): KeyDefineEnum {
         if (this.keyInfoArray[row][col]!= null) {
             return this.keyInfoArray[row][col].keyValue;

@@ -1,16 +1,17 @@
-import { MagKeyAdvanceTypeEnum } from "@/keyboard/sparklink/enum";
+import { KeyDefineEnum } from "@/common/keyCode_sparklink";
+import { AdvKeyTypeEnum } from "@/keyboard/sparklink/enum";
 import type { KeyTableData } from "@/keyboard/sparklink/keyTableData";
 import { Macro } from '@/keyboard/sparklink/macros';
 
 export abstract class AdvKey {
     index: number;
-    key: KeyTableData | undefined;
-    advType: MagKeyAdvanceTypeEnum;
+    keyTable: KeyTableData | undefined;
+    advType: AdvKeyTypeEnum;
     data: any;
     IsSelected: boolean;
-    constructor(type: MagKeyAdvanceTypeEnum) {
+    constructor(type: AdvKeyTypeEnum) {
         this.advType = type;
-        this.key = {} as KeyTableData;
+        this.keyTable = undefined;
         this.index = 0;
         this.IsSelected = false;
     }
@@ -25,7 +26,7 @@ export class AdvKeyMacro extends AdvKey {
     interval: number = 0;
     macroIndex: number = 0;
     constructor(data: Macro | undefined) {
-        super(MagKeyAdvanceTypeEnum.MACRO);
+        super(AdvKeyTypeEnum.MACRO);
         this.setMacro(data);
     }
     setMacro(data: Macro | undefined) {
@@ -39,7 +40,7 @@ export class AdvKeyMacro extends AdvKey {
 
 export class SOCDType {
     index: number;
-    key: any = null;
+    key: KeyDefineEnum = KeyDefineEnum.NONE;
     IsSelected: boolean = false;
     constructor(index: number) {
         this.index = index;
@@ -50,11 +51,11 @@ export class SOCDType {
 };
 export class AdvKeySOCD extends AdvKey {
     list: Array<ENDType>;
-    value: number = 1;
-    mode: number = 1;
+    value: number = 0;
+    mode: number = 0;
     selectedInedx: number = 0;
     constructor(data: Array<SOCDType>) {
-        super(MagKeyAdvanceTypeEnum.SOCD);
+        super(AdvKeyTypeEnum.SOCD);
         this.list = data;
         this.data = data;
         this.selectedSOCD(this.index);
@@ -74,7 +75,7 @@ export class AdvKeySOCD extends AdvKey {
 
 export class ENDType {
     index: number;
-    key: any = null;
+    key: KeyDefineEnum = KeyDefineEnum.NONE;
     IsSelected: boolean = false;
     constructor(index: number) {
         this.index = index;
@@ -88,7 +89,7 @@ export class AdvKeyEND extends AdvKey {
     value: number = 0;
     selectedInedx: number = 0;
     constructor(data: Array<ENDType>) {
-        super(MagKeyAdvanceTypeEnum.END);
+        super(AdvKeyTypeEnum.END);
         this.list = data;
         this.data = data;
         this.selectedEND(this.index);
@@ -108,11 +109,12 @@ export class AdvKeyEND extends AdvKey {
 
 export class MPTType {
     index: number;
-    key: any = null;
+    key: KeyDefineEnum = KeyDefineEnum.NONE;
     value: number = 0;
     IsSelected: boolean = false;
-    constructor(index: number) {
+    constructor(index: number, travel: number) {
         this.index = index;
+        this.value = travel;
     }
     isSelected(): string {
         return this.IsSelected ? 'selected' : '';
@@ -123,7 +125,7 @@ export class AdvKeyMPT extends AdvKey {
     value: number = 0;
     selectedInedx: number = 0;
     constructor(data: Array<MPTType>) {
-        super(MagKeyAdvanceTypeEnum.MPT);
+        super(AdvKeyTypeEnum.MPT);
         this.list = data;
         this.data = data;
         this.selectedMPT(this.index);
@@ -144,7 +146,7 @@ export class AdvKeyMPT extends AdvKey {
 
 export class TGLType {
     index: number;
-    key: any = null;
+    key: KeyDefineEnum = KeyDefineEnum.NONE;
     title: string;
     IsSelected: boolean = false;
     constructor(index: number, title: string) {
@@ -161,7 +163,7 @@ export class AdvKeyTGL extends AdvKey {
     value: number = 0;
     selectedInedx: number = 0;
     constructor(data: Array<TGLType>) {
-        super(MagKeyAdvanceTypeEnum.TGL);
+        super(AdvKeyTypeEnum.TGL);
         this.list = data;
         this.data = data;
         this.selectedTGL(this.index);
@@ -180,7 +182,7 @@ export class AdvKeyTGL extends AdvKey {
 }
 export class MTType {
     index: number;
-    key: any = null;
+    key: KeyDefineEnum = KeyDefineEnum.NONE;
     title: string;
     IsSelected: boolean = false;
     constructor(index: number, title: string) {
@@ -196,7 +198,7 @@ export class AdvKeyMT extends AdvKey {
     value: number = 0;
     selectedInedx: number = 0;
     constructor(data: Array<MTType>) {
-        super(MagKeyAdvanceTypeEnum.MT);
+        super(AdvKeyTypeEnum.MT);
         this.list = data;
         this.data = data;
         this.selectedMT(this.index);
@@ -216,7 +218,7 @@ export class AdvKeyMT extends AdvKey {
 
 export class DKSType {
     index: number;
-    key: any = null;
+    key: KeyDefineEnum = KeyDefineEnum.NONE;
     value: Array<boolean>;
     num: number = 0;
     IsSelected: boolean = false;
@@ -235,6 +237,13 @@ export class DKSType {
         if (this.value[5]) this.num |= 64;
         if (this.value[6]) this.num |= 128;
     }
+
+    setValue(num: number) {
+        this.num = num;
+        for (let i = 0; i < 8; i++) {
+            this.value[i] = !!(num & (1 << i));
+        }
+    }
     
     isSelected(): string {
         return this.IsSelected ? 'selected' : '';
@@ -245,7 +254,7 @@ export class AdvKeyDKS extends AdvKey {
     list: Array<DKSType>;
     selectedInedx: number = 0;
     constructor(data: Array<DKSType>) {
-        super(MagKeyAdvanceTypeEnum.DKS);
+        super(AdvKeyTypeEnum.DKS);
         this.list = data;
         this.data = data;
         this.selectedDKS(this.index);
@@ -258,7 +267,8 @@ export class AdvKeyDKS extends AdvKey {
         this.list[index].IsSelected = true;
         this.selectedInedx = index;
     }
-    setDKS(item: any) {
-        this.list[this.selectedInedx].key = item;
+    
+    setDKS(key: KeyDefineEnum) {
+        this.list[this.selectedInedx].key = key;
     }
 }

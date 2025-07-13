@@ -4,8 +4,8 @@
             <div @click="useAdvKey.$state.advKeyMPT.selectedMPT(item.index)"
                 :class="['boxBtn mr-3', item.isSelected()]"><span
                     style="word-wrap: break-word;filter: drop-shadow(#6a6a77 99999px 0);position: relative;left: -99999px;color:#6a6a77"
-                    v-html="useKey.itemText(item.key)"></span></div>
-            <div><el-slider style="width: 280px" :step="1" :max="20" :min="1" v-model="item.value" /></div>
+                    v-html="useAdvKey.keyText(item.key)"></span></div>
+            <div><el-slider style="width: 280px" :step="useAdvKey.minTravel" :max="useAdvKey.maxTravel" :min="useAdvKey.minTravel" v-model="item.value" /></div>
         </div>
     </div>
 </template>

@@ -25,10 +25,9 @@ export interface KeyboardState extends State {
 export interface KeyboardDefine extends HidDeviceDefine {
     image: string,
     keyText: Record<number, Array<String>>,
-    //keyMatrixLayer: Array<KeyMatrixLayer>,
-    //keyMatrixTable: Array<MatrixTable>,
-    //keyLayout: Record<number, Record<number, Array<number>>>,
     keyLayout: Array<Array<KeyInfo | null>>,
+    performance: PerformanceData,
+    light: LightSetting,
     protocol: (state: KeyboardState, device: HIDDevice) => Promise<IProtocol>
 }
 

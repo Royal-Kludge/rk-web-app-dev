@@ -39,6 +39,7 @@ import { storeToRefs } from "pinia";
 import { LOG_TYPE, Logging } from '@/common/logging';
 import { Profile, ps } from "@/keyboard/sparklink/profiles";
 import { useI18n } from 'vue-i18n';
+import type { PerformanceData } from '@/keyboard/sparklink/interface';
 
 const useMenu = useMenuStore();
 const { meunid } = storeToRefs(useMenu);
@@ -77,12 +78,17 @@ onBeforeUnmount(() => {
         rk_c61.value.removeEventListener("OnKeyValuesGotten", onKeyValuesGotten);
         rk_c61.value.removeEventListener("OnKeyRgbGotten", onKeyRgbGotten);
     }
+
+    useMenu.setMeunid(0);
 });
 
 const onKeyDefaultLayoutGotten = (event: any) => {
     dataLoading.value.defaultLayout = false;
     Logging.console(LOG_TYPE.SUCCESS, `Key default layout data Gotten!`);
-    keyboard.loadValue(event.detail);
+    if (rk_c61.value != undefined && !rk_c61.value.data.isSynced) {
+        keyboard.loadValue(event.detail);
+        rk_c61.value.data.isSynced = true;
+    }
 }
 
 const onKeyValuesGotten = (event: any) => {
@@ -94,21 +100,33 @@ const onKeyRgbGotten = (event: any) => {
     dataLoading.value.rgb = false;
     Logging.console(LOG_TYPE.SUCCESS, `Key rgb data Gotten!`);
 
-    // let str = JSON.stringify(event.detail.keyInfoArray);
-    // Logging.console(LOG_TYPE.INFO, str);
-
     if (rk_c61.value != undefined) {
+
+        // Logging.console(LOG_TYPE.INFO, JSON.stringify(rk_c61.value.data.keyInfoData.keyInfoArray));
+        // Logging.console(LOG_TYPE.INFO, JSON.stringify(rk_c61.value.data.performanceData));
+        // Logging.console(LOG_TYPE.INFO, JSON.stringify(rk_c61.value.data.lightSetting));
+
         ps.init(
-            t("Profile.default"),
+            `${t("Profile.namePrefix")} 1`,
             rk_c61.value.data.keyInfoData.keyInfoArray,
             rk_c61.value.data.performanceData,
             rk_c61.value.data.lightSetting,
         );
+
+        for (let i = 2; i <= 4; i++) {
+            let profile = Profile.default();
+            if (profile != undefined) {
+                profile.name = `${t("Profile.namePrefix")} ${i}`;
+                ps.add(profile);
+            }
+        }
+
+        ps.save();
     }
 }
 
 const onSynced = async (event: any) => {
-    if (rk_c61.value != undefined) {
+    if (rk_c61.value != undefined && !rk_c61.value.data.isSynced) {
         if (ps.load()) {
             let keyInfoArray = ps.list[ps.curIndex].keyInfoArray;
             for (let row = 0; row < keyInfoArray.length; row++) {
@@ -116,7 +134,8 @@ const onSynced = async (event: any) => {
                     rk_c61.value.data.keyInfoData.updateKeyInfo(row, col, keyInfoArray[row][col]);
                 }
             }
-            rk_c61.value.data.keyInfoData.keyInfoArray = ps.list[ps.curIndex].keyInfoArray;
+
+            //rk_c61.value.data.keyInfoData.keyInfoArray = ps.list[ps.curIndex].keyInfoArray;
             rk_c61.value.data.keyInfoData.globalTouchTravel = ps.list[ps.curIndex].performanceData.globalTouchTravel;
             rk_c61.value.data.keyInfoData.maxTouchTravel = ps.list[ps.curIndex].performanceData.maxTouchTravel;
             rk_c61.value.data.performanceData = ps.list[ps.curIndex].performanceData;
@@ -127,6 +146,8 @@ const onSynced = async (event: any) => {
             dataLoading.value.defaultLayout = false;
             dataLoading.value.values = false;
             dataLoading.value.rgb = false;
+
+            rk_c61.value.data.isSynced = true;
         } else {
             await rk_c61.value.loadData();
         }

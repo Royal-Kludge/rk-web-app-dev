@@ -24,7 +24,7 @@
             <div v-for="item in useAdvKey.$state.advKeyDKS.list"
                 @click="useAdvKey.$state.advKeyDKS.selectedDKS(item.index)" :class="['boxBtn', item.isSelected()]"><span
                     style="word-wrap: break-word;filter: drop-shadow(#6a6a77 99999px 0);position: relative;left: -99999px;color:#6a6a77"
-                    v-html="useKey.itemText(item.key)"></span>
+                    v-html="useAdvKey.keyText(item.key)"></span>
             </div>
         </div>
         <div class="bigBox">

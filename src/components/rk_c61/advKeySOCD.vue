@@ -13,7 +13,7 @@
                     :class="['boxBtn b-red', useAdvKey.$state.advKeySOCD.list[0]?.isSelected()]">
                     <span
                         style="word-wrap: break-word;filter: drop-shadow(#6a6a77 99999px 0);position: relative;left: -99999px;color:#6a6a77"
-                        v-html="useKey.itemText(useAdvKey.$state.advKeySOCD.list[0]?.key)"></span>
+                        v-html="useAdvKey.keyText(useAdvKey.$state.advKeySOCD.list[0]?.key)"></span>
                 </div>
                 <div class="m-3" style="width: 24px;"><img src="../../assets/images/menu/high/socd.png"
                         style="width: 24px;" /></div>
@@ -21,10 +21,10 @@
                     :class="['boxBtn b-blue', useAdvKey.$state.advKeySOCD.list[1]?.isSelected()]">
                     <span
                         style="word-wrap: break-word;filter: drop-shadow(#6a6a77 99999px 0);position: relative;left: -99999px;color:#6a6a77"
-                        v-html="useKey.itemText(useAdvKey.$state.advKeySOCD.list[1]?.key)"></span>
+                        v-html="useAdvKey.keyText(useAdvKey.$state.advKeySOCD.list[1]?.key)"></span>
                 </div>
             </div>
-            <div v-if="useAdvKey.$state.advKeySOCD.value == 2">
+            <div v-if="useAdvKey.$state.advKeySOCD.value == 1">
                 <div class="d-flex m-3 jc-center">
                     <div class="d-flex flex-1 jc-center"><img src="../../assets/images/menu/high/up.png"
                             style="width: 24px;" /></div>
@@ -37,14 +37,14 @@
                         :class="['boxBtn b-red', useAdvKey.$state.advKeySOCD.list[2]?.isSelected()]">
                         <span
                             style="word-wrap: break-word;filter: drop-shadow(#6a6a77 99999px 0);position: relative;left: -99999px;color:#6a6a77"
-                            v-html="useKey.itemText(useAdvKey.$state.advKeySOCD.list[2]?.key)"></span>
+                            v-html="useAdvKey.keyText(useAdvKey.$state.advKeySOCD.list[2]?.key)"></span>
                     </div>
                     <div class="m-3" style="width: 24px;"></div>
                     <div @click="useAdvKey.$state.advKeySOCD.selectedSOCD(useAdvKey.$state.advKeySOCD.list[3]?.index)"
                         :class="['boxBtn b-blue', useAdvKey.$state.advKeySOCD.list[3]?.isSelected()]">
                         <span
                             style="word-wrap: break-word;filter: drop-shadow(#6a6a77 99999px 0);position: relative;left: -99999px;color:#6a6a77"
-                            v-html="useKey.itemText(useAdvKey.$state.advKeySOCD.list[3]?.key)"></span>
+                            v-html="useAdvKey.keyText(useAdvKey.$state.advKeySOCD.list[3]?.key)"></span>
                     </div>
                 </div>
             </div>

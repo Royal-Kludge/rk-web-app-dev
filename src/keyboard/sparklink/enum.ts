@@ -52,16 +52,6 @@ export enum DKSActionTypeEnum {
   Holding = 2
 }
 
-export enum MagKeyAdvanceTypeEnum {
-  DKS = 1,
-  MT = 2,
-  TGL = 3,
-  MPT = 4,
-  END = 5,
-  SOCD = 6,
-  MACRO = 7
-}
-
 export enum OrderTypeEnum {
   GetProtoVer = 0x01,  // 获取协议版本
   SaveParam = 0x02,  // 手动保存参数

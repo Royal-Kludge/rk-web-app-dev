@@ -1,7 +1,7 @@
 <template>
     <div class="d-flex flex-column ai-center m-5">
         <div class="boxBtn"><span style="word-wrap: break-word;"
-                v-html="useKey.keyText(useKey.keyState?.keyData)"></span></div>
+                v-html="useAdvKey.keyText(useAdvKey.$state.advKeyMacro.keyTable?.keyCode)"></span></div>
         <div class="mt-4">
             <el-select v-model="useAdvKey.$state.advKeyMacro.macroIndex" placeholder="Select"
                 @change="useAdvKey.setMacro(macros?.find(useAdvKey.$state.advKeyMacro.macroIndex))">

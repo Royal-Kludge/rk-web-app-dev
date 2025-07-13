@@ -8,7 +8,7 @@ export class KB2_CMD_DKS extends Packet {
 
     rw: RWTypeEnum;
     keys?: Array<KeyDefineEnum>;
-    dksInfo?: Array<DKSInfo>;
+    dksInfos?: Array<DKSInfo>;
     version?: string;
 
     constructor(callback: (event: any) => void) {
@@ -22,32 +22,32 @@ export class KB2_CMD_DKS extends Packet {
 
     command(): Uint8Array {
 
-        if (this.cmdBuffer != undefined && this.keys != undefined && this.dksInfo != undefined) {
+        if (this.cmdBuffer != undefined && this.keys != undefined && this.dksInfos != undefined) {
             this.cmdBuffer[0] = this.rw;
             let index = 1;
             if (tool.isFeatureSupported('advancedKeyV2', this.version)) {
                 for (let i = 0; i < this.keys.length; i++) {
                     this.cmdBuffer[index++] = this.keys[i];
 
-                    this.cmdBuffer[index++] = this.dksInfo[i].DKS[0] & 0xff;
-                    this.cmdBuffer[index++] = (this.dksInfo[i].DKS[0] >> 8) & 0xff;
+                    this.cmdBuffer[index++] = this.dksInfos[i].DKS[0] & 0xff;
+                    this.cmdBuffer[index++] = (this.dksInfos[i].DKS[0] >> 8) & 0xff;
 
-                    this.cmdBuffer[index++] = this.dksInfo[i].DKS[1] & 0xff;
-                    this.cmdBuffer[index++] = (this.dksInfo[i].DKS[1] >> 8) & 0xff;
+                    this.cmdBuffer[index++] = this.dksInfos[i].DKS[1] & 0xff;
+                    this.cmdBuffer[index++] = (this.dksInfos[i].DKS[1] >> 8) & 0xff;
 
-                    this.cmdBuffer[index++] = this.dksInfo[i].DKS[2] & 0xff;
-                    this.cmdBuffer[index++] = (this.dksInfo[i].DKS[2] >> 8) & 0xff;
+                    this.cmdBuffer[index++] = this.dksInfos[i].DKS[2] & 0xff;
+                    this.cmdBuffer[index++] = (this.dksInfos[i].DKS[2] >> 8) & 0xff;
 
-                    this.cmdBuffer[index++] = this.dksInfo[i].DKS[3] & 0xff;
-                    this.cmdBuffer[index++] = (this.dksInfo[i].DKS[3] >> 8) & 0xff;
+                    this.cmdBuffer[index++] = this.dksInfos[i].DKS[3] & 0xff;
+                    this.cmdBuffer[index++] = (this.dksInfos[i].DKS[3] >> 8) & 0xff;
 
-                    this.cmdBuffer[index++] = this.dksInfo[i].TRPS[0];
-                    this.cmdBuffer[index++] = this.dksInfo[i].TRPS[1];
-                    this.cmdBuffer[index++] = this.dksInfo[i].TRPS[2];
-                    this.cmdBuffer[index++] = this.dksInfo[i].TRPS[3];
+                    this.cmdBuffer[index++] = this.dksInfos[i].TRPS[0];
+                    this.cmdBuffer[index++] = this.dksInfos[i].TRPS[1];
+                    this.cmdBuffer[index++] = this.dksInfos[i].TRPS[2];
+                    this.cmdBuffer[index++] = this.dksInfos[i].TRPS[3];
 
-                    let db = this.dksInfo[i].DB * 1000;
-                    let db2 = this.dksInfo[i].DB2 * 1000;
+                    let db = this.dksInfos[i].DB * 1000;
+                    let db2 = this.dksInfos[i].DB2 * 1000;
 
                     this.cmdBuffer[index++] = db & 0xff;
                     this.cmdBuffer[index++] = (db >> 8) & 0xff;
@@ -58,17 +58,17 @@ export class KB2_CMD_DKS extends Packet {
             } else {
                 for (let i = 0; i < this.keys.length; i++) {
                     this.cmdBuffer[index++] = this.keys[i];
-                    this.cmdBuffer[index++] = this.dksInfo[i].DKS[0];
-                    this.cmdBuffer[index++] = this.dksInfo[i].DKS[1];
-                    this.cmdBuffer[index++] = this.dksInfo[i].DKS[2];
-                    this.cmdBuffer[index++] = this.dksInfo[i].DKS[3];
-                    this.cmdBuffer[index++] = this.dksInfo[i].TRPS[0];
-                    this.cmdBuffer[index++] = this.dksInfo[i].TRPS[1];
-                    this.cmdBuffer[index++] = this.dksInfo[i].TRPS[2];
-                    this.cmdBuffer[index++] = this.dksInfo[i].TRPS[3];
+                    this.cmdBuffer[index++] = this.dksInfos[i].DKS[0];
+                    this.cmdBuffer[index++] = this.dksInfos[i].DKS[1];
+                    this.cmdBuffer[index++] = this.dksInfos[i].DKS[2];
+                    this.cmdBuffer[index++] = this.dksInfos[i].DKS[3];
+                    this.cmdBuffer[index++] = this.dksInfos[i].TRPS[0];
+                    this.cmdBuffer[index++] = this.dksInfos[i].TRPS[1];
+                    this.cmdBuffer[index++] = this.dksInfos[i].TRPS[2];
+                    this.cmdBuffer[index++] = this.dksInfos[i].TRPS[3];
 
-                    let db = this.dksInfo[i].DB * 1000;
-                    let db2 = this.dksInfo[i].DB2 * 1000;
+                    let db = this.dksInfos[i].DB * 1000;
+                    let db2 = this.dksInfos[i].DB2 * 1000;
 
                     this.cmdBuffer[index++] = db & 0xff;
                     this.cmdBuffer[index++] = (db >> 8) & 0xff;

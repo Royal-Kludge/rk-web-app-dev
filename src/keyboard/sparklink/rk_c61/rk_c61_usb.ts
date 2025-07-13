@@ -16,6 +16,11 @@ import { KB2_CMD_PRGB } from './packets/usb/KB2_CMD_PRGB';
 import { KB2_CMD_DEFKEY } from './packets/usb/KB2_CMD_DEFKEY';
 import { KB2_CMD_RM6X21 } from './packets/usb/KB2_CMD_RM6X21';
 import { KB2_CMD_DKS } from './packets/usb/KB2_CMD_DKS';
+import { KB2_CMD_MT } from './packets/usb/KB2_CMD_MT';
+import { KB2_CMD_TGL } from './packets/usb/KB2_CMD_TGL';
+import { KB2_CMD_MPT } from './packets/usb/KB2_CMD_MPT';
+import { KB2_CMD_END } from './packets/usb/KB2_CMD_END';
+import { KB2_CMD_SOCD } from './packets/usb/KB2_CMD_SOCD';
 
 const worker = new Worker(new URL('@/common/communication.ts', import.meta.url));
 
@@ -31,6 +36,11 @@ export class RK_C61_Usb extends RK_C61 {
     KB2_CMD_DEFKEY: KB2_CMD_DEFKEY;
     KB2_CMD_RM6X21: KB2_CMD_RM6X21;
     KB2_CMD_DKS: KB2_CMD_DKS;
+    KB2_CMD_MT: KB2_CMD_MT;
+    KB2_CMD_TGL: KB2_CMD_TGL;
+    KB2_CMD_MPT: KB2_CMD_MPT;
+    KB2_CMD_END: KB2_CMD_END;
+    KB2_CMD_SOCD: KB2_CMD_SOCD;
 
     constructor(state: KeyboardState, device: HIDDevice) {
         super(state, device);
@@ -46,6 +56,11 @@ export class RK_C61_Usb extends RK_C61 {
         this.KB2_CMD_DEFKEY = new KB2_CMD_DEFKEY(this.onDefKeyCmd.bind(this));
         this.KB2_CMD_RM6X21 = new KB2_CMD_RM6X21(this.onRm6x21.bind(this));
         this.KB2_CMD_DKS = new KB2_CMD_DKS(this.onCmdCallback.bind(this));
+        this.KB2_CMD_MT = new KB2_CMD_MT(this.onCmdCallback.bind(this));
+        this.KB2_CMD_TGL = new KB2_CMD_TGL(this.onCmdCallback.bind(this));
+        this.KB2_CMD_MPT = new KB2_CMD_MPT(this.onCmdCallback.bind(this));
+        this.KB2_CMD_END = new KB2_CMD_END(this.onCmdCallback.bind(this));
+        this.KB2_CMD_SOCD = new KB2_CMD_SOCD(this.onCmdCallback.bind(this));
     }
 
     static async create(state: KeyboardState, device: HIDDevice) {
@@ -120,6 +135,21 @@ export class RK_C61_Usb extends RK_C61 {
                         break;
                     case COMMAND_ID.KB2_CMD_TDKS:
                         this.KB2_CMD_DKS.fromReportData(data);
+                        break;
+                    case COMMAND_ID.KB2_CMD_MT:
+                        this.KB2_CMD_MT.fromReportData(data);
+                        break;
+                    case COMMAND_ID.KB2_CMD_TGL:
+                        this.KB2_CMD_TGL.fromReportData(data);
+                        break;
+                    case COMMAND_ID.KB2_CMD_DDKS:
+                        this.KB2_CMD_MPT.fromReportData(data);
+                        break;
+                    case COMMAND_ID.KB2_CMD_END:
+                        this.KB2_CMD_END.fromReportData(data);
+                        break;
+                    case COMMAND_ID.KB2_CMD_SOCD:
+                        this.KB2_CMD_SOCD.fromReportData(data);
                         break;
                 }
             } else if (this.buffer != null && this.buffer[2] - 0x80 == COMMAND_ID.KB2_CMD_RM6X21) {
@@ -525,10 +555,94 @@ export class RK_C61_Usb extends RK_C61 {
 
         this.KB2_CMD_DKS.rw = RWTypeEnum.Write;
         this.KB2_CMD_DKS.keys = keys;
-        this.KB2_CMD_DKS.dksInfo = dksInfos;
+        this.KB2_CMD_DKS.dksInfos = dksInfos;
         this.KB2_CMD_DKS.version = this.data.protocolVersion;
         worker.postMessage(this.KB2_CMD_DKS.command());
         Logging.console(LOG_TYPE.INFO, `Push KB2_CMD_DKS data to queue.`);
+    }
+
+    async setMt(keyInfos: Array<KeyInfo>): Promise<void> {
+        let keys = [];
+        let mtInfos = [];
+        
+        for (let i = 0; i < keyInfos.length; i++) {
+            keys.push(keyInfos[i].keyValue);
+            mtInfos.push(keyInfos[i].MTInfo);
+        }
+
+        this.KB2_CMD_MT.rw = RWTypeEnum.Write;
+        this.KB2_CMD_MT.keys = keys;
+        this.KB2_CMD_MT.mtInfos = mtInfos;
+        this.KB2_CMD_MT.version = this.data.protocolVersion;
+        worker.postMessage(this.KB2_CMD_MT.command());
+        Logging.console(LOG_TYPE.INFO, `Push KB2_CMD_MT data to queue.`);
+    }
+
+    async setTgl(keyInfos: Array<KeyInfo>): Promise<void> {
+        let keys = [];
+        let tglInfos = [];
+        
+        for (let i = 0; i < keyInfos.length; i++) {
+            keys.push(keyInfos[i].keyValue);
+            tglInfos.push(keyInfos[i].TGLInfo);
+        }
+
+        this.KB2_CMD_TGL.rw = RWTypeEnum.Write;
+        this.KB2_CMD_TGL.keys = keys;
+        this.KB2_CMD_TGL.tglInfos = tglInfos;
+        this.KB2_CMD_TGL.version = this.data.protocolVersion;
+        worker.postMessage(this.KB2_CMD_TGL.command());
+        Logging.console(LOG_TYPE.INFO, `Push KB2_CMD_TGL data to queue.`);
+    }
+
+    async setMpt(keyInfos: Array<KeyInfo>): Promise<void> {
+        let keys = [];
+        let mptInfos = [];
+        
+        for (let i = 0; i < keyInfos.length; i++) {
+            keys.push(keyInfos[i].keyValue);
+            mptInfos.push(keyInfos[i].MPTInfo);
+        }
+
+        this.KB2_CMD_MPT.rw = RWTypeEnum.Write;
+        this.KB2_CMD_MPT.keys = keys;
+        this.KB2_CMD_MPT.mptInfos = mptInfos;
+        this.KB2_CMD_MPT.version = this.data.protocolVersion;
+        worker.postMessage(this.KB2_CMD_MPT.command());
+        Logging.console(LOG_TYPE.INFO, `Push KB2_CMD_MPT data to queue.`);
+    }
+
+    async setEnd(keyInfos: Array<KeyInfo>): Promise<void> {
+        let keys = [];
+        let endInfos = [];
+        
+        for (let i = 0; i < keyInfos.length; i++) {
+            keys.push(keyInfos[i].keyValue);
+            endInfos.push(keyInfos[i].ENDInfo);
+        }
+
+        this.KB2_CMD_END.rw = RWTypeEnum.Write;
+        this.KB2_CMD_END.keys = keys;
+        this.KB2_CMD_END.endInfos = endInfos;
+        this.KB2_CMD_END.version = this.data.protocolVersion;
+        worker.postMessage(this.KB2_CMD_END.command());
+        Logging.console(LOG_TYPE.INFO, `Push KB2_CMD_END data to queue.`);
+    }
+
+    async setSocd(keyInfos: Array<KeyInfo>): Promise<void> {
+        let keys = [];
+        let socdInfos = [];
+        
+        for (let i = 0; i < keyInfos.length; i++) {
+            keys.push(keyInfos[i].keyValue);
+            socdInfos.push(keyInfos[i].SOCDInfo);
+        }
+
+        this.KB2_CMD_SOCD.rw = RWTypeEnum.Write;
+        this.KB2_CMD_SOCD.socdInfos = socdInfos;
+        this.KB2_CMD_SOCD.version = this.data.protocolVersion;
+        worker.postMessage(this.KB2_CMD_SOCD.command());
+        Logging.console(LOG_TYPE.INFO, `Push KB2_CMD_SOCD data to queue.`);
     }
 
     async setMacros(): Promise<void> {

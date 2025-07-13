@@ -4,15 +4,13 @@ import { keyboard } from "@/keyboard/sparklink/keyboard";
 import { RK_C61, RK_C61_EVENT_DEFINE } from "@/keyboard/sparklink/rk_c61/rk_c61";
 import { KeyCodeEnum, KeyDefineEnum, KeyText, KeyText_Mac } from "@/common/keyCode_sparklink";
 import { type KeyState, type KeyLine, type KeyInfo, type KeyCmdValue } from "@/keyboard/sparklink/interface";
-import { AdvKeyTypeEnum, KeyMatrixLayer, LayoutTypeEnum, MatrixTable } from "@/keyboard/sparklink/enum";
+import { AdvKeyTypeEnum, KeyMatrixLayer, LayoutTypeEnum, MatrixTable, OrderTypeEnum } from "@/keyboard/sparklink/enum";
 import { Profile, ps } from "@/keyboard/sparklink/profiles";
 import { Action, Macro, Macros } from "@/keyboard/sparklink/macros";
 import { ConnectionEventEnum, ConnectionStatusEnum } from "@/device/enum";
 import { KeyCodeMap } from "@/common/keyCode";
 import { KeyMappingType } from "@/keyboard/sparklink/enum";
 import { storage } from "@/common/storage";
-import { MagKeyAdvanced, MagKeyTGL, MagKeyMT, MagKeyDKS } from "@/keyboard/sparklink/rk_c61/advanceKeys";
-
 import fileSaver from "file-saver";
 import { ElMessage } from "element-plus";
 import { useI18n } from "vue-i18n";
@@ -163,7 +161,7 @@ export const useKeyStore = defineStore("keyinfo_rk_c61", () => {
         funMenuList: [
             { id: 1, title: "key.key_1", style: "" },
             { id: 2, title: "key.key_2", style: "" },
-            { id: 3, title: "key.key_3", style: "" },
+            //{ id: 3, title: "key.key_3", style: "" },
             { id: 4, title: "key.key_4", style: "" },
             { id: 5, title: "key.key_5", style: "" },
             { id: 6, title: "key.key_6", style: "" },
@@ -581,31 +579,31 @@ export const useKeyStore = defineStore("keyinfo_rk_c61", () => {
     const WASD = [getIndex(2, 2), getIndex(3, 1), getIndex(3, 2), getIndex(3, 3)];
     const DIGIT = [getIndex(1, 1), getIndex(1, 2), getIndex(1, 3), getIndex(1, 4), getIndex(1, 5), getIndex(1, 6), getIndex(1, 7), getIndex(1, 8), getIndex(1, 9), getIndex(1, 10)];
     const LETTER = [getIndex(2, 1),
-    getIndex(2, 2),
-    getIndex(2, 3),
-    getIndex(2, 4),
-    getIndex(2, 5),
-    getIndex(2, 6),
-    getIndex(2, 7),
-    getIndex(2, 8),
-    getIndex(2, 9),
-    getIndex(2, 10),
-    getIndex(3, 1),
-    getIndex(3, 2),
-    getIndex(3, 3),
-    getIndex(3, 4),
-    getIndex(3, 5),
-    getIndex(3, 6),
-    getIndex(3, 7),
-    getIndex(3, 8),
-    getIndex(3, 9),
-    getIndex(4, 2),
-    getIndex(4, 3),
-    getIndex(4, 4),
-    getIndex(4, 5),
-    getIndex(4, 6),
-    getIndex(4, 7),
-    getIndex(4, 8)];
+                    getIndex(2, 2),
+                    getIndex(2, 3),
+                    getIndex(2, 4),
+                    getIndex(2, 5),
+                    getIndex(2, 6),
+                    getIndex(2, 7),
+                    getIndex(2, 8),
+                    getIndex(2, 9),
+                    getIndex(2, 10),
+                    getIndex(3, 1),
+                    getIndex(3, 2),
+                    getIndex(3, 3),
+                    getIndex(3, 4),
+                    getIndex(3, 5),
+                    getIndex(3, 6),
+                    getIndex(3, 7),
+                    getIndex(3, 8),
+                    getIndex(3, 9),
+                    getIndex(4, 2),
+                    getIndex(4, 3),
+                    getIndex(4, 4),
+                    getIndex(4, 5),
+                    getIndex(4, 6),
+                    getIndex(4, 7),
+                    getIndex(4, 8)];
 
     const isAnyKeyChecked = (): boolean => {
         if (rk_c61.value != undefined) {
@@ -1143,57 +1141,76 @@ export const useKeyStore = defineStore("keyinfo_rk_c61", () => {
         }
     };
 
-    const itemText = (item: any) => {
-        if (item == null) return ''
-        if (item.type == MatrixTable.MAC) return item.text[0] as string;
-        if (item.tip != '') return t(item.text[0] as string);
-        if ((item.key >> 24) == 8) return t(item.text[0] as string);
+    // const itemText = (item: any) => {
+    //     if (item == null) return ''
+    //     if (item.type == MatrixTable.MAC) return item.text[0] as string;
+    //     if (item.tip != '') return t(item.text[0] as string);
+    //     if ((item.key >> 24) == 8) return t(item.text[0] as string);
 
-        let str = '';
-        let i = 0;
-        let texts = [];
-        for (i = 0; i < item.text.length; i++) {
-            str = `${str}${item.text[i]}`
-            if (item.text[i] != '' && item.text[i] != undefined) {
-                texts.push(item.text[i])
+    //     let str = '';
+    //     let i = 0;
+    //     let texts = [];
+    //     for (i = 0; i < item.text.length; i++) {
+    //         str = `${str}${item.text[i]}`
+    //         if (item.text[i] != '' && item.text[i] != undefined) {
+    //             texts.push(item.text[i])
+    //         }
+    //     }
+    //     if (texts.length == 4) {
+    //         str = `<div class='d-flex'>
+    //     <div>
+    //         <div>${texts[1]}</div>
+    //         <div>${texts[0]}</div>
+    //     </div>
+    //     <div class='ml-3'>
+    //         <div>${texts[3]}</div>
+    //         <div>${texts[2]}</div>
+    //     </div>
+    //     </div>`
+    //     } else if (texts.length == 3) {
+    //         str = `<div class='d-flex'>
+    //     <div>
+    //         <div>${texts[1]}</div>
+    //         <div>${texts[0]}</div>
+    //     </div>
+    //     <div class='ml-3'>
+    //         <div>&nbsp;</div>
+    //         <div>${texts[2]}</div>
+    //     </div>
+    //     </div>`
+    //     } else if (texts.length == 2) {
+    //         str = `<div class='d-flex'>
+    //     <div>
+    //         <div>${texts[0]}</div>
+    //         <div>&nbsp;</div>
+    //     </div>
+    //       <div class='ml-3'>
+    //         <div>&nbsp;</div>
+    //         <div>${texts[1]}</div>
+    //     </div>
+    //     </div>`
+    //     }
+    //     return str;
+    // }
+
+    const updateKeyInfo = () => {
+        if (rk_c61.value != undefined) {
+            for (let row = 0; row < 6; row++) {
+                for (let col = 0; col < 21; col++) {
+                    let keyInfo = rk_c61.value.data.keyInfoData.getKeyInfo(row, col);
+                    if (keyInfo != null) {
+                        (state.keyState as Array<KeyState>)[getIndex(row, col)].keyData.keyInfo = keyInfo;
+                    }
+                }
             }
         }
-        if (texts.length == 4) {
-            str = `<div class='d-flex'>
-        <div>
-            <div>${texts[1]}</div>
-            <div>${texts[0]}</div>
-        </div>
-        <div class='ml-3'>
-            <div>${texts[3]}</div>
-            <div>${texts[2]}</div>
-        </div>
-        </div>`
-        } else if (texts.length == 3) {
-            str = `<div class='d-flex'>
-        <div>
-            <div>${texts[1]}</div>
-            <div>${texts[0]}</div>
-        </div>
-        <div class='ml-3'>
-            <div>&nbsp;</div>
-            <div>${texts[2]}</div>
-        </div>
-        </div>`
-        } else if (texts.length == 2) {
-            str = `<div class='d-flex'>
-        <div>
-            <div>${texts[0]}</div>
-            <div>&nbsp;</div>
-        </div>
-          <div class='ml-3'>
-            <div>&nbsp;</div>
-            <div>${texts[1]}</div>
-        </div>
-        </div>`
+    };
+
+    const setToFactory = async () => {
+        if (rk_c61.value != undefined) {
+            await rk_c61.value.cmd(OrderTypeEnum.RestoreFactory, 0xff);
         }
-        return str;
-    }
+    };
 
     return {
         profile,
@@ -1233,6 +1250,8 @@ export const useKeyStore = defineStore("keyinfo_rk_c61", () => {
         selectWASD,
         selectDIGIT,
         selectLETTER,
-        itemText,
+        //itemText,
+        updateKeyInfo,
+        setToFactory
     };
 });

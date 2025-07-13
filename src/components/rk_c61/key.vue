@@ -54,9 +54,9 @@
 
                     <el-popover placement="right" :width="450" trigger="click"
                         popper-style="background: #6A6A77;--el-bg-color-overlay:##6A6A77;--el-border-color-light:transparent;--el-popover-padding:0px"
-                        v-for="key in (line as KeyLine).keys" v-else-if="meunid == 3">
+                        v-for="key in (line as KeyLine).keys" v-else-if="meunid == 3" :disabled="key.keyData?.keyInfo.isAdvancedKey">
                         <template #reference>
-                            <div @click="keyClick(key.index)" class="d-flex ai-center jc-center c-p"
+                            <div @click="keyClick(key.index)" class="d-flex ai-center jc-center c-p p-r"
                                 :class="[`d-flex p-2 pl-3 ${key.style}`, useKey.keyColor(key.keyData), useKey.isSelected(key.index)]">
                                 <div :class="[`text-white-1`, keyTextColorClass(key.keyData)]"
                                     :style="`z-index:1;word-wrap: break-word;overflow: hidden;text-align: center;${keyTextColorStyle(key.keyData)}`">
@@ -64,6 +64,10 @@
                                         $t('key.menu_3') }}</span>
                                     <span v-else style="word-wrap: break-word;"
                                         v-html="useKey.keyText(key.keyData)"></span>
+                                    <div v-if="key.keyData?.keyInfo.isAdvancedKey">
+                                        <span :class="[useAdvKey.getAdvKeyStyle(key.keyData?.keyInfo.advanceKeyType)]">
+                                            {{ useAdvKey.getAdvKeyText(key.keyData?.keyInfo.advanceKeyType) }}</span>
+                                    </div>
                                 </div>
                             </div>
                         </template>
@@ -263,6 +267,13 @@ watch(
     }
 );
 
+watch(meunid, () => {
+        if (meunid.value == 3) {
+            useKey.unSelected();
+        }
+    }
+);
+
 const handleMouseDown = (event: any) => {
     // 0 左键 2 右键
     //console.log(event.button)    
@@ -358,10 +369,15 @@ const keyClick = async (index: number) => {
     if (positionList.is_selected) return;
 
     if (meunid.value == 1 || meunid.value == 3 || (meunid.value == 5 && useLight.state.lightProps.light == LightEffectEnum.SelfDefine)) {
-        if (meunid.value == 1 || meunid.value == 3) {
+        if (meunid.value == 1) {
             useKey.unSelected();
         }
-        useKey.keyClick(index);
+
+        if (meunid.value == 3) {
+            useAdvKey.KeyClick(index);
+        } else {
+            useKey.keyClick(index);
+        }
     }
 
     if (meunid.value == 5) {
@@ -488,10 +504,87 @@ const shortcutStrKey = (key: String[] | undefined) => {
     opacity: 0.8;
 }
 
+.key_dks {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    background: rgb(28, 136, 27);
+    font-size: 70%;
+    padding-inline: 3px;
+    padding-block: 2px;
+    border-radius: 5px;
+}
+
+.key_mpt {
+    position: absolute;
+    top: 4px;
+    left: 2px;
+    background: rgb(0, 122, 204);
+    font-size: 70%;
+    padding-inline: 3px;
+    padding-block: 2px;
+    border-radius: 5px;
+}
+
+.key_mt {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    background: rgb(247, 184, 50);
+    font-size: 70%;
+    padding-inline: 3px;
+    padding-block: 2px;
+    border-radius: 5px;
+}
+
+.key_tgl {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    background: rgb(170, 115, 237);
+    font-size: 70%;
+    padding-inline: 3px;
+    padding-block: 2px;
+    border-radius: 5px;
+}
+
+.key_end {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    background: rgb(25, 25, 25);
+    font-size: 70%;
+    padding-inline: 3px;
+    padding-block: 2px;
+    border-radius: 5px;
+}
+
+.key_macro {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    background: rgb(226, 161, 2);
+    font-size: 70%;
+    padding-inline: 3px;
+    padding-block: 2px;
+    border-radius: 5px;
+}
+
+.key_socd {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    background: rgb(122, 193, 255);
+    font-size: 70%;
+    padding-inline: 3px;
+    padding-block: 2px;
+    border-radius: 5px;
+}
+
 .key_green {
     position: absolute;
-    top: 0px;
-    left: 1px;
+    top: 4px;
+    left: 4px;
     color: rgb(0, 158, 0);
     font-size: 80%;
 }
