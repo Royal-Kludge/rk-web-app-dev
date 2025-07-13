@@ -1,4 +1,4 @@
-import { KeyDefineEnum, KeyText_2 } from "@/common/keyCode";
+import { KeyDefineEnum, KeyText } from "@/common/keyCode_sparklink";
 
 const MACRO_HEAD_ADDRESS_LENGTH = 4;
 const MACRO_ACTION_LENGTH = 4;
@@ -90,7 +90,7 @@ export class Action {
 
         switch (this.type) {
             case KeyType.NormalKey:
-                text = `Key: [${KeyText_2[this.key].valueOf()}]`;
+                text = `Key: [${KeyText[this.key].valueOf()}]`;
                 break;
             case KeyType.ModifyKey:
                 text = `Key: [${ModifyKeyText[this.key].valueOf()}]`;
@@ -280,6 +280,10 @@ export class Macros {
 
     constructor() {
         this.macroList = new Array<Macro>();
+    }
+
+    find(index: any): Macro | undefined {
+        return this.macroList.find(obj => obj.index === index);
     }
 
     add(macro: Macro) {

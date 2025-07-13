@@ -7,7 +7,8 @@ import type { KeyTableData } from "./keyTableData"
 export interface KeyState {
     index: number,
     selected: boolean,
-    KeyData: KeyTableData
+    isHover: boolean,
+    keyData: KeyTableData
 }
 
 /**
@@ -24,9 +25,9 @@ export interface KeyboardState extends State {
 export interface KeyboardDefine extends HidDeviceDefine {
     image: string,
     keyText: Record<number, Array<String>>,
-    //keyMatrixLayer: Array<KeyMatrixLayer>,
-    //keyMatrixTable: Array<MatrixTable>,
-    //keyLayout: Record<number, Record<number, Array<number>>>,
+    keyLayout: Array<Array<KeyInfo | null>>,
+    performance: PerformanceData,
+    light: LightSetting,
     protocol: (state: KeyboardState, device: HIDDevice) => Promise<IProtocol>
 }
 
@@ -122,6 +123,12 @@ export interface RSInfo {
     DKS: Array<number>
 }
 
+export interface KeyCmdValue {
+    keyCode: KeyDefineEnum,
+    value: number,
+    layout: LayoutTypeEnum
+}
+
 export interface KeyInfo {
     keyValue: number,
     row: number,
@@ -178,8 +185,8 @@ export interface PerformanceData {
     quickTouchSwitchDisable: boolean, // (方法中有使用，待移植方法)
     quickTouchSwitch: boolean, // (方法中有使用，待移植方法)
     isAdjusting: boolean, // 是否开启校准
-    adjustingCount: 1, // 校准计数触发器
-    travelTestOn: boolean, // 行程测试
-    keyPressTestCount: 1, // 按键测试计数触发器
+    adjustingCount: number, // 校准计数触发器
+    travelTestOn: any, // 行程测试
+    keyPressTestCount: number, // 按键测试计数触发器
     hasAxisSetting: boolean,
 }

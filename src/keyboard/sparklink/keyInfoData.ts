@@ -1,5 +1,5 @@
-import { KeyDefineEnum } from "@/common/keyCode";
-import type { KeyInfo } from "./interface";
+import { KeyDefineEnum } from "@/common/keyCode_sparklink";
+import type { KeyCmdValue, KeyInfo } from "./interface";
 import { KeyTouchModeEnum, LayoutTypeEnum } from "./enum";
 import tool from "./tool";
 import { AxisList } from "./constant";
@@ -32,19 +32,38 @@ export class KeyInfoData {
         }
     }
 
-    updateKeyInfo(row: number, col: number, keyInfo: KeyInfo) {
+    updateKeyInfo(row: number, col: number, keyInfo: KeyInfo | null) {
         this.keyInfoArray[row][col] = keyInfo;
         if (keyInfo != null && row >= this.lastRow) {
-            if (row > this.lastRow) this.lastRow = row;
-            if (col > this.lastCol) {
+            if (col > this.lastCol || row != this.lastRow) {
                 this.lastCol = col;
                 this.lastKeyCode = keyInfo.keyValue;
             }
+            if (row > this.lastRow) this.lastRow = row;
         }
     }
 
     getKeyInfo(row: number, col: number): KeyInfo | null {
         return this.keyInfoArray[row][col];
+    }
+
+    getKeyInfoByIndex(index: number): KeyInfo | null {
+        let row = Math.floor(index / 6);
+        let col = index % 6;
+        return this.keyInfoArray[row][col];
+    }
+
+    getKeyInfoByKey(keyCode: KeyDefineEnum): KeyInfo | null {
+        for (let i = 0; i < 6; i++) {
+            for (let j = 0; j < 21; j++) {
+                let keyInfo = this.keyInfoArray[i][j];
+                if (keyInfo != undefined && keyInfo != null && keyInfo.keyValue == keyCode) {
+                    return keyInfo;
+                }
+            }
+        }
+
+        return null
     }
 
     getKeyDefValue(row: number, col: number): KeyDefineEnum {
@@ -65,6 +84,19 @@ export class KeyInfoData {
             }
         }
         return values;
+    }
+
+    getKeyCheckedCount() {
+        let count = 0;
+        for (let i = 0; i < 6; i++) {
+            for (let j = 0; j < 21; j++) {
+                let keyInfo = this.keyInfoArray[i][j];
+                if (keyInfo != null && keyInfo.isCheck) {
+                    count++;
+                }
+            }
+        }
+        return count;
     }
 
     updateFnKeyValue(keyValue: KeyDefineEnum, layout: LayoutTypeEnum, value: number) {
@@ -431,19 +463,21 @@ export class KeyInfoData {
         }
     }
 
-    updateAxisID(keyValue: KeyDefineEnum, axisID: number) {
+    updateAxisID(keyValue: KeyDefineEnum, axisID: number): boolean {
         for (let i = 0; i < 6; i++) {
             for (let j = 0; j < 21; j++) {
                 let keyInfo = this.keyInfoArray[i][j];
                 if (keyInfo != undefined && keyInfo != null && keyInfo.keyValue == keyValue) {
                     keyInfo.axisID = axisID;
-                    return;
+                    return i == this.lastRow && j == this.lastCol;
                 }
             }
         }
+
+        return false;
     }
 
-    updateKeyColor(keyValue: KeyDefineEnum, r: number, g: number, b: number) {
+    updateKeyColor(keyValue: KeyDefineEnum, r: number, g: number, b: number): boolean {
         for (let i = 0; i < 6; i++) {
             for (let j = 0; j < 21; j++) {
                 let keyInfo = this.keyInfoArray[i][j];
@@ -455,14 +489,16 @@ export class KeyInfoData {
                     let G = g.toString(16).toUpperCase().padStart(2, '0');
                     let B = b.toString(16).toUpperCase().padStart(2, '0');
                     keyInfo.color.color = `#${R}${G}${B}`;
-                    return;
+                    return i == this.lastRow && j == this.lastCol;
                 }
             }
         }
+
+        return false;
     }
 
     getSwitchMaxTravel(id: number) {
-      if (AxisList.length !== 0 && tool.isFeatureSupported('signalSwitch')) {
+      if (AxisList.length !== 0 && tool.isFeatureSupported('signalSwitch', this.protocolVersion)) {
         return AxisList[id].maxTravel / 1000;
       }
       return this.maxTouchTravel;
@@ -537,5 +573,259 @@ export class KeyInfoData {
         }
 
         return { keyValues, layouts, values };
+    }
+
+    // 更新按键全局触发行程
+    updateKeyInfoGlobalTouchTravel(globalTouchTravel: number) {
+        for (let row = 0; row < 6; row++) {
+            for (let col = 0; col < 21; col++) {
+                let keyInfo = this.keyInfoArray[row][col];
+                if (keyInfo != null && keyInfo.isSingleTouch != true) {
+                    keyInfo.touchTravel = globalTouchTravel;
+                }
+            }
+        }
+    }
+
+    // 更新选中按键的按下死区
+    updateKeyCheckedDeadPress(pressTravel: number): Array<KeyCmdValue> {
+        let keyCmdValues: Array<KeyCmdValue> = [];
+        for (let row = 0; row < 6; row++) {
+            for (let col = 0; col < 21; col++) {
+                let keyInfo = this.keyInfoArray[row][col];
+                if (keyInfo != null && keyInfo.isCheck) {
+                    keyInfo.deadPress = pressTravel;
+
+                    keyCmdValues.push({
+                        keyCode: keyInfo.keyValue,
+                        value: keyInfo.deadPress * 1000,
+                        layout: LayoutTypeEnum.PressDeadZone
+                    })
+
+                }
+            }
+        }
+
+        return keyCmdValues;
+    }
+
+    // 更新选中按键的抬起死区
+    updateKeyCheckedDeadRelease(releaseTravel: number): Array<KeyCmdValue> {
+        let keyCmdValues: Array<KeyCmdValue> = [];
+        for (let row = 0; row < 6; row++) {
+            for (let col = 0; col < 21; col++) {
+                let keyInfo = this.keyInfoArray[row][col];
+                if (keyInfo != null && keyInfo.isCheck) {
+                    keyInfo.deadRelease = releaseTravel;
+
+                    keyCmdValues.push({
+                        keyCode: keyInfo.keyValue,
+                        value: keyInfo.deadRelease * 1000,
+                        layout: LayoutTypeEnum.PressDeadZone
+                    })
+
+                }
+            }
+        }
+
+        return keyCmdValues;
+    }
+
+    // 更新按键行程-RT首次触发行程
+    updateKeyInfoRTFirstTouchTravel(firstTouchTravel: number): Array<KeyCmdValue> {
+        let keyCmdValues: Array<KeyCmdValue> = [];
+
+        for (let row = 0; row < 6; row++) {
+            for (let col = 0; col < 21; col++) {
+                let keyInfo = this.keyInfoArray[row][col];
+                if (keyInfo != null && keyInfo.isCheck === true) {
+                    keyInfo.touchTravel = firstTouchTravel;
+                    
+                    keyInfo.isSingleTouch = true;
+                    
+                    const touchMode = KeyTouchModeEnum.QuickMode;
+                    
+                    // 打包数据，发送给键盘(第八层模式，第四层行程值)
+                    keyCmdValues.push({
+                        keyCode: keyInfo.keyValue,
+                        value: (touchMode << 4) | keyInfo.advanceKeyType,
+                        layout: LayoutTypeEnum.MODE
+                    });
+
+                    keyCmdValues.push({
+                        keyCode: keyInfo.keyValue,
+                        value: keyInfo.touchTravel * 1000,
+                        layout: LayoutTypeEnum.DB0
+                    });
+                }
+            }
+        }
+
+        return keyCmdValues;
+    }
+
+    // 更新选中按键的快速触发按压行程
+    updateKeyCheckedQuickTouchPressTravel(pressTravel: number): Array<KeyCmdValue> {
+        let keyCmdValues: Array<KeyCmdValue> = [];
+
+        for (let row = 0; row < 6; row++) {
+            for (let col = 0; col < 21; col++) {
+                let keyInfo = this.keyInfoArray[row][col];
+                if (keyInfo != null && keyInfo.isCheck) {
+                    keyInfo.isQuickTouch = true;
+                    keyInfo.quickTouchPress = pressTravel;
+
+                    keyCmdValues.push({
+                        keyCode: keyInfo.keyValue,
+                        value: (KeyTouchModeEnum.QuickMode << 4) | keyInfo.advanceKeyType,
+                        layout: LayoutTypeEnum.MODE
+                    });
+
+                    keyCmdValues.push({
+                        keyCode: keyInfo.keyValue,
+                        value: keyInfo.quickTouchPress * 1000,
+                        layout: LayoutTypeEnum.RT_PressTravel
+                    });
+
+                    keyCmdValues.push({
+                        keyCode: keyInfo.keyValue,
+                        value: keyInfo.quickTouchRelease * 1000,
+                        layout: LayoutTypeEnum.RT_ReleaseTravel
+                    });
+                }
+            }
+        }
+
+        return keyCmdValues;
+    }
+
+    // 更新选中按键的快速触发释放行程
+    updateKeyCheckedQuickTouchReleaseTravel(releaseTravel: number): Array<KeyCmdValue> {
+        let keyCmdValues: Array<KeyCmdValue> = [];
+
+        for (let row = 0; row < 6; row++) {
+            for (let col = 0; col < 21; col++) {
+                let keyInfo = this.keyInfoArray[row][col];
+                if (keyInfo != null && keyInfo.isCheck) {
+                    keyInfo.isQuickTouch = true;
+                    keyInfo.quickTouchRelease = releaseTravel;
+
+                    keyCmdValues.push({
+                        keyCode: keyInfo.keyValue,
+                        value: (KeyTouchModeEnum.QuickMode << 4) | keyInfo.advanceKeyType,
+                        layout: LayoutTypeEnum.MODE
+                    });
+
+                    keyCmdValues.push({
+                        keyCode: keyInfo.keyValue,
+                        value: keyInfo.quickTouchPress * 1000,
+                        layout: LayoutTypeEnum.RT_PressTravel
+                    });
+
+                    keyCmdValues.push({
+                        keyCode: keyInfo.keyValue,
+                        value: keyInfo.quickTouchRelease * 1000,
+                        layout: LayoutTypeEnum.RT_ReleaseTravel
+                    });
+                }
+            }
+        }
+        
+        return keyCmdValues;
+    }
+
+    updateKeyInfoSingleTouchTravel(singleTouchTravel: number): Array<KeyCmdValue> {
+        let keyCmdValues: Array<KeyCmdValue> = [];
+
+        for (let row = 0; row < 6; row++) {
+            for (let col = 0; col < 21; col++) {
+                let keyInfo = this.keyInfoArray[row][col];
+                if (keyInfo != null && keyInfo.isCheck == true) {
+                    keyInfo.touchTravel = singleTouchTravel;
+
+                    keyInfo.isSingleTouch = true;
+
+                    // 模式为单键触发模式
+                    const touchMode = KeyTouchModeEnum.SingleMode;
+
+                    // 打包数据，发送给键盘(第八层模式，第四层行程值)
+                    keyCmdValues.push({
+                        keyCode: keyInfo.keyValue,
+                        value: (touchMode << 4) | keyInfo.advanceKeyType,
+                        layout: LayoutTypeEnum.MODE
+                    });
+
+                    keyCmdValues.push({
+                        keyCode: keyInfo.keyValue,
+                        value: keyInfo.touchTravel * 1000,
+                        layout: LayoutTypeEnum.DB0
+                    });
+                }
+            }
+        }
+
+        return keyCmdValues;
+    }
+
+    resetTravel(): Array<KeyCmdValue> {
+        let keyCmdValues: Array<KeyCmdValue> = [];
+
+        for (let row = 0; row < 6; row++) {
+          for (let col = 0; col < 21; col++) {
+            let keyInfo = this.keyInfoArray[row][col];
+            if (keyInfo != null && keyInfo.isCheck === true) {
+                keyInfo.touchTravel = this.globalTouchTravel;
+                keyInfo.isSingleTouch = false;
+                keyInfo.isQuickTouch = false;
+
+                const touchMode = KeyTouchModeEnum.GlobalMode;;
+
+                // 打包数据，发送给键盘(第八层模式，第四层行程值)
+                keyCmdValues.push({
+                    keyCode: keyInfo.keyValue,
+                    value: (touchMode << 4) | keyInfo.advanceKeyType,
+                    layout: LayoutTypeEnum.MODE
+                });
+
+                keyCmdValues.push({
+                    keyCode: keyInfo.keyValue,
+                    value: keyInfo.touchTravel * 1000,
+                    layout: LayoutTypeEnum.DB0
+                });
+            }
+          }
+        }
+
+        return keyCmdValues;
+    }
+
+    // 按键行程测试：获取当前最大按下行程
+    getMaxPressTravel() {
+        let max = 0;
+        let press = 0;
+        for (let row = 0; row < 6; row++) {
+            for (let col = 0; col < 21; col++) {
+                let keyInfo = this.keyInfoArray[row][col];
+                if (keyInfo != null) {
+                    if (max < keyInfo.adjustingMM) {
+                        max = keyInfo.adjustingMM;
+                        press = keyInfo.adjustingPress;
+                    }
+                }
+            }
+        }
+        return { max, press };
+    }
+
+    // 清空校准成功缓存：点击开始校准时调用
+    clearAdjustingSuccessData() {
+        for (let row = 0; row < 6; row++) {
+            for (let col = 0; col < 21; col++) {
+                let keyInfo = this.keyInfoArray[row][col];
+                if (keyInfo != null) {
+                    keyInfo.adjustingSuccess = false;
+                }
+            }
+        }
     }
 }

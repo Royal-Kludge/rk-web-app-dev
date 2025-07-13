@@ -9,7 +9,6 @@ export class KB2_CMD_KEY extends Packet {
     layouts?: Array<LayoutTypeEnum>;
     keys?: Array<KeyDefineEnum>;
     values?: Array<number>;
-    isLastCmd: boolean = false;
 
     constructor(callback: (event: any) => void) {
         super(0x23, callback);
@@ -52,18 +51,11 @@ export class KB2_CMD_KEY extends Packet {
                 const value = (this.recivedBuffer.getUint8(index + 1) << 8) | this.recivedBuffer.getUint8(index);
                 index += 2;
 
-                if (keyValue != 0) {
+                if (keyValue != 0 && keyValue != 255) {
                     this.dispatchEvent(new CustomEvent('onReportDataRecvied', { 
                         detail: { keyValue: keyValue, layout: layout, value: value } 
                     }));
                 }
-            }
-
-            if (this.isLastCmd) {
-                this.dispatchEvent(new CustomEvent('onReportDataRecvied', { 
-                    detail: { isLastCmd: true } 
-                }));
-                this.isLastCmd = false;
             }
         }
     }

@@ -207,6 +207,29 @@ export default {
     fun_2: "亮度-",
     fun_3: "速度+",
     fun_4: "速度-",
+    Off: "关闭",
+    M1: "波纹荡漾",
+    M2: "潮起潮落",
+    M3: "涟漪轻漾",
+    M4: "旋转风暴",
+    M5: "幸运彩虹",
+    M6: "闪耀彩虹",
+    M7: "熠熠生辉",
+    M8: "移动窗格",
+    M9: "波形变换",
+    M10: "移形换影",
+    M11: "正弦曲线",
+    M12: "行云流水",
+    M13: "百花争艳",
+    M14: "斑斓镶嵌",
+    M15: "雨落如注",
+    M16: "跃动不息",
+    M17: "踏雪无痕",
+    M18: "踏雪寻梅",
+    M19: "镭射穿云",
+    M20: "水波荡漾",
+    Static: "静态",
+    SelfDefine: "自定义"
   },
   set: {
     title: "设置",
@@ -415,4 +438,15 @@ export default {
   message: {
     need_left: "请至少保留一个左键。",
   },
+  performance: {
+    keyTip: {
+        globalTravel: "全局触发",
+        rapidTrigger: "快速触发",
+        singleKeyTravel: "单键触发",
+        travelMode: "触发模式",
+        touchTravel: "触发行程",
+        pressTravel: "按压行程",
+        releaseTravel: "抬起行程"
+    }
+  }
 };

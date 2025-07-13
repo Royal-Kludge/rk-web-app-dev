@@ -1,67 +1,32 @@
 import { defineStore } from "pinia";
-import { reactive, ref } from "vue";
+import { reactive, ref, watch } from "vue";
 import { keyboard } from "@/keyboard/sparklink/keyboard";
 import { RK_C61, RK_C61_EVENT_DEFINE } from "@/keyboard/sparklink/rk_c61/rk_c61";
-import { KeyCodeEnum, KeyDefineEnum, KeyText, KeyText_Mac } from "@/common/keyCode";
-import { type KeyState, type KeyLine } from "@/keyboard/sparklink/interface";
-import { KeyMatrixLayer, LayoutTypeEnum, MatrixTable } from "@/keyboard/sparklink/enum";
+import { KeyCodeEnum, KeyDefineEnum, KeyText, KeyText_Mac } from "@/common/keyCode_sparklink";
+import { type KeyState, type KeyLine, type KeyInfo, type KeyCmdValue } from "@/keyboard/sparklink/interface";
+import { AdvKeyTypeEnum, KeyMatrixLayer, LayoutTypeEnum, MatrixTable, OrderTypeEnum } from "@/keyboard/sparklink/enum";
 import { Profile, ps } from "@/keyboard/sparklink/profiles";
 import { Action, Macro, Macros } from "@/keyboard/sparklink/macros";
 import { ConnectionEventEnum, ConnectionStatusEnum } from "@/device/enum";
 import { KeyCodeMap } from "@/common/keyCode";
-import { KeyMappingType } from "@/common/enum";
+import { KeyMappingType } from "@/keyboard/sparklink/enum";
 import { storage } from "@/common/storage";
-import { MagKeyAdvanced, MagKeyTGL, MagKeyMT, MagKeyDKS } from "@/keyboard/sparklink/rk_c61/advanceKeys";
-
 import fileSaver from "file-saver";
 import { ElMessage } from "element-plus";
 import { useI18n } from "vue-i18n";
 import type { KeyTableData } from "@/keyboard/sparklink/keyTableData";
+import { LOG_TYPE, Logging } from "@/common/logging";
 
 export const useKeyStore = defineStore("keyinfo_rk_c61", () => {
     const rk_c61 = ref<RK_C61>();
 
     const { t } = useI18n();
-    const selectAdvancedKeyIndex = ref(-1);
-    const advanceKeys = ref<Array<MagKeyAdvanced>>();
     const macros = ref<Macros>();
     const macro = ref<Macro>();
     const profile = ref<Profile>();
     const keyState = ref<KeyState>();
     const keyMatrixLayer = ref<KeyMatrixLayer>(KeyMatrixLayer.FN0);
     const keyMatrixTable = ref<MatrixTable>(MatrixTable.WIN);
-
-    const deleteAdvKey = (magKey: MagKeyAdvanced) => {
-        if (advanceKeys.value != undefined) {
-            let index = advanceKeys.value.findIndex((item) => item === magKey);
-            if (index !== -1) {
-                advanceKeys.value.splice(index, 1);
-            }
-            let i: number;
-
-            for (i = 0; i < advanceKeys.value.length; i++) {
-                advanceKeys.value[i].index = i;
-            }
-
-            // if (rk_c61.value != undefined && keyboard.keyboardDefine != undefined) {
-            //   for (i = 0; i < rk_c61.value.data.keyMatrixData[KeyMatrixLayer.Nomal].length; i++) {
-            //     let keyData = rk_c61.value.data.keyMatrixData[KeyMatrixLayer.Nomal][i];
-            //     if (keyData != undefined && keyData.keyMappingData.keyMappingType == KeyMappingType.MageAxisDKS) {
-            //       if (keyData.keyMappingData.param1 == magKey.index) {
-            //         keyData.keyMappingData.keyStr = keyboard.keyboardDefine.keyText[keyData.keyCode];
-            //         keyData.keyMappingData.keyCode = keyData.keyCode;
-            //         (keyData.keyMappingData.keyMappingType = KeyMappingType.Keyboard), (keyData.keyMappingData.param1 = keyData.keyCode);
-            //         keyData.keyMappingData.param2 = 0x00;
-            //         keyData.keyMappingData.param3 = 0x00;
-            //         keyData.keyMappingData.keyRaw = ((KeyMappingType.Keyboard << 24) & 0xff000000) | ((keyData.keyCode << 16) & 0x00ff0000);
-            //       } else if (keyData.keyMappingData.param1 > magKey.index) {
-            //         keyData.keyMappingData.param1 = keyData.keyMappingData.param1 - 1;
-            //       }
-            //     }
-            //   }
-            // }
-        }
-    };
 
     const getKeyData = (index: number): KeyTableData | undefined => {
         let keyData = undefined;
@@ -84,8 +49,17 @@ export const useKeyStore = defineStore("keyinfo_rk_c61", () => {
         return keyData;
     };
 
-    const getIndex = (l: number, c: number) => {
-        return l + 6 * c;
+    const getIndex = (row: number, col: number) => {
+        return row * 21 + col;
+    };
+
+    const getDefaultKeyInfo = (index: number): KeyInfo | null => {
+        let ret = null;
+        let row = Math.floor(index / 21);
+        let col = index % 21;
+        let keyInfo = keyboard.keyboardDefine?.keyLayout[row][col];
+        if (keyInfo != undefined) ret = keyInfo;
+        return ret;
     };
 
     const keyMatrix_us = [
@@ -173,7 +147,7 @@ export const useKeyStore = defineStore("keyinfo_rk_c61", () => {
                 { key: KeyDefineEnum.CTRL_L, style: "key key6", index: getIndex(5, 0), keyData: getKeyData(getIndex(5, 0)) },
                 { key: KeyDefineEnum.WIN_L, style: "key key6", index: getIndex(5, 1), keyData: getKeyData(getIndex(5, 1)) },
                 { key: KeyDefineEnum.ALT_L, style: "key key6", index: getIndex(5, 2), keyData: getKeyData(getIndex(5, 2)) },
-                { key: KeyDefineEnum.KEY_SPACEBAR, style: "key key5", index: getIndex(5, 5), keyData: getKeyData(getIndex(5, 5)) },
+                { key: KeyDefineEnum.KEY_SPACEBAR, style: "key key5", index: getIndex(5, 6), keyData: getKeyData(getIndex(5, 6)) },
                 { key: KeyDefineEnum.ALT_R, style: "key key6", index: getIndex(5, 9), keyData: getKeyData(getIndex(5, 9)) },
                 { key: KeyDefineEnum.KEY_APP, style: "key key6", index: getIndex(5, 10), keyData: getKeyData(getIndex(5, 10)) },
                 { key: KeyDefineEnum.CTRL_R, style: "key key6", index: getIndex(5, 11), keyData: getKeyData(getIndex(5, 11)) },
@@ -187,7 +161,7 @@ export const useKeyStore = defineStore("keyinfo_rk_c61", () => {
         funMenuList: [
             { id: 1, title: "key.key_1", style: "" },
             { id: 2, title: "key.key_2", style: "" },
-            { id: 3, title: "key.key_3", style: "" },
+            //{ id: 3, title: "key.key_3", style: "" },
             { id: 4, title: "key.key_4", style: "" },
             { id: 5, title: "key.key_5", style: "" },
             { id: 6, title: "key.key_6", style: "" },
@@ -308,14 +282,14 @@ export const useKeyStore = defineStore("keyinfo_rk_c61", () => {
                     { key: KeyDefineEnum.KEY_NUM_DOT, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_NUM_DOT], style: "key", selected: false, tip: "", type: MatrixTable.WIN },
                     { key: KeyDefineEnum.KEY_NUMLOCK, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_NUMLOCK], style: "key key1", selected: false, tip: "", type: MatrixTable.WIN },
                     { key: KeyDefineEnum.KEY_NUM_ENTER, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_NUM_ENTER], style: "key key1", selected: false, tip: "", type: MatrixTable.WIN },
-                    { key: KeyDefineEnum.KEY_L_CTRL, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_L_CTRL], style: "key key1", selected: false, tip: "", type: MatrixTable.WIN },
-                    { key: KeyDefineEnum.KEY_L_SHIFT, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_L_SHIFT], style: "key key1", selected: false, tip: "", type: MatrixTable.WIN },
-                    { key: KeyDefineEnum.KEY_L_ALT, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_L_ALT], style: "key key1", selected: false, tip: "", type: MatrixTable.WIN },
-                    { key: KeyDefineEnum.KEY_L_WIN, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_L_WIN], style: "key key1", selected: false, tip: "", type: MatrixTable.WIN },
-                    { key: KeyDefineEnum.KEY_R_CTRL, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_R_CTRL], style: "key key1", selected: false, tip: "", type: MatrixTable.WIN },
-                    { key: KeyDefineEnum.KEY_R_SHIFT, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_R_SHIFT], style: "key key1", selected: false, tip: "", type: MatrixTable.WIN },
-                    { key: KeyDefineEnum.KEY_R_ALT, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_R_ALT], style: "key key1", selected: false, tip: "", type: MatrixTable.WIN },
-                    { key: KeyDefineEnum.KEY_R_WIN, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_R_WIN], style: "key key1", selected: false, tip: "", type: MatrixTable.WIN },
+                    { key: KeyDefineEnum.CTRL_L, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.CTRL_L], style: "key key1", selected: false, tip: "", type: MatrixTable.WIN },
+                    { key: KeyDefineEnum.SHIFT_L, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.SHIFT_L], style: "key key1", selected: false, tip: "", type: MatrixTable.WIN },
+                    { key: KeyDefineEnum.ALT_L, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.ALT_L], style: "key key1", selected: false, tip: "", type: MatrixTable.WIN },
+                    { key: KeyDefineEnum.WIN_L, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.WIN_L], style: "key key1", selected: false, tip: "", type: MatrixTable.WIN },
+                    { key: KeyDefineEnum.CTRL_R, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.CTRL_R], style: "key key1", selected: false, tip: "", type: MatrixTable.WIN },
+                    { key: KeyDefineEnum.SHIFT_R, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.SHIFT_R], style: "key key1", selected: false, tip: "", type: MatrixTable.WIN },
+                    { key: KeyDefineEnum.ALT_R, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.ALT_R], style: "key key1", selected: false, tip: "", type: MatrixTable.WIN },
+                    { key: KeyDefineEnum.WIN_R, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.WIN_R], style: "key key1", selected: false, tip: "", type: MatrixTable.WIN },
                 ],
             },
             {
@@ -337,8 +311,9 @@ export const useKeyStore = defineStore("keyinfo_rk_c61", () => {
                 id: 4,
                 style: "",
                 keys: [
-                    { key: KeyDefineEnum.KEY_Fn1, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Fn1], style: "key", selected: false, tip: "", type: MatrixTable.WIN },
-                    { key: KeyDefineEnum.KEY_Fn2, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Fn2], style: "key", selected: false, tip: "", type: MatrixTable.WIN },
+                    { key: KeyDefineEnum.KEY_Fn_01, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Fn_01], style: "key", selected: false, tip: "", type: MatrixTable.WIN },
+                    { key: KeyDefineEnum.KEY_Fn_02, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Fn_02], style: "key", selected: false, tip: "", type: MatrixTable.WIN },
+                    { key: KeyDefineEnum.KEY_Fn_03, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Fn_03], style: "key", selected: false, tip: "", type: MatrixTable.WIN },
                     { key: KeyDefineEnum.KEY_CODE131, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_CODE131], style: "key", selected: false, tip: "", type: MatrixTable.WIN },
                     { key: KeyDefineEnum.KEY_CODE132, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_CODE132], style: "key", selected: false, tip: "", type: MatrixTable.WIN },
                     { key: KeyDefineEnum.KEY_CODE133, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_CODE133], style: "key", selected: false, tip: "", type: MatrixTable.WIN },
@@ -349,114 +324,114 @@ export const useKeyStore = defineStore("keyinfo_rk_c61", () => {
                 id: 5,
                 style: "",
                 keys: [
-                    { key: KeyDefineEnum.KEY_Tilde, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Tilde], style: "key", selected: false, tip: "", type: MatrixTable.WIN },
-                    { key: KeyDefineEnum.KEY_Exclamation, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Exclamation], style: "key", selected: false, tip: "", type: MatrixTable.WIN },
-                    { key: KeyDefineEnum.KEY_AtSign, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_AtSign], style: "key", selected: false, tip: "", type: MatrixTable.WIN },
-                    { key: KeyDefineEnum.KEY_Sharp, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Sharp], style: "key", selected: false, tip: "", type: MatrixTable.WIN },
-                    { key: KeyDefineEnum.KEY_Dollar, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Dollar], style: "key", selected: false, tip: "", type: MatrixTable.WIN },
-                    { key: KeyDefineEnum.KEY_Percent, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Percent], style: "key", selected: false, tip: "", type: MatrixTable.WIN },
-                    { key: KeyDefineEnum.KEY_Circumflex, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Circumflex], style: "key", selected: false, tip: "", type: MatrixTable.WIN },
-                    { key: KeyDefineEnum.KEY_Ampersand, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Ampersand], style: "key", selected: false, tip: "", type: MatrixTable.WIN },
-                    { key: KeyDefineEnum.KEY_Asterisk, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Asterisk], style: "key", selected: false, tip: "", type: MatrixTable.WIN },
-                    { key: KeyDefineEnum.KEY_LeftParenthesis, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_LeftParenthesis], style: "key", selected: false, tip: "", type: MatrixTable.WIN },
-                    { key: KeyDefineEnum.KEY_RightParenthesis, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_RightParenthesis], style: "key", selected: false, tip: "", type: MatrixTable.WIN },
-                    { key: KeyDefineEnum.KEY_Underscore2, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Underscore2], style: "key", selected: false, tip: "", type: MatrixTable.WIN },
-                    { key: KeyDefineEnum.KEY_Plus, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Plus], style: "key", selected: false, tip: "", type: MatrixTable.WIN },
-                    { key: KeyDefineEnum.KEY_LeftBrace, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_LeftBrace], style: "key", selected: false, tip: "", type: MatrixTable.WIN },
-                    { key: KeyDefineEnum.KEY_RightBrace, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_RightBrace], style: "key", selected: false, tip: "", type: MatrixTable.WIN },
-                    { key: KeyDefineEnum.KEY_Pipe, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Pipe], style: "key", selected: false, tip: "", type: MatrixTable.WIN },
-                    { key: KeyDefineEnum.KEY_Colon, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Colon], style: "key", selected: false, tip: "", type: MatrixTable.WIN },
-                    { key: KeyDefineEnum.KEY_DoubleQuote, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_DoubleQuote], style: "key", selected: false, tip: "", type: MatrixTable.WIN },
-                    { key: KeyDefineEnum.KEY_LessSign, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_LessSign], style: "key", selected: false, tip: "", type: MatrixTable.WIN },
-                    { key: KeyDefineEnum.KEY_GreaterSign, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_GreaterSign], style: "key", selected: false, tip: "", type: MatrixTable.WIN },
-                    { key: KeyDefineEnum.KEY_Question, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Question], style: "key", selected: false, tip: "", type: MatrixTable.WIN },
+                    // { key: KeyDefineEnum.KEY_Tilde, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Tilde], style: "key", selected: false, tip: "", type: MatrixTable.WIN },
+                    // { key: KeyDefineEnum.KEY_Exclamation, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Exclamation], style: "key", selected: false, tip: "", type: MatrixTable.WIN },
+                    // { key: KeyDefineEnum.KEY_AtSign, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_AtSign], style: "key", selected: false, tip: "", type: MatrixTable.WIN },
+                    // { key: KeyDefineEnum.KEY_Sharp, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Sharp], style: "key", selected: false, tip: "", type: MatrixTable.WIN },
+                    // { key: KeyDefineEnum.KEY_Dollar, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Dollar], style: "key", selected: false, tip: "", type: MatrixTable.WIN },
+                    // { key: KeyDefineEnum.KEY_Percent, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Percent], style: "key", selected: false, tip: "", type: MatrixTable.WIN },
+                    // { key: KeyDefineEnum.KEY_Circumflex, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Circumflex], style: "key", selected: false, tip: "", type: MatrixTable.WIN },
+                    // { key: KeyDefineEnum.KEY_Ampersand, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Ampersand], style: "key", selected: false, tip: "", type: MatrixTable.WIN },
+                    // { key: KeyDefineEnum.KEY_Asterisk, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Asterisk], style: "key", selected: false, tip: "", type: MatrixTable.WIN },
+                    // { key: KeyDefineEnum.KEY_LeftParenthesis, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_LeftParenthesis], style: "key", selected: false, tip: "", type: MatrixTable.WIN },
+                    // { key: KeyDefineEnum.KEY_RightParenthesis, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_RightParenthesis], style: "key", selected: false, tip: "", type: MatrixTable.WIN },
+                    // { key: KeyDefineEnum.KEY_Underscore2, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Underscore2], style: "key", selected: false, tip: "", type: MatrixTable.WIN },
+                    // { key: KeyDefineEnum.KEY_Plus, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Plus], style: "key", selected: false, tip: "", type: MatrixTable.WIN },
+                    // { key: KeyDefineEnum.KEY_LeftBrace, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_LeftBrace], style: "key", selected: false, tip: "", type: MatrixTable.WIN },
+                    // { key: KeyDefineEnum.KEY_RightBrace, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_RightBrace], style: "key", selected: false, tip: "", type: MatrixTable.WIN },
+                    // { key: KeyDefineEnum.KEY_Pipe, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Pipe], style: "key", selected: false, tip: "", type: MatrixTable.WIN },
+                    // { key: KeyDefineEnum.KEY_Colon, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Colon], style: "key", selected: false, tip: "", type: MatrixTable.WIN },
+                    // { key: KeyDefineEnum.KEY_DoubleQuote, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_DoubleQuote], style: "key", selected: false, tip: "", type: MatrixTable.WIN },
+                    // { key: KeyDefineEnum.KEY_LessSign, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_LessSign], style: "key", selected: false, tip: "", type: MatrixTable.WIN },
+                    // { key: KeyDefineEnum.KEY_GreaterSign, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_GreaterSign], style: "key", selected: false, tip: "", type: MatrixTable.WIN },
+                    // { key: KeyDefineEnum.KEY_Question, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Question], style: "key", selected: false, tip: "", type: MatrixTable.WIN },
                     //{ key: KeyDefineEnum.KEY_Power, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Power], style: "key", selected: false, tip: 'tip.power', type: MatrixTable.WIN },
                     //{ key: KeyDefineEnum.KEY_Sleep, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Sleep], style: "key", selected: false, tip: 'tip.sleep', type: MatrixTable.WIN },
-                    { key: KeyDefineEnum.KEY_Calculator, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Calculator], style: "key", selected: false, tip: "tip.calc", type: MatrixTable.WIN },
-                    { key: KeyDefineEnum.KEY_Email, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Email], style: "key", selected: false, tip: "tip.mail", type: MatrixTable.WIN },
-                    { key: KeyDefineEnum.KEY_MyComputer, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_MyComputer], style: "key", selected: false, tip: "tip.computer", type: MatrixTable.WIN },
-                    { key: KeyDefineEnum.KEY_Back, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Back], style: "key", selected: false, tip: "tip.back", type: MatrixTable.WIN },
-                    { key: KeyDefineEnum.KEY_Forward, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Forward], style: "key", selected: false, tip: "tip.forward", type: MatrixTable.WIN },
-                    { key: KeyDefineEnum.KEY_iStop, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_iStop], style: "key", selected: false, tip: "tip.istop", type: MatrixTable.WIN },
-                    { key: KeyDefineEnum.KEY_Refresh, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Refresh], style: "key", selected: false, tip: "tip.refresh", type: MatrixTable.WIN },
-                    { key: KeyDefineEnum.KEY_Favorites, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Favorites], style: "key", selected: false, tip: "tip.favorites", type: MatrixTable.WIN },
+                    //{ key: KeyDefineEnum.KEY_Calculator, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Calculator], style: "key", selected: false, tip: "tip.calc", type: MatrixTable.WIN },
+                    //{ key: KeyDefineEnum.KEY_Email, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Email], style: "key", selected: false, tip: "tip.mail", type: MatrixTable.WIN },
+                    //{ key: KeyDefineEnum.KEY_MyComputer, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_MyComputer], style: "key", selected: false, tip: "tip.computer", type: MatrixTable.WIN },
+                    //{ key: KeyDefineEnum.KEY_Back, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Back], style: "key", selected: false, tip: "tip.back", type: MatrixTable.WIN },
+                    //{ key: KeyDefineEnum.KEY_Forward, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Forward], style: "key", selected: false, tip: "tip.forward", type: MatrixTable.WIN },
+                    //{ key: KeyDefineEnum.KEY_iStop, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_iStop], style: "key", selected: false, tip: "tip.istop", type: MatrixTable.WIN },
+                    //{ key: KeyDefineEnum.KEY_Refresh, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Refresh], style: "key", selected: false, tip: "tip.refresh", type: MatrixTable.WIN },
+                    //{ key: KeyDefineEnum.KEY_Favorites, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Favorites], style: "key", selected: false, tip: "tip.favorites", type: MatrixTable.WIN },
                     { key: KeyDefineEnum.KEY_Search, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Search], style: "key", selected: false, tip: "tip.search", type: MatrixTable.WIN },
                     //{ key: KeyDefineEnum.SP_BatView, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.SP_BatView], style: "key", selected: false, tip: 'tip.bat', type: MatrixTable.WIN },
                 ],
             },
-            {
-                id: 6,
-                style: "",
-                keys: [
-                    { key: KeyDefineEnum.KEY_LED_MODE0, text: ["light.menu_0"], style: "key", selected: false, tip: "tip.ligthoff", type: MatrixTable.WIN },
-                    { key: KeyDefineEnum.KEY_LED_MODE1, text: ["light.menu_1"], style: "key", selected: false, tip: "", type: MatrixTable.WIN },
-                    { key: KeyDefineEnum.KEY_LED_MODE2, text: ["light.menu_2"], style: "key", selected: false, tip: "", type: MatrixTable.WIN },
-                    { key: KeyDefineEnum.KEY_LED_MODE3, text: ["light.menu_3"], style: "key", selected: false, tip: "", type: MatrixTable.WIN },
-                    { key: KeyDefineEnum.KEY_LED_MODE4, text: ["light.menu_4"], style: "key", selected: false, tip: "", type: MatrixTable.WIN },
-                    { key: KeyDefineEnum.KEY_LED_MODE5, text: ["light.menu_5"], style: "key", selected: false, tip: "", type: MatrixTable.WIN },
-                    { key: KeyDefineEnum.KEY_LED_MODE6, text: ["light.menu_6"], style: "key", selected: false, tip: "", type: MatrixTable.WIN },
-                    { key: KeyDefineEnum.KEY_LED_MODE7, text: ["light.menu_7"], style: "key", selected: false, tip: "", type: MatrixTable.WIN },
-                    { key: KeyDefineEnum.KEY_LED_MODE8, text: ["light.menu_8"], style: "key", selected: false, tip: "", type: MatrixTable.WIN },
-                    { key: KeyDefineEnum.KEY_LED_MODE9, text: ["light.menu_9"], style: "key", selected: false, tip: "", type: MatrixTable.WIN },
-                    { key: KeyDefineEnum.KEY_LED_MODE10, text: ["light.menu_10"], style: "key", selected: false, tip: "", type: MatrixTable.WIN },
-                    { key: KeyDefineEnum.KEY_LED_MODE11, text: ["light.menu_11"], style: "key", selected: false, tip: "", type: MatrixTable.WIN },
-                    { key: KeyDefineEnum.KEY_LED_MODE12, text: ["light.menu_12"], style: "key", selected: false, tip: "", type: MatrixTable.WIN },
-                    { key: KeyDefineEnum.KEY_LED_MODE13, text: ["light.menu_13"], style: "key", selected: false, tip: "", type: MatrixTable.WIN },
-                    { key: KeyDefineEnum.KEY_LED_MODE17, text: ["light.menu_17"], style: "key", selected: false, tip: "", type: MatrixTable.WIN },
-                    { key: KeyDefineEnum.KEY_LED_MODE18, text: ["light.menu_18"], style: "key", selected: false, tip: "", type: MatrixTable.WIN },
-                    { key: KeyDefineEnum.KEY_LED_LUMINI, text: ["light.fun_1"], style: "key", selected: false, tip: "tip.brightI", type: MatrixTable.WIN },
-                    { key: KeyDefineEnum.KEY_LED_LUMIND, text: ["light.fun_2"], style: "key", selected: false, tip: "tip.brightD", type: MatrixTable.WIN },
-                    { key: KeyDefineEnum.KEY_LED_BREATHI, text: ["light.fun_3"], style: "key", selected: false, tip: "tip.speedI", type: MatrixTable.WIN },
-                    { key: KeyDefineEnum.KEY_LED_BREATHD, text: ["light.fun_4"], style: "key", selected: false, tip: "tip.speedD", type: MatrixTable.WIN },
-                ],
-            },
-            {
-                id: 7,
-                style: "",
-                keys: [
-                    { key: KeyDefineEnum.KEY_SysBkBrigthDec, text: [`<img class="keyimg" src="/src/assets/images/mac/brightness_d.png" />`], style: "key", selected: false, tip: "key.tip33", type: MatrixTable.MAC },
-                    { key: KeyDefineEnum.KEY_SysBkBrigthInc, text: [`<img class="keyimg keyimg1" src="/src/assets/images/mac/brightness_i.png" />`], style: "key", selected: false, tip: "key.tip34", type: MatrixTable.MAC },
-                    { key: KeyDefineEnum.MAC_F3, text: [`<img class="keyimg" src="/src/assets/images/mac/mission.png" />`], style: "key", selected: false, tip: "key.tip35", type: MatrixTable.MAC },
-                    { key: KeyDefineEnum.MAC_F4, text: [`<img class="keyimg" src="/src/assets/images/mac/launchpad.png" />`], style: "key", selected: false, tip: "key.tip36", type: MatrixTable.MAC },
-                    { key: KeyDefineEnum.KEY_LED_LUMIND, text: [`<img class="keyimg" src="/src/assets/images/mac/backlight_d.png" />`], style: "key", selected: false, tip: "key.tip37", type: MatrixTable.MAC },
-                    { key: KeyDefineEnum.KEY_LED_LUMINI, text: [`<img class="keyimg keyimg1" src="/src/assets/images/mac/backlight_i.png" />`], style: "key", selected: false, tip: "key.tip38", type: MatrixTable.MAC },
-                    { key: KeyDefineEnum.KEY_L_WIN, text: [`<img class="keyimg" src="/src/assets/images/mac/command.png" />`], style: "key key1", selected: false, tip: "Command", type: MatrixTable.MAC },
-                    { key: KeyDefineEnum.KEY_L_ALT, text: [`<img class="keyimg" src="/src/assets/images/mac/option.png" />`], style: "key key1", selected: false, tip: "Option", type: MatrixTable.MAC },
-                    { key: KeyDefineEnum.KEY_L_CTRL, text: [`<img class="keyimg" src="/src/assets/images/mac/control.png" />`], style: "key key1", selected: false, tip: "Control", type: MatrixTable.MAC },
-                    { key: KeyDefineEnum.KEY_COM_X, text: [`<img class="keyimg" src="/src/assets/images/mac/command.png" /> + X`], style: "key", selected: false, tip: "key.tip2", type: MatrixTable.MAC },
-                    { key: KeyDefineEnum.KEY_COM_C, text: [`<img class="keyimg" src="/src/assets/images/mac/command.png" /> + C`], style: "key", selected: false, tip: "key.tip3", type: MatrixTable.MAC },
-                    { key: KeyDefineEnum.KEY_COM_V, text: [`<img class="keyimg" src="/src/assets/images/mac/command.png" /> + V`], style: "key", selected: false, tip: "key.tip4", type: MatrixTable.MAC },
-                    { key: KeyDefineEnum.KEY_COM_Z, text: [`<img class="keyimg" src="/src/assets/images/mac/command.png" /> + Z`], style: "key", selected: false, tip: "key.tip5", type: MatrixTable.MAC },
-                    { key: KeyDefineEnum.KEY_SHIFT_COM_Z, text: [`<img class="keyimg" src="/src/assets/images/mac/shift.png" /> + <img class="keyimg" src="/src/assets/images/mac/command.png" /> + Z`], style: "key", selected: false, tip: "key.tip6", type: MatrixTable.MAC },
-                    { key: KeyDefineEnum.KEY_COM_A, text: [`<img class="keyimg" src="/src/assets/images/mac/command.png" /> + A`], style: "key", selected: false, tip: "key.tip7", type: MatrixTable.MAC },
-                    { key: KeyDefineEnum.KEY_COM_F, text: [`<img class="keyimg" src="/src/assets/images/mac/command.png" /> + F`], style: "key", selected: false, tip: "key.tip8", type: MatrixTable.MAC },
-                    { key: KeyDefineEnum.KEY_COM_G, text: [`<img class="keyimg" src="/src/assets/images/mac/command.png" /> + G`], style: "key", selected: false, tip: "key.tip9", type: MatrixTable.MAC },
-                    { key: KeyDefineEnum.KEY_SHIFT_COM_G, text: [`<img class="keyimg" src="/src/assets/images/mac/shift.png" /> + <img class="keyimg" src="/src/assets/images/mac/command.png" /> + G`], style: "key", selected: false, tip: "key.tip10", type: MatrixTable.MAC },
-                    { key: KeyDefineEnum.KEY_COM_H, text: [`<img class="keyimg" src="/src/assets/images/mac/command.png" /> + H`], style: "key", selected: false, tip: "key.tip11", type: MatrixTable.MAC },
-                    { key: KeyDefineEnum.KEY_OPTION_COM_H, text: [`<img class="keyimg" src="/src/assets/images/mac/option.png" /> + <img class="keyimg" src="/src/assets/images/mac/command.png" /> + H`], style: "key", selected: false, tip: "key.tip12", type: MatrixTable.MAC },
-                    { key: KeyDefineEnum.KEY_COM_M, text: [`<img class="keyimg" src="/src/assets/images/mac/command.png" /> + M`], style: "key", selected: false, tip: "key.tip13", type: MatrixTable.MAC },
-                    { key: KeyDefineEnum.KEY_OPTION_COM_M, text: [`<img class="keyimg" src="/src/assets/images/mac/option.png" /> + <img class="keyimg" src="/src/assets/images/mac/command.png" /> + M`], style: "key", selected: false, tip: "key.tip14", type: MatrixTable.MAC },
-                    { key: KeyDefineEnum.KEY_COM_O, text: [`<img class="keyimg" src="/src/assets/images/mac/command.png" /> + O`], style: "key", selected: false, tip: "key.tip15", type: MatrixTable.MAC },
-                    { key: KeyDefineEnum.KEY_COM_P, text: [`<img class="keyimg" src="/src/assets/images/mac/command.png" /> + P`], style: "key", selected: false, tip: "key.tip16", type: MatrixTable.MAC },
-                    { key: KeyDefineEnum.KEY_COM_S, text: [`<img class="keyimg" src="/src/assets/images/mac/command.png" /> + S`], style: "key", selected: false, tip: "key.tip17", type: MatrixTable.MAC },
-                    { key: KeyDefineEnum.KEY_COM_T, text: [`<img class="keyimg" src="/src/assets/images/mac/command.png" /> + T`], style: "key", selected: false, tip: "key.tip18", type: MatrixTable.MAC },
-                    { key: KeyDefineEnum.KEY_COM_W, text: [`<img class="keyimg" src="/src/assets/images/mac/command.png" /> + W`], style: "key", selected: false, tip: "key.tip19", type: MatrixTable.MAC },
-                    { key: KeyDefineEnum.KEY_OPTION_COM_W, text: [`<img class="keyimg" src="/src/assets/images/mac/option.png" /> + <img class="keyimg" src="/src/assets/images/mac/command.png" /> + W`], style: "key", selected: false, tip: "key.tip20", type: MatrixTable.MAC },
-                    { key: KeyDefineEnum.KEY_OPTION_COM_ESC, text: [`<img class="keyimg" src="/src/assets/images/mac/option.png" /> + <img class="keyimg" src="/src/assets/images/mac/command.png" /> + ESC`], style: "key", selected: false, tip: "key.tip21", type: MatrixTable.MAC },
-                    { key: KeyDefineEnum.KEY_COM_SPACEBAR, text: [`<img class="keyimg" src="/src/assets/images/mac/command.png" /> + Space`], style: "key", selected: false, tip: "key.tip22", type: MatrixTable.MAC },
-                    { key: KeyDefineEnum.KEY_OPTION_COM_SPACEBAR, text: [`<img class="keyimg" src="/src/assets/images/mac/option.png" /> + <img class="keyimg" src="/src/assets/images/mac/command.png" /> + Space`], style: "key", selected: false, tip: "key.tip23", type: MatrixTable.MAC },
-                    { key: KeyDefineEnum.KEY_CTRL_COM_SPACEBAR, text: [`<img class="keyimg" src="/src/assets/images/mac/control.png" /> + <img class="keyimg" src="/src/assets/images/mac/command.png" /> + Space`], style: "key", selected: false, tip: "key.tip24", type: MatrixTable.MAC },
-                    { key: KeyDefineEnum.KEY_CTRL_COM_F, text: [`<img class="keyimg" src="/src/assets/images/mac/control.png" /> + <img class="keyimg" src="/src/assets/images/mac/command.png" /> + F`], style: "key", selected: false, tip: "key.tip25", type: MatrixTable.MAC },
-                    { key: KeyDefineEnum.KEY_SPACEBAR, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_SPACEBAR], style: "key key2", selected: false, tip: "key.tip26", type: MatrixTable.MAC },
-                    { key: KeyDefineEnum.KEY_COM_TAB, text: [`<img class="keyimg" src="/src/assets/images/mac/command.png" /> + TAB`], style: "key", selected: false, tip: "key.tip27", type: MatrixTable.MAC },
-                    { key: KeyDefineEnum.KEY_SHIFT_COM_5, text: [`<img class="keyimg" src="/src/assets/images/mac/shift.png" /> + <img class="keyimg" src="/src/assets/images/mac/command.png" /> + 5`], style: "key", selected: false, tip: "key.tip28", type: MatrixTable.MAC },
-                    { key: KeyDefineEnum.KEY_SHIFT_COM_3, text: [`<img class="keyimg" src="/src/assets/images/mac/shift.png" /> + <img class="keyimg" src="/src/assets/images/mac/command.png" /> + 3`], style: "key", selected: false, tip: "key.tip29", type: MatrixTable.MAC },
-                    { key: KeyDefineEnum.KEY_SHIFT_COM_4, text: [`<img class="keyimg" src="/src/assets/images/mac/shift.png" /> + <img class="keyimg" src="/src/assets/images/mac/command.png" /> + 4`], style: "key", selected: false, tip: "key.tip30", type: MatrixTable.MAC },
-                    { key: KeyDefineEnum.KEY_SHIFT_COM_N, text: [`<img class="keyimg" src="/src/assets/images/mac/shift.png" /> + <img class="keyimg" src="/src/assets/images/mac/command.png" /> + N`], style: "key", selected: false, tip: "key.tip31", type: MatrixTable.MAC },
-                    { key: KeyDefineEnum.KEY_COM_COMMA, text: [`<img class="keyimg" src="/src/assets/images/mac/command.png" /> + ,`], style: "key", selected: false, tip: "key.tip32", type: MatrixTable.MAC },
-                    //{ key: KeyDefineEnum.KEY_Fn1, text: `Fn(Mac)`, style: "key", selected: false, tip: '', type: MatrixTable.MAC },
-                ],
-            },
+            // {
+            //     id: 6,
+            //     style: "",
+            //     keys: [
+            //         { key: KeyDefineEnum.KEY_LED_MODE0, text: ["light.menu_0"], style: "key", selected: false, tip: "tip.ligthoff", type: MatrixTable.WIN },
+            //         { key: KeyDefineEnum.KEY_LED_MODE1, text: ["light.menu_1"], style: "key", selected: false, tip: "", type: MatrixTable.WIN },
+            //         { key: KeyDefineEnum.KEY_LED_MODE2, text: ["light.menu_2"], style: "key", selected: false, tip: "", type: MatrixTable.WIN },
+            //         { key: KeyDefineEnum.KEY_LED_MODE3, text: ["light.menu_3"], style: "key", selected: false, tip: "", type: MatrixTable.WIN },
+            //         { key: KeyDefineEnum.KEY_LED_MODE4, text: ["light.menu_4"], style: "key", selected: false, tip: "", type: MatrixTable.WIN },
+            //         { key: KeyDefineEnum.KEY_LED_MODE5, text: ["light.menu_5"], style: "key", selected: false, tip: "", type: MatrixTable.WIN },
+            //         { key: KeyDefineEnum.KEY_LED_MODE6, text: ["light.menu_6"], style: "key", selected: false, tip: "", type: MatrixTable.WIN },
+            //         { key: KeyDefineEnum.KEY_LED_MODE7, text: ["light.menu_7"], style: "key", selected: false, tip: "", type: MatrixTable.WIN },
+            //         { key: KeyDefineEnum.KEY_LED_MODE8, text: ["light.menu_8"], style: "key", selected: false, tip: "", type: MatrixTable.WIN },
+            //         { key: KeyDefineEnum.KEY_LED_MODE9, text: ["light.menu_9"], style: "key", selected: false, tip: "", type: MatrixTable.WIN },
+            //         { key: KeyDefineEnum.KEY_LED_MODE10, text: ["light.menu_10"], style: "key", selected: false, tip: "", type: MatrixTable.WIN },
+            //         { key: KeyDefineEnum.KEY_LED_MODE11, text: ["light.menu_11"], style: "key", selected: false, tip: "", type: MatrixTable.WIN },
+            //         { key: KeyDefineEnum.KEY_LED_MODE12, text: ["light.menu_12"], style: "key", selected: false, tip: "", type: MatrixTable.WIN },
+            //         { key: KeyDefineEnum.KEY_LED_MODE13, text: ["light.menu_13"], style: "key", selected: false, tip: "", type: MatrixTable.WIN },
+            //         { key: KeyDefineEnum.KEY_LED_MODE17, text: ["light.menu_17"], style: "key", selected: false, tip: "", type: MatrixTable.WIN },
+            //         { key: KeyDefineEnum.KEY_LED_MODE18, text: ["light.menu_18"], style: "key", selected: false, tip: "", type: MatrixTable.WIN },
+            //         { key: KeyDefineEnum.KEY_LED_LUMINI, text: ["light.fun_1"], style: "key", selected: false, tip: "tip.brightI", type: MatrixTable.WIN },
+            //         { key: KeyDefineEnum.KEY_LED_LUMIND, text: ["light.fun_2"], style: "key", selected: false, tip: "tip.brightD", type: MatrixTable.WIN },
+            //         { key: KeyDefineEnum.KEY_LED_BREATHI, text: ["light.fun_3"], style: "key", selected: false, tip: "tip.speedI", type: MatrixTable.WIN },
+            //         { key: KeyDefineEnum.KEY_LED_BREATHD, text: ["light.fun_4"], style: "key", selected: false, tip: "tip.speedD", type: MatrixTable.WIN },
+            //     ],
+            // },
+            // {
+            //     id: 7,
+            //     style: "",
+            //     keys: [
+            //         { key: KeyDefineEnum.KEY_SysBkBrigthDec, text: [`<img class="keyimg" src="/src/assets/images/mac/brightness_d.png" />`], style: "key", selected: false, tip: "key.tip33", type: MatrixTable.MAC },
+            //         { key: KeyDefineEnum.KEY_SysBkBrigthInc, text: [`<img class="keyimg keyimg1" src="/src/assets/images/mac/brightness_i.png" />`], style: "key", selected: false, tip: "key.tip34", type: MatrixTable.MAC },
+            //         { key: KeyDefineEnum.MAC_F3, text: [`<img class="keyimg" src="/src/assets/images/mac/mission.png" />`], style: "key", selected: false, tip: "key.tip35", type: MatrixTable.MAC },
+            //         { key: KeyDefineEnum.MAC_F4, text: [`<img class="keyimg" src="/src/assets/images/mac/launchpad.png" />`], style: "key", selected: false, tip: "key.tip36", type: MatrixTable.MAC },
+            //         { key: KeyDefineEnum.KEY_LED_LUMIND, text: [`<img class="keyimg" src="/src/assets/images/mac/backlight_d.png" />`], style: "key", selected: false, tip: "key.tip37", type: MatrixTable.MAC },
+            //         { key: KeyDefineEnum.KEY_LED_LUMINI, text: [`<img class="keyimg keyimg1" src="/src/assets/images/mac/backlight_i.png" />`], style: "key", selected: false, tip: "key.tip38", type: MatrixTable.MAC },
+            //         { key: KeyDefineEnum.KEY_L_WIN, text: [`<img class="keyimg" src="/src/assets/images/mac/command.png" />`], style: "key key1", selected: false, tip: "Command", type: MatrixTable.MAC },
+            //         { key: KeyDefineEnum.KEY_L_ALT, text: [`<img class="keyimg" src="/src/assets/images/mac/option.png" />`], style: "key key1", selected: false, tip: "Option", type: MatrixTable.MAC },
+            //         { key: KeyDefineEnum.KEY_L_CTRL, text: [`<img class="keyimg" src="/src/assets/images/mac/control.png" />`], style: "key key1", selected: false, tip: "Control", type: MatrixTable.MAC },
+            //         { key: KeyDefineEnum.KEY_COM_X, text: [`<img class="keyimg" src="/src/assets/images/mac/command.png" /> + X`], style: "key", selected: false, tip: "key.tip2", type: MatrixTable.MAC },
+            //         { key: KeyDefineEnum.KEY_COM_C, text: [`<img class="keyimg" src="/src/assets/images/mac/command.png" /> + C`], style: "key", selected: false, tip: "key.tip3", type: MatrixTable.MAC },
+            //         { key: KeyDefineEnum.KEY_COM_V, text: [`<img class="keyimg" src="/src/assets/images/mac/command.png" /> + V`], style: "key", selected: false, tip: "key.tip4", type: MatrixTable.MAC },
+            //         { key: KeyDefineEnum.KEY_COM_Z, text: [`<img class="keyimg" src="/src/assets/images/mac/command.png" /> + Z`], style: "key", selected: false, tip: "key.tip5", type: MatrixTable.MAC },
+            //         { key: KeyDefineEnum.KEY_SHIFT_COM_Z, text: [`<img class="keyimg" src="/src/assets/images/mac/shift.png" /> + <img class="keyimg" src="/src/assets/images/mac/command.png" /> + Z`], style: "key", selected: false, tip: "key.tip6", type: MatrixTable.MAC },
+            //         { key: KeyDefineEnum.KEY_COM_A, text: [`<img class="keyimg" src="/src/assets/images/mac/command.png" /> + A`], style: "key", selected: false, tip: "key.tip7", type: MatrixTable.MAC },
+            //         { key: KeyDefineEnum.KEY_COM_F, text: [`<img class="keyimg" src="/src/assets/images/mac/command.png" /> + F`], style: "key", selected: false, tip: "key.tip8", type: MatrixTable.MAC },
+            //         { key: KeyDefineEnum.KEY_COM_G, text: [`<img class="keyimg" src="/src/assets/images/mac/command.png" /> + G`], style: "key", selected: false, tip: "key.tip9", type: MatrixTable.MAC },
+            //         { key: KeyDefineEnum.KEY_SHIFT_COM_G, text: [`<img class="keyimg" src="/src/assets/images/mac/shift.png" /> + <img class="keyimg" src="/src/assets/images/mac/command.png" /> + G`], style: "key", selected: false, tip: "key.tip10", type: MatrixTable.MAC },
+            //         { key: KeyDefineEnum.KEY_COM_H, text: [`<img class="keyimg" src="/src/assets/images/mac/command.png" /> + H`], style: "key", selected: false, tip: "key.tip11", type: MatrixTable.MAC },
+            //         { key: KeyDefineEnum.KEY_OPTION_COM_H, text: [`<img class="keyimg" src="/src/assets/images/mac/option.png" /> + <img class="keyimg" src="/src/assets/images/mac/command.png" /> + H`], style: "key", selected: false, tip: "key.tip12", type: MatrixTable.MAC },
+            //         { key: KeyDefineEnum.KEY_COM_M, text: [`<img class="keyimg" src="/src/assets/images/mac/command.png" /> + M`], style: "key", selected: false, tip: "key.tip13", type: MatrixTable.MAC },
+            //         { key: KeyDefineEnum.KEY_OPTION_COM_M, text: [`<img class="keyimg" src="/src/assets/images/mac/option.png" /> + <img class="keyimg" src="/src/assets/images/mac/command.png" /> + M`], style: "key", selected: false, tip: "key.tip14", type: MatrixTable.MAC },
+            //         { key: KeyDefineEnum.KEY_COM_O, text: [`<img class="keyimg" src="/src/assets/images/mac/command.png" /> + O`], style: "key", selected: false, tip: "key.tip15", type: MatrixTable.MAC },
+            //         { key: KeyDefineEnum.KEY_COM_P, text: [`<img class="keyimg" src="/src/assets/images/mac/command.png" /> + P`], style: "key", selected: false, tip: "key.tip16", type: MatrixTable.MAC },
+            //         { key: KeyDefineEnum.KEY_COM_S, text: [`<img class="keyimg" src="/src/assets/images/mac/command.png" /> + S`], style: "key", selected: false, tip: "key.tip17", type: MatrixTable.MAC },
+            //         { key: KeyDefineEnum.KEY_COM_T, text: [`<img class="keyimg" src="/src/assets/images/mac/command.png" /> + T`], style: "key", selected: false, tip: "key.tip18", type: MatrixTable.MAC },
+            //         { key: KeyDefineEnum.KEY_COM_W, text: [`<img class="keyimg" src="/src/assets/images/mac/command.png" /> + W`], style: "key", selected: false, tip: "key.tip19", type: MatrixTable.MAC },
+            //         { key: KeyDefineEnum.KEY_OPTION_COM_W, text: [`<img class="keyimg" src="/src/assets/images/mac/option.png" /> + <img class="keyimg" src="/src/assets/images/mac/command.png" /> + W`], style: "key", selected: false, tip: "key.tip20", type: MatrixTable.MAC },
+            //         { key: KeyDefineEnum.KEY_OPTION_COM_ESC, text: [`<img class="keyimg" src="/src/assets/images/mac/option.png" /> + <img class="keyimg" src="/src/assets/images/mac/command.png" /> + ESC`], style: "key", selected: false, tip: "key.tip21", type: MatrixTable.MAC },
+            //         { key: KeyDefineEnum.KEY_COM_SPACEBAR, text: [`<img class="keyimg" src="/src/assets/images/mac/command.png" /> + Space`], style: "key", selected: false, tip: "key.tip22", type: MatrixTable.MAC },
+            //         { key: KeyDefineEnum.KEY_OPTION_COM_SPACEBAR, text: [`<img class="keyimg" src="/src/assets/images/mac/option.png" /> + <img class="keyimg" src="/src/assets/images/mac/command.png" /> + Space`], style: "key", selected: false, tip: "key.tip23", type: MatrixTable.MAC },
+            //         { key: KeyDefineEnum.KEY_CTRL_COM_SPACEBAR, text: [`<img class="keyimg" src="/src/assets/images/mac/control.png" /> + <img class="keyimg" src="/src/assets/images/mac/command.png" /> + Space`], style: "key", selected: false, tip: "key.tip24", type: MatrixTable.MAC },
+            //         { key: KeyDefineEnum.KEY_CTRL_COM_F, text: [`<img class="keyimg" src="/src/assets/images/mac/control.png" /> + <img class="keyimg" src="/src/assets/images/mac/command.png" /> + F`], style: "key", selected: false, tip: "key.tip25", type: MatrixTable.MAC },
+            //         { key: KeyDefineEnum.KEY_SPACEBAR, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_SPACEBAR], style: "key key2", selected: false, tip: "key.tip26", type: MatrixTable.MAC },
+            //         { key: KeyDefineEnum.KEY_COM_TAB, text: [`<img class="keyimg" src="/src/assets/images/mac/command.png" /> + TAB`], style: "key", selected: false, tip: "key.tip27", type: MatrixTable.MAC },
+            //         { key: KeyDefineEnum.KEY_SHIFT_COM_5, text: [`<img class="keyimg" src="/src/assets/images/mac/shift.png" /> + <img class="keyimg" src="/src/assets/images/mac/command.png" /> + 5`], style: "key", selected: false, tip: "key.tip28", type: MatrixTable.MAC },
+            //         { key: KeyDefineEnum.KEY_SHIFT_COM_3, text: [`<img class="keyimg" src="/src/assets/images/mac/shift.png" /> + <img class="keyimg" src="/src/assets/images/mac/command.png" /> + 3`], style: "key", selected: false, tip: "key.tip29", type: MatrixTable.MAC },
+            //         { key: KeyDefineEnum.KEY_SHIFT_COM_4, text: [`<img class="keyimg" src="/src/assets/images/mac/shift.png" /> + <img class="keyimg" src="/src/assets/images/mac/command.png" /> + 4`], style: "key", selected: false, tip: "key.tip30", type: MatrixTable.MAC },
+            //         { key: KeyDefineEnum.KEY_SHIFT_COM_N, text: [`<img class="keyimg" src="/src/assets/images/mac/shift.png" /> + <img class="keyimg" src="/src/assets/images/mac/command.png" /> + N`], style: "key", selected: false, tip: "key.tip31", type: MatrixTable.MAC },
+            //         { key: KeyDefineEnum.KEY_COM_COMMA, text: [`<img class="keyimg" src="/src/assets/images/mac/command.png" /> + ,`], style: "key", selected: false, tip: "key.tip32", type: MatrixTable.MAC },
+            //         //{ key: KeyDefineEnum.KEY_Fn1, text: `Fn(Mac)`, style: "key", selected: false, tip: '', type: MatrixTable.MAC },
+            //     ],
+            // },
         ],
         keyMatrix: [],
         keyCharacters: [
@@ -498,16 +473,16 @@ export const useKeyStore = defineStore("keyinfo_rk_c61", () => {
             { key: KeyDefineEnum.KEY_Interrogation, text: "/" },
         ],
         keyModifyLeft: [
-            { key: KeyDefineEnum.KEY_L_CTRL, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_L_CTRL] },
-            { key: KeyDefineEnum.KEY_L_SHIFT, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_L_SHIFT] },
-            { key: KeyDefineEnum.KEY_L_ALT, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_L_ALT] },
-            { key: KeyDefineEnum.KEY_L_WIN, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_L_WIN] },
+            { key: KeyDefineEnum.CTRL_L, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.CTRL_L] },
+            { key: KeyDefineEnum.SHIFT_L, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.SHIFT_L] },
+            { key: KeyDefineEnum.ALT_L, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.ALT_L] },
+            { key: KeyDefineEnum.WIN_L, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.WIN_L] },
         ],
         keyModifyRight: [
-            { key: KeyDefineEnum.KEY_R_CTRL, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_R_CTRL] },
-            { key: KeyDefineEnum.KEY_R_SHIFT, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_R_SHIFT] },
-            { key: KeyDefineEnum.KEY_R_ALT, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_R_ALT] },
-            { key: KeyDefineEnum.KEY_R_WIN, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_R_WIN] },
+            { key: KeyDefineEnum.CTRL_R, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.CTRL_R] },
+            { key: KeyDefineEnum.SHIFT_R, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.SHIFT_R] },
+            { key: KeyDefineEnum.ALT_R, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.ALT_R] },
+            { key: KeyDefineEnum.WIN_R, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.WIN_R] },
         ],
         keyArrow: [
             { key: KeyDefineEnum.KEY_UpArrow, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_UpArrow] },
@@ -572,20 +547,12 @@ export const useKeyStore = defineStore("keyinfo_rk_c61", () => {
             { key: KeyDefineEnum.KEY_Mute, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Mute] },
             { key: KeyDefineEnum.KEY_VolumI, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_VolumI] },
             { key: KeyDefineEnum.KEY_VolumD, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_VolumD] },
-            { key: KeyDefineEnum.KEY_SysBkBrigthInc, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_SysBkBrigthInc] },
-            { key: KeyDefineEnum.KEY_SysBkBrigthDec, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_SysBkBrigthDec] },
+            { key: KeyDefineEnum.KEY_BrigthInc, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_BrigthInc] },
+            { key: KeyDefineEnum.KEY_BrigthDec, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_BrigthDec] },
         ],
         shortcutsKeyOptions: [
             { key: KeyDefineEnum.KEY_MyComputer, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_MyComputer] },
             { key: KeyDefineEnum.KEY_Calculator, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_Calculator] },
-            { key: KeyDefineEnum.KEY_CTRL_X, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_CTRL_X] },
-            { key: KeyDefineEnum.KEY_CTRL_C, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_CTRL_C] },
-            { key: KeyDefineEnum.KEY_CTRL_V, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_CTRL_V] },
-            { key: KeyDefineEnum.KEY_CTRL_S, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_CTRL_S] },
-            { key: KeyDefineEnum.KEY_WIN_D, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_WIN_D] },
-            { key: KeyDefineEnum.KEY_WIN_L, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_WIN_L] },
-            { key: KeyDefineEnum.KEY_ALT_TAB, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_ALT_TAB] },
-            { key: KeyDefineEnum.KEY_ALT_F4, text: keyboard.keyboardDefine?.keyText[KeyDefineEnum.KEY_ALT_F4] },
         ],
         macroDialogShow: false,
         combineKeyDialogShow: false,
@@ -608,6 +575,43 @@ export const useKeyStore = defineStore("keyinfo_rk_c61", () => {
         winKey: false,
         altKey: false,
     });
+
+    const WASD = [getIndex(2, 2), getIndex(3, 1), getIndex(3, 2), getIndex(3, 3)];
+    const DIGIT = [getIndex(1, 1), getIndex(1, 2), getIndex(1, 3), getIndex(1, 4), getIndex(1, 5), getIndex(1, 6), getIndex(1, 7), getIndex(1, 8), getIndex(1, 9), getIndex(1, 10)];
+    const LETTER = [getIndex(2, 1),
+                    getIndex(2, 2),
+                    getIndex(2, 3),
+                    getIndex(2, 4),
+                    getIndex(2, 5),
+                    getIndex(2, 6),
+                    getIndex(2, 7),
+                    getIndex(2, 8),
+                    getIndex(2, 9),
+                    getIndex(2, 10),
+                    getIndex(3, 1),
+                    getIndex(3, 2),
+                    getIndex(3, 3),
+                    getIndex(3, 4),
+                    getIndex(3, 5),
+                    getIndex(3, 6),
+                    getIndex(3, 7),
+                    getIndex(3, 8),
+                    getIndex(3, 9),
+                    getIndex(4, 2),
+                    getIndex(4, 3),
+                    getIndex(4, 4),
+                    getIndex(4, 5),
+                    getIndex(4, 6),
+                    getIndex(4, 7),
+                    getIndex(4, 8)];
+
+    const isAnyKeyChecked = (): boolean => {
+        if (rk_c61.value != undefined) {
+            return rk_c61.value.data.keyInfoData.getKeyCheckedCount() > 0;
+        }
+
+        return false;
+    };
 
     const isInited = ref(false);
 
@@ -648,8 +652,9 @@ export const useKeyStore = defineStore("keyinfo_rk_c61", () => {
             for (index in keyboard.state.keyTableData) {
                 (state.keyState as Array<KeyState>).push({
                     selected: false,
+                    isHover: false,
                     index: Number(index),
-                    KeyData: keyboard.state.keyTableData[Number(index)],
+                    keyData: keyboard.state.keyTableData[Number(index)],
                 });
             }
 
@@ -753,8 +758,33 @@ export const useKeyStore = defineStore("keyinfo_rk_c61", () => {
         let i: any;
         for (i in state.keyState) {
             (state.keyState as Array<KeyState>)[i].selected = false;
+            let keyData = (state.keyState as Array<KeyState>)[i].keyData;
+            if (keyData != undefined) {
+                keyData.keyInfo.isCheck = false;
+            }
         }
     };
+
+    const selected = (): void => {
+        let i: any;
+        for (i in state.keyState) {
+            (state.keyState as Array<KeyState>)[i].selected = true;
+            let keyData = (state.keyState as Array<KeyState>)[i].keyData;
+            if (keyData != undefined) {
+                keyData.keyInfo.isCheck = true;
+            }
+        }
+    };
+
+    const keyHover = (index: number, isHover: boolean) => {
+        let keyState = (state.keyState as Array<KeyState>)[index];
+        keyState.isHover = isHover;
+    }
+
+    const isKeyHover = (index: number): boolean => {
+        let keyState = (state.keyState as Array<KeyState>)[index];
+        return keyState.isHover;
+    }
 
     const saveProfile = () => {
         ps.save();
@@ -763,8 +793,13 @@ export const useKeyStore = defineStore("keyinfo_rk_c61", () => {
     const keySetStr = (keyData: KeyTableData) => {
         let layout: any = keyMatrixLayer.value;
         let keyCode = keyData.getLayoutMapping(layout as LayoutTypeEnum);
-        let keyText = KeyText;
-        keyData.keyStr = keyText[keyCode];
+        //let keyText = KeyText;
+        keyData.keyStr.splice(0, keyData.keyStr.length);
+        if (KeyText[keyCode] != undefined) {
+            for (let i = 0; i < KeyText[keyCode].length; i++) {
+                keyData.keyStr.push(KeyText[keyCode][i].valueOf());
+            }
+        }
     };
 
     const mapping = (keyCode: KeyDefineEnum, table: MatrixTable) => {
@@ -781,11 +816,16 @@ export const useKeyStore = defineStore("keyinfo_rk_c61", () => {
 
         if (key != undefined) {
             let layout: any = keyMatrixLayer.value;
-            key.KeyData.setLayoutMapping(keyCode, layout as LayoutTypeEnum);
+            key.keyData.setLayoutMapping(keyCode, layout as LayoutTypeEnum);
             if (keyboard.keyboardDefine != undefined) {
-                keySetStr(key.KeyData);
+                keySetStr(key.keyData);
             }
-
+            rk_c61.value?.setKeyValues([
+                {
+                    keyCode: key.keyData.keyInfo.keyValue,
+                    value: key.keyData.getLayoutMapping(layout as LayoutTypeEnum),
+                    layout: layout as LayoutTypeEnum
+                }]);
             unSelected();
             setUnselected(keyCode);
         }
@@ -795,17 +835,20 @@ export const useKeyStore = defineStore("keyinfo_rk_c61", () => {
 
     const keySetToDefaultAll = () => {
         let index: any;
+        let keyCmdValues = new Array<KeyCmdValue>();
+        let layout: any = keyMatrixLayer.value;
         for (index in state.keyState) {
             let kState = state.keyState[index] as KeyState;
-            let code = keyboard.keyboardDefine?.keyLayout[keyMatrixTable.value][keyMatrixLayer.value][index] as number;
-            let key: KeyTableData = {
-                keyStr: keyboard.keyboardDefine == undefined ? [""] : keyboard.keyboardDefine.keyText[code],
-                keyCode: code,
-                index: index,
-                keyMappingData: fillKeyMappingData(code),
-            };
+            let keyInfo = getDefaultKeyInfo(index);
 
-            kState.KeyData = key;
+            if (keyInfo != null) {
+                kState.keyData.setKeyInfo(keyInfo);
+                keyCmdValues.push({
+                    keyCode: kState.keyData.keyInfo.keyValue,
+                    value: kState.keyData.getLayoutMapping(layout as LayoutTypeEnum),
+                    layout: layout as LayoutTypeEnum
+                });
+            }
             kState.selected = false;
             // KeyMatrixData.value[keyMatrixTable.value][keyMatrixLayer.value]?.setKeyMapping(index, kState.KeyData.keyMappingData);
             // if (profile.value != undefined) {
@@ -813,18 +856,20 @@ export const useKeyStore = defineStore("keyinfo_rk_c61", () => {
             // }
         }
         //rk_c61.value?.setKeyMatrix(keyMatrixLayer.value, keyMatrixTable.value, 0);
+
+        rk_c61.value?.setKeyValues(keyCmdValues);
         saveProfile();
     };
 
-    const fillKeyMappingData = (code: number): KeyMappingData => {
-        return {
-            keyStr: keyboard.keyboardDefine == undefined ? [""] : keyboard.keyboardDefine.keyText[code],
-            keyCode: code & 0x0000ffff,
-            keyMappingType: code >> 24,
-            keyMappingPara: (code >> 16) & 0xff,
-            keyRaw: code,
-        };
-    };
+    // const fillKeyMappingData = (code: number): KeyMappingData => {
+    //     return {
+    //         keyStr: keyboard.keyboardDefine == undefined ? [""] : keyboard.keyboardDefine.keyText[code],
+    //         keyCode: code & 0x0000ffff,
+    //         keyMappingType: code >> 24,
+    //         keyMappingPara: (code >> 16) & 0xff,
+    //         keyRaw: code,
+    //     };
+    // };
 
     const keySetToDefault = (index: number) => {
         if (state.keyState.length <= 0 || index >= 999) {
@@ -832,16 +877,18 @@ export const useKeyStore = defineStore("keyinfo_rk_c61", () => {
         }
 
         let kState = (state.keyState as Array<KeyState>)[index];
-        let code = keyboard.keyboardDefine?.keyLayout[keyMatrixTable.value][keyMatrixLayer.value][index] as number;
-        let key: KeyTableData = {
-            keyStr: keyboard.keyboardDefine == undefined ? [""] : keyboard.keyboardDefine.keyText[code],
-            keyCode: code,
-            index: index,
-            keyMappingData: fillKeyMappingData(code),
-        };
+        let keyInfo = getDefaultKeyInfo(index);
+        let layout: any = keyMatrixLayer.value;
 
-        kState.KeyData = key;
-
+        if (keyInfo != null) {
+            kState.keyData.setKeyInfo(keyInfo);
+            rk_c61.value?.setKeyValues([
+                {
+                    keyCode: kState.keyData.keyInfo.keyValue,
+                    value: kState.keyData.getLayoutMapping(layout as LayoutTypeEnum),
+                    layout: layout as LayoutTypeEnum
+                }]);
+        }
         // KeyMatrixData.value[keyMatrixTable.value][keyMatrixLayer.value]?.setKeyMapping(index, kState.KeyData.keyMappingData);
         // rk_c61.value?.setKeyMatrix(keyMatrixLayer.value, keyMatrixTable.value, 0);
     };
@@ -855,18 +902,20 @@ export const useKeyStore = defineStore("keyinfo_rk_c61", () => {
 
         let keyCode = getSelectedFun();
         if (keyCode != undefined) {
-            key.KeyData.keyMappingData.keyRaw = keyCode;
-            key.KeyData.keyMappingData.keyCode = keyCode & 0x0000ffff;
-            key.KeyData.keyMappingData.keyMappingType = keyCode >> 24;
-            key.KeyData.keyMappingData.keyMappingPara = (keyCode >> 16) & 0xff;
-            if (keyboard.keyboardDefine != undefined) {
-                //key.KeyData.keyMappingData.keyStr = keyboard.keyboardDefine.keyText[keyCode];
-                // let table = getSelectedTable();
-                // if (profile.value != undefined) {
-                //   profile.value.keyTypes[keyMatrixTable.value][keyMatrixLayer.value][key.index] = table;
-                // }
-                keySetStr(key.KeyData);
-            }
+            let layout: any = keyMatrixLayer.value;
+            key.keyData.setLayoutMapping(keyCode, layout as LayoutTypeEnum);
+            rk_c61.value?.setKeyValues([{
+                keyCode: key.keyData.keyInfo.keyValue,
+                value: key.keyData.getLayoutMapping(layout as LayoutTypeEnum),
+                layout: layout as LayoutTypeEnum
+            }]);
+            //key.KeyData.keyMappingData.keyStr = keyboard.keyboardDefine.keyText[keyCode];
+            // let table = getSelectedTable();
+            // if (profile.value != undefined) {
+            //   profile.value.keyTypes[keyMatrixTable.value][keyMatrixLayer.value][key.index] = table;
+            // }
+            //keySetStr(key.KeyData);
+
             // KeyMatrixData.value[keyMatrixTable.value][keyMatrixLayer.value]?.setKeyMapping(key.index, key.KeyData.keyMappingData);
             // rk_c61.value?.setKeyMatrix(keyMatrixLayer.value, keyMatrixTable.value, 0);
 
@@ -879,13 +928,14 @@ export const useKeyStore = defineStore("keyinfo_rk_c61", () => {
     const keybgColor = (key: KeyTableData | undefined): string => {
         let c = "";
         if (key != undefined) {
-            let mapping = key.keyMappingData;
-            switch (mapping.keyMappingType) {
-                case KeyMappingType.Macro:
+            let advKeyType = key.keyInfo.advanceKeyType;
+            switch (advKeyType) {
+                case AdvKeyTypeEnum.MACRO:
                     c = "key_remapped";
                     break;
                 default:
-                    c = key.keyCode == mapping.keyRaw ? "" : "key_remapped";
+                    let layout: any = keyMatrixLayer.value;
+                    c = key.isRemaped(getDefaultKeyInfo(key.index), layout as LayoutTypeEnum) ? "" : "key_remapped";
                     break;
             }
         }
@@ -910,22 +960,23 @@ export const useKeyStore = defineStore("keyinfo_rk_c61", () => {
 
     const isCombinKey = (keyData: KeyTableData | undefined): boolean => {
         if (keyData == undefined) return false;
-        let mapping = keyData.keyMappingData;
+        let layout: any = keyMatrixLayer.value;
+        return keyData.isCombinKey(layout);
+        // let mapping = keyData.keyMappingData;
+        // if (mapping.keyMappingType == KeyMappingType.KeyBoard && mapping.keyMappingPara > 0) {
+        //     let keyText = KeyText;
+        //     //let keyType = profile.value?.keyTypes[keyMatrixTable.value][keyMatrixLayer.value][keyData.index];
 
-        if (mapping.keyMappingType == KeyMappingType.KeyBoard && mapping.keyMappingPara > 0) {
-            let keyText = KeyText;
-            //let keyType = profile.value?.keyTypes[keyMatrixTable.value][keyMatrixLayer.value][keyData.index];
+        //     // if (keyType == MatrixTable.WIN && keyboard.keyboardDefine != undefined) {
+        //     //   keyText = keyboard.keyboardDefine.keyText;
+        //     // } else if (keyType == MatrixTable.MAC) {
+        //     //   keyText = KeyText_Mac;
+        //     // }
 
-            // if (keyType == MatrixTable.WIN && keyboard.keyboardDefine != undefined) {
-            //   keyText = keyboard.keyboardDefine.keyText;
-            // } else if (keyType == MatrixTable.MAC) {
-            //   keyText = KeyText_Mac;
-            // }
+        //     return keyText[mapping.keyRaw] == undefined;
+        // }
 
-            return keyText[mapping.keyRaw] == undefined;
-        }
-
-        return false;
+        // return false;
     };
 
     const keyText = (keyData: KeyTableData | undefined): String => {
@@ -937,41 +988,38 @@ export const useKeyStore = defineStore("keyinfo_rk_c61", () => {
         // }
 
         let keyStr = "";
-        let index = 0;
         let texts = [];
-        for (index = 0; index < keyData.keyMappingData.keyStr.length; index++) {
-            keyStr = `${keyStr}${keyData.keyMappingData.keyStr[index]}`;
-            if (keyData.keyMappingData.keyStr[index] != "" && keyData.keyMappingData.keyStr[index] != undefined) {
-                switch (keyData.keyMappingData.keyMappingType) {
-                    case KeyMappingType.Mousue:
-                    case KeyMappingType.Media:
-                    case KeyMappingType.DPIKey:
-                    case KeyMappingType.ProfileSwitch:
-                    case KeyMappingType.SpecialFun:
-                    case KeyMappingType.LightSwitch:
-                    case KeyMappingType.Pc:
-                        if (KeyText[keyData.keyMappingData.keyRaw] != undefined) {
-                            keyData.keyMappingData.keyStr[index] = t(KeyText[keyData.keyMappingData.keyRaw][index].valueOf());
+        let layout: any = keyMatrixLayer.value;
+        let keyCode = keyData.getLayoutMapping(layout as LayoutTypeEnum);
+        if (keyCode == KeyDefineEnum.SPARKLINK_FN) {
+            keyStr = ``;
+        } else {
+            let keyMappingType: KeyMappingType = keyCode >> 12;
+            switch (keyMappingType) {
+                case KeyMappingType.MultiAndMix:
+                    keyData.keyStr = ['MultiAndMix'];
+                    keyStr = `${keyStr}${keyData.keyStr[0]}`;
+                    break;
+                case KeyMappingType.Mouse:
+                case KeyMappingType.SparkLinkKbFun:
+                case KeyMappingType.KeyBoard:
+                case KeyMappingType.Consumer:
+                case KeyMappingType.GameControls:
+                case KeyMappingType.SportControls:
+                case KeyMappingType.VRControls:
+                case KeyMappingType.GenericDesktop:
+                    if (keyCode > 0) {
+                        let strs = KeyText[keyCode];
+                        if (strs != undefined) {
+                            for (let index = 0; index < strs.length; index++) {
+                                texts.push(strs[index]);
+                                keyStr = `${keyStr}${strs[index]}`;
+                            }
+                        } else {
+                            Logging.console(LOG_TYPE.ERROR, `Cant find text for the KeyCode[${keyCode}]`);
                         }
-                        break;
-                    case KeyMappingType.KeyBoard:
-                        if (keyData.keyMappingData.keyMappingPara > 0) {
-                            let keyText = KeyText;
-                            // let keyType = profile.value?.keyTypes[keyMatrixTable.value][keyMatrixLayer.value][keyData.index];
-
-                            // if (keyType == MatrixTable.WIN && keyboard.keyboardDefine != undefined) {
-                            //   keyText = keyboard.keyboardDefine.keyText;
-                            // } else if (keyType == MatrixTable.MAC) {
-                            //   keyText = KeyText_Mac;
-                            // }
-
-                            // if (keyText[keyData.keyMappingData.keyRaw] != undefined && keyData.keyMappingData.keyCode != 0) {
-                            //   keyData.keyMappingData.keyStr[index] = t(keyText[keyData.keyMappingData.keyRaw][index].valueOf());
-                            // }
-                        }
-                        break;
-                }
-                texts.push(keyData.keyMappingData.keyStr[index]);
+                    }
+                    break;
             }
         }
         if (texts.length == 4) {
@@ -1014,7 +1062,7 @@ export const useKeyStore = defineStore("keyinfo_rk_c61", () => {
 
     const keyTipText = (keyData: KeyTableData | undefined): String => {
         if (keyData == undefined) return "";
-        if (isCombinKey(keyData)) return keyData.keyMappingData.keyStr[0];
+        if (isCombinKey(keyData)) return keyData.keyStr[0];
         return "";
     };
 
@@ -1034,11 +1082,14 @@ export const useKeyStore = defineStore("keyinfo_rk_c61", () => {
 
     const confirmSetMacro = () => {
         if (keyState.value != undefined && macro.value != undefined) {
-            let mapping = keyState.value.KeyData.keyMappingData;
-            mapping.keyCode = (state.cycleCount << 8) | macro.value?.index;
-            mapping.keyStr = [macro.value?.name];
-            mapping.keyMappingType = KeyMappingType.Macro;
-            mapping.keyMappingPara = state.cycleType;
+            // let mapping = keyState.value.KeyData.keyMappingData;
+            // mapping.keyCode = (state.cycleCount << 8) | macro.value?.index;
+            // mapping.keyStr = [macro.value?.name];
+            // mapping.keyMappingType = KeyMappingType.Macro;
+            // mapping.keyMappingPara = state.cycleType;
+
+            keyState.value.keyData.setMacro(macro.value);
+
             // KeyMatrixData.value[keyMatrixTable.value][keyMatrixLayer.value]?.setKeyMapping(keyState.value.index, mapping);
             // rk_c61.value?.setKeyMatrix(keyMatrixLayer.value, keyMatrixTable.value, 0);
             saveProfile();
@@ -1062,49 +1113,145 @@ export const useKeyStore = defineStore("keyinfo_rk_c61", () => {
         refresh();
     };
 
-    const addTGL = (key: KeyTableData | undefined) => {
-        if (advanceKeys.value != undefined) {
-            // actionTGL.value = new MagKeyTGL();
-            // actionTGL.value.index = advanceKeys.value.length;
-            // actionTGL.value.keyCode = KeyCodeEnum.None;
-            // keyData.value = key;
+    const keyMatrixChange = async () => {
+        await getKeyMatrix();
+        // rk_m87.value?.data?.boardProfile?.setFieldValue(FieldEnum.WinMacMode, keyMatrixTable.value);
+        // rk_m87.value?.setProfile(0);
+    }
+
+
+    const selectWASD = () => {
+        for (let i = 0; i < WASD.length; i++) {
+            (state.keyState as Array<KeyState>)[WASD[i]].selected = true;
+            (state.keyState as Array<KeyState>)[WASD[i]].keyData.keyInfo.isCheck = true;
         }
     };
 
-    const addMT = (key: KeyTableData | undefined) => {
-        if (advanceKeys.value != undefined) {
-            // actionMT.value = new MagKeyMT();
-            // actionMT.value.index = advanceKeys.value.length;
-            // actionMT.value.longPressKeyCode = KeyCodeEnum.None;
-            // actionMT.value.shortPressKeyCode = KeyCodeEnum.None;
-            // actionMT.value.tapTime = 10;
-            // keyData.value = key;
+    const selectDIGIT = () => {
+        for (let i = 0; i < DIGIT.length; i++) {
+            (state.keyState as Array<KeyState>)[DIGIT[i]].selected = true;
+            (state.keyState as Array<KeyState>)[DIGIT[i]].keyData.keyInfo.isCheck = true;
         }
     };
 
-    const addDKS = (key: KeyTableData | undefined) => {
-        if (advanceKeys.value != undefined) {
-            // actionDKS.value = new MagKeyDKS();
-            // actionDKS.value.index = advanceKeys.value.length;
-            // let index: number;
-            // for (index = 0; index < actionDKS.value.dksActions.length; index++) {
-            //   actionDKS.value.dksActions[index].keyCode = KeyCodeEnum.None;
-            //   actionDKS.value.dksActions[index].downAction1 = 0;
-            //   actionDKS.value.dksActions[index].downAction2 = 0;
-            //   actionDKS.value.dksActions[index].upAction1 = 0;
-            //   actionDKS.value.dksActions[index].upAction2 = 0;
-            // }
-            // keyData.value = key;
+    const selectLETTER = () => {
+        for (let i = 0; i < LETTER.length; i++) {
+            (state.keyState as Array<KeyState>)[LETTER[i]].selected = true;
+            (state.keyState as Array<KeyState>)[LETTER[i]].keyData.keyInfo.isCheck = true;
         }
     };
 
-    const unSelectAdvanced = () => {
-        selectAdvancedKeyIndex.value = -1;
+    // const itemText = (item: any) => {
+    //     if (item == null) return ''
+    //     if (item.type == MatrixTable.MAC) return item.text[0] as string;
+    //     if (item.tip != '') return t(item.text[0] as string);
+    //     if ((item.key >> 24) == 8) return t(item.text[0] as string);
+
+    //     let str = '';
+    //     let i = 0;
+    //     let texts = [];
+    //     for (i = 0; i < item.text.length; i++) {
+    //         str = `${str}${item.text[i]}`
+    //         if (item.text[i] != '' && item.text[i] != undefined) {
+    //             texts.push(item.text[i])
+    //         }
+    //     }
+    //     if (texts.length == 4) {
+    //         str = `<div class='d-flex'>
+    //     <div>
+    //         <div>${texts[1]}</div>
+    //         <div>${texts[0]}</div>
+    //     </div>
+    //     <div class='ml-3'>
+    //         <div>${texts[3]}</div>
+    //         <div>${texts[2]}</div>
+    //     </div>
+    //     </div>`
+    //     } else if (texts.length == 3) {
+    //         str = `<div class='d-flex'>
+    //     <div>
+    //         <div>${texts[1]}</div>
+    //         <div>${texts[0]}</div>
+    //     </div>
+    //     <div class='ml-3'>
+    //         <div>&nbsp;</div>
+    //         <div>${texts[2]}</div>
+    //     </div>
+    //     </div>`
+    //     } else if (texts.length == 2) {
+    //         str = `<div class='d-flex'>
+    //     <div>
+    //         <div>${texts[0]}</div>
+    //         <div>&nbsp;</div>
+    //     </div>
+    //       <div class='ml-3'>
+    //         <div>&nbsp;</div>
+    //         <div>${texts[1]}</div>
+    //     </div>
+    //     </div>`
+    //     }
+    //     return str;
+    // }
+
+    const updateKeyInfo = () => {
+        if (rk_c61.value != undefined) {
+            for (let row = 0; row < 6; row++) {
+                for (let col = 0; col < 21; col++) {
+                    let keyInfo = rk_c61.value.data.keyInfoData.getKeyInfo(row, col);
+                    if (keyInfo != null) {
+                        (state.keyState as Array<KeyState>)[getIndex(row, col)].keyData.keyInfo = keyInfo;
+                    }
+                }
+            }
+        }
     };
 
-    const selectAdvanced = (key: MagKeyAdvanced) => {
-        selectAdvancedKeyIndex.value = key.index;
+    const setToFactory = async () => {
+        if (rk_c61.value != undefined) {
+            await rk_c61.value.cmd(OrderTypeEnum.RestoreFactory, 0xff);
+        }
     };
 
-    return { profile, state, advanceKeys, keyMatrixLayer, keyMatrixTable, init, destroy, setFunid, isFunSelected, setUnselected, unSelected, mapping, saveProfile, getKeyMatrix, refresh, keySetToDefaultAll, keySetToDefault, keyClick, keybgColor, onKeyDown, keyColor, isSelected, isCombinKey, keyText, keyTipText, keySetMacro, confirmSetMacro, isMacroSelected, clickMacro, addDKS, addMT, addTGL, unSelectAdvanced, selectAdvanced, deleteAdvKey };
+    return {
+        profile,
+        state,
+        keyState,
+        keyMatrixLayer,
+        keyMatrixTable,
+        init,
+        destroy,
+        setFunid,
+        isFunSelected,
+        setUnselected,
+        unSelected,
+        selected,
+        mapping,
+        saveProfile,
+        getKeyMatrix,
+        keyMatrixChange,
+        refresh,
+        keySetToDefaultAll,
+        keySetToDefault,
+        keyClick,
+        keybgColor,
+        onKeyDown,
+        keyColor,
+        isSelected,
+        keyHover,
+        isKeyHover,
+        isCombinKey,
+        keyText,
+        keyTipText,
+        keySetMacro,
+        confirmSetMacro,
+        isMacroSelected,
+        clickMacro,
+        isAnyKeyChecked,
+        selectWASD,
+        selectDIGIT,
+        selectLETTER,
+        //itemText,
+        updateKeyInfo,
+        setToFactory
+    };
 });

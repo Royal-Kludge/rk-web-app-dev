@@ -1,270 +1,50 @@
 import { defineStore } from "pinia";
 import { reactive, ref } from 'vue';
 import { keyboard } from '@/keyboard/sparklink/keyboard'
-import { RK_C61, RK_C61_EVENT_DEFINE } from '@/keyboard/sparklink/rk_c61/rk_c61';
-//import { BoardProfile, FieldEnum } from '@/keyboard/sparklink/rk_c61/boardProfile';
-//import { LedEffect } from '@/keyboard/sparklink/rk_c61/ledEffect';
-//import { LedColors } from '@/keyboard/sparklink/rk_c61/ledColors';
-import { LightEffectEnum, KeyMatrixLayer, MatrixTable, LightModeEnum } from '@/keyboard/sparklink/enum'
+import { RK_C61 } from '@/keyboard/sparklink/rk_c61/rk_c61';
+import { LightEffectEnum, LightModeEnum, LightSwitchEnum } from '@/keyboard/sparklink/enum'
 import { ConnectionType, ConnectionEventEnum, ConnectionStatusEnum } from '@/device/enum'
-import { type LedColor } from '@/keyboard/sparklink/interface';
-import { KeyDefineEnum } from '@/common/keyCode_m87';
-import { type KeyTableData } from '@/keyboard/sparklink/interface'
-import { ps } from '@/keyboard/sparklink/profiles';
+import { type KeyInfo } from '@/keyboard/sparklink/interface';
 
 export const uselightStore = defineStore('lightinfo_rk_c61', () => {
     const rgb = ref({ r: 0, g: 0, b: 0, color: '#000000' });
-    //const boardProfile = ref<BoardProfile>();
-    // const ledEffect = ref<LedEffect>();
-    // const ledColors = ref<LedColors>();
     const rk_c61 = ref<RK_C61>();
-    const profileIndex = ref(0);
     const connectType = ref<ConnectionType>()
-
-    const getKeyData = (index: number, table: MatrixTable = MatrixTable.WIN, layer: KeyMatrixLayer = KeyMatrixLayer.FN0): KeyTableData | undefined => {
-        let keyData = undefined;
-        if (layer in keyboard.state.keyTableData &&
-            index < keyboard.state.keyTableData[table][layer].length) {
-            keyData = keyboard.state.keyTableData[table][layer][index];
-        }
-        return keyData;
-    }
-
-    const getIndex = (l: number, c: number) => {
-        return l + 6 * c;
-    }
 
     const state = reactive({
         lightEffects: [
-            { light: LightEffectEnum.M1, label: 'light.menu_1' },
-            { light: LightEffectEnum.M2, label: 'light.menu_2' },
-            { light: LightEffectEnum.M3, label: 'light.menu_3' },
-            { light: LightEffectEnum.M4, label: 'light.menu_4' },
-            { light: LightEffectEnum.M5, label: 'light.menu_5' },
-            { light: LightEffectEnum.M6, label: 'light.menu_6' },
-            { light: LightEffectEnum.M7, label: 'light.menu_7' },
-            { light: LightEffectEnum.M8, label: 'light.menu_8' },
-            { light: LightEffectEnum.M9, label: 'light.menu_9' },
-            { light: LightEffectEnum.M10, label: 'light.menu_10' },
-            { light: LightEffectEnum.M11, label: 'light.menu_11' },
-            { light: LightEffectEnum.M12, label: 'light.menu_12' },
-            { light: LightEffectEnum.M13, label: 'light.menu_13' },
-            { light: LightEffectEnum.M14, label: 'light.menu_17' },
-            { light: LightEffectEnum.M15, label: 'light.menu_18' },
-            { light: LightEffectEnum.M16, label: 'light.menu_0' },
-            { light: LightEffectEnum.M17, label: 'light.menu_0' },
-            { light: LightEffectEnum.M18, label: 'light.menu_0' },
-            { light: LightEffectEnum.M19, label: 'light.menu_0' },
-            { light: LightEffectEnum.M20, label: 'light.menu_0' },
-        ],
-        keyMatrix: [
-            { key: KeyDefineEnum.KEY_ESC, index: getIndex(0, 0), },
-            { key: KeyDefineEnum.KEY_F1, index: getIndex(0, 1), },
-            { key: KeyDefineEnum.KEY_F2, index: getIndex(0, 2), },
-            { key: KeyDefineEnum.KEY_F3, index: getIndex(0, 3), },
-            { key: KeyDefineEnum.KEY_F4, index: getIndex(0, 4), },
-            { key: KeyDefineEnum.KEY_F5, index: getIndex(0, 5), },
-            { key: KeyDefineEnum.KEY_F6, index: getIndex(0, 6), },
-            { key: KeyDefineEnum.KEY_F7, index: getIndex(0, 7), },
-            { key: KeyDefineEnum.KEY_F8, index: getIndex(0, 8), },
-            { key: KeyDefineEnum.KEY_F9, index: getIndex(0, 9), },
-            { key: KeyDefineEnum.KEY_F10, index: getIndex(0, 10), },
-            { key: KeyDefineEnum.KEY_F11, index: getIndex(0, 11), },
-            { key: KeyDefineEnum.KEY_F12, index: getIndex(0, 12), },
-            { key: KeyDefineEnum.KEY_Calculator, index: getIndex(0, 13), },
-            { key: KeyDefineEnum.KEY_PRINT, index: getIndex(0, 14), },
-            { key: KeyDefineEnum.KEY_SCRLOCK, index: getIndex(0, 15), },
-            { key: KeyDefineEnum.KEY_PAUSE, index: getIndex(0, 16), },
-            { key: KeyDefineEnum.KEY_TILDE, index: getIndex(1, 0), },
-            { key: KeyDefineEnum.KEY_1, index: getIndex(1, 1), },
-            { key: KeyDefineEnum.KEY_2, index: getIndex(1, 2), },
-            { key: KeyDefineEnum.KEY_3, index: getIndex(1, 3), },
-            { key: KeyDefineEnum.KEY_4, index: getIndex(1, 4), },
-            { key: KeyDefineEnum.KEY_5, index: getIndex(1, 5), },
-            { key: KeyDefineEnum.KEY_6, index: getIndex(1, 6), },
-            { key: KeyDefineEnum.KEY_7, index: getIndex(1, 7), },
-            { key: KeyDefineEnum.KEY_8, index: getIndex(1, 8), },
-            { key: KeyDefineEnum.KEY_9, index: getIndex(1, 9), },
-            { key: KeyDefineEnum.KEY_0, index: getIndex(1, 10), },
-            { key: KeyDefineEnum.KEY_Underscore, index: getIndex(1, 11), },
-            { key: KeyDefineEnum.KEY_EqualSign, index: getIndex(1, 12), },
-            { key: KeyDefineEnum.KEY_Backspace, index: getIndex(1, 13), },
-            { key: KeyDefineEnum.KEY_INS, index: getIndex(1, 14), },
-            { key: KeyDefineEnum.KEY_HOME, index: getIndex(1, 15), },
-            { key: KeyDefineEnum.KEY_PGUP, index: getIndex(1, 16), },
-            { key: KeyDefineEnum.KEY_TAB, index: getIndex(2, 0), },
-            { key: KeyDefineEnum.KEY_Q, index: getIndex(2, 1), },
-            { key: KeyDefineEnum.KEY_W, index: getIndex(2, 2), },
-            { key: KeyDefineEnum.KEY_E, index: getIndex(2, 3), },
-            { key: KeyDefineEnum.KEY_R, index: getIndex(2, 4), },
-            { key: KeyDefineEnum.KEY_T, index: getIndex(2, 5), },
-            { key: KeyDefineEnum.KEY_Y, index: getIndex(2, 6), },
-            { key: KeyDefineEnum.KEY_U, index: getIndex(2, 7), },
-            { key: KeyDefineEnum.KEY_I, index: getIndex(2, 8), },
-            { key: KeyDefineEnum.KEY_O, index: getIndex(2, 9), },
-            { key: KeyDefineEnum.KEY_P, index: getIndex(2, 10), },
-            { key: KeyDefineEnum.KEY_L_Brackets, index: getIndex(2, 11), },
-            { key: KeyDefineEnum.KEY_R_Brackets, index: getIndex(2, 12), },
-            { key: KeyDefineEnum.KEY_CODE29, index: getIndex(2, 13), },
-            { key: KeyDefineEnum.KEY_DEL, index: getIndex(2, 14), },
-            { key: KeyDefineEnum.KEY_END, index: getIndex(2, 15), },
-            { key: KeyDefineEnum.KEY_PGDN, index: getIndex(2, 16), },
-            { key: KeyDefineEnum.KEY_CAPSLOCK, index: getIndex(3, 0), },
-            { key: KeyDefineEnum.KEY_A, index: getIndex(3, 1), },
-            { key: KeyDefineEnum.KEY_S, index: getIndex(3, 2), },
-            { key: KeyDefineEnum.KEY_D, index: getIndex(3, 3), },
-            { key: KeyDefineEnum.KEY_F, index: getIndex(3, 4), },
-            { key: KeyDefineEnum.KEY_G, index: getIndex(3, 5), },
-            { key: KeyDefineEnum.KEY_H, index: getIndex(3, 6), },
-            { key: KeyDefineEnum.KEY_J, index: getIndex(3, 7), },
-            { key: KeyDefineEnum.KEY_K, index: getIndex(3, 8), },
-            { key: KeyDefineEnum.KEY_L, index: getIndex(3, 9), },
-            { key: KeyDefineEnum.KEY_Semicolon, index: getIndex(3, 10), },
-            { key: KeyDefineEnum.KEY_Quotation, index: getIndex(3, 11), },
-            { key: KeyDefineEnum.KEY_ENTER, index: getIndex(3, 13), },
-            { key: KeyDefineEnum.SHIFT_L, index: getIndex(4, 0), },
-            { key: KeyDefineEnum.KEY_Z, index: getIndex(4, 1), },
-            { key: KeyDefineEnum.KEY_X, index: getIndex(4, 2), },
-            { key: KeyDefineEnum.KEY_C, index: getIndex(4, 3), },
-            { key: KeyDefineEnum.KEY_V, index: getIndex(4, 4), },
-            { key: KeyDefineEnum.KEY_B, index: getIndex(4, 5), },
-            { key: KeyDefineEnum.KEY_N, index: getIndex(4, 6), },
-            { key: KeyDefineEnum.KEY_M, index: getIndex(4, 7), },
-            { key: KeyDefineEnum.KEY_COMMA, index: getIndex(4, 8), },
-            { key: KeyDefineEnum.KEY_PERIOD, index: getIndex(4, 9), },
-            { key: KeyDefineEnum.KEY_Interrogation, index: getIndex(4, 10), },
-            { key: KeyDefineEnum.SHIFT_R, index: getIndex(4, 13), },
-            { key: KeyDefineEnum.KEY_UpArrow, index: getIndex(4, 15), },
-            { key: KeyDefineEnum.CTRL_L, index: getIndex(5, 0), },
-            { key: KeyDefineEnum.WIN_L, index: getIndex(5, 1), },
-            { key: KeyDefineEnum.ALT_L, index: getIndex(5, 2), },
-            { key: KeyDefineEnum.KEY_SPACEBAR, index: getIndex(5, 5), },
-            { key: KeyDefineEnum.ALT_R, index: getIndex(5, 8), },
-            { key: KeyDefineEnum.KEY_Fn1, index: getIndex(5, 9), },
-            { key: KeyDefineEnum.KEY_APP, index: getIndex(5, 10), },
-            { key: KeyDefineEnum.CTRL_R, index: getIndex(5, 13), },
-            { key: KeyDefineEnum.KEY_LeftArrow, index: getIndex(5, 14), },
-            { key: KeyDefineEnum.KEY_DownArrow, index: getIndex(5, 15), },
-            { key: KeyDefineEnum.KEY_RightArrow, index: getIndex(5, 16), }
-        ],
-        keyColors: [
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF',
-            '#FFFFFF'
+            { light: LightEffectEnum.Off, label: 'light.Off' },
+            { light: LightEffectEnum.M1, label: 'light.M1' },
+            { light: LightEffectEnum.M2, label: 'light.M2' },
+            { light: LightEffectEnum.M3, label: 'light.M3' },
+            { light: LightEffectEnum.M4, label: 'light.M4' },
+            { light: LightEffectEnum.M5, label: 'light.M5' },
+            { light: LightEffectEnum.M6, label: 'light.M6' },
+            { light: LightEffectEnum.M7, label: 'light.M7' },
+            { light: LightEffectEnum.M8, label: 'light.M8' },
+            { light: LightEffectEnum.M9, label: 'light.M9' },
+            { light: LightEffectEnum.M10, label: 'light.M10' },
+            { light: LightEffectEnum.M11, label: 'light.M11' },
+            { light: LightEffectEnum.M12, label: 'light.M12' },
+            { light: LightEffectEnum.M13, label: 'light.M13' },
+            { light: LightEffectEnum.M14, label: 'light.M14' },
+            { light: LightEffectEnum.M15, label: 'light.M15' },
+            { light: LightEffectEnum.M16, label: 'light.M16' },
+            { light: LightEffectEnum.M17, label: 'light.M17' },
+            { light: LightEffectEnum.M18, label: 'light.M18' },
+            { light: LightEffectEnum.M19, label: 'light.M19' },
+            { light: LightEffectEnum.M20, label: 'light.M20' },
+            { light: LightEffectEnum.Static, label: 'light.Static' },
+            { light: LightEffectEnum.SelfDefine, label: 'light.SelfDefine' },
         ],
         lightProps: {
             mode: LightModeEnum.Disable,
             light: LightEffectEnum.Off,
             brightness: 0,
             speed: 0,
-            mixing: false,
-            sleep: 0
-        },
-        keyColor:
-        {
-            index: 0,
-            keyStr: "",
-            key: KeyDefineEnum.KEY_ESC,
-            color: "",
+            sleep: 0,
+            staticIndex: 0,
+            staticColors: Array.from<any>({ length: 7 })
         },
         layer: 0,
         debounce: 0
@@ -279,52 +59,25 @@ export const uselightStore = defineStore('lightinfo_rk_c61', () => {
             keyboard.addEventListener("connection", connectionEventCallback);
         }
 
-        // if (rk_c61.value != undefined && !isInited.value) {
-        //     rk_c61.value.addEventListener(RK_C61_EVENT_DEFINE.OnProfileGotten, profileGotten, false);
-        //     rk_c61.value.addEventListener(RK_C61_EVENT_DEFINE.OnLedEffectGotten, ledEffectGotten, false);
-        //     rk_c61.value.addEventListener(RK_C61_EVENT_DEFINE.OnLedColorsGotten, ledColorsGotten, false);
-        //     boardProfile.value = rk_c61.value.data.boardProfile
-        //     ledEffect.value = rk_c61.value.data.ledEffect
-        //     ledColors.value = rk_c61.value.data.ledColors
-        //     isInited.value = true;
-        // }
+        if (rk_c61.value != undefined && !isInited.value) {
+            state.lightProps.brightness = rk_c61.value.data.lightSetting.lightBrightness;
+            state.lightProps.speed = rk_c61.value.data.lightSetting.lightSpeed;
+            state.lightProps.sleep = rk_c61.value.data.lightSetting.lightSleepDelay;
+            state.lightProps.light = rk_c61.value.data.lightSetting.lightMode;
+            state.lightProps.mode = rk_c61.value.data.lightSetting.lightBigMode;
+            state.lightProps.staticIndex = rk_c61.value.data.lightSetting.staticLightMode;
 
-        // if (boardProfile.value == undefined) {
-        //     await getLightData();
-        // } else {
-        //     state.layer = boardProfile.value.getFieldValue(FieldEnum.TapDelay)
-        //     state.debounce = boardProfile.value.getFieldValue(FieldEnum.Debounce)
-        //     state.lightProps.light = boardProfile.value.getFieldValue(FieldEnum.LedMode);
-        //     let ledParam = boardProfile.value.getLedParam(state.lightProps.light);
-        //     if (ledParam != undefined && boardProfile.value.getFieldValue(FieldEnum.LedParameterType) == 0) {
-        //         state.lightProps.brightness = ledParam.brightness + 1;
-        //         state.lightProps.mixing = ledParam.color > 0;
-        //         state.lightProps.speed = ledParam.speed;
-        //     } else {
-        //         state.lightProps.brightness = boardProfile.value.getFieldValue(FieldEnum.LedBrightness) + 1;
-        //         state.lightProps.speed = boardProfile.value.getFieldValue(FieldEnum.LedSpeed);
-        //     }
+            state.lightProps.staticColors.splice(0, state.lightProps.staticColors.length);
+            for (let i = 0; i < rk_c61.value.data.lightSetting.lightColorList.length; i++) {
+                state.lightProps.staticColors.push({
+                    index: i,
+                    color: rk_c61.value.data.lightSetting.lightColorList[i],
+                    text: `Color ${i + 1}`
+                });
+            }
 
-        //     state.lightProps.sleep = boardProfile.value.getFieldValue(FieldEnum.SleepTime) == 0 ? 0 : (boardProfile.value.getFieldValue(FieldEnum.SleepTime) * 30) / 60;
-        // }
-
-        // if (ledColors.value != undefined) {
-        //     let index: number;
-        //     for (index = 0; index < state.keyColors.length; index++) {
-        //         var color = ledColors.value.getLedColor(index);
-        //         state.keyColors[index] = color.color;
-        //     }
-
-        //     keyChanged(state.keyColor.index);
-        // }
-
-        // if (ledEffect.value != undefined) {
-        //     let c = ledEffect.value.getLedColor(state.lightProps.light);
-        //     rgb.value.r = c.red;
-        //     rgb.value.g = c.green;
-        //     rgb.value.b = c.blue;
-        //     rgb.value.color = c.color;
-        // }
+            isInited.value = true;
+        }
     };
 
     const connectionEventCallback = async (event: Event) => {
@@ -337,258 +90,170 @@ export const uselightStore = defineStore('lightinfo_rk_c61', () => {
     };
 
     const destroy = () => {
-        // if (rk_c61.value != undefined) {
-            // rk_c61.value.removeEventListener(RK_C61_EVENT_DEFINE.OnProfileGotten, profileGotten, false);
-            // rk_c61.value.removeEventListener(RK_C61_EVENT_DEFINE.OnLedEffectGotten, ledEffectGotten, false);
-            // rk_c61.value.removeEventListener(RK_C61_EVENT_DEFINE.OnLedColorsGotten, ledColorsGotten, false);
-        // }
-
-        // if (keyboard.state.ConnectionStatus != ConnectionStatusEnum.Connected) {
-            // keyboard.removeEventListener("connection", connectionEventCallback);
-            // isInited.value = false;
-            // rk_c61.value = undefined;
-        // }
-    };
-
-    const setProfile = () => {
-        // if (boardProfile.value != undefined) {
-            // const dataView = new DataView(boardProfile.value.buffer.buffer)
-            // ps.initProfile(new Uint8Array(dataView.buffer, dataView.byteOffset, dataView.byteLength))
-        // }
-    }
-    const setledEffect = () => {
-        // if (ledEffect.value != undefined) {
-        //     const dataView = new DataView(ledEffect.value.buffer.buffer)
-        //     ps.initledEffect(new Uint8Array(dataView.buffer, dataView.byteOffset, dataView.byteLength))
-        // }
-    }
-    const setledColors = () => {
-        // if (ledColors.value != undefined) {
-        //     const dataView = new DataView(ledColors.value.buffer.buffer)
-        //     ps.initledColors(new Uint8Array(dataView.buffer, dataView.byteOffset, dataView.byteLength))
-        // }
-    }
-
-    const DebounceChanged = (mode: number) => {
-        // state.debounce = mode;
-        // if (boardProfile.value != undefined && rk_c61.value != undefined) {
-            // boardProfile.value.setFieldValue(FieldEnum.Debounce, mode);
-            // rk_c61.value.setProfile(profileIndex.value);
-        // }
-    };
-
-    const setLayer = (layer: number) => {
-        // state.layer = (layer << 1) | 0x01;
-        // if (boardProfile.value != undefined && rk_c61.value != undefined) {
-        //     boardProfile.value.setFieldValue(FieldEnum.TapDelay, state.layer );
-        //     rk_c61.value.setProfile(profileIndex.value);
-        // }
-    };
-
-    const getLightData = async () => {
-        //await rk_c61.value?.getProfile(profileIndex.value);
-    }
-
-    const profileGotten = async (event: any) => {
-        // boardProfile.value = event.detail as BoardProfile;
-        // boardProfile.value.setFieldValue(FieldEnum.LedModeSelection, 0x00);
-        // boardProfile.value.setFieldValue(FieldEnum.LedMode, LightEffectEnum.NeonStream);
-        // await rk_c61.value?.getLedEffect(profileIndex.value);
-        // setProfile()
-    };
-
-    const ledEffectGotten = async (event: any) => {
-        // ledEffect.value = event.detail as LedEffect;
-        // await rk_c61.value?.getLedColors(profileIndex.value);
-        // setledEffect()
-    };
-
-    const ledColorsGotten = async (event: any) => {
-        // ledColors.value = event.detail as LedColors;
-        // if (ledColors.value != undefined) {
-            // let color: LedColor = {
-                // red: 0xFF,
-                // green: 0xFF,
-                // blue: 0xFF,
-                // color: '#FFFFFF'
-            // }
-        // }
-        // setledColors()
-        // await refresh();
+        if (keyboard.state.ConnectionStatus != ConnectionStatusEnum.Connected) {
+            keyboard.removeEventListener("connection", connectionEventCallback);
+            isInited.value = false;
+            rk_c61.value = undefined;
+        }
     };
 
     const refresh = async () => {
-        // if (boardProfile.value != undefined) {
-            // state.lightProps.light = boardProfile.value.getFieldValue(FieldEnum.LedMode);
-            // let ledParam = boardProfile.value.getLedParam(state.lightProps.light);
-            // if (ledParam != undefined && boardProfile.value.getFieldValue(FieldEnum.LedParameterType) == 0) {
-                // state.lightProps.brightness = ledParam.brightness + 1;
-                // state.lightProps.mixing = ledParam.color > 0;
-                // state.lightProps.speed = ledParam.speed;
-            // } else {
-                // state.lightProps.brightness = boardProfile.value.getFieldValue(FieldEnum.LedBrightness) + 1;
-                // state.lightProps.speed = boardProfile.value.getFieldValue(FieldEnum.LedSpeed);
-            // }
 
-            // state.lightProps.sleep = boardProfile.value.getFieldValue(FieldEnum.SleepTime) == 0 ? 0 : (boardProfile.value.getFieldValue(FieldEnum.SleepTime) * 30) / 60;
-        // }
-
-        // if (state.lightProps.light == LightEffectEnum.SelfDefine) {
-            // if (ledColors.value != undefined) {
-                // await rk_c61.value?.setLedColors(profileIndex.value);
-            // }
-        // }
-
-        // if (ledColors.value != undefined) {
-            // let index: number;
-            // for (index = 0; index < state.keyColors.length; index++) {
-                // var color = ledColors.value.getLedColor(index);
-                // state.keyColors[index] = color.color;
-            // }
-
-            // keyChanged(state.keyColor.index);
-        // }
     };
 
     const ligtChanged = async () => {
-        // if (boardProfile.value != undefined && rk_c61.value != undefined) {
-            // boardProfile.value.setLedParam(state.lightProps.light, {
-                // brightness: state.lightProps.brightness - 1,
-                // speed: state.lightProps.speed,
-                // color: state.lightProps.mixing ? 0x07 : 0x00
-            // });
-            // boardProfile.value.setFieldValue(FieldEnum.SleepTime, (state.lightProps.sleep * 60) / 30);
-            // await rk_c61.value.setProfile(profileIndex.value);
-            // await refresh();
-        // }
-    };
-
-    const saveBoardProfileToDevice = async () => {
-        // if (rk_c61.value != undefined) {
-            // await rk_c61.value.setProfile(profileIndex.value);
-        // }
-    };
-
-    const SelfDefineDefaultAll = () => {
-        // if (ledColors.value != undefined) {
-        //     let index: number;
-        //     for (index = 0; index < state.keyColors.length; index++) {
-        //         onPicking(0, 0, 0, index);
-        //     }
-        // }
-        // onPicked();
-    }
-
-
-    const SelfDefineDefault = () => {
-        if (state.lightProps.mode != LightModeEnum.Custom) {
-            return
+        if (rk_c61.value != undefined) {
+            rk_c61.value.data.lightSetting.lightBrightness = state.lightProps.brightness;
+            rk_c61.value.data.lightSetting.lightSpeed = state.lightProps.speed;
+            rk_c61.value.data.lightSetting.lightSleepDelay = state.lightProps.sleep;
+            await rk_c61.value.setPrgb();
+            await refresh();
         }
-        onPicking(0, 0, 0);
-        onPicked();
-    }
-
-    const onPicking = (r: any, g: any, b: any, index: number = state.keyColor.index) => {
-        // let color: LedColor = {
-            // red: r,
-            // green: g,
-            // blue: b,
-            // color: LedColors.getColorString(r, g, b)
-        // }
-        // if (state.lightProps.mode == LightModeEnum.Custom) {
-            // state.keyColor.color = color.color;
-            // state.keyColors[index] = color.color;
-            // ledColors.value?.setLedColor(index, color);
-        // } else if (state.lightProps.mode != LightModeEnum.Disable && state.lightProps.light != LightEffectEnum.Off) {
-            // ledEffect.value?.setLedColor(state.lightProps.light, color);
-        // }
     };
 
-    const onPicked = async () => {
-        // // if (rk_c61.value != undefined) {
-        // //     if (state.lightProps.light == LightEffectEnum.SelfDefine) {
-        // //         if (ledColors.value != undefined) {
-        // //             await rk_c61.value.setLedColors(profileIndex.value);
-        // //         }
-        // //     } else if (state.lightProps.light != LightEffectEnum.OFF && state.lightProps.light != LightEffectEnum.Music) {
-        // //         if (ledEffect.value != undefined) {
-        // //             await rk_c61.value.setLedEffect(profileIndex.value);
-        // //         }
-        // //     }
-        // await refresh();
-        // if (state.lightProps.mode != LightModeEnum.Disable && state.lightProps.light != LightEffectEnum.Off) {
-        //     if (ledEffect.value != undefined) {
-        //         // await rk_c61.value?.setLedEffect(profileIndex.value);
-        //     }
-        // }
-        // //}
+    const setAllToDefault = async (keyInfos: Array<KeyInfo>) => {
+        if (rk_c61.value != undefined && keyboard.keyboardDefine != undefined) {
+            for (let i = 0; i < keyInfos.length; i++) {
+                const keyInfo = keyInfos[i];
+                if (keyInfo != null && keyInfo != undefined) {
+                    let def = keyboard.keyboardDefine.keyLayout[keyInfo.row][keyInfo.col];
+                    if (def != null && def != undefined) {
+                        keyInfo.color.red = def.color.red;
+                        keyInfo.color.green = def.color.green;
+                        keyInfo.color.blue = def.color.blue;
+                        keyInfo.color.color = getColorString(keyInfo.color.red, keyInfo.color.green, keyInfo.color.blue);
+                    }
+                }
+            }
+
+            if (rk_c61.value != undefined) {
+                await refresh();
+                if (state.lightProps.mode != LightModeEnum.Disable && state.lightProps.light == LightEffectEnum.SelfDefine) {
+                    await rk_c61.value.setKrgb();
+                }
+            }
+        }
+    }
+
+    const onPicking = (r: any, g: any, b: any, keyInfo: KeyInfo | null) => {
+        if (state.lightProps.mode == LightModeEnum.Custom && keyInfo != null) {
+            keyInfo.color.red = rgb.value.r;
+            keyInfo.color.green = rgb.value.g;
+            keyInfo.color.blue = rgb.value.b;
+            keyInfo.color.color = getColorString(rgb.value.r, rgb.value.g, rgb.value.b);
+        } else if (state.lightProps.mode == LightModeEnum.Static) {
+            let color = state.lightProps.staticColors[state.lightProps.staticIndex].color;
+            color.red = rgb.value.r;
+            color.green = rgb.value.g;
+            color.blue = rgb.value.b;
+            color.color = getColorString(rgb.value.r, rgb.value.g, rgb.value.b);
+        }
+    };
+
+    const onPicked = async (keyInfos: Array<KeyInfo>) => {
+        if (rk_c61.value != undefined) {
+            await refresh();
+            if (state.lightProps.mode != LightModeEnum.Disable) {
+                if (state.lightProps.light == LightEffectEnum.SelfDefine && keyInfos != null && keyInfos.length > 0) {
+                    await rk_c61.value.setKeyKrgb(keyInfos);
+                } else if (state.lightProps.light == LightEffectEnum.Static) {
+                    let color = state.lightProps.staticColors[state.lightProps.staticIndex].color;
+                    rk_c61.value.data.lightSetting.lightColorList[state.lightProps.staticIndex].red = color.red;
+                    rk_c61.value.data.lightSetting.lightColorList[state.lightProps.staticIndex].green = color.green;
+                    rk_c61.value.data.lightSetting.lightColorList[state.lightProps.staticIndex].blue = color.blue;
+                    rk_c61.value.data.lightSetting.lightColorList[state.lightProps.staticIndex].color = getColorString(color.red, color.green, color.blue);
+                    await rk_c61.value.setPrgb();
+                }
+            }
+        }
     };
 
     const lightClick = async (light: LightEffectEnum) => {
-        // if (boardProfile.value != undefined && rk_c61.value != undefined) {
-            // state.lightProps.light = light;
-            // if (ledEffect.value != undefined) {
-                // let c = ledEffect.value.getLedColor(state.lightProps.light);
-                // rgb.value.r = c.red;
-                // rgb.value.g = c.green;
-                // rgb.value.b = c.blue;
-                // rgb.value.color = c.color;
-            // }
-            // 0x01: Gaming
-            // boardProfile.value.setFieldValue(FieldEnum.LedModeSelection, (light == LightEffectEnum.SelfDefine) ? 0x01 : 0x00);
-            // boardProfile.value.setFieldValue(FieldEnum.LedMode, light);
-            // await rk_c61.value.setProfile(profileIndex.value);
-            // await refresh();
-        // }
+        if (rk_c61.value != undefined) {
+            state.lightProps.light = light;
+            if (state.lightProps.light == LightEffectEnum.Off) {
+                state.lightProps.mode = LightModeEnum.Disable;
+            } else if (state.lightProps.light == LightEffectEnum.Static) {
+                state.lightProps.mode = LightModeEnum.Static;
+                let index = rk_c61.value.data.lightSetting.staticLightMode;
+                rgb.value.r = rk_c61.value.data.lightSetting.lightColorList[index].red;
+                rgb.value.g = rk_c61.value.data.lightSetting.lightColorList[index].green;
+                rgb.value.b = rk_c61.value.data.lightSetting.lightColorList[index].blue;
+            } else if (state.lightProps.light == LightEffectEnum.SelfDefine) {
+                state.lightProps.mode = LightModeEnum.Custom;
+            } else {
+                state.lightProps.mode = LightModeEnum.Dynamics;
+            }
+
+            rk_c61.value.data.lightSetting.lightMode = state.lightProps.light;
+            rk_c61.value.data.lightSetting.lightBigMode = state.lightProps.mode;
+            rk_c61.value.data.lightSetting.lightSwitch = state.lightProps.mode == LightModeEnum.Disable ? LightSwitchEnum.Off : LightSwitchEnum.On;
+
+            await rk_c61.value.setPrgb();
+            await refresh();
+        }
     };
 
     const selectd = (light: LightEffectEnum) => {
         let style = '';
-        // if (boardProfile.value != undefined && light == state.lightProps.light) {
-            // style = 'module_active';
-        // }
+        if (light == state.lightProps.light) {
+            style = 'module_active';
+        }
 
         return style;
     };
 
     const selectdCustom = (light: LightEffectEnum) => {
         let style = '';
-        // if (boardProfile.value != undefined && light == state.lightProps.light) {
-            // style = 'active';
-        // }
+        if (light == state.lightProps.light) {
+            style = 'active';
+        }
 
         return style;
     };
-    const keyChanged = (index: any) => {
-        state.keyColor.index = index;
-        state.keyColor.color = state.keyColors[index];
-        let str = getKeyData(index)?.keyStr;
-        if (str != undefined) {
-            state.keyColor.keyStr = str[0].valueOf();
+
+    const getColorString = (r: number, g: number, b: number): string => {
+        return `#${r.toString(16).toUpperCase().padStart(2, '0')}${g.toString(16).toUpperCase().padStart(2, '0')}${b.toString(16).toUpperCase().padStart(2, '0')}`;
+    }
+
+    const setSelectedKeyColor = async (keyInfos: Array<KeyInfo>) => {
+        for (let i in keyInfos) {
+            keyInfos[i].color.red = rgb.value.r;
+            keyInfos[i].color.green = rgb.value.g;
+            keyInfos[i].color.blue = rgb.value.b;
+            keyInfos[i].color.color = getColorString(rgb.value.r, rgb.value.g, rgb.value.b);
         }
-    };
 
-    const keyTextColor = (index: number): string => {
-        return state.keyColors[index];
-    };
-
-    const setSelectedKeyColor = (index: number = state.keyColor.index) => {
-        // let color: LedColor = {
-            // red: rgb.value.r,
-            // green: rgb.value.g,
-            // blue: rgb.value.b,
-            // color: LedColors.getColorString(rgb.value.r, rgb.value.g, rgb.value.b)
-        // }
-        // state.keyColor.color = color.color;
-        // state.keyColors[index] = color.color;
-        // ledColors.value?.setLedColor(index, color);
+        if (rk_c61.value != undefined) {
+            await rk_c61.value.setKeyKrgb(keyInfos);
+        }
     }
 
-    const saveLedColorsToDevice = async () => {
-        // if (ledColors.value != undefined) {
-        //     // await rk_c61.value?.setLedColors(profileIndex.value);
-        // }
+    const lightModeChange = async (index: number) => {
+        if (rk_c61.value != undefined) {
+            rk_c61.value.data.lightSetting.staticLightMode = index;
+            rgb.value.r = rk_c61.value.data.lightSetting.lightColorList[index].red;
+            rgb.value.g = rk_c61.value.data.lightSetting.lightColorList[index].green;
+            rgb.value.b = rk_c61.value.data.lightSetting.lightColorList[index].blue;
+            await rk_c61.value.setPrgb();
+        }
     }
 
-    return { connectType, state, rgb, ligtChanged, onPicking, onPicked, selectd, lightClick, selectdCustom, keyChanged, keyTextColor, init, destroy, SelfDefineDefault, setLayer, DebounceChanged, SelfDefineDefaultAll, refresh, saveBoardProfileToDevice, setSelectedKeyColor, saveLedColorsToDevice }
+    return {
+        connectType,
+        state,
+        rgb,
+        ligtChanged,
+        onPicking,
+        onPicked,
+        selectd,
+        lightClick,
+        selectdCustom,
+        init,
+        destroy,
+        setAllToDefault,
+        refresh,
+        setSelectedKeyColor,
+        lightModeChange
+    }
 })

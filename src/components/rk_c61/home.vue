@@ -14,8 +14,7 @@
                     <div class="my-4 c-p" @click="setMeunid();">
                         <el-tooltip effect="light" :content="$t('home.title_tip')" placement="top"
                             popper-class="tip_font2">
-                            <img :src="`../../src/assets/images/${keyboard.keyboardDefine?.image}`" width="914hv"
-                                height="420hv" />
+                            <img :src="`../../src/assets/images/${keyboard.keyboardDefine?.image}`" />
                         </el-tooltip>
                     </div>
                     <div class="d-flex my-4">
@@ -38,9 +37,13 @@ import { useMenuStore } from "@/stores/rk_c61/menuStore";
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 import { storeToRefs } from "pinia";
 import { LOG_TYPE, Logging } from '@/common/logging';
+import { Profile, ps } from "@/keyboard/sparklink/profiles";
+import { useI18n } from 'vue-i18n';
+import type { PerformanceData } from '@/keyboard/sparklink/interface';
 
 const useMenu = useMenuStore();
 const { meunid } = storeToRefs(useMenu);
+const { t } = useI18n();
 
 const loading = ref(false)
 
@@ -60,10 +63,13 @@ const setMeunid = () => {
 };
 
 onMounted(async () => {
-    rk_c61.value = keyboard.protocol as RK_C61;
-    rk_c61.value.addEventListener("OnKeyDefaultLayoutGotten", onKeyDefaultLayoutGotten);
-    rk_c61.value.addEventListener("OnKeyValuesGotten", onKeyValuesGotten);
-    rk_c61.value.addEventListener("OnKeyRgbGotten", onKeyRgbGotten);
+    if (rk_c61.value == undefined) {
+        rk_c61.value = keyboard.protocol as RK_C61;
+        rk_c61.value.addEventListener("OnKeyDefaultLayoutGotten", onKeyDefaultLayoutGotten);
+        rk_c61.value.addEventListener("OnKeyValuesGotten", onKeyValuesGotten);
+        rk_c61.value.addEventListener("OnKeyRgbGotten", onKeyRgbGotten);
+        rk_c61.value.addEventListener("OnSynced", onSynced);
+    }
 });
 
 onBeforeUnmount(() => {
@@ -72,23 +78,80 @@ onBeforeUnmount(() => {
         rk_c61.value.removeEventListener("OnKeyValuesGotten", onKeyValuesGotten);
         rk_c61.value.removeEventListener("OnKeyRgbGotten", onKeyRgbGotten);
     }
+
+    useMenu.setMeunid(0);
 });
 
 const onKeyDefaultLayoutGotten = (event: any) => {
     dataLoading.value.defaultLayout = false;
-    Logging.console(LOG_TYPE.SUCCESS, `Key default layout data Gotten!`)
-
-    keyboard.loadValue(event.detail);
+    Logging.console(LOG_TYPE.SUCCESS, `Key default layout data Gotten!`);
+    if (rk_c61.value != undefined && !rk_c61.value.data.isSynced) {
+        keyboard.loadValue(event.detail);
+        rk_c61.value.data.isSynced = true;
+    }
 }
 
-const onKeyValuesGotten = () => {
+const onKeyValuesGotten = (event: any) => {
     dataLoading.value.values = false;
-    Logging.console(LOG_TYPE.SUCCESS, `Key values data Gotten!`)
+    Logging.console(LOG_TYPE.SUCCESS, `Key values data Gotten!`);
 }
 
-const onKeyRgbGotten = () => {
+const onKeyRgbGotten = (event: any) => {
     dataLoading.value.rgb = false;
-    Logging.console(LOG_TYPE.SUCCESS, `Key rgb data Gotten!`)
+    Logging.console(LOG_TYPE.SUCCESS, `Key rgb data Gotten!`);
+
+    if (rk_c61.value != undefined) {
+
+        // Logging.console(LOG_TYPE.INFO, JSON.stringify(rk_c61.value.data.keyInfoData.keyInfoArray));
+        // Logging.console(LOG_TYPE.INFO, JSON.stringify(rk_c61.value.data.performanceData));
+        // Logging.console(LOG_TYPE.INFO, JSON.stringify(rk_c61.value.data.lightSetting));
+
+        ps.init(
+            `${t("Profile.namePrefix")} 1`,
+            rk_c61.value.data.keyInfoData.keyInfoArray,
+            rk_c61.value.data.performanceData,
+            rk_c61.value.data.lightSetting,
+        );
+
+        for (let i = 2; i <= 4; i++) {
+            let profile = Profile.default();
+            if (profile != undefined) {
+                profile.name = `${t("Profile.namePrefix")} ${i}`;
+                ps.add(profile);
+            }
+        }
+
+        ps.save();
+    }
+}
+
+const onSynced = async (event: any) => {
+    if (rk_c61.value != undefined && !rk_c61.value.data.isSynced) {
+        if (ps.load()) {
+            let keyInfoArray = ps.list[ps.curIndex].keyInfoArray;
+            for (let row = 0; row < keyInfoArray.length; row++) {
+                for (let col = 0; col < keyInfoArray[row].length; col++) {
+                    rk_c61.value.data.keyInfoData.updateKeyInfo(row, col, keyInfoArray[row][col]);
+                }
+            }
+
+            //rk_c61.value.data.keyInfoData.keyInfoArray = ps.list[ps.curIndex].keyInfoArray;
+            rk_c61.value.data.keyInfoData.globalTouchTravel = ps.list[ps.curIndex].performanceData.globalTouchTravel;
+            rk_c61.value.data.keyInfoData.maxTouchTravel = ps.list[ps.curIndex].performanceData.maxTouchTravel;
+            rk_c61.value.data.performanceData = ps.list[ps.curIndex].performanceData;
+            rk_c61.value.data.lightSetting = ps.list[ps.curIndex].lightSetting;
+
+            keyboard.loadValue(rk_c61.value.data.keyInfoData);
+
+            dataLoading.value.defaultLayout = false;
+            dataLoading.value.values = false;
+            dataLoading.value.rgb = false;
+
+            rk_c61.value.data.isSynced = true;
+        } else {
+            await rk_c61.value.loadData();
+        }
+    }
 }
 
 const isLoading = (): boolean => {

@@ -360,7 +360,7 @@ const tool = {
     };
 
     // console.log(ProtocolVersion.value);
-    const currentVersion = version.value || '0.0.0'; // 默认为0.0.0如果store.version未定义
+    const currentVersion = version || '0.0.0'; // 默认为0.0.0如果store.version未定义
 
     const featureRanges = featureVersionMap[featureId] || [];
 

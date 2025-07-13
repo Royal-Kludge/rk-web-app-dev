@@ -92,9 +92,9 @@ export class KB2_CMD_DEFKEY extends Packet {
             color: 
             {
                 red: 0,
-                green: 255,
-                blue: 255,
-                color: `#00FFFF`
+                green: 0,
+                blue: 0,
+                color: `#000000`
             },
             touchTravel: 1.5,
             touchRelease: 0.3,

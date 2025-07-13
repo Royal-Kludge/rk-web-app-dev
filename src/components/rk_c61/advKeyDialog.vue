@@ -2,20 +2,20 @@
     <el-drawer v-model="useAdvKey.$state.isAdvKeyDialog" direction="btt" @opened="opened()" @closed="closed()"
         :with-header="false" size="40%" style="--el-drawer-padding-primary:10px;--el-drawer-bg-color: #F8F8FC">
         <div class="d-flex jc-end">
-            <div class="bg-dark p-1 br-2 px-4 c-p text-white">保存</div>
+            <div class="bg-dark p-1 br-2 px-4 c-p text-white" @click="useAdvKey.saveAdvKey()">保存</div>
         </div>
         <div class="d-flex">
-            <div class="d-flex" v-if="titleid == 7">
+            <div class="d-flex" v-if="titleid == AdvKeyTypeEnum.MACRO">
                 <advKeyMacro />
             </div>
             <div class="d-flex" v-else>
                 <div style="width: 380px;">
-                    <AdvKeyDKS v-if="titleid == 1" />
-                    <AdvKeyMT v-if="titleid == 2" />
-                    <advKeyTGL v-if="titleid == 3" />
-                    <AdvKeyMPT v-if="titleid == 4" />
-                    <advKeyEND v-if="titleid == 5" />
-                    <advKeySOCD v-if="titleid == 6" />
+                    <AdvKeyDKS v-if="titleid == AdvKeyTypeEnum.DKS" />
+                    <AdvKeyMT v-if="titleid == AdvKeyTypeEnum.MT" />
+                    <advKeyTGL v-if="titleid == AdvKeyTypeEnum.TGL" />
+                    <AdvKeyMPT v-if="titleid == AdvKeyTypeEnum.MPT" />
+                    <advKeyEND v-if="titleid == AdvKeyTypeEnum.END" />
+                    <advKeySOCD v-if="titleid == AdvKeyTypeEnum.SOCD" />
                 </div>
                 <div class="d-flex flex-1">
                     <AdvKey />
@@ -35,6 +35,7 @@ import advKeySOCD from "./advKeySOCD.vue";
 import advKeyMacro from "./advKeyMacro.vue";
 import { useAdvKeyStore } from "@/stores/rk_c61/advKeyStore";
 import { storeToRefs } from "pinia";
+import { AdvKeyTypeEnum } from "@/keyboard/sparklink/enum";
 
 const useAdvKey = useAdvKeyStore();
 const { titleid } = storeToRefs(useAdvKey);

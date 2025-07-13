@@ -65,6 +65,7 @@ import { useLocaleStore } from "@/stores/locale";
 import { storeToRefs } from "pinia";
 import { storage } from '@/common/storage';
 import { useSetStore } from "@/stores/setStore";
+import { useKeyStore } from "@/stores/rk_c61/keyStore";
 import { useI18n } from 'vue-i18n';
 import axios from 'axios'
 import { ConnectionType } from '@/device/enum';
@@ -78,6 +79,7 @@ const useLocale = useLocaleStore();
 const { locale } = storeToRefs(useLocale);
 const setStore = useSetStore();
 const { langList } = storeToRefs(setStore);
+const useKey = useKeyStore();
 
 const reSet = ref(false);
 const mode = ref(0);
@@ -198,8 +200,9 @@ const DebounceChanged = () => {
     // useKey.saveProfile();
 }
 
-const setToFactory = () => {
-    // useKey.setToFactory();
+const setToFactory = async () => {
+    storage.clear();
+    await useKey.setToFactory();
     // reSet.value = false;
     // useMacro.clearMacro();
 }

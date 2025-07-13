@@ -2,10 +2,11 @@ import { KeyMappingType } from '@/common/enum'
 import { ConnectionType, ConnectionEventEnum, ConnectionStatusEnum } from '@/device/enum'
 import type { HidDeviceDefine, IHidDevice } from '@/device/interface';
 import { Device } from '@/device/device';
-import type { IProtocol, KeyboardDefine, KeyTableData } from './interface';
+import { type IProtocol, type KeyboardDefine } from './interface';
 import { defaultState } from './state';
 import type { KeyInfoData } from './keyInfoData';
 import { LayoutTypeEnum } from './enum';
+import { KeyTableData } from './keyTableData';
 
 /**
  * Main class.
@@ -72,14 +73,21 @@ export class Keyboard extends Device {
             for (let row = 0; row < 6; row++) {
                 for (let col = 0; col < 21; col++) {
                     const keyInfo = keyInfoData.getKeyInfo(row, col);
-                    if (keyInfo != null) {
+                    if (keyInfo != null && keyInfo != undefined) {
                         let index = row * 21 + col;
-                        this.state.keyTableData[index] = {
-                            keyStr: this.keyboardDefine.keyText[keyInfo?.keyValue],
-                            keyCode: keyInfo.keyValue,
-                            index: index,
-                            keyInfo: keyInfo
+                        let keyText: Array<String> = new Array<String>();
+                        keyInfo.isCheck = false;
+                        if (this.keyboardDefine.keyText[keyInfo.keyValue] != undefined) {
+                            for (let i = 0; i < this.keyboardDefine.keyText[keyInfo.keyValue].length; i++) {
+                                keyText.push(this.keyboardDefine.keyText[keyInfo.keyValue][i].valueOf());
+                            }
                         }
+                        this.state.keyTableData[index] = new KeyTableData(
+                            keyText, 
+                            keyInfo.keyValue,
+                            index,
+                            keyInfo
+                        )
                     }
                 }
             }

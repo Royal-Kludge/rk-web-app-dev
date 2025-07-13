@@ -5,9 +5,9 @@
                 <div class="p-3 bg-white-1 fw-b fs-xxl">{{ $t("key.title") }}</div>
                 <div style="height: 75vh">
                     <el-scrollbar>
-                        <div v-for="item in (state.profileList as Array<Profile>)"
+                        <div v-for="item in state.proflies.list"
                             class="module_box d-flex p-3 my-2 text-grey-1 jc-between"
-                            :class="{ 'module_active': item.index === useProfile.profile?.index }">
+                            :class="{ 'module_active': item.index === state.proflies.curIndex }">
                             <div style="padding-left: 16%;width: 100%" class="d-flex" @click="clickProfile(item)">
                                 <div class="d-flex">
                                     <span class="pr-4 d-flex ai-center">
@@ -18,7 +18,7 @@
                                     </span>
                                 </div>
                             </div>
-                            <div>
+                            <!--<div>
                                 <el-dropdown>
                                     <el-icon :size="18" color="#ffffff">
                                         <MoreFilled />
@@ -43,6 +43,7 @@
                                     </template>
                                 </el-dropdown>
                             </div>
+                            -->
                         </div>
                     </el-scrollbar>
                 </div>
@@ -59,7 +60,7 @@
                 </div>
             </el-dialog>
         </div>
-        <div class="bg-white" style="height: 46px;">
+        <!--<div class="bg-white" style="height: 46px;">
             <div class="d-flex jc-center text-white">
                 <div class="d-flex py-1 m-2 px-3 but-blue c-p" @click="useProfile.newProfile()">
                     <img src="../../assets/images/title/new.png" class="img-but" />{{ $t("key.but_1") }}
@@ -72,24 +73,40 @@
                 </div>
             </div>
         </div>
+        -->
     </div>
 </template>
 <script setup lang="ts">
 import { useProfileStore } from "@/stores/rk_c61/profileStore";
 import type { UploadProps } from 'element-plus'
 import { uselightStore } from "@/stores/rk_c61/lightStore";
+import { useKeyStore } from "@/stores/rk_c61/keyStore";
 import { Profile } from '@/keyboard/sparklink/profiles';
 import { storeToRefs } from "pinia";
+import { ref, onMounted, onBeforeUnmount } from 'vue';
+import type { RK_C61 } from "@/keyboard/sparklink/rk_c61/rk_c61";
+import { keyboard } from "@/keyboard/sparklink/keyboard";
 
 const useProfile = useProfileStore();
 const useLight = uselightStore();
+const useKey = useKeyStore();
 
 const { state } = storeToRefs(useProfile);
 
+const rk_c61 = ref<RK_C61>();
+
+onMounted(async () => {
+    useProfile.init();
+    if (rk_c61.value == undefined) {
+        rk_c61.value = keyboard.protocol as RK_C61;
+    }
+});
+
 const clickProfile = async (obj: Profile) => {
-    //await useKey.clickProfile(obj)
+    await useProfile.clickProfile(obj);
+    useKey.updateKeyInfo();
     await useLight.refresh()
-    await useLight.saveBoardProfileToDevice()
+    //await useLight.saveBoardProfileToDevice()
 }
 
 const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {

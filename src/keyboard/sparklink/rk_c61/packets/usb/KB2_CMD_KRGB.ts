@@ -1,4 +1,4 @@
-import type { KeyCodeEnum, KeyDefineEnum } from "@/common/keyCode";
+import type { KeyCodeEnum, KeyDefineEnum } from "@/common/keyCode_sparklink";
 import { ErrorCodeEnum, LayoutTypeEnum, RWTypeEnum } from "@/keyboard/sparklink/enum";
 import type { IPacket, LedColor } from "@/keyboard/sparklink/interface";
 import { Packet } from "@/keyboard/sparklink/rk_c61/packets/packet";
@@ -10,7 +10,6 @@ export class KB2_CMD_KRGB extends Packet {
     r?: Array<number>;
     g?: Array<number>;
     b?: Array<number>;
-    isLastCmd: boolean = false;
 
     constructor(callback: (event: any) => void) {
         super(0x2a, callback);
@@ -52,18 +51,11 @@ export class KB2_CMD_KRGB extends Packet {
                 const R = this.recivedBuffer.getUint8(index++);
                 const G = this.recivedBuffer.getUint8(index++);
                 const B = this.recivedBuffer.getUint8(index++);
-                if (keyValue !== 0) {
+                if (keyValue !== 0 && keyValue != 255) {
                     this.dispatchEvent(new CustomEvent('onReportDataRecvied', { 
                         detail: { key: keyValue, r: R, g: G, b: B } 
                     }));
                 }
-            }
-
-            if (this.isLastCmd) {
-                this.dispatchEvent(new CustomEvent('onReportDataRecvied', { 
-                    detail: { isLastCmd: true } 
-                }));
-                this.isLastCmd = false;
             }
         }
     }

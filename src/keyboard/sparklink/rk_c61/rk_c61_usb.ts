@@ -1,8 +1,8 @@
-import { type KeyInfo, type Axis, type KeyboardState, type LedColor } from '../interface'
+import { type KeyInfo, type Axis, type KeyboardState, type LedColor, type KeyCmdValue } from '../interface'
 import { REPORT_HEAD, REPORT_HEAD_LENGTH, REPORT_ID_USB, REPORT_LENGTH } from './packets/packet';
 import { ConnectionStatusEnum, ConnectionType } from '@/device/enum';
 import { BoardId, COMMAND_ID, FwVersion, HwVersion, RK_C61, RK_C61_EVENT_DEFINE } from './rk_c61';
-import { KeyText, type KeyCodeEnum, type KeyDefineEnum } from '@/common/keyCode';
+import { KeyText, type KeyCodeEnum, type KeyDefineEnum } from '@/common/keyCode_sparklink';
 import { LayoutTypeEnum, LightDirectionEnum, LightEffectEnum, LightModeEnum, LightSwitchEnum, MatrixTable, OrderTypeEnum, RWTypeEnum, SuperResponseEnum } from '../enum';
 import { AxisList } from '../constant';
 import { LOG_TYPE, Logging } from '@/common/logging';
@@ -14,6 +14,13 @@ import { KB2_CMD_KRGB } from './packets/usb/KB2_CMD_KRGB';
 import { KB2_CMD_DB } from './packets/usb/KB2_CMD_DB';
 import { KB2_CMD_PRGB } from './packets/usb/KB2_CMD_PRGB';
 import { KB2_CMD_DEFKEY } from './packets/usb/KB2_CMD_DEFKEY';
+import { KB2_CMD_RM6X21 } from './packets/usb/KB2_CMD_RM6X21';
+import { KB2_CMD_DKS } from './packets/usb/KB2_CMD_DKS';
+import { KB2_CMD_MT } from './packets/usb/KB2_CMD_MT';
+import { KB2_CMD_TGL } from './packets/usb/KB2_CMD_TGL';
+import { KB2_CMD_MPT } from './packets/usb/KB2_CMD_MPT';
+import { KB2_CMD_END } from './packets/usb/KB2_CMD_END';
+import { KB2_CMD_SOCD } from './packets/usb/KB2_CMD_SOCD';
 
 const worker = new Worker(new URL('@/common/communication.ts', import.meta.url));
 
@@ -27,6 +34,13 @@ export class RK_C61_Usb extends RK_C61 {
     KB2_CMD_DB: KB2_CMD_DB;
     KB2_CMD_PRGB: KB2_CMD_PRGB;
     KB2_CMD_DEFKEY: KB2_CMD_DEFKEY;
+    KB2_CMD_RM6X21: KB2_CMD_RM6X21;
+    KB2_CMD_DKS: KB2_CMD_DKS;
+    KB2_CMD_MT: KB2_CMD_MT;
+    KB2_CMD_TGL: KB2_CMD_TGL;
+    KB2_CMD_MPT: KB2_CMD_MPT;
+    KB2_CMD_END: KB2_CMD_END;
+    KB2_CMD_SOCD: KB2_CMD_SOCD;
 
     constructor(state: KeyboardState, device: HIDDevice) {
         super(state, device);
@@ -40,6 +54,13 @@ export class RK_C61_Usb extends RK_C61 {
         this.KB2_CMD_DB = new KB2_CMD_DB(this.onDbCmd.bind(this));
         this.KB2_CMD_PRGB = new KB2_CMD_PRGB(this.onPrgbCmd.bind(this));
         this.KB2_CMD_DEFKEY = new KB2_CMD_DEFKEY(this.onDefKeyCmd.bind(this));
+        this.KB2_CMD_RM6X21 = new KB2_CMD_RM6X21(this.onRm6x21.bind(this));
+        this.KB2_CMD_DKS = new KB2_CMD_DKS(this.onCmdCallback.bind(this));
+        this.KB2_CMD_MT = new KB2_CMD_MT(this.onCmdCallback.bind(this));
+        this.KB2_CMD_TGL = new KB2_CMD_TGL(this.onCmdCallback.bind(this));
+        this.KB2_CMD_MPT = new KB2_CMD_MPT(this.onCmdCallback.bind(this));
+        this.KB2_CMD_END = new KB2_CMD_END(this.onCmdCallback.bind(this));
+        this.KB2_CMD_SOCD = new KB2_CMD_SOCD(this.onCmdCallback.bind(this));
     }
 
     static async create(state: KeyboardState, device: HIDDevice) {
@@ -60,7 +81,7 @@ export class RK_C61_Usb extends RK_C61 {
                 }
             }
         };
-        
+
         worker.postMessage('start');
 
         await this.sync();
@@ -73,38 +94,76 @@ export class RK_C61_Usb extends RK_C61 {
         await this.cmd(OrderTypeEnum.QueryWinMode, 0xff);
         await this.cmd(OrderTypeEnum.QueryMacMode, 0xff);
         await this.cmd(OrderTypeEnum.SwitchDeadZone, 0x02);
-        await this.getDbParam();
-        await this.getPrgb();
-        await this.getKeyDefLayout(0, 1);
-        await this.getKeyDefLayout(2, 3);
-        await this.getKeyDefLayout(4, 5);
+        // await this.getDbParam();
+        // await this.getPrgb();
+        // await this.getKeyDefLayout(0, 1);
+        // await this.getKeyDefLayout(2, 3);
+        // await this.getKeyDefLayout(4, 5);
     }
 
+    buffer: Uint8Array | null = null;
+
     async onGetReport(reportId: number, data: DataView): Promise<void> {
-        if (reportId == REPORT_ID_USB && data.byteLength == REPORT_LENGTH && data.getUint8(0) == REPORT_HEAD) {
-            let cmd = data.getUint8(2) - 0x80;
-            switch (cmd) {
-                case COMMAND_ID.KB2_CMD_SYNC:
-                    this.KB2_CMD_SYNC.fromReportData(data);
-                    break;
-                case COMMAND_ID.KB2_CMD:
-                    this.KB2_CMD.fromReportData(data);
-                    break;
-                case COMMAND_ID.KB2_CMD_KEY:
-                    this.KB2_CMD_KEY.fromReportData(data);
-                    break;
-                case COMMAND_ID.KB2_CMD_DB:
-                    this.KB2_CMD_DB.fromReportData(data);
-                    break;
-                case COMMAND_ID.KB2_CMD_PRGB:
-                    this.KB2_CMD_PRGB.fromReportData(data);
-                    break;
-                case COMMAND_ID.KB2_CMD_KRGB:
-                    this.KB2_CMD_KRGB.fromReportData(data);
-                    break;
-                case COMMAND_ID.KB2_CMD_DEFKEY:
-                    this.KB2_CMD_DEFKEY.fromReportData(data);
-                    break;
+        if (reportId == REPORT_ID_USB && data.byteLength == REPORT_LENGTH) {
+            if (data.getUint8(0) == REPORT_HEAD) {
+                let cmd = data.getUint8(2) - 0x80;
+                switch (cmd) {
+                    case COMMAND_ID.KB2_CMD_SYNC:
+                        this.KB2_CMD_SYNC.fromReportData(data);
+                        break;
+                    case COMMAND_ID.KB2_CMD:
+                        this.KB2_CMD.fromReportData(data);
+                        break;
+                    case COMMAND_ID.KB2_CMD_KEY:
+                        this.KB2_CMD_KEY.fromReportData(data);
+                        break;
+                    case COMMAND_ID.KB2_CMD_DB:
+                        this.KB2_CMD_DB.fromReportData(data);
+                        break;
+                    case COMMAND_ID.KB2_CMD_PRGB:
+                        this.KB2_CMD_PRGB.fromReportData(data);
+                        break;
+                    case COMMAND_ID.KB2_CMD_KRGB:
+                        this.KB2_CMD_KRGB.fromReportData(data);
+                        break;
+                    case COMMAND_ID.KB2_CMD_DEFKEY:
+                        this.KB2_CMD_DEFKEY.fromReportData(data);
+                        break;
+                    case COMMAND_ID.KB2_CMD_RM6X21:
+                        this.buffer = new Uint8Array(data.buffer);
+                        this.buffer[1] = 188;
+                        break;
+                    case COMMAND_ID.KB2_CMD_TDKS:
+                        this.KB2_CMD_DKS.fromReportData(data);
+                        break;
+                    case COMMAND_ID.KB2_CMD_MT:
+                        this.KB2_CMD_MT.fromReportData(data);
+                        break;
+                    case COMMAND_ID.KB2_CMD_TGL:
+                        this.KB2_CMD_TGL.fromReportData(data);
+                        break;
+                    case COMMAND_ID.KB2_CMD_DDKS:
+                        this.KB2_CMD_MPT.fromReportData(data);
+                        break;
+                    case COMMAND_ID.KB2_CMD_END:
+                        this.KB2_CMD_END.fromReportData(data);
+                        break;
+                    case COMMAND_ID.KB2_CMD_SOCD:
+                        this.KB2_CMD_SOCD.fromReportData(data);
+                        break;
+                }
+            } else if (this.buffer != null && this.buffer[2] - 0x80 == COMMAND_ID.KB2_CMD_RM6X21) {
+                const recData = new Uint8Array(data.buffer);
+                const buf = new Uint8Array(this.buffer.length + recData.length);
+                buf.set(this.buffer, 0);
+                buf.set(recData, this.buffer.length);
+                this.buffer = buf;
+                if (this.buffer[1] <= this.buffer.length) {
+                    // 长度足够
+                    this.KB2_CMD_RM6X21.fromReportData(new DataView(this.buffer.buffer));
+                    // 数据用完，清空
+                    this.buffer = null;
+                }
             }
             worker.postMessage("report");
         }
@@ -114,31 +173,40 @@ export class RK_C61_Usb extends RK_C61 {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
 
-    async sync() : Promise<void> {
+    //#region GetCommand
+    async sync(): Promise<void> {
         worker.postMessage(this.KB2_CMD_SYNC.command());
         Logging.console(LOG_TYPE.INFO, `Push KB2_CMD_SYNC data to queue.`);
     }
 
-    async cmd(order: OrderTypeEnum, arg: number) : Promise<void> {
+    async cmd(order: OrderTypeEnum, arg: number): Promise<void> {
         this.KB2_CMD.order = order;
         this.KB2_CMD.arg = arg;
         worker.postMessage(this.KB2_CMD.command());
-        Logging.console(LOG_TYPE.INFO, `Push KB2_CMD data to queue.`);
+        Logging.console(LOG_TYPE.INFO, `Push KB2_CMD [${this.KB2_CMD.arg}] data to queue.`);
     }
 
-    async getDbParam() : Promise<void> {
+    async loadData(): Promise<void> {
+        await this.getDbParam();
+        await this.getPrgb();
+        await this.getKeyDefLayout(0, 1);
+        await this.getKeyDefLayout(2, 3);
+        await this.getKeyDefLayout(4, 5);
+    }
+
+    async getDbParam(): Promise<void> {
         this.KB2_CMD_DB.rw = RWTypeEnum.Read;
         worker.postMessage(this.KB2_CMD_DB.command());
         Logging.console(LOG_TYPE.INFO, `Push KB2_CMD_DB data to queue.`);
     }
-    
-    async getPrgb() : Promise<void> {
+
+    async getPrgb(): Promise<void> {
         this.KB2_CMD_PRGB.rw = RWTypeEnum.Read;
         worker.postMessage(this.KB2_CMD_PRGB.command());
         Logging.console(LOG_TYPE.INFO, `Push KB2_CMD_PRGB data to queue.`);
     }
 
-    async getKeyDefLayout(rowX: number, rowY: number) : Promise<void> {
+    async getKeyDefLayout(rowX: number, rowY: number): Promise<void> {
         this.KB2_CMD_DEFKEY.rw = RWTypeEnum.Read;
         this.KB2_CMD_DEFKEY.rowX = rowX;
         this.KB2_CMD_DEFKEY.rowY = rowY;
@@ -206,7 +274,6 @@ export class RK_C61_Usb extends RK_C61 {
                     this.KB2_CMD_KEY.layouts = layouts;
                     this.KB2_CMD_KEY.keys = keys;
                     this.KB2_CMD_KEY.values = values;
-                    this.KB2_CMD_KEY.isLastCmd = false;
                     worker.postMessage(this.KB2_CMD_KEY.command());
                     Logging.console(LOG_TYPE.INFO, `Push KB2_CMD_KEY data to queue.`);
                     for (let j = 0; j < 14; j++) {
@@ -221,7 +288,6 @@ export class RK_C61_Usb extends RK_C61 {
             this.KB2_CMD_KEY.layouts = layouts;
             this.KB2_CMD_KEY.keys = keys;
             this.KB2_CMD_KEY.values = values;
-            this.KB2_CMD_KEY.isLastCmd = true;
             worker.postMessage(this.KB2_CMD_KEY.command());
             Logging.console(LOG_TYPE.INFO, `Push KB2_CMD_KEY data to queue.`);
             count = 0;
@@ -253,7 +319,6 @@ export class RK_C61_Usb extends RK_C61 {
                 this.KB2_CMD_KRGB.r = R;
                 this.KB2_CMD_KRGB.g = G;
                 this.KB2_CMD_KRGB.b = B;
-                this.KB2_CMD_KRGB.isLastCmd = false;
                 worker.postMessage(this.KB2_CMD_KRGB.command());
                 Logging.console(LOG_TYPE.INFO, `Push KB2_CMD_KRGB data to queue.`);
                 for (let k = 0; k < 14; k++) {
@@ -267,25 +332,338 @@ export class RK_C61_Usb extends RK_C61 {
         this.KB2_CMD_KRGB.r = R;
         this.KB2_CMD_KRGB.g = G;
         this.KB2_CMD_KRGB.b = B;
-        this.KB2_CMD_KRGB.isLastCmd = true;
         worker.postMessage(this.KB2_CMD_KRGB.command());
         Logging.console(LOG_TYPE.INFO, `Push KB2_CMD_KRGB data to queue.`);
+    }
+
+    async getAdustingData(type: number, page: number) {
+        this.KB2_CMD_RM6X21.type = type;
+        this.KB2_CMD_RM6X21.page = page;
+        worker.postMessage(this.KB2_CMD_RM6X21.command());
+        Logging.console(LOG_TYPE.INFO, `Push KB2_CMD_RM6X21 data to queue.`);
     }
 
     async getMacros(): Promise<void> {
         this.dispatchEvent(new CustomEvent(RK_C61_EVENT_DEFINE.OnMacrosGotten, { detail: this.data.macros }));
     }
+    //#endregion
 
-    async setMacros(): Promise<void> {
-        
+    //#region SetCommand
+    async setKeyValues(keyCmdValues: Array<KeyCmdValue>) {
+        const layouts = new Array(14);
+        const keys = new Array(14);
+        const values = new Array(14);
+        let count = 0;
+
+        for (let i = 0; i < 14; i++) {
+            layouts[i] = 0x00;
+            values[i] = 0x00;
+            keys[i] = 0x00;
+        }
+
+        for (let i = 0; i < keyCmdValues.length; i++) {
+            const keyCmdValue = keyCmdValues[i];
+            if (keyCmdValue != undefined && keyCmdValue != null) {
+                layouts[count] = keyCmdValue.layout;
+                keys[count] = keyCmdValue.keyCode;
+                values[count] = keyCmdValue.value;
+                count++;
+            }
+
+            if (count >= 14) {
+                this.KB2_CMD_KEY.rw = RWTypeEnum.Write;
+                this.KB2_CMD_KEY.layouts = layouts;
+                this.KB2_CMD_KEY.keys = keys;
+                this.KB2_CMD_KEY.values = values;
+                worker.postMessage(this.KB2_CMD_KEY.command());
+                Logging.console(LOG_TYPE.INFO, `Push KB2_CMD_KEY data to queue.`);
+                for (let j = 0; j < 14; j++) {
+                    layouts[j] = 0xff;
+                    keys[j] = 0xff;
+                    values[j] = 0xff;
+                }
+                count = 0;
+            }
+        }
+
+        this.KB2_CMD_KEY.rw = RWTypeEnum.Write;
+        this.KB2_CMD_KEY.layouts = layouts;
+        this.KB2_CMD_KEY.keys = keys;
+        this.KB2_CMD_KEY.values = values;
+        worker.postMessage(this.KB2_CMD_KEY.command());
+        Logging.console(LOG_TYPE.INFO, `Push KB2_CMD_KEY data to queue.`);
     }
 
+    async setPrgb(): Promise<void> {
+        this.KB2_CMD_PRGB.rw = RWTypeEnum.Write;
+        this.KB2_CMD_PRGB.lightColorList = this.data.lightSetting.lightColorList;
+        this.KB2_CMD_PRGB.lightSwitch = this.data.lightSetting.lightSwitch;
+        this.KB2_CMD_PRGB.lightDirection = this.data.lightSetting.lightDirection;
+        this.KB2_CMD_PRGB.superResponse = this.data.lightSetting.superResponse;
+        this.KB2_CMD_PRGB.lightBrightness = this.data.lightSetting.lightBrightness;
+        this.KB2_CMD_PRGB.lightMode = this.data.lightSetting.lightMode;
+        this.KB2_CMD_PRGB.lightSpeed = this.data.lightSetting.lightSpeed;
+        this.KB2_CMD_PRGB.lightSleepDelay = this.data.lightSetting.lightSleepDelay;
+        this.KB2_CMD_PRGB.staticLightMode = this.data.lightSetting.staticLightMode;
+        worker.postMessage(this.KB2_CMD_PRGB.command());
+        Logging.console(LOG_TYPE.INFO, `Push KB2_CMD_PRGB data to queue.`);
+    }
+
+    async setKeyKrgb(keyInfos: Array<KeyInfo>): Promise<void> {
+        let keys = [14];
+        let r: Array<number> = [14];
+        let g: Array<number> = [14];
+        let b: Array<number> = [14];
+        let count = 0;
+
+        for (let i = 0; i < 14; i++) {
+            keys[i] = 0xff;
+            r[i] = 0xff;
+            g[i] = 0xff;
+            b[i] = 0xff;
+        }
+
+        for (let index = 0; index < keyInfos.length; index++) {
+            const keyInfo = keyInfos[index];
+            if (keyInfo != undefined && keyInfo != null) {
+                keys[count] = keyInfo.keyValue;
+                r[count] = keyInfo.color.red;
+                g[count] = keyInfo.color.green;
+                b[count] = keyInfo.color.blue;
+                count++;
+            }
+
+            if (count >= 14) {
+                this.KB2_CMD_KRGB.rw = RWTypeEnum.Write;
+                this.KB2_CMD_KRGB.keys = keys;
+                this.KB2_CMD_KRGB.r = r;
+                this.KB2_CMD_KRGB.g = g;
+                this.KB2_CMD_KRGB.b = b;
+                worker.postMessage(this.KB2_CMD_KRGB.command());
+                Logging.console(LOG_TYPE.INFO, `Push KB2_CMD_KRGB data to queue.`);
+                for (let j = 0; j < 14; j++) {
+                    keys[count] = 0xff;
+                    r[count] = 0xff;
+                    g[count] = 0xff;
+                    b[count] = 0xff;
+                }
+                count = 0;
+            }
+        }
+
+        this.KB2_CMD_KRGB.rw = RWTypeEnum.Write;
+        this.KB2_CMD_KRGB.keys = keys;
+        this.KB2_CMD_KRGB.r = r;
+        this.KB2_CMD_KRGB.g = g;
+        this.KB2_CMD_KRGB.b = b;
+        worker.postMessage(this.KB2_CMD_KRGB.command());
+        Logging.console(LOG_TYPE.INFO, `Push KB2_CMD_KRGB data to queue.`);
+    }
+
+    async setKrgb(): Promise<void> {
+        let keys = [14];
+        let r: Array<number> = [14];
+        let g: Array<number> = [14];
+        let b: Array<number> = [14];
+        let count = 0;
+
+        for (let i = 0; i < 14; i++) {
+            keys[i] = 0x00;
+            r[i] = 0x00;
+            g[i] = 0x00;
+            b[i] = 0x00;
+        }
+
+        for (let row = 0; row < this.data.keyInfoData.keyInfoArray.length; row++) {
+            for (let col = 0; col < this.data.keyInfoData.keyInfoArray[row].length; col++) {
+                const keyInfo = this.data.keyInfoData.keyInfoArray[row][col];
+                if (keyInfo != undefined && keyInfo != null) {
+                    keys[count] = keyInfo.keyValue;
+                    r[count] = keyInfo.color.red;
+                    g[count] = keyInfo.color.green;
+                    b[count] = keyInfo.color.blue;
+                    count++;
+                }
+
+                if (count >= 14) {
+                    this.KB2_CMD_KRGB.rw = RWTypeEnum.Write;
+                    this.KB2_CMD_KRGB.keys = keys;
+                    this.KB2_CMD_KRGB.r = r;
+                    this.KB2_CMD_KRGB.g = g;
+                    this.KB2_CMD_KRGB.b = b;
+                    worker.postMessage(this.KB2_CMD_KRGB.command());
+                    Logging.console(LOG_TYPE.INFO, `Push KB2_CMD_KRGB data to queue.`);
+                    for (let j = 0; j < 14; j++) {
+                        keys[count] = 0xff;
+                        r[count] = 0xff;
+                        g[count] = 0xff;
+                        b[count] = 0xff;
+                    }
+                    count = 0;
+                }
+            }
+        }
+
+        this.KB2_CMD_KRGB.rw = RWTypeEnum.Write;
+        this.KB2_CMD_KRGB.keys = keys;
+        this.KB2_CMD_KRGB.r = r;
+        this.KB2_CMD_KRGB.g = g;
+        this.KB2_CMD_KRGB.b = b;
+        worker.postMessage(this.KB2_CMD_KRGB.command());
+        Logging.console(LOG_TYPE.INFO, `Push KB2_CMD_KRGB data to queue.`);
+    }
+
+    async setDB(): Promise<void> {
+        this.KB2_CMD_DB.rw = RWTypeEnum.Write;
+        let multiple = 10 ** this.data.performanceData.decimalPlace;
+        this.KB2_CMD_DB.globalTouchTravel = this.data.performanceData.globalTouchTravel * multiple;
+        this.KB2_CMD_DB.pressDead = this.data.performanceData.pressDead * multiple;
+        this.KB2_CMD_DB.releaseDead = this.data.performanceData.releaseDead * multiple;
+        worker.postMessage(this.KB2_CMD_DB.command());
+        Logging.console(LOG_TYPE.INFO, `Push KB2_CMD_DB data to queue.`);
+    }
+
+    async setReportRate(): Promise<void> {
+        this.KB2_CMD.order = OrderTypeEnum.SetReportRate;
+        this.KB2_CMD.arg = this.data.performanceData.rateOfReturn;
+        worker.postMessage(this.KB2_CMD.command());
+        Logging.console(LOG_TYPE.INFO, `Push KB2_CMD [${this.KB2_CMD.arg}] data to queue.`);
+    }
+
+    async setAdjustingOn(): Promise<void> {
+        this.KB2_CMD.order = OrderTypeEnum.EnableCalibration;
+        this.KB2_CMD.arg = 0xff;
+        worker.postMessage(this.KB2_CMD.command());
+        Logging.console(LOG_TYPE.INFO, `Push KB2_CMD [${this.KB2_CMD.arg}] data to queue.`);
+    }
+
+    async setAdjustingOff(): Promise<void> {
+        this.KB2_CMD.order = OrderTypeEnum.DisableCalibration;
+        this.KB2_CMD.arg = 0xff;
+        worker.postMessage(this.KB2_CMD.command());
+        Logging.console(LOG_TYPE.INFO, `Push KB2_CMD [${this.KB2_CMD.arg}] data to queue.`);
+    }
+
+    async setDks(keyInfos: Array<KeyInfo>): Promise<void> {
+        let keys = [];
+        let dksInfos = [];
+        
+        for (let i = 0; i < keyInfos.length; i++) {
+            keys.push(keyInfos[i].keyValue);
+            dksInfos.push(keyInfos[i].DKSInfo);
+        }
+
+        this.KB2_CMD_DKS.rw = RWTypeEnum.Write;
+        this.KB2_CMD_DKS.keys = keys;
+        this.KB2_CMD_DKS.dksInfos = dksInfos;
+        this.KB2_CMD_DKS.version = this.data.protocolVersion;
+        worker.postMessage(this.KB2_CMD_DKS.command());
+        Logging.console(LOG_TYPE.INFO, `Push KB2_CMD_DKS data to queue.`);
+    }
+
+    async setMt(keyInfos: Array<KeyInfo>): Promise<void> {
+        let keys = [];
+        let mtInfos = [];
+        
+        for (let i = 0; i < keyInfos.length; i++) {
+            keys.push(keyInfos[i].keyValue);
+            mtInfos.push(keyInfos[i].MTInfo);
+        }
+
+        this.KB2_CMD_MT.rw = RWTypeEnum.Write;
+        this.KB2_CMD_MT.keys = keys;
+        this.KB2_CMD_MT.mtInfos = mtInfos;
+        this.KB2_CMD_MT.version = this.data.protocolVersion;
+        worker.postMessage(this.KB2_CMD_MT.command());
+        Logging.console(LOG_TYPE.INFO, `Push KB2_CMD_MT data to queue.`);
+    }
+
+    async setTgl(keyInfos: Array<KeyInfo>): Promise<void> {
+        let keys = [];
+        let tglInfos = [];
+        
+        for (let i = 0; i < keyInfos.length; i++) {
+            keys.push(keyInfos[i].keyValue);
+            tglInfos.push(keyInfos[i].TGLInfo);
+        }
+
+        this.KB2_CMD_TGL.rw = RWTypeEnum.Write;
+        this.KB2_CMD_TGL.keys = keys;
+        this.KB2_CMD_TGL.tglInfos = tglInfos;
+        this.KB2_CMD_TGL.version = this.data.protocolVersion;
+        worker.postMessage(this.KB2_CMD_TGL.command());
+        Logging.console(LOG_TYPE.INFO, `Push KB2_CMD_TGL data to queue.`);
+    }
+
+    async setMpt(keyInfos: Array<KeyInfo>): Promise<void> {
+        let keys = [];
+        let mptInfos = [];
+        
+        for (let i = 0; i < keyInfos.length; i++) {
+            keys.push(keyInfos[i].keyValue);
+            mptInfos.push(keyInfos[i].MPTInfo);
+        }
+
+        this.KB2_CMD_MPT.rw = RWTypeEnum.Write;
+        this.KB2_CMD_MPT.keys = keys;
+        this.KB2_CMD_MPT.mptInfos = mptInfos;
+        this.KB2_CMD_MPT.version = this.data.protocolVersion;
+        worker.postMessage(this.KB2_CMD_MPT.command());
+        Logging.console(LOG_TYPE.INFO, `Push KB2_CMD_MPT data to queue.`);
+    }
+
+    async setEnd(keyInfos: Array<KeyInfo>): Promise<void> {
+        let keys = [];
+        let endInfos = [];
+        
+        for (let i = 0; i < keyInfos.length; i++) {
+            keys.push(keyInfos[i].keyValue);
+            endInfos.push(keyInfos[i].ENDInfo);
+        }
+
+        this.KB2_CMD_END.rw = RWTypeEnum.Write;
+        this.KB2_CMD_END.keys = keys;
+        this.KB2_CMD_END.endInfos = endInfos;
+        this.KB2_CMD_END.version = this.data.protocolVersion;
+        worker.postMessage(this.KB2_CMD_END.command());
+        Logging.console(LOG_TYPE.INFO, `Push KB2_CMD_END data to queue.`);
+    }
+
+    async setSocd(keyInfos: Array<KeyInfo>): Promise<void> {
+        let keys = [];
+        let socdInfos = [];
+        
+        for (let i = 0; i < keyInfos.length; i++) {
+            keys.push(keyInfos[i].keyValue);
+            socdInfos.push(keyInfos[i].SOCDInfo);
+        }
+
+        this.KB2_CMD_SOCD.rw = RWTypeEnum.Write;
+        this.KB2_CMD_SOCD.socdInfos = socdInfos;
+        this.KB2_CMD_SOCD.version = this.data.protocolVersion;
+        worker.postMessage(this.KB2_CMD_SOCD.command());
+        Logging.console(LOG_TYPE.INFO, `Push KB2_CMD_SOCD data to queue.`);
+    }
+
+    async setMacros(): Promise<void> {
+
+    }
+    //#endregion
+
     //#region Data analysis
+    private onCmdCallback(event: any) {
+        if (event.detail.errCode == 0) {
+            Logging.console(LOG_TYPE.SUCCESS, `Command [${event.detail.cmd}] was response success`);
+        } else {
+            Logging.console(LOG_TYPE.ERROR, `Command [${event.detail.cmd}] was response error [${event.detail.errCode}]`);
+        }
+    }
+
     private onFailCmd(event: any) {
         let ackCmd: number = event.detail.ackCmd;
         let sArg: Uint8Array = event.detail.ackCmd;
 
-        Logging.console(LOG_TYPE.ERROR, `Comand fail [${ackCmd}] arg [${sArg.toString()}]`);
+        Logging.console(LOG_TYPE.ERROR, `Command fail [${ackCmd}] arg [${sArg.toString()}]`);
     }
 
     private onSyncCmd(event: any) {
@@ -331,13 +709,8 @@ export class RK_C61_Usb extends RK_C61 {
     }
 
     private onKeyCmd(event: any) {
-        let isLastCmd: boolean = event.detail.isLastCmd;
-        if (isLastCmd != undefined && isLastCmd) {
-            this.dispatchEvent(new CustomEvent(RK_C61_EVENT_DEFINE.OnKeyValuesGotten, { detail: this.data.keyInfoData }));
-            this.getKeyRgb();
-            return;
-        }
-        
+        let isLastKey: boolean = false;
+
         let keyValue: KeyDefineEnum = event.detail.keyValue;
         let layout: LayoutTypeEnum = event.detail.layout;
         let value: number = event.detail.value;
@@ -432,29 +805,33 @@ export class RK_C61_Usb extends RK_C61 {
                 Logging.console(LOG_TYPE.SUCCESS, `\nKey: ${KeyText[keyValue]} SingleTouchRelease: ${value / 1000.0}`);
                 break;
             case LayoutTypeEnum.KeyAxis:
-                this.data.keyInfoData.updateAxisID(keyValue, value);
+                isLastKey = this.data.keyInfoData.updateAxisID(keyValue, value);
                 Logging.console(LOG_TYPE.SUCCESS, `\nKey: ${KeyText[keyValue]} AxisID: ${value / 1000.0}`);
                 break;
+        }
+
+        if (isLastKey) {
+            this.dispatchEvent(new CustomEvent(RK_C61_EVENT_DEFINE.OnKeyValuesGotten, { detail: this.data.keyInfoData }));
+            this.getKeyRgb();
+            return;
         }
     }
 
     private onKrgbCmd(event: any) {
-        let isLastCmd: boolean = event.detail.isLastCmd;
-        if (isLastCmd != undefined && isLastCmd) {
-            this.dispatchEvent(new CustomEvent(RK_C61_EVENT_DEFINE.OnKeyRgbGotten, { detail: this.data.keyInfoData }));
-            return;
-        }
-
         let keyCode: KeyDefineEnum = event.detail.key;
         let r: LayoutTypeEnum = event.detail.r;
         let g: number = event.detail.g;
         let b: number = event.detail.b;
 
-        this.data.keyInfoData.updateKeyColor(keyCode, r, g, b);
+        let isLast = this.data.keyInfoData.updateKeyColor(keyCode, r, g, b);
         let R = r.toString(16).toUpperCase().padStart(2, '0');
         let G = g.toString(16).toUpperCase().padStart(2, '0');
         let B = b.toString(16).toUpperCase().padStart(2, '0');
         Logging.console(LOG_TYPE.SUCCESS, `\nKey: ${keyCode} Color: #${R}${G}${B}`);
+
+        if (isLast) {
+            this.dispatchEvent(new CustomEvent(RK_C61_EVENT_DEFINE.OnKeyRgbGotten, { detail: this.data.keyInfoData }));
+        }
     }
 
     private onCmdResult(event: any) {
@@ -520,8 +897,8 @@ export class RK_C61_Usb extends RK_C61 {
                 Logging.console(LOG_TYPE.SUCCESS, `\nSupport axis: ${this.data.axisList.toString()}`);
                 break;
             case OrderTypeEnum.SetReportRate:
-                this.data.reportRate = s_arg[0];
-                Logging.console(LOG_TYPE.SUCCESS, `\nReport rate: ${this.data.reportRate}`);
+                this.data.performanceData.rateOfReturn = s_arg[0];
+                Logging.console(LOG_TYPE.SUCCESS, `\nReport rate: ${this.data.performanceData.rateOfReturn}`);
                 break;
             case OrderTypeEnum.QueryWinMode:
                 if (s_arg[0] == 1) {
@@ -550,6 +927,7 @@ export class RK_C61_Usb extends RK_C61 {
             case OrderTypeEnum.SwitchDeadZone:
                 this.data.topDeadSwitch = s_arg[0] > 0;
                 Logging.console(LOG_TYPE.SUCCESS, `\nTopDeadSwitch: ${this.data.topDeadSwitch}`);
+                this.dispatchEvent(new CustomEvent(RK_C61_EVENT_DEFINE.OnSynced, { detail: this.data }));
                 break;
         }
     }
@@ -565,21 +943,6 @@ export class RK_C61_Usb extends RK_C61 {
     }
 
     private onPrgbCmd(event: any) {
-        if (this.data.lightSetting == undefined) {
-            this.data.lightSetting = {
-                lightColorList: new Array<LedColor>,
-                lightSwitch: LightSwitchEnum.Off,
-                lightMode: LightEffectEnum.Off,
-                lightBigMode: LightModeEnum.Disable,
-                lightBrightness: 0,
-                lightSpeed: 0,
-                lightSleepDelay: 0,
-                lightDirection: LightDirectionEnum.Forward,
-                superResponse: SuperResponseEnum.Off,
-                staticLightMode: 0
-            };
-        }
-
         this.data.lightSetting.lightColorList = event.detail.lightColorList;
         this.data.lightSetting.lightSwitch = event.detail.lightSwitch;
         this.data.lightSetting.lightMode = event.detail.lightMode;
@@ -617,6 +980,84 @@ StaticMode: ${this.data.lightSetting.staticLightMode}`);
                 this.dispatchEvent(new CustomEvent(RK_C61_EVENT_DEFINE.OnKeyDefaultLayoutGotten, { detail: this.data.keyInfoData }));
                 this.getKeyValues();
             }
+        }
+    }
+
+    private onRm6x21(event: any) {
+        // 判断当前页数
+        let page = 0;
+        if (this.data.performanceData.isAdjusting) {
+            page = (this.data.performanceData.adjustingCount % 2) + 1;
+        } else {
+            page = (this.data.performanceData.keyPressTestCount % 2) + 1;
+        }
+
+        // 开始取值的位置
+        let index = 0;
+        let buff = 0;
+        let i = 0;
+        let j = 0;
+
+        let dataType = event.detail.dataType as number;
+        let data = new DataView(event.detail.values);
+
+        let add = page == 1 ? 0 : 3;
+        
+        switch (dataType) {
+            case 0x02:
+                for (i = 0; i < 3; i++) {
+                    for (j = 0; j < 21; j++) {
+                        buff = (data.getUint8(index + 1) << 8) | data.getUint8(index);
+                        this.data.keyInfoData.updateAdjustingMM(i + add, j, buff /1000);
+                        index += 2;
+                    }
+                }
+
+                this.data.performanceData.keyPressTestCount += 1;
+                                
+                if (page == 1 && (this.data.performanceData.isAdjusting || this.data.performanceData.travelTestOn)) {
+                    this.getAdustingData(dataType, 2);
+                } else if (page == 2) {
+                    this.dispatchEvent(new CustomEvent(RK_C61_EVENT_DEFINE.OnAdjustingMMDataGotten, { detail: this.data.performanceData.keyPressTestCount }));
+                }
+                break;
+            case 0x03:
+                for (i = 0; i < 6; i++) {
+                    for (j = 0; j < 21; j++) {
+                        buff = data.getUint8(index);
+                        this.data.keyInfoData.updateAdjustingPress(i, j, buff);
+                        index += 1;
+                    }
+                }
+                this.dispatchEvent(new CustomEvent(RK_C61_EVENT_DEFINE.OnAdjustingPressDataGotten, { detail: this.data.keyInfoData }));
+                break;
+            case 0x06:
+                if (page == 1 || page == 2) {
+                    let add = page == 1 ? 0 : 3;
+                    for (i = 0; i < 3; i++) {
+                        for (j = 0; j < 21; j++) {
+                            buff = (data.getUint8(index + 1) << 8) | data.getUint8(index);
+                            this.dispatchEvent(new CustomEvent(RK_C61_EVENT_DEFINE.OnAdjustingAdcValueUpdate, { 
+                                detail: {
+                                    row: i + add,
+                                    col: j,
+                                    value: buff
+                                }
+                            }));
+                            //this.data.keyInfoData.updateAdjustingADC(i + add, j, buff);
+                            index += 2;
+                        }
+                    }
+                }
+
+                this.data.performanceData.adjustingCount += 1;
+
+                if (page == 1 && this.data.performanceData.isAdjusting) {
+                    this.getAdustingData(dataType, 2);
+                } else if (page == 2) {
+                    this.dispatchEvent(new CustomEvent(RK_C61_EVENT_DEFINE.OnAdjustingAdcDataGotten, { detail: this.data.performanceData.adjustingCount }));
+                }
+                break;
         }
     }
     //#endregion
