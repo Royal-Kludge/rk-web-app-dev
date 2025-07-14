@@ -18,7 +18,6 @@ export const useMenuStore = defineStore("menustore_rk_c61", {
     { id: 3, title: "高级键", src: "/src/assets/images/menu/adv.png" },
     { id: 4, title: "宏管理器", src: "/src/assets/images/menu/macro.png" },
     { id: 5, title: "灯光模式", src: "/src/assets/images/menu/light.png" },
-    { id: 6, title: "功能设置", src: "/src/assets/images/menu/setting.png" },
     ] as any,
   }),
   actions: {
