@@ -238,13 +238,8 @@ const { state, macros, actions } = storeToRefs(useMacro);
 
 const actVal = ref(t('macro.menu_1'));
 const rk_c61 = ref<RK_C61>();
-//const macros = ref<Macros>();
 
-//const key = ref<string>('');
 const delay = ref<number>(30);
-//const macro = ref<Macro>();
-const elAction = ref<any>(null);
-const elMacro = ref<any>(null);
 const elActionScrollbar = ref<any>(null);
 const keyCodeTable = ref<KeyCodeTable>();
 const actionVal = ref<Action>();
@@ -257,14 +252,6 @@ const playing = ref<boolean>(false);
 const playTitle = ref<string>(t('macro.but_4'))
 const lastKey = ref<string>('');
 const isNew = ref<boolean>(false);
-
-// const state = reactive({
-//     macros: macros,
-//     macro: macro,
-//     name: '',
-//     nameEditorDisplay: false,
-//     key: key,
-// });
 
 const isPlaying = (done: Function, cancel = () => { }) => {
     if (!playing.value) {
@@ -432,26 +419,6 @@ const onKeyDown = (event: KeyboardEvent) => {
         }
     }
 };
-
-// const handleOpen = (e: boolean, id: string) => {
-//     if (e) {
-//         let elaction = elAction.value as Array<DropdownInstance>;
-//         var index: any;
-//         for (index in elaction) {
-//             if ((elaction[index] as DropdownInstance).id != id) {
-//                 (elaction[index] as DropdownInstance).handleClose();
-//             }
-//         }
-
-//         let els = elMacro.value as Array<DropdownInstance>;
-//         var index: any;
-//         for (index in els) {
-//             if ((els[index] as DropdownInstance).id != id) {
-//                 (els[index] as DropdownInstance).handleClose();
-//             }
-//         }
-//     }
-// };
 
 const deleteAction = (obj: Action) => {
     isPlaying(() => {
