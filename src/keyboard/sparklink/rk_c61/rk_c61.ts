@@ -1,5 +1,5 @@
 import { Protocol } from '@/keyboard/sparklink/protocol'
-import type { Macros } from '@/keyboard/sparklink/macros';
+import type { Macros, Macro, MacroExecModeEnum } from '@/keyboard/sparklink/macros';
 import { LOG_TYPE, Logging } from '@/common/logging';
 import type { Axis, KeyboardState, KeyCmdValue, KeyInfo, LedColor, LightSetting, PerformanceData } from '../interface';
 import type { KeyCodeEnum, KeyDefineEnum } from '@/common/keyCode_sparklink';
@@ -17,6 +17,7 @@ export const RK_C61_EVENT_DEFINE = {
     OnAdjustingPressDataGotten: "OnAdjustingPressDataGotten",
     OnAdjustingAdcDataGotten: "OnAdjustingAdcDataGotten",
     OnAdjustingAdcValueUpdate: "OnAdjustingAdcValueUpdate",
+    OnKeyMacroModeGotten: "OnKeyMacroModeGotten",
 }
 
 export const COMMAND_ID = {
@@ -150,6 +151,7 @@ export abstract class RK_C61 extends Protocol {
     abstract loadData(): Promise<void>;
     abstract getAdustingData(type: number, page: number): Promise<void>;
     abstract getMacros(): Promise<void>;
+    abstract getMacroMode(keyCode: KeyDefineEnum): Promise<void>;
     abstract setKeyValues(keyCmdValues: Array<KeyCmdValue>): Promise<void>;
     abstract setPrgb(): Promise<void>;
     abstract setKrgb(): Promise<void>;
@@ -164,7 +166,8 @@ export abstract class RK_C61 extends Protocol {
     abstract setMpt(keyInfos: Array<KeyInfo>): Promise<void>;
     abstract setEnd(keyInfos: Array<KeyInfo>): Promise<void>;
     abstract setSocd(keyInfos: Array<KeyInfo>): Promise<void>;
-    abstract setMacros(): Promise<void>;
+    abstract setMacroV2(macro: Macro): Promise<void>;
+    abstract setMacroMode(keyCode: KeyDefineEnum, mode: MacroExecModeEnum, repeatConut: number, delay: number, macro: Macro): Promise<void>;
     
     callback = (e: HIDInputReportEvent) => this.processKeyboardReport(e);
 

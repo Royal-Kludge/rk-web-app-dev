@@ -4,7 +4,7 @@
             <div class="bg-white p-2" style="border-radius: 10px 10px 0px 0px;line-height: 30px;">
                 {{ $t("set.title_6") }}
             </div>
-            <div class="bg-white-1" style="border-radius: 0px 0px 10px 10px;height: 95%;">
+            <!--<div class="bg-white-1" style="border-radius: 0px 0px 10px 10px;height: 95%;">
                 <div class="m-5 d-flex ai-center flex-column">
                     <div class="m-4">{{ $t("set.mode_title") }}</div>
                     <div>
@@ -14,6 +14,7 @@
                     <div class="m-4">{{ $t(modeStr) }}</div>
                 </div>
             </div>
+            -->
         </div>
     </div>
 </template>
@@ -49,7 +50,7 @@ onBeforeUnmount(() => {
 });
 
 const DebounceChanged = () => {
-    useLight.DebounceChanged(mode.value);
+    //useLight.DebounceChanged(mode.value);
     useKey.saveProfile();
 }
 

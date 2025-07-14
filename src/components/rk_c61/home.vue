@@ -39,7 +39,6 @@ import { storeToRefs } from "pinia";
 import { LOG_TYPE, Logging } from '@/common/logging';
 import { Profile, ps } from "@/keyboard/sparklink/profiles";
 import { useI18n } from 'vue-i18n';
-import type { PerformanceData } from '@/keyboard/sparklink/interface';
 
 const useMenu = useMenuStore();
 const { meunid } = storeToRefs(useMenu);
@@ -77,6 +76,7 @@ onBeforeUnmount(() => {
         rk_c61.value.removeEventListener("OnKeyDefaultLayoutGotten", onKeyDefaultLayoutGotten);
         rk_c61.value.removeEventListener("OnKeyValuesGotten", onKeyValuesGotten);
         rk_c61.value.removeEventListener("OnKeyRgbGotten", onKeyRgbGotten);
+        rk_c61.value = undefined;
     }
 
     useMenu.setMeunid(0);

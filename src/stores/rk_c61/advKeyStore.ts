@@ -2,15 +2,15 @@ import { defineStore } from "pinia";
 import { AdvKeyMacro, DKSType, AdvKeyDKS, MTType, AdvKeyMT, TGLType, AdvKeyTGL, MPTType, AdvKeyMPT, ENDType, AdvKeyEND, SOCDType, AdvKeySOCD, AdvKey } from "@/keyboard/sparklink/rk_c61/AdvKeys";
 import { KeyTableData } from "@/keyboard/sparklink/keyTableData";
 import { ElMessage } from 'element-plus'
-import { KeyMappingType, AdvKeyTypeEnum } from "@/keyboard/sparklink/enum";
-import { Macro } from '@/keyboard/sparklink/macros';
+import { KeyMappingType, AdvKeyTypeEnum, LayoutTypeEnum, KeyTouchModeEnum } from "@/keyboard/sparklink/enum";
+import { Macro, MacroExecModeEnum } from '@/keyboard/sparklink/macros';
 import type { RK_C61 } from "@/keyboard/sparklink/rk_c61/rk_c61";
 import { keyboard } from "@/keyboard/sparklink/keyboard";
 import { ConnectionEventEnum, ConnectionStatusEnum } from "@/device/enum";
 import { KeyDefineEnum, KeyText } from "@/common/keyCode_sparklink";
 import { LOG_TYPE, Logging } from "@/common/logging";
 import { ps } from "@/keyboard/sparklink/profiles";
-import type { KeyInfo } from "@/keyboard/sparklink/interface";
+import type { KeyCmdValue, KeyInfo } from "@/keyboard/sparklink/interface";
 
 export const useAdvKeyStore = defineStore("advKeyStore_rk_c61", {
     state: () => ({
@@ -34,10 +34,10 @@ export const useAdvKeyStore = defineStore("advKeyStore_rk_c61", {
         advKeySOCD: new AdvKeySOCD([new SOCDType(0), new SOCDType(1), new SOCDType(2), new SOCDType(3)]),
         advKeyMacro: new AdvKeyMacro(undefined),
         macroModeList: [
-            { value: 1, label: "单击执行" },
-            { value: 2, label: "点击重复执行，再次点击停止" },
-            { value: 3, label: "按下重复执行，弹起立刻停止" },
-            { value: 4, label: "按下重复执行，弹起后完成此次宏后停止" },
+            { value: 0, label: "单击执行" },
+            { value: 1, label: "点击重复执行，再次点击停止" },
+            { value: 2, label: "按下重复执行，弹起立刻停止" },
+            { value: 3, label: "按下重复执行，弹起后完成此次宏后停止" },
         ],
         socdList: [
             { value: 0, label: "绑定位置（键盘指定位置的两个按键互相绑定）" },
@@ -172,6 +172,12 @@ export const useAdvKeyStore = defineStore("advKeyStore_rk_c61", {
                                 this.advanceKeys.push(socd);
                                 break;
                             case AdvKeyTypeEnum.MACRO:
+                                let advKeyMacro = new AdvKeyMacro(undefined);
+                                advKeyMacro.keyTable = keyTable;
+                                this.advanceKeys.push(advKeyMacro);
+                                if (this.rk_c61 != undefined) {
+                                    this.rk_c61.getMacroMode(keyTable.keyCode);
+                                }
                                 break;
                         }
                     }
@@ -319,11 +325,27 @@ export const useAdvKeyStore = defineStore("advKeyStore_rk_c61", {
         },
         deleteAdvKey(key: AdvKey) {
             if (this.advanceKeys != undefined) {
+                if (key.keyTable != undefined && key.keyTable != null) {
+                    key.keyTable.keyInfo.isAdvancedKey = false;
+                    key.keyTable.keyInfo.advanceKeyType = 0;
+
+                    if (this.rk_c61 != undefined) {
+                        this.rk_c61.setKeyValues([
+                            {
+                                keyCode: key.keyTable.keyInfo.keyValue,
+                                value: 0x00,
+                                layout: LayoutTypeEnum.MODE
+                            }]);
+                    }
+                }
+                
                 let index = this.advanceKeys.findIndex((item) => item === key);
                 if (index !== -1) {
                     this.advanceKeys.splice(index, 1);
                 }
                 this.refreshAdvKey();
+
+                ps.save();
             }
         },
         refreshAdvKey() {
@@ -463,8 +485,31 @@ export const useAdvKeyStore = defineStore("advKeyStore_rk_c61", {
                     if (this.keyTable != undefined && this.rk_c61 != undefined) {
                         this.keyTable.keyInfo.isAdvancedKey = true;
                         this.keyTable.keyInfo.advanceKeyType = AdvKeyTypeEnum.MACRO;
-                        this.keyTable.keyInfo.ENDInfo.DKS = this.advKeyEND.list[0].key;
-                        await this.rk_c61.setEnd([this.keyTable.keyInfo]);
+                        
+                        if (this.advKeyMacro.macro != undefined) {
+                            await this.rk_c61.setMacroV2(this.advKeyMacro.macro);
+
+                            let touchMode = 0;
+                            if (this.keyTable.keyInfo.isQuickTouch) {
+                                touchMode = KeyTouchModeEnum.QuickMode;
+                            } else if (this.keyTable.keyInfo.isSingleTouch) {
+                                touchMode = KeyTouchModeEnum.SingleMode;
+                            }
+
+                            await this.rk_c61.setKeyValues([
+                                {
+                                    keyCode: this.keyTable.keyCode,
+                                    value: (touchMode << 4) | 0x06,
+                                    layout: LayoutTypeEnum.MODE
+                                }]);
+
+                            await this.rk_c61.setMacroMode(
+                                this.keyTable.keyCode, 
+                                this.advKeyMacro.mode,
+                                this.advKeyMacro.repeatCount,
+                                this.advKeyMacro.delay,
+                                this.advKeyMacro.macro);
+                        }
                     }
                     break;
             }
@@ -608,6 +653,19 @@ export const useAdvKeyStore = defineStore("advKeyStore_rk_c61", {
             }
             
             return null;
+        },
+        setKeyMacroMode(key: KeyDefineEnum, index: number, mode: MacroExecModeEnum, repeatCount: number, delay: number) {
+            for (let i = 0; i < this.advanceKeys.length; i++) {
+                if (this.advanceKeys[i].advType == AdvKeyTypeEnum.MACRO && this.advanceKeys[i].keyTable?.keyCode == key) {
+                    let advMacro = this.advanceKeys[i] as AdvKeyMacro;
+                    if (advMacro != undefined && this.rk_c61?.data.macros != undefined) {
+                        advMacro.setMacro(this.rk_c61.data.macros.find(index));
+                        advMacro.mode = mode;
+                        advMacro.repeatCount = repeatCount;
+                        advMacro.delay = delay;
+                    }
+                }
+            }
         }
     },
 });

@@ -98,20 +98,19 @@
 import advKeyDialog from "./advKeyDialog.vue";
 import { useKeyStore } from "@/stores/rk_c61/keyStore";
 import { useAdvKeyStore } from "@/stores/rk_c61/advKeyStore";
-import { onMounted, onBeforeUnmount } from 'vue';
-import { Macro } from '@/keyboard/sparklink/macros';
-import { useI18n } from "vue-i18n";
-import { MatrixTable, AdvKeyTypeEnum, KeyMappingType } from "@/keyboard/sparklink/enum";
+import { onMounted, onBeforeUnmount, ref } from 'vue';
+import { AdvKeyTypeEnum } from "@/keyboard/sparklink/enum";
 import { storeToRefs } from "pinia";
-import { KeyCodeEnum, KeyDefineEnum, KeyText, KeyText_Mac } from "@/common/keyCode_sparklink";
 import { AdvKeyMacro, AdvKeySOCD, AdvKey } from "@/keyboard/sparklink/rk_c61/AdvKeys";
-import { LOG_TYPE, Logging } from "@/common/logging";
-const { t } = useI18n();
+import type { RK_C61 } from "@/keyboard/sparklink/rk_c61/rk_c61";
+import { keyboard } from "@/keyboard/sparklink/keyboard";
 
 const useKey = useKeyStore();
 const useAdvKey = useAdvKeyStore();
 
 const { titleid, TitleList } = storeToRefs(useAdvKey);
+
+const rk_c61 = ref<RK_C61>();
 
 const advKeyIcon = (type: AdvKeyTypeEnum) => {
     for (let i = 0; i < TitleList.value.length; i++) {
@@ -126,19 +125,27 @@ const advKeyDelete = (key: AdvKey) => {
     useAdvKey.deleteAdvKey(key);
 }
 onMounted(async () => {
+    if (rk_c61.value == undefined) {
+        rk_c61.value = keyboard.protocol as RK_C61;
+        rk_c61.value.addEventListener("OnKeyMacroModeGotten", onKeyMacroModeGotten);
+    }
     await useKey.init();
     await useAdvKey.init();
 });
 
 onBeforeUnmount(() => {
+    if (rk_c61.value != undefined) {
+        rk_c61.value.removeEventListener("OnKeyMacroModeGotten", onKeyMacroModeGotten);
+        rk_c61.value = undefined;
+    }
     useKey.destroy();
+    useAdvKey.destroy();
 });
 
-const clickMacro = (obj: Macro) => {
-    // useKey.clickMacro(obj)
-    // useKey.confirmSetMacro()
+const onKeyMacroModeGotten = (event: any) => {
+    useAdvKey.setKeyMacroMode(event.detail.key, event.detail.index, event.detail.mode, event.detail.repeatCount, event.detail.delay);
 }
-</script>filter: ;
+</script>
 <style scoped lang="scss">
 .key_dks {
     filter: drop-shadow(rgb(28, 136, 27) 99999px 0);

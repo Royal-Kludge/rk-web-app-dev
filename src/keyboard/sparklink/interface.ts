@@ -1,4 +1,4 @@
-import { KeyDefineEnum } from "@/common/keyCode"
+import { KeyDefineEnum } from "@/common/keyCode_sparklink"
 import type { HidDeviceDefine } from "@/device/interface"
 import type { State } from "@/device/state"
 import type { KeyMatrixLayer, LayoutTypeEnum, LightDirectionEnum, LightEffectEnum, LightModeEnum, LightSwitchEnum, MatrixTable, SuperResponseEnum } from "./enum"

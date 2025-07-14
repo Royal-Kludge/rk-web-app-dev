@@ -22,13 +22,13 @@
             重复次数：
         </div>
         <div>
-            <el-input-number v-model="useAdvKey.$state.advKeyMacro.times" :min="1" :max="20" class="ml-3" />
+            <el-input-number v-model="useAdvKey.$state.advKeyMacro.repeatCount" :min="1" :max="65530" class="ml-3" />
         </div>
         <div>
             重复间隔：
         </div>
         <div>
-            <el-input-number v-model="useAdvKey.$state.advKeyMacro.interval" :min="1" :max="20" class="ml-3" />
+            <el-input-number v-model="useAdvKey.$state.advKeyMacro.delay" :min="1" :max="16777215" class="ml-3" />
         </div>
     </div>
 </template>
