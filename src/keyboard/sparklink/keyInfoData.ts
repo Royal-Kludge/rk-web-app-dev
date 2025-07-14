@@ -67,8 +67,9 @@ export class KeyInfoData {
     }
 
     getKeyDefValue(row: number, col: number): KeyDefineEnum {
-        if (this.keyInfoArray[row][col]!= null) {
-            return this.keyInfoArray[row][col].keyValue;
+        let keyInfo = this.keyInfoArray[row][col];
+        if (keyInfo != null) {
+            return keyInfo.keyValue;
         }
         return 0;
     }

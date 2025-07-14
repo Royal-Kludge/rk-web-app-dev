@@ -22,8 +22,8 @@ export abstract class AdvKey {
 export class AdvKeyMacro extends AdvKey {
     macro: Macro | undefined = undefined;
     mode: number = 1;
-    times: number = 0;
-    interval: number = 0;
+    repeatCount: number = 0;
+    delay: number = 0;
     macroIndex: number = 0;
     constructor(data: Macro | undefined) {
         super(AdvKeyTypeEnum.MACRO);

@@ -42,11 +42,14 @@ import { useMacroStore } from "@/stores/rk_c61/macroStore";
 import { Macro } from '@/keyboard/sparklink/macros';
 import { MatrixTable } from "@/keyboard/sparklink/enum";
 import { useI18n } from "vue-i18n";
-import { onMounted, onBeforeUnmount } from 'vue';
+import { onMounted, onBeforeUnmount, ref } from 'vue';
 import { useAdvKeyStore } from "@/stores/rk_c61/advKeyStore";
 import { storeToRefs } from "pinia";
 import { AdvKeyTypeEnum } from "@/keyboard/sparklink/enum";
 import type { KeyDefineEnum } from "@/common/keyCode_sparklink";
+import type { RK_C61 } from "@/keyboard/sparklink/rk_c61/rk_c61";
+import { keyboard } from "@/keyboard/sparklink/keyboard";
+
 const useAdvKey = useAdvKeyStore();
 const { titleid } = storeToRefs(useAdvKey);
 
@@ -88,6 +91,7 @@ onMounted(async () => {
 
 onBeforeUnmount(() => {
     useKey.destroy();
+    useAdvKey.destroy();
 });
 
 const isMenuShow = (id: number): boolean => {

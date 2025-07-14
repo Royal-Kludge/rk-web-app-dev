@@ -5,6 +5,7 @@ import { BoardId, COMMAND_ID, FwVersion, HwVersion, RK_C61, RK_C61_EVENT_DEFINE 
 import { KeyText, type KeyCodeEnum, type KeyDefineEnum } from '@/common/keyCode_sparklink';
 import { LayoutTypeEnum, LightDirectionEnum, LightEffectEnum, LightModeEnum, LightSwitchEnum, MatrixTable, OrderTypeEnum, RWTypeEnum, SuperResponseEnum } from '../enum';
 import { AxisList } from '../constant';
+import type { Action, Macro, MacroExecModeEnum } from '../macros';
 import { LOG_TYPE, Logging } from '@/common/logging';
 import { KB2_CMD_FAIL } from './packets/usb/KB2_CMD_FAIL';
 import { KB2_CMD_SYNC } from './packets/usb/KB2_CMD_SYNC';
@@ -21,6 +22,8 @@ import { KB2_CMD_TGL } from './packets/usb/KB2_CMD_TGL';
 import { KB2_CMD_MPT } from './packets/usb/KB2_CMD_MPT';
 import { KB2_CMD_END } from './packets/usb/KB2_CMD_END';
 import { KB2_CMD_SOCD } from './packets/usb/KB2_CMD_SOCD';
+import { KB2_CMD_MACROV2 } from './packets/usb/KB2_CMD_MACROV2';
+import { KB2_CMD_MACRO_MODE } from './packets/usb/KB2_CMD_MACRO_MODE';
 
 const worker = new Worker(new URL('@/common/communication.ts', import.meta.url));
 
@@ -41,6 +44,8 @@ export class RK_C61_Usb extends RK_C61 {
     KB2_CMD_MPT: KB2_CMD_MPT;
     KB2_CMD_END: KB2_CMD_END;
     KB2_CMD_SOCD: KB2_CMD_SOCD;
+    KB2_CMD_MACROV2: KB2_CMD_MACROV2;
+    KB2_CMD_MACRO_MODE: KB2_CMD_MACRO_MODE;
 
     constructor(state: KeyboardState, device: HIDDevice) {
         super(state, device);
@@ -61,6 +66,8 @@ export class RK_C61_Usb extends RK_C61 {
         this.KB2_CMD_MPT = new KB2_CMD_MPT(this.onCmdCallback.bind(this));
         this.KB2_CMD_END = new KB2_CMD_END(this.onCmdCallback.bind(this));
         this.KB2_CMD_SOCD = new KB2_CMD_SOCD(this.onCmdCallback.bind(this));
+        this.KB2_CMD_MACROV2 = new KB2_CMD_MACROV2(this.onCmdCallback.bind(this));
+        this.KB2_CMD_MACRO_MODE = new KB2_CMD_MACRO_MODE(this.onMacroMode.bind(this));
     }
 
     static async create(state: KeyboardState, device: HIDDevice) {
@@ -150,6 +157,12 @@ export class RK_C61_Usb extends RK_C61 {
                         break;
                     case COMMAND_ID.KB2_CMD_SOCD:
                         this.KB2_CMD_SOCD.fromReportData(data);
+                        break;
+                    case COMMAND_ID.KB2_CMD_MACRO:
+                        this.KB2_CMD_MACROV2.fromReportData(data);
+                        break;
+                    case COMMAND_ID.KB2_CMD_MACROMODE:
+                        this.KB2_CMD_MACRO_MODE.fromReportData(data);
                         break;
                 }
             } else if (this.buffer != null && this.buffer[2] - 0x80 == COMMAND_ID.KB2_CMD_RM6X21) {
@@ -345,6 +358,18 @@ export class RK_C61_Usb extends RK_C61 {
 
     async getMacros(): Promise<void> {
         this.dispatchEvent(new CustomEvent(RK_C61_EVENT_DEFINE.OnMacrosGotten, { detail: this.data.macros }));
+    }
+
+    async getMacroMode(keyCode: KeyDefineEnum): Promise<void> {
+        this.KB2_CMD_MACRO_MODE.rw = RWTypeEnum.Read;
+        this.KB2_CMD_MACRO_MODE.key = keyCode;
+        this.KB2_CMD_MACRO_MODE.index = 0;
+        this.KB2_CMD_MACRO_MODE.stepLen = 0;
+        this.KB2_CMD_MACRO_MODE.mode = 0;
+        this.KB2_CMD_MACRO_MODE.repeatConut = 0;
+        this.KB2_CMD_MACRO_MODE.delay = 0;
+        worker.postMessage(this.KB2_CMD_MACRO_MODE.command());
+        Logging.console(LOG_TYPE.INFO, `Push KB2_CMD_MACRO_MODE data to queue.`);
     }
     //#endregion
 
@@ -645,8 +670,59 @@ export class RK_C61_Usb extends RK_C61 {
         Logging.console(LOG_TYPE.INFO, `Push KB2_CMD_SOCD data to queue.`);
     }
 
-    async setMacros(): Promise<void> {
+    async setMacroV2(macro: Macro): Promise<void> {
+        let count = 0;
+        let length = 0;
+        const actList = new Array<Action | null>(9);
+        
+        for (length = 0; length < 9; length++) {
+            actList[length] = null;
+        }
 
+        length = 0;
+        count = 256;
+
+        for (let i = 0; i < macro.actions.length; i++) {
+            actList[length] = macro.actions[i];
+            length++;
+            count++;
+
+            if (length == 9) {
+                this.KB2_CMD_MACROV2.rw = RWTypeEnum.Write;
+                this.KB2_CMD_MACROV2.actions = actList;
+                this.KB2_CMD_MACROV2.count = length;
+                this.KB2_CMD_MACROV2.offset = count - length;
+                worker.postMessage(this.KB2_CMD_MACROV2.command());
+                Logging.console(LOG_TYPE.INFO, `Push KB2_CMD_MACROV2 data to queue.`);
+                
+                for (let j = 0; j >= 9; j++) {
+                    actList[j] = null;
+                }
+
+                length = 0;
+            }
+        }
+
+        if (length > 0) {
+            this.KB2_CMD_MACROV2.rw = RWTypeEnum.Write;
+            this.KB2_CMD_MACROV2.actions = actList;
+            this.KB2_CMD_MACROV2.count = length;
+            this.KB2_CMD_MACROV2.offset = count - length;
+            worker.postMessage(this.KB2_CMD_MACROV2.command());
+            Logging.console(LOG_TYPE.INFO, `Push KB2_CMD_MACROV2 data to queue.`);
+        }
+    }
+
+    async setMacroMode(keyCode: KeyDefineEnum, mode: MacroExecModeEnum, repeatConut: number, delay: number, macro: Macro): Promise<void> {
+        this.KB2_CMD_MACRO_MODE.rw = RWTypeEnum.Write;
+        this.KB2_CMD_MACRO_MODE.key = keyCode;
+        this.KB2_CMD_MACRO_MODE.index = macro.index;
+        this.KB2_CMD_MACRO_MODE.stepLen = macro.actions.length;
+        this.KB2_CMD_MACRO_MODE.mode = mode;
+        this.KB2_CMD_MACRO_MODE.repeatConut = repeatConut;
+        this.KB2_CMD_MACRO_MODE.delay = delay;
+        worker.postMessage(this.KB2_CMD_MACRO_MODE.command());
+        Logging.console(LOG_TYPE.INFO, `Push KB2_CMD_MACRO_MODE data to queue.`);
     }
     //#endregion
 
@@ -1059,6 +1135,11 @@ StaticMode: ${this.data.lightSetting.staticLightMode}`);
                 }
                 break;
         }
+    }
+
+    private onMacroMode(event: any) {
+        this.dispatchEvent(new CustomEvent(RK_C61_EVENT_DEFINE.OnKeyMacroModeGotten, { detail: event.detail }));
+        Logging.console(LOG_TYPE.SUCCESS, `Key Macro Mode [key:${event.detail.key}] [index:${event.detail.index}] [mode:${event.detail.mode}] [repeatCount:${event.detail.repeatCount}] [delay:${event.detail.delay}]`);
     }
     //#endregion
 }

@@ -85,7 +85,10 @@
                 <el-scrollbar>
                     <div class="bg-white ml-2 mr-4 p-4">
                         按键测试
-                        <div class="bg-grey mt-4 br-2 p-4">
+                        <div class="mt-4 br-2 p-4 pressKeyTestBox">
+                            <span class="smallKey" 
+                                :class="{ 'key-pressed': k.pressed }" v-for="k in keys">
+                                {{k.name}}</span>
                         </div>
                     </div>
                 </el-scrollbar>
@@ -98,20 +101,23 @@
 import advKeyDialog from "./advKeyDialog.vue";
 import { useKeyStore } from "@/stores/rk_c61/keyStore";
 import { useAdvKeyStore } from "@/stores/rk_c61/advKeyStore";
-import { onMounted, onBeforeUnmount } from 'vue';
-import { Macro } from '@/keyboard/sparklink/macros';
-import { useI18n } from "vue-i18n";
-import { MatrixTable, AdvKeyTypeEnum, KeyMappingType } from "@/keyboard/sparklink/enum";
+import { onMounted, onBeforeUnmount, ref } from 'vue';
+import { AdvKeyTypeEnum } from "@/keyboard/sparklink/enum";
 import { storeToRefs } from "pinia";
-import { KeyCodeEnum, KeyDefineEnum, KeyText, KeyText_Mac } from "@/common/keyCode_sparklink";
 import { AdvKeyMacro, AdvKeySOCD, AdvKey } from "@/keyboard/sparklink/rk_c61/AdvKeys";
-import { LOG_TYPE, Logging } from "@/common/logging";
-const { t } = useI18n();
+import type { RK_C61 } from "@/keyboard/sparklink/rk_c61/rk_c61";
+import { keyboard } from "@/keyboard/sparklink/keyboard";
 
 const useKey = useKeyStore();
 const useAdvKey = useAdvKeyStore();
 
-const { titleid, TitleList } = storeToRefs(useAdvKey);
+const { TitleList } = storeToRefs(useAdvKey);
+
+const rk_c61 = ref<RK_C61>();
+
+const keys = ref<Array<any>>([]);
+const keyID = ref(0);
+const inputText = ref('');
 
 const advKeyIcon = (type: AdvKeyTypeEnum) => {
     for (let i = 0; i < TitleList.value.length; i++) {
@@ -126,19 +132,68 @@ const advKeyDelete = (key: AdvKey) => {
     useAdvKey.deleteAdvKey(key);
 }
 onMounted(async () => {
+    if (rk_c61.value == undefined) {
+        rk_c61.value = keyboard.protocol as RK_C61;
+        rk_c61.value.addEventListener("OnKeyMacroModeGotten", onKeyMacroModeGotten);
+    }
     await useKey.init();
     await useAdvKey.init();
+
+    document.addEventListener('keydown', onKeyDown, false);
+    document.addEventListener('keyup', onKeyUp, false);
 });
 
 onBeforeUnmount(() => {
+    if (rk_c61.value != undefined) {
+        rk_c61.value.removeEventListener("OnKeyMacroModeGotten", onKeyMacroModeGotten);
+        rk_c61.value = undefined;
+    }
     useKey.destroy();
+    useAdvKey.destroy();
+
+    document.removeEventListener('keydown', onKeyDown);
+    document.removeEventListener('keyup', onKeyUp);
 });
 
-const clickMacro = (obj: Macro) => {
-    // useKey.clickMacro(obj)
-    // useKey.confirmSetMacro()
+const onKeyMacroModeGotten = (event: any) => {
+    useAdvKey.setKeyMacroMode(event.detail.key, event.detail.index, event.detail.mode, event.detail.repeatCount, event.detail.delay);
 }
-</script>filter: ;
+
+const onKeyDown = (event: KeyboardEvent) => {
+    console.log('Key pressed:', `${event.key} | ${event.code} | ${event.keyCode}`);
+    const { key } = event;
+    const existingKey = keys.value.find((k) => k.name === key);
+
+    if (existingKey) {
+        existingKey.pressed = true;
+    } else {
+        keys.value.push({ id: keyID.value++, name: key, pressed: true });
+    }
+
+    inputText.value += key;
+};
+
+const onKeyUp = async (event: KeyboardEvent) => {
+    console.log('Key pressed:', `${event.key} | ${event.code} | ${event.keyCode}`);
+
+    const key = keys.value.find((k) => k.name === event.key);
+    if (key) {
+        key.pressed = false;
+        setTimeout(() => {
+        if (!key.pressed) {
+            removeKey(key.id);
+        }
+        }, 1000);
+    }
+};
+
+const removeKey = (id: any) => {
+  const index = keys.value.findIndex((k) => k.id === id);
+  if (index > -1) {
+    keys.value.splice(index, 1);
+  }
+};
+</script>
 <style scoped lang="scss">
 .key_dks {
     filter: drop-shadow(rgb(28, 136, 27) 99999px 0);
@@ -180,4 +235,41 @@ const clickMacro = (obj: Macro) => {
     filter: drop-shadow(rgb(122, 193, 255) 99999px 0);
     position: relative;
     left: -99999px;
-}</style>
+}
+
+.smallKey {
+    min-width: 25px;
+    width: fit-content;
+    height: 25px;
+    background-color: white;
+    border-radius: 8px;
+
+    padding-left: 5px;
+    padding-right: 5px;
+
+    justify-items: center;
+    align-items: center;
+
+    color: rgb(80, 80, 80);
+
+    margin-right: 5px;
+    margin-top: 5px;
+}
+
+.pressKeyTestBox {
+  width: 85%;
+  height: 85%;
+  background-color: rgb(247, 247, 247);
+  border-radius: 12px;
+  padding: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.key-pressed {
+  background-color: rgb(35, 217, 110);
+}
+</style>

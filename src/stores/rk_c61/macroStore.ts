@@ -61,7 +61,7 @@ export const useMacroStore = defineStore("macrostore_rk_c61", () => {
           let tm = new Macro(m.name);
           tm.repeat = m.repeat;
           for (let a of m.actions) {
-            let ta = new Action(a.key, a.delay, a.action, a.type);
+            let ta = new Action(a.key, a.delay, a.action);
             tm.add(ta);
           }
           tm.refresh();
@@ -93,7 +93,7 @@ export const useMacroStore = defineStore("macrostore_rk_c61", () => {
       else {
         let tm = new Macro(p.name)
         for (let a of p.actions) {
-          let ta = new Action(a.key, a.delay, a.action, a.type);
+          let ta = new Action(a.key, a.delay, a.action);
           tm.add(ta);
         }
         tm.refresh();
@@ -112,7 +112,7 @@ export const useMacroStore = defineStore("macrostore_rk_c61", () => {
       var as: Array<Action> = JSON.parse(state.actionText);
       macro.value?.clear();
       for (let a of as) {
-        let ta = new Action(a.key, a.delay, a.action, a.type);
+        let ta = new Action(a.key, a.delay, a.action);
         macro.value?.add(ta);
       }
       macro.value?.refresh();
@@ -167,7 +167,7 @@ export const useMacroStore = defineStore("macrostore_rk_c61", () => {
 
   const setMacroData = async () => {
     if (rk_c61.value != undefined) {
-      await rk_c61.value.setMacros();
+      //await rk_c61.value.setMacros();
     }
   }
 

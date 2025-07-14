@@ -302,6 +302,17 @@ onMounted(async () => {
     }
 });
 
+onBeforeUnmount(() => {
+    if (rk_c61.value != undefined) {
+        rk_c61.value.removeEventListener("OnAdjustingMMDataGotten", onAdjustingMMDataGotten);
+        rk_c61.value.removeEventListener("OnAdjustingAdcDataGotten", onAdjustingAdcDataGotten);
+        rk_c61.value.removeEventListener("OnAdjustingAdcValueUpdate", onAdjustingAdcValueUpdate);
+        rk_c61.value = undefined;
+    }
+    
+    usePerformance.destroy();
+});
+
 const loading = computed(() => (usePerformance.state.menuid == 4 ? true : false))
 
 watch(useKey.state.keyState, async () => {

@@ -255,6 +255,7 @@ export const usePerformanceStore = defineStore("Performanceinfo_rk_c61", () => {
         keyTravelModeText,
         isSingleTouch,
         isQuickTouch,
-        resetAdjustingData
+        resetAdjustingData,
+        destroy
     };
 });
