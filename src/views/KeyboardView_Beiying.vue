@@ -10,6 +10,7 @@
         <RK_N99_Page v-else-if="productId == 8" />
         <RK_R98PRO_Page v-else-if="productId == 9" />
         <RK_S98_Page v-else-if="productId == 10" />
+        <RK_F99_Page v-else-if="productId == 11" />
     </div>
     <div class="d-flex flex-column ai-center h-100" v-else>
         <div class="p-5 fs-big m-5 mb-4">No keyboard connected to dongle</div>
@@ -30,6 +31,7 @@ import RK_L98_Page from '@/components/rk_l98/home.vue'
 import RK_N99_Page from '@/components/rk_n99/home.vue'
 import RK_R98PRO_Page from '@/components/rk_r98pro/home.vue'
 import RK_S98_Page from '@/components/rk_s98/home.vue'
+import RK_F99_Page from '@/components/rk_f99/home.vue'
 import { reactive, ref, onMounted, onBeforeUnmount } from 'vue';
 import { DonglePwdDefineList, KeyboardDefineList } from '@/keyboard/beiying/state';
 import { ConnectionStatusEnum, ConnectionType } from '@/device/enum';
@@ -129,6 +131,9 @@ onMounted(async () => {
                 case 'RK-S98 JP':
                 case 'RK-S98 ES':
                     productId.value = 10
+                    break;
+                case 'RK-F99':
+                    productId.value = 11
                     break;
             }
 
@@ -257,6 +262,9 @@ const passwordGotten = async (event: any) => {
             case 'RK-S98 JP':
             case 'RK-S98 ES':
                 productId.value = 10
+                break;
+            case 'RK-F99':
+                productId.value = 11
                 break;
         }
 

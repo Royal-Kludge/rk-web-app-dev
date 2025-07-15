@@ -26,6 +26,8 @@ import {
     RK_S98_RU_WIRE_DEFINE,
     RK_S98_JP_WIRE_DEFINE,
     RK_S98_ES_WIRE_DEFINE,
+    RK_F99_WIRE_DEFINE,
+    RK_F99_24G_DEFINE
 } from '@/keyboard/beiying/device'
 import { 
     RK_M3_WIRE_DEFINE,
@@ -79,7 +81,9 @@ export const DeviceDefineList: Array<HidDeviceDefine> = [
     RK_S98_RU_WIRE_DEFINE,
     RK_S98_JP_WIRE_DEFINE,
     RK_S98_ES_WIRE_DEFINE,
-    RK_C61_WIRE_DEFINE
+    RK_C61_WIRE_DEFINE,
+    RK_F99_WIRE_DEFINE,
+    RK_F99_24G_DEFINE,
 ]
 
 export interface State {

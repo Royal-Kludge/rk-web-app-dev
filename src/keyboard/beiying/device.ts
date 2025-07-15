@@ -299,3 +299,25 @@ export const RK_R98PRO_3_WIRE_DEFINE: HidDeviceDefine = {
     deviceType: DeviceType.Keyboard,
     protocolType: ProtocolType.BeiYing
 }
+
+export const RK_F99_WIRE_DEFINE: HidDeviceDefine = {
+    name: "rk f99 wire",
+    vendorId: 0x258A,
+    productId: 0x0218,
+    usagePage: 0xFF00,
+    usage: 0x0001,
+    connectType: ConnectionType.USB,
+    deviceType: DeviceType.Keyboard,
+    protocolType: ProtocolType.BeiYing
+}
+
+export const RK_F99_24G_DEFINE: HidDeviceDefine = {
+    name: "rk f99 24G",
+    vendorId: 0x3554,
+    productId: 0xFA09,
+    usagePage: 0xFF02,
+    usage: 0x0002,
+    connectType: ConnectionType.Dongle,
+    deviceType: DeviceType.Keyboard,
+    protocolType: ProtocolType.BeiYing
+}

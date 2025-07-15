@@ -217,15 +217,15 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount } from 'vue';
-import { RK_M87 } from '@/keyboard/beiying/rk_m87/rk_m87';
-import { Macro, Action, ActionType } from '@/keyboard/beiying/rk_m87/macros';
-import { KeyCodeMap } from '@/common/keyCode_m87'
+import { RK_F99 } from '@/keyboard/beiying/rk_f99/rk_f99';
+import { Macro, Action, ActionType } from '@/keyboard/beiying/rk_f99/macros';
+import { KeyCodeMap } from '@/common/keyCode'
 import { type KeyCodeTable } from '@/common/interface';
 import { storage } from '@/common/storage';
-import { useMacroStore } from "@/stores/rk_m87/macroStore";
+import { useMacroStore } from "@/stores/rk_f99/macroStore";
 import { storeToRefs } from "pinia";
 import { useI18n } from 'vue-i18n';
-import { KeyDefineEnum } from '@/common/keyCode_m87'
+import { KeyDefineEnum } from '@/common/keyCode'
 import { ElMessageBox, ElMessage } from 'element-plus'
 import type { Action as ElAction } from 'element-plus';
 import type { UploadProps } from 'element-plus'
@@ -237,7 +237,7 @@ const useMacro = useMacroStore();
 const { state, macros, actions } = storeToRefs(useMacro);
 
 const actVal = ref(t('macro.menu_1'));
-const rk_m87 = ref<RK_M87>();
+const rk_f99 = ref<RK_F99>();
 //const macros = ref<Macros>();
 
 //const key = ref<string>('');
