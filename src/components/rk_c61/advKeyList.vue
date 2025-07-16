@@ -5,8 +5,15 @@
                 <div style="height: 30vh;">
                     <el-scrollbar>
                         <div style="width: 100%;">
-                            <div class="d-flex jc-center" v-if="useAdvKey.$state.advanceKeys.length <= 0">
-                                <span>还未设置高级键</span>
+                            <div class="d-flex jc-center ai-center flex-column p-4"
+                                v-if="useAdvKey.$state.advanceKeys.length <= 0">
+                                <span>
+                                    <el-icon :size="64">
+                                        <Search />
+                                    </el-icon>
+                                </span>
+                                <span> {{ $t("advKey.RK_C61.tip_1") }}</span>
+                                <span style="width: 50%;"> {{ $t("advKey.RK_C61.tip_2") }}</span>
                             </div>
                             <div class="d-flex flex-wrap" v-else>
                                 <div v-for="item in useAdvKey.$state.advanceKeys">
@@ -21,7 +28,8 @@
                                             </div>
                                             <div class="d-flex ai-center jc-center m-2 bg-grey"
                                                 style="border: 2px solid #009200; width: 28px;height: 28px; overflow: hidden;">
-                                                <span style="word-wrap: break-word;filter: drop-shadow(#6a6a77 99999px 0);position: relative;left: -99999px;color:#6a6a77;font-size: 12px;"
+                                                <span
+                                                    style="word-wrap: break-word;filter: drop-shadow(#6a6a77 99999px 0);position: relative;left: -99999px;color:#6a6a77;font-size: 12px;"
                                                     v-html="useKey.keyText(item.keyTable)"></span>
                                             </div>
                                             <div v-if="item.advType == AdvKeyTypeEnum.MACRO && (item as AdvKeyMacro).macro != null"
@@ -66,8 +74,7 @@
                                                     v-html="useAdvKey.keyText(key.key)"></span>
                                             </div>
                                         </div>
-                                        <div class="d-flex ai-center jc-center"
-                                            style="border-left: 1px solid #929292;">
+                                        <div class="d-flex ai-center jc-center" style="border-left: 1px solid #929292;">
                                             <div class="m-2 c-p ai-center jc-center" @click="advKeyDelete(item)">
                                                 <img src="../../assets/images/title/del.png" style="width: 16px;" />
                                             </div>
@@ -84,11 +91,10 @@
             <div style="height: 30vh">
                 <el-scrollbar>
                     <div class="bg-white ml-2 mr-4 p-4">
-                        按键测试
-                        <div class="mt-4 br-2 p-4 pressKeyTestBox">
-                            <span class="smallKey" 
-                                :class="{ 'key-pressed': k.pressed }" v-for="k in keys">
-                                {{k.name}}</span>
+                        {{ $t("advKey.RK_C61.title_18") }}
+                        <div class="mt-1 br-2 p-4 pressKeyTestBox">
+                            <span class="smallKey" :class="{ 'key-pressed': k.pressed }" v-for="k in keys">
+                                {{ k.name }}</span>
                         </div>
                     </div>
                 </el-scrollbar>
@@ -180,18 +186,18 @@ const onKeyUp = async (event: KeyboardEvent) => {
     if (key) {
         key.pressed = false;
         setTimeout(() => {
-        if (!key.pressed) {
-            removeKey(key.id);
-        }
+            if (!key.pressed) {
+                removeKey(key.id);
+            }
         }, 1000);
     }
 };
 
 const removeKey = (id: any) => {
-  const index = keys.value.findIndex((k) => k.id === id);
-  if (index > -1) {
-    keys.value.splice(index, 1);
-  }
+    const index = keys.value.findIndex((k) => k.id === id);
+    if (index > -1) {
+        keys.value.splice(index, 1);
+    }
 };
 </script>
 <style scoped lang="scss">
@@ -254,22 +260,25 @@ const removeKey = (id: any) => {
 
     margin-right: 5px;
     margin-top: 5px;
+    text-align: center;
+    border: 1px solid #e9ebf3;
+    box-shadow: 1px 1px 3px rgba(106, 106, 119, 0.3);
 }
 
 .pressKeyTestBox {
-  width: 85%;
-  height: 85%;
-  background-color: rgb(247, 247, 247);
-  border-radius: 12px;
-  padding: 10px;
-  display: flex;
-  flex-wrap: wrap;
-  align-content: flex-start;
-  justify-content: flex-start;
-  align-items: center;
+    height: 85%;
+    background-color: rgb(247, 247, 247);
+    border-radius: 12px;
+    padding: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    justify-content: flex-start;
+    align-items: center;
+    min-height: 60px;
 }
 
 .key-pressed {
-  background-color: rgb(35, 217, 110);
+    background-color: rgb(35, 217, 110);
 }
 </style>

@@ -54,7 +54,8 @@
 
                     <el-popover placement="right" :width="450" trigger="click"
                         popper-style="background: #6A6A77;--el-bg-color-overlay:##6A6A77;--el-border-color-light:transparent;--el-popover-padding:0px"
-                        v-for="key in (line as KeyLine).keys" v-else-if="meunid == 3" :disabled="key.keyData?.keyInfo.isAdvancedKey">
+                        v-for="key in (line as KeyLine).keys" v-else-if="meunid == 3"
+                        :disabled="key.keyData?.keyInfo.isAdvancedKey">
                         <template #reference>
                             <div @click="keyClick(key.index)" class="d-flex ai-center jc-center c-p p-r"
                                 :class="[`d-flex p-2 pl-3 ${key.style}`, useKey.keyColor(key.keyData), useKey.isSelected(key.index)]">
@@ -78,10 +79,11 @@
                                     :class="{ 'bg-select': item.id === titleid }" style="height: 36px;">
                                     <div class="d-flex jc-center ai-center mx-3"
                                         style="border-right: 3px solid #ffffff; width: 32px;">
-                                        <img :src="item.src" class="mr-4" style="filter: drop-shadow(#ffffff 99999px 0);position: relative;left: -99999px;color:#ffffff;width: 24px;" />
+                                        <img :src="item.src" class="mr-4"
+                                            style="filter: drop-shadow(#ffffff 99999px 0);position: relative;left: -99999px;color:#ffffff;width: 24px;" />
                                     </div>
                                     <div class="text-white-1">
-                                        <span class="text-warn">{{ item.title }}：</span>{{ item.des }}
+                                        <span class="text-warn">{{ $t(item.title) }}：</span>{{ $t(item.des) }}
                                     </div>
                                 </div>
                             </div>
@@ -268,10 +270,10 @@ watch(
 );
 
 watch(meunid, () => {
-        if (meunid.value == 3) {
-            useKey.unSelected();
-        }
+    if (meunid.value == 3) {
+        useKey.unSelected();
     }
+}
 );
 
 const handleMouseDown = (event: any) => {

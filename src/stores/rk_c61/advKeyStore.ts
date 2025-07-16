@@ -27,75 +27,75 @@ export const useAdvKeyStore = defineStore("advKeyStore_rk_c61", {
         macro: undefined as Macro | undefined,
         titleid: AdvKeyTypeEnum.DKS,
         advKeyDKS: new AdvKeyDKS([new DKSType(0), new DKSType(1), new DKSType(2), new DKSType(3)]),
-        advKeyMT: new AdvKeyMT([new MTType(0, "按住"), new MTType(1, "单击")]),
-        advKeyTGL: new AdvKeyTGL([new TGLType(0, "按住")]),
+        advKeyMT: new AdvKeyMT([new MTType(0, "advKey.RK_C61.title_19"), new MTType(1, "advKey.RK_C61.title_20")]),
+        advKeyTGL: new AdvKeyTGL([new TGLType(0, "advKey.RK_C61.title_19")]),
         advKeyMPT: new AdvKeyMPT([new MPTType(0, 0.500), new MPTType(1, 1.000), new MPTType(2, 1.500)]),
         advKeyEND: new AdvKeyEND([new ENDType(0)]),
         advKeySOCD: new AdvKeySOCD([new SOCDType(0), new SOCDType(1), new SOCDType(2), new SOCDType(3)]),
         advKeyMacro: new AdvKeyMacro(undefined),
         macroModeList: [
-            { value: 0, label: "单击执行" },
-            { value: 1, label: "点击重复执行，再次点击停止" },
-            { value: 2, label: "按下重复执行，弹起立刻停止" },
-            { value: 3, label: "按下重复执行，弹起后完成此次宏后停止" },
+            { value: 0, label: "advKey.RK_C61.title_1" },
+            { value: 1, label: "advKey.RK_C61.title_2" },
+            { value: 2, label: "advKey.RK_C61.title_3" },
+            { value: 3, label: "advKey.RK_C61.title_4" },
         ],
         socdList: [
-            { value: 0, label: "绑定位置（键盘指定位置的两个按键互相绑定）" },
-            { value: 1, label: "绑定键值（两个键值互相绑定）" },
+            { value: 0, label: "advKey.RK_C61.title_5" },
+            { value: 1, label: "advKey.RK_C61.title_6" },
         ],
         socdModeList: [
-            { value: 0, label: "后覆盖（后按下的按键会覆盖前一个）" },
-            { value: 1, label: "红框中的按键优先" },
-            { value: 2, label: "蓝框中的按键优先" },
-            { value: 3, label: "中性（两个按键都按下都不生效）" },
+            { value: 0, label: "advKey.RK_C61.title_7" },
+            { value: 1, label: "advKey.RK_C61.title_8" },
+            { value: 2, label: "advKey.RK_C61.title_9" },
+            { value: 3, label: "advKey.RK_C61.title_10" },
         ],
         TitleList: [
             {
                 id: AdvKeyTypeEnum.DKS,
                 title: "DKS",
-                des: "单个按键实现四种功能：您可以根据4种不同的按压程度绑定1至4种功能。",
+                des: "advKey.RK_C61.title_11",
                 src: "/src/assets/images/menu/high/dks.png",
                 style: "key_dks",
             },
             {
                 id: AdvKeyTypeEnum.MT,
                 title: "MT",
-                des: "按住和单击按键实现不同功能。",
+                des: "advKey.RK_C61.title_12",
                 src: "/src/assets/images/menu/high/mt.png",
                 style: "key_mt",
             },
             {
                 id: AdvKeyTypeEnum.TGL,
                 title: "TGL",
-                des: "单击按键开启持续触发，按住按键为正常触发。",
+                des: "advKey.RK_C61.title_13",
                 src: "/src/assets/images/menu/high/tgl.png",
                 style: "key_tgl",
             },
             {
                 id: AdvKeyTypeEnum.MPT,
                 title: "MPT",
-                des: "单个按键可在三个不同的深度触发三个不同的按键。",
+                des: "advKey.RK_C61.title_14",
                 src: "/src/assets/images/menu/high/mpt.png",
                 style: "key_mpt",
             },
             {
                 id: AdvKeyTypeEnum.END,
                 title: "END",
-                des: "单个按键可在松开时发送另一个按键。",
+                des: "advKey.RK_C61.title_15",
                 src: "/src/assets/images/menu/high/end.png",
                 style: "key_end",
             },
             {
                 id: AdvKeyTypeEnum.SOCD,
                 title: "SOCD",
-                des: "绑定两个按键，后按下的按键会强制释放前一个按键，同一时刻只会触发一个按键。",
+                des: "advKey.RK_C61.title_16",
                 src: "/src/assets/images/menu/high/socd.png",
                 style: "key_socd",
             },
             {
                 id: AdvKeyTypeEnum.MACRO,
                 title: "MACRO",
-                des: "给按键设置一串指令，实现发送多个按键。",
+                des: "advKey.RK_C61.title_17",
                 src: "/src/assets/images/menu/high/macro.png",
                 style: "key_macro",
             },
@@ -109,7 +109,7 @@ export const useAdvKeyStore = defineStore("advKeyStore_rk_c61", {
                     this.rk_c61 = protocol;
                 }
             }
-            
+
             if (this.rk_c61 != undefined && !this.isInited) {
                 for (let i = 0; i < keyboard.state.keyTableData.length; i++) {
                     let keyTable = keyboard.state.keyTableData[i];
@@ -129,7 +129,7 @@ export const useAdvKeyStore = defineStore("advKeyStore_rk_c61", {
                                 this.advanceKeys.push(dks);
                                 break;
                             case AdvKeyTypeEnum.MT:
-                                let mt = new AdvKeyMT([new MTType(0, "按住"), new MTType(1, "单击")]);
+                                let mt = new AdvKeyMT([new MTType(0, "advKey.RK_C61.title_19"), new MTType(1, "advKey.RK_C61.title_20")]);
                                 mt.list[0].key = keyTable.keyInfo.MTInfo.DKS[0];
                                 mt.list[1].key = keyTable.keyInfo.MTInfo.DKS[1];
                                 mt.value = keyTable.keyInfo.MTInfo.delay;
@@ -137,7 +137,7 @@ export const useAdvKeyStore = defineStore("advKeyStore_rk_c61", {
                                 this.advanceKeys.push(mt);
                                 break;
                             case AdvKeyTypeEnum.TGL:
-                                let tgl = new AdvKeyTGL([new TGLType(0, "按住")]);
+                                let tgl = new AdvKeyTGL([new TGLType(0, "advKey.RK_C61.title_19")]);
                                 tgl.list[0].key = keyTable.keyInfo.TGLInfo.DKS;
                                 tgl.value = keyTable.keyInfo.TGLInfo.delay;
                                 tgl.keyTable = keyTable;
@@ -182,7 +182,7 @@ export const useAdvKeyStore = defineStore("advKeyStore_rk_c61", {
                         }
                     }
                 }
-                
+
                 this.maxTravel = this.rk_c61.data.performanceData.maxTouchTravel;
                 this.minTravel = this.rk_c61.data.performanceData.minTouchTravel;
                 this.isInited = true;
@@ -214,7 +214,7 @@ export const useAdvKeyStore = defineStore("advKeyStore_rk_c61", {
                     break;
                 case AdvKeyTypeEnum.MT:
                     if (isNew == true) {
-                        this.advKeyMT = new AdvKeyMT([new MTType(0, "按住"), new MTType(1, "单击")]);
+                        this.advKeyMT = new AdvKeyMT([new MTType(0, "advKey.RK_C61.title_19"), new MTType(1, "advKey.RK_C61.title_20")]);
                         this.advKeyMT.value = 200;
                     } else {
                         this.advKeyMT = this.advanceKey as AdvKeyMT;
@@ -222,7 +222,7 @@ export const useAdvKeyStore = defineStore("advKeyStore_rk_c61", {
                     break;
                 case AdvKeyTypeEnum.TGL:
                     if (isNew == true) {
-                        this.advKeyTGL = new AdvKeyTGL([new TGLType(0, "按住")]);
+                        this.advKeyTGL = new AdvKeyTGL([new TGLType(0, "advKey.RK_C61.title_19")]);
                         this.advKeyTGL.value = 200;
                     } else {
                         this.advKeyTGL = this.advanceKey as AdvKeyTGL;
@@ -308,7 +308,7 @@ export const useAdvKeyStore = defineStore("advKeyStore_rk_c61", {
                         this.advKeyClick(this.advanceKeys[i]);
                     }
                 }
-            } 
+            }
         },
         advKeyClick(key: AdvKey) {
             let index = 0;
@@ -338,7 +338,7 @@ export const useAdvKeyStore = defineStore("advKeyStore_rk_c61", {
                             }]);
                     }
                 }
-                
+
                 let index = this.advanceKeys.findIndex((item) => item === key);
                 if (index !== -1) {
                     this.advanceKeys.splice(index, 1);
@@ -453,7 +453,7 @@ export const useAdvKeyStore = defineStore("advKeyStore_rk_c61", {
                             }
 
                             let socd = null;
-                        
+
                             for (let i = 0; i < this.advanceKeys.length; i++) {
                                 if (this.advanceKeys[i].advType == AdvKeyTypeEnum.SOCD) {
                                     if ((this.advanceKeys[i] as AdvKeySOCD).keyTable?.keyCode == this.advKeySOCD.list[1].key) {
@@ -485,7 +485,7 @@ export const useAdvKeyStore = defineStore("advKeyStore_rk_c61", {
                     if (this.keyTable != undefined && this.rk_c61 != undefined) {
                         this.keyTable.keyInfo.isAdvancedKey = true;
                         this.keyTable.keyInfo.advanceKeyType = AdvKeyTypeEnum.MACRO;
-                        
+
                         if (this.advKeyMacro.macro != undefined) {
                             await this.rk_c61.setMacroV2(this.advKeyMacro.macro);
 
@@ -504,7 +504,7 @@ export const useAdvKeyStore = defineStore("advKeyStore_rk_c61", {
                                 }]);
 
                             await this.rk_c61.setMacroMode(
-                                this.keyTable.keyCode, 
+                                this.keyTable.keyCode,
                                 this.advKeyMacro.mode,
                                 this.advKeyMacro.repeatCount,
                                 this.advKeyMacro.delay,
@@ -645,13 +645,13 @@ export const useAdvKeyStore = defineStore("advKeyStore_rk_c61", {
                 <div>${texts[1]}</div>
             </div>
             </div>`;
-            }   return keyStr;
+            } return keyStr;
         },
         getKeyInfo(keyCode: KeyDefineEnum): KeyInfo | null {
             if (this.rk_c61 != undefined) {
                 return this.rk_c61.data.keyInfoData.getKeyInfoByKey(keyCode);
             }
-            
+
             return null;
         },
         setKeyMacroMode(key: KeyDefineEnum, index: number, mode: MacroExecModeEnum, repeatCount: number, delay: number) {
