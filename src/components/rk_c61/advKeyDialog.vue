@@ -2,7 +2,8 @@
     <el-drawer v-model="useAdvKey.$state.isAdvKeyDialog" direction="btt" @opened="opened()" @closed="closed()"
         :with-header="false" size="40%" style="--el-drawer-padding-primary:10px;--el-drawer-bg-color: #F8F8FC">
         <div class="d-flex jc-end">
-            <div class="bg-dark p-1 br-2 px-4 c-p text-white" @click="useAdvKey.saveAdvKey()">保存</div>
+            <div class="bg-dark p-1 br-2 px-4 c-p text-white" @click="useAdvKey.saveAdvKey()"> {{ $t("macro.but_7") }}
+            </div>
         </div>
         <div class="d-flex">
             <div class="d-flex" v-if="titleid == AdvKeyTypeEnum.MACRO">

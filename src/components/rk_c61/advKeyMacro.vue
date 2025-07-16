@@ -19,13 +19,13 @@
     </div>
     <div class="m-5">
         <div>
-            重复次数：
+            {{ $t("macro.title_4") }}
         </div>
         <div>
             <el-input-number v-model="useAdvKey.$state.advKeyMacro.repeatCount" :min="1" :max="65530" class="ml-3" />
         </div>
         <div>
-            重复间隔：
+            {{ $t("macro.title_7") }}
         </div>
         <div>
             <el-input-number v-model="useAdvKey.$state.advKeyMacro.delay" :min="1" :max="16777215" class="ml-3" />

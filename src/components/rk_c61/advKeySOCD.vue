@@ -1,7 +1,8 @@
 <template>
     <div>
         <el-radio-group v-model="useAdvKey.$state.advKeySOCD.value" text-color="#00ffff" fill="#ffff00">
-            <el-radio v-for="item in useAdvKey.$state.socdList" :value="item.value" :label="item.value">
+            <el-radio v-for="item in useAdvKey.$state.socdList" :value="item.value" :label="item.value"
+                style="text-wrap: auto;">
                 {{ $t(item.label) }}
             </el-radio>
         </el-radio-group>

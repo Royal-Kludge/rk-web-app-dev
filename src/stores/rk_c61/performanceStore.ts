@@ -15,39 +15,39 @@ export const usePerformanceStore = defineStore("Performanceinfo_rk_c61", () => {
     const travelTestOn = ref(false);
     const isAdjusting = ref(false);
     const performanceData = ref<PerformanceData>({
-            PerformancePage: 0,
-            precision: 0.1, // 键盘行程精度
-            decimalPlace: 2, // 行程显示的小数位
-            minTouchTravel: 0.1, // 最小触发行程(方法中有使用，待移植方法)
-            maxTouchTravel: 4.0, // 最大触发行程(方法中有使用，待移植方法)
-            globalTouchTravel: 1.5, // 全局触发行程
-            singleTouchTravel: 1.5, // 单键触发行程
-            singleTouchRelease: 1.5, // 单键释放行程(特殊)
-            pressDead: 0.2, // 按压死区
-            releaseDead: 0.2, // 抬起死区
-            topDeadSwitch: false, // 顶部死区开关
-            pressDeadOptimizeSwitch: false, // 按压死区优化
-            releaseDesdOptimizeSwitch: false, // 抬起死区优化
-            rateOfReturn: -1, // 回报率
-            quickTouchPress: 0.3, // 快速触发按下行程
-            quickTouchRelease: 0.3, // 快速触发抬起行程
-            quickTouchSwitchDisable: true, // (方法中有使用，待移植方法)
-            quickTouchSwitch: false, // (方法中有使用，待移植方法)
-            isAdjusting: false, // 是否开启校准
-            adjustingCount: 0, // 校准计数触发器
-            travelTestOn: false, // 行程测试
-            keyPressTestCount: 0, // 按键测试计数触发器
-            hasAxisSetting: false,
-        });
+        PerformancePage: 0,
+        precision: 0.1, // 键盘行程精度
+        decimalPlace: 2, // 行程显示的小数位
+        minTouchTravel: 0.1, // 最小触发行程(方法中有使用，待移植方法)
+        maxTouchTravel: 4.0, // 最大触发行程(方法中有使用，待移植方法)
+        globalTouchTravel: 1.5, // 全局触发行程
+        singleTouchTravel: 1.5, // 单键触发行程
+        singleTouchRelease: 1.5, // 单键释放行程(特殊)
+        pressDead: 0.2, // 按压死区
+        releaseDead: 0.2, // 抬起死区
+        topDeadSwitch: false, // 顶部死区开关
+        pressDeadOptimizeSwitch: false, // 按压死区优化
+        releaseDesdOptimizeSwitch: false, // 抬起死区优化
+        rateOfReturn: -1, // 回报率
+        quickTouchPress: 0.3, // 快速触发按下行程
+        quickTouchRelease: 0.3, // 快速触发抬起行程
+        quickTouchSwitchDisable: true, // (方法中有使用，待移植方法)
+        quickTouchSwitch: false, // (方法中有使用，待移植方法)
+        isAdjusting: false, // 是否开启校准
+        adjustingCount: 0, // 校准计数触发器
+        travelTestOn: false, // 行程测试
+        keyPressTestCount: 0, // 按键测试计数触发器
+        hasAxisSetting: false,
+    });
     const state = reactive({
         pressStatus: 0,
         maxMM: 0,
         menuid: 1,
         menuList: [
-            { id: 1, title: "普通模式", style: "" },
-            { id: 2, title: "RT模式", style: "" },
-            { id: 3, title: "高级设置", style: "" },
-            { id: 4, title: "键盘校准", style: "" },
+            { id: 1, title: "performance.RK_C61.meun_1", style: "" },
+            { id: 2, title: "performance.RK_C61.meun_2", style: "" },
+            { id: 3, title: "performance.RK_C61.meun_3", style: "" },
+            { id: 4, title: "performance.RK_C61.meun_4", style: "" },
         ],
         rewardList: [
             {
@@ -92,7 +92,7 @@ export const usePerformanceStore = defineStore("Performanceinfo_rk_c61", () => {
             performanceData.value = rk_c61.value.data.performanceData;
             keyboard.addEventListener("connection", connectionEventCallback);
         }
-    
+
         if (rk_c61.value != undefined && !isInited.value) {
             isInited.value = true;
         }
@@ -176,7 +176,7 @@ export const usePerformanceStore = defineStore("Performanceinfo_rk_c61", () => {
             }
         }
     };
-    
+
     const deadReleaseChange = (value: number) => {
         if (rk_c61.value != undefined) {
             let cmd = rk_c61.value.data.keyInfoData.updateKeyCheckedDeadRelease(value);
@@ -227,14 +227,14 @@ export const usePerformanceStore = defineStore("Performanceinfo_rk_c61", () => {
         if (keyData == undefined) return false;
         return keyData.keyInfo.isQuickTouch;
     };
-    
+
     const resetAdjustingData = () => {
         if (rk_c61.value != undefined) {
             rk_c61.value.data.keyInfoData.clearAdjustingSuccessData();
         }
     };
 
-    return { 
+    return {
         state,
         adjustingCount,
         keyPressTestCount,

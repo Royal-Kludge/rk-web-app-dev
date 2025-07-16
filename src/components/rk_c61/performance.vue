@@ -1,6 +1,6 @@
 <template>
     <div class="d-flex w-100">
-        <div style="width: 160px; height: 100vh;" class="bg-grey">
+        <div style="width: 210px; height: 100vh;" class="bg-grey">
             <div style="height: 30vh">
                 <el-scrollbar>
                     <div :class="[{ 'bg-white-1': item.id === usePerformance.state.menuid }, `${item.style}`]"
@@ -19,13 +19,13 @@
                         <div v-if="usePerformance.state.menuid == 1">
                             <div class="m-2">
                                 <div class="fw-b m-2">
-                                    全局触发
+                                    {{ $t("performance.RK_C61.title_1") }}
                                 </div>
                                 <div class="d-flex fs-lg m-2">
                                     <div
                                         style="width: 5px; height: 16px; border-radius: 2px; background-color: rgb(0, 158, 0);">
                                     </div>
-                                    <div>设置全局触发行程，非单键触发和RT触发的按键生效，行程不会在按键上显示。</div>
+                                    <div>{{ $t("performance.RK_C61.tip_1") }}</div>
                                 </div>
                                 <div class="m-2 d-flex ml-3">
                                     <el-slider style="width: 450px" :step="travelStep"
@@ -41,10 +41,10 @@
 
                             <div class="m-2">
                                 <div class="fw-b m-2">
-                                    单键触发（选中按键）
+                                    {{ $t("performance.RK_C61.title_2") }}
                                 </div>
                                 <div class="d-flex fs-lg m-2">
-                                    设置单键触发行程，按键左上角显示绿色行程值为已设置。
+                                    {{ $t("performance.RK_C61.tip_2") }}
                                 </div>
                                 <div class="m-2 d-flex ml-3">
                                     <el-slider style="width: 450px" :step="travelStep"
@@ -61,13 +61,13 @@
                         <div v-else-if="usePerformance.state.menuid == 2">
                             <div class="m-2">
                                 <div class="fw-b m-2">
-                                    首次触发行程（选中的按键生效）
+                                    {{ $t("performance.RK_C61.title_3") }}
                                 </div>
                                 <div class="d-flex fs-lg m-2">
                                     <div
                                         style="width: 5px; height: 16px; border-radius: 2px; background-color: rgb(0, 158, 0);">
                                     </div>
-                                    <div>设置首次触发行程，按键左上角显示绿色行程值为已设置。</div>
+                                    <div>{{ $t("performance.RK_C61.tip_3") }}</div>
                                 </div>
                                 <div class="m-2 d-flex ml-3">
                                     <el-slider style="width: 450px" :step="travelStep"
@@ -83,13 +83,13 @@
 
                             <div class="m-2">
                                 <div class="fw-b m-2">
-                                    动态触发行程(按下)
+                                    {{ $t("performance.RK_C61.title_4") }}
                                 </div>
                                 <div class="d-flex fs-lg m-2">
                                     <div
                                         style="width: 5px; height: 16px; border-radius: 2px; background-color: rgb(0, 125, 224);">
                                     </div>
-                                    <div>设置RT触发行程，按键左下角显示蓝色行程值为已设置。</div>
+                                    <div>{{ $t("performance.RK_C61.tip_4") }}</div>
                                 </div>
                                 <div class="m-2 d-flex ml-3">
                                     <el-slider style="width: 450px" :step="travelStep"
@@ -104,14 +104,14 @@
                             </div>
                             <div class="m-2">
                                 <div class="fw-b m-2">
-                                    动态重置行程(抬起)
+                                    {{ $t("performance.RK_C61.title_5") }}
                                 </div>
                                 <div class="d-flex fs-lg m-2">
                                     <div
                                         style="width: 5px; height: 16px; border-radius: 2px; background-color: rgb(255, 115, 0);">
                                     </div>
                                     <div>
-                                        设置RT重置行程，按键右下角显示橙红色行程值为已设置。
+                                        {{ $t("performance.RK_C61.tip_5") }}
                                     </div>
                                 </div>
                                 <div class="m-2 d-flex ml-3">
@@ -129,13 +129,13 @@
                         <div v-else-if="usePerformance.state.menuid == 3">
                             <div style="border-bottom: 1px solid #6A6A77;">
                                 <div class="fw-b m-2">
-                                    死区设置
+                                    {{ $t("performance.RK_C61.title_6") }}
                                 </div>
                                 <div class="d-flex fs-lg m-2">
-                                    <div>死区设置为全局设置，为防止误触或断触，推荐将死区设置为 0.2mm</div>
+                                    <div>{{ $t("performance.RK_C61.tip_6") }}</div>
                                 </div>
                                 <div class="d-flex fs-lg m-2">
-                                    <div>顶部按下</div>
+                                    <div>{{ $t("performance.RK_C61.title_7") }}</div>
                                 </div>
                                 <div class="m-2 d-flex ml-3">
                                     <el-slider style="width: 450px" :step="0.01" :max="1.00" :min="pressDeadMin"
@@ -145,7 +145,7 @@
                                         :precision="2" :disabled="isDisabel" @change="deadPressChange" class="ml-3" />
                                 </div>
                                 <div class="d-flex fs-lg m-2">
-                                    <div>底部抬起</div>
+                                    <div>{{ $t("performance.RK_C61.title_8") }}</div>
                                 </div>
                                 <div class="m-2 d-flex ml-3 mb-4">
                                     <el-slider style="width: 450px" :step="0.01" :max="1.00" :min="pressDeadMin"
@@ -159,7 +159,7 @@
 
                             <div class="m-2">
                                 <div class="fw-b m-2">
-                                    回报率
+                                    {{ $t("performance.RK_C61.title_9") }}
                                 </div>
                                 <div class="d-flex fs-lg m-2">
                                     <el-select v-model="performanceData.rateOfReturn" placeholder="Select"
@@ -169,13 +169,16 @@
                                     </el-select>
                                 </div>
 
-                                <el-dialog v-model="dialogReportRate" title="提示" width="500">
-                                    <span>切换回报率将会重启键盘并重新连接，是否确认切换回报率?</span>
+                                <el-dialog v-model="dialogReportRate" title="$t('performance.RK_C61.title_21')"
+                                    width="500">
+                                    <span>{{ $t("performance.RK_C61.tip_9") }}</span>
                                     <template #footer>
                                         <div class="dialog-footer">
-                                            <el-button @click="dialogReportRate = false">取消</el-button>
+                                            <el-button @click="dialogReportRate = false">
+                                                {{ $t("set.cancel") }}
+                                            </el-button>
                                             <el-button type="primary" @click="usePerformance.reportRateChange">
-                                                确认
+                                                {{ $t("set.confirm") }}
                                             </el-button>
                                         </div>
                                     </template>
@@ -185,19 +188,20 @@
                         <div v-else-if="usePerformance.state.menuid == 4">
                             <div class="m-2">
                                 <div class="fw-b m-2">
-                                    校准说明
+                                    {{ $t("performance.RK_C61.title_10") }}
                                 </div>
                                 <div class="d-flex fs-lg">
-                                    <div>校准时请用正常力度按下按键。注意：快速的按下并抬起按键会导致校准的结果不准确。</div>
+                                    <div>{{ $t("performance.RK_C61.tip_10") }}</div>
                                     <div v-if="!isAdjusting"
                                         class="p-2 m-2 bg-warn-1 text-grey-1 text-center br-2 b-grey c-p but"
                                         @click="isAdjusting = true">
-                                        {{ isSaving ? `正在保存` : `开始校准` }}
-                                    </div>
+                                        {{ isSaving ? t("performance.RK_C61.title_11") :
+                                            t("performance.RK_C61.title_12")
+                                        }}</div>
                                     <div v-if="isAdjusting"
                                         class="p-2 m-2 bg-warn-1 text-grey-1 text-center br-2 b-grey c-p but"
                                         @click="isAdjusting = false">
-                                        保存校准
+                                        {{ $t("performance.RK_C61.title_13") }}
                                     </div>
                                 </div>
                                 <div ref="chart" class="chart-container"></div>
@@ -211,7 +215,7 @@
                     <el-scrollbar>
                         <div class="d-flex ai-center jc-between m-2 mx-4">
                             <div class="fw-b">
-                                行程测试
+                                {{ $t("performance.RK_C61.title_14") }}
                             </div>
                             <div>
                                 <el-switch v-model="performanceData.travelTestOn" inline-prompt size="large"
@@ -231,27 +235,27 @@
                 <div class="d-flex flex-column ai-center flex-1">
                     <div class="p-2 m-2 bg-warn-1 text-grey-1 text-center br-2 b-grey c-p but"
                         @click="useKey.selected()">
-                        全选
+                        {{ $t("performance.RK_C61.title_15") }}
                     </div>
                     <div class="p-2 m-2 bg-warn-1 text-grey-1 text-center br-2 b-grey c-p but"
                         @click="useKey.selectWASD()">
-                        WASD
+                        {{ $t("performance.RK_C61.title_16") }}
                     </div>
                     <div class="p-2 m-2 bg-warn-1 text-grey-1 text-center br-2 b-grey c-p but"
                         @click="useKey.selectDIGIT()">
-                        数字键
+                        {{ $t("performance.RK_C61.title_17") }}
                     </div>
                     <div class="p-2 m-2 bg-warn-1 text-grey-1 text-center br-2 b-grey c-p but"
                         @click="useKey.selectLETTER()">
-                        字母键
+                        {{ $t("performance.RK_C61.title_18") }}
                     </div>
                     <div class="p-2 m-2 bg-warn-1 text-grey-1 text-center br-2 b-grey c-p but"
                         @click="useKey.unSelected()">
-                        取消选中
+                        {{ $t("performance.RK_C61.title_19") }}
                     </div>
                     <div class="p-2 m-2 bg-warn-1 text-grey-1 text-center br-2 b-grey c-p but"
                         @click="resetToGlobalTravel()">
-                        重置行程
+                        {{ $t("performance.RK_C61.title_20") }}
                     </div>
                 </div>
             </div>
@@ -269,7 +273,9 @@ import type { RK_C61 } from "@/keyboard/sparklink/rk_c61/rk_c61";
 import type { KeyState } from "@/keyboard/sparklink/interface";
 import { LOG_TYPE, Logging } from "@/common/logging";
 import tool from "@/keyboard/sparklink/tool";
+import { useI18n } from 'vue-i18n';
 
+const { t } = useI18n();
 const rk_c61 = ref<RK_C61>();
 
 const chart = ref(null);
@@ -309,7 +315,7 @@ onBeforeUnmount(() => {
         rk_c61.value.removeEventListener("OnAdjustingAdcValueUpdate", onAdjustingAdcValueUpdate);
         rk_c61.value = undefined;
     }
-    
+
     usePerformance.destroy();
 });
 
@@ -345,7 +351,7 @@ watch(isAdjusting, async () => {
         if (isAdjusting.value) {
             usePerformance.resetAdjustingData();
             count.value = 0;
-            option.series[0].data = [];
+            data = [];
             option.xAxis.min = 0;
             option.xAxis.max = 400;
             if (chartInstance) {
@@ -418,7 +424,7 @@ watch(adjustingCount, async () => {
 
 const option = reactive({
     title: {
-        text: '实时行程',
+        text: "",//t("performance.RK_C61.title_22"),
         textStyle: {
             fontSize: 16,
             fontWeight: 500,
@@ -486,7 +492,7 @@ const option = reactive({
     },
     series: [
         {
-            name: '实时行程',
+            name: "",//t("performance.RK_C61.title_22"),
             type: 'line',
             showSymbol: false,
             data: data,
