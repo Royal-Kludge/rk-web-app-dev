@@ -27,75 +27,75 @@ export const useAdvKeyStore = defineStore("advKeyStore_rk_c61", {
         macro: undefined as Macro | undefined,
         titleid: AdvKeyTypeEnum.DKS,
         advKeyDKS: new AdvKeyDKS([new DKSType(0), new DKSType(1), new DKSType(2), new DKSType(3)]),
-        advKeyMT: new AdvKeyMT([new MTType(0, "advKey.RK_C61.title_19"), new MTType(1, "advKey.RK_C61.title_20")]),
-        advKeyTGL: new AdvKeyTGL([new TGLType(0, "advKey.RK_C61.title_19")]),
+        advKeyMT: new AdvKeyMT([new MTType(0, "sparklink.advKey.title_19"), new MTType(1, "sparklink.advKey.title_20")]),
+        advKeyTGL: new AdvKeyTGL([new TGLType(0, "sparklink.advKey.title_19")]),
         advKeyMPT: new AdvKeyMPT([new MPTType(0, 0.500), new MPTType(1, 1.000), new MPTType(2, 1.500)]),
         advKeyEND: new AdvKeyEND([new ENDType(0)]),
         advKeySOCD: new AdvKeySOCD([new SOCDType(0), new SOCDType(1), new SOCDType(2), new SOCDType(3)]),
         advKeyMacro: new AdvKeyMacro(undefined),
         macroModeList: [
-            { value: 0, label: "advKey.RK_C61.title_1" },
-            { value: 1, label: "advKey.RK_C61.title_2" },
-            { value: 2, label: "advKey.RK_C61.title_3" },
-            { value: 3, label: "advKey.RK_C61.title_4" },
+            { value: 0, label: "sparklink.advKey.title_1" },
+            { value: 1, label: "sparklink.advKey.title_2" },
+            { value: 2, label: "sparklink.advKey.title_3" },
+            { value: 3, label: "sparklink.advKey.title_4" },
         ],
         socdList: [
-            { value: 0, label: "advKey.RK_C61.title_5" },
-            { value: 1, label: "advKey.RK_C61.title_6" },
+            { value: 0, label: "sparklink.advKey.title_5" },
+            { value: 1, label: "sparklink.advKey.title_6" },
         ],
         socdModeList: [
-            { value: 0, label: "advKey.RK_C61.title_7" },
-            { value: 1, label: "advKey.RK_C61.title_8" },
-            { value: 2, label: "advKey.RK_C61.title_9" },
-            { value: 3, label: "advKey.RK_C61.title_10" },
+            { value: 0, label: "sparklink.advKey.title_7" },
+            { value: 1, label: "sparklink.advKey.title_8" },
+            { value: 2, label: "sparklink.advKey.title_9" },
+            { value: 3, label: "sparklink.advKey.title_10" },
         ],
         TitleList: [
             {
                 id: AdvKeyTypeEnum.DKS,
                 title: "DKS",
-                des: "advKey.RK_C61.title_11",
+                des: "sparklink.advKey.title_11",
                 src: "/src/assets/images/menu/high/dks.png",
                 style: "key_dks",
             },
             {
                 id: AdvKeyTypeEnum.MT,
                 title: "MT",
-                des: "advKey.RK_C61.title_12",
+                des: "sparklink.advKey.title_12",
                 src: "/src/assets/images/menu/high/mt.png",
                 style: "key_mt",
             },
             {
                 id: AdvKeyTypeEnum.TGL,
                 title: "TGL",
-                des: "advKey.RK_C61.title_13",
+                des: "sparklink.advKey.title_13",
                 src: "/src/assets/images/menu/high/tgl.png",
                 style: "key_tgl",
             },
             {
                 id: AdvKeyTypeEnum.MPT,
                 title: "MPT",
-                des: "advKey.RK_C61.title_14",
+                des: "sparklink.advKey.title_14",
                 src: "/src/assets/images/menu/high/mpt.png",
                 style: "key_mpt",
             },
             {
                 id: AdvKeyTypeEnum.END,
                 title: "END",
-                des: "advKey.RK_C61.title_15",
+                des: "sparklink.advKey.title_15",
                 src: "/src/assets/images/menu/high/end.png",
                 style: "key_end",
             },
             {
                 id: AdvKeyTypeEnum.SOCD,
                 title: "SOCD",
-                des: "advKey.RK_C61.title_16",
+                des: "sparklink.advKey.title_16",
                 src: "/src/assets/images/menu/high/socd.png",
                 style: "key_socd",
             },
             {
                 id: AdvKeyTypeEnum.MACRO,
                 title: "MACRO",
-                des: "advKey.RK_C61.title_17",
+                des: "sparklink.advKey.title_17",
                 src: "/src/assets/images/menu/high/macro.png",
                 style: "key_macro",
             },
@@ -129,7 +129,7 @@ export const useAdvKeyStore = defineStore("advKeyStore_rk_c61", {
                                 this.advanceKeys.push(dks);
                                 break;
                             case AdvKeyTypeEnum.MT:
-                                let mt = new AdvKeyMT([new MTType(0, "advKey.RK_C61.title_19"), new MTType(1, "advKey.RK_C61.title_20")]);
+                                let mt = new AdvKeyMT([new MTType(0, "sparklink.advKey.title_19"), new MTType(1, "sparklink.advKey.title_20")]);
                                 mt.list[0].key = keyTable.keyInfo.MTInfo.DKS[0];
                                 mt.list[1].key = keyTable.keyInfo.MTInfo.DKS[1];
                                 mt.value = keyTable.keyInfo.MTInfo.delay;
@@ -137,7 +137,7 @@ export const useAdvKeyStore = defineStore("advKeyStore_rk_c61", {
                                 this.advanceKeys.push(mt);
                                 break;
                             case AdvKeyTypeEnum.TGL:
-                                let tgl = new AdvKeyTGL([new TGLType(0, "advKey.RK_C61.title_19")]);
+                                let tgl = new AdvKeyTGL([new TGLType(0, "sparklink.advKey.title_19")]);
                                 tgl.list[0].key = keyTable.keyInfo.TGLInfo.DKS;
                                 tgl.value = keyTable.keyInfo.TGLInfo.delay;
                                 tgl.keyTable = keyTable;
@@ -214,7 +214,7 @@ export const useAdvKeyStore = defineStore("advKeyStore_rk_c61", {
                     break;
                 case AdvKeyTypeEnum.MT:
                     if (isNew == true) {
-                        this.advKeyMT = new AdvKeyMT([new MTType(0, "advKey.RK_C61.title_19"), new MTType(1, "advKey.RK_C61.title_20")]);
+                        this.advKeyMT = new AdvKeyMT([new MTType(0, "sparklink.advKey.title_19"), new MTType(1, "sparklink.advKey.title_20")]);
                         this.advKeyMT.value = 200;
                     } else {
                         this.advKeyMT = this.advanceKey as AdvKeyMT;
@@ -222,7 +222,7 @@ export const useAdvKeyStore = defineStore("advKeyStore_rk_c61", {
                     break;
                 case AdvKeyTypeEnum.TGL:
                     if (isNew == true) {
-                        this.advKeyTGL = new AdvKeyTGL([new TGLType(0, "advKey.RK_C61.title_19")]);
+                        this.advKeyTGL = new AdvKeyTGL([new TGLType(0, "sparklink.advKey.title_19")]);
                         this.advKeyTGL.value = 200;
                     } else {
                         this.advKeyTGL = this.advanceKey as AdvKeyTGL;
@@ -354,8 +354,9 @@ export const useAdvKeyStore = defineStore("advKeyStore_rk_c61", {
                 this.advanceKeys[i].index = i;
             }
         },
-        async saveAdvKey() {
+        async saveAdvKey(): Promise<Array<KeyInfo>> {
             this.isAdvKeyDialog = false;
+            let ret: Array<KeyInfo> = [];
             switch (this.titleid) {
                 case AdvKeyTypeEnum.DKS:
                     this.addDKS();
@@ -423,6 +424,8 @@ export const useAdvKeyStore = defineStore("advKeyStore_rk_c61", {
                         let keyInfo1 = this.getKeyInfo(this.advKeySOCD.list[0].key);
                         let keyInfo2 = this.getKeyInfo(this.advKeySOCD.list[1].key);
                         if (keyInfo1 != null && keyInfo2 != null) {
+                            ret.push(keyInfo1);
+                            ret.push(keyInfo2);
                             let keyTable1 = keyboard.state.keyTableData[this.getIndex(keyInfo1.row, keyInfo1.col)];
                             let keyTable2 = keyboard.state.keyTableData[this.getIndex(keyInfo2.row, keyInfo2.col)];
 
@@ -431,8 +434,8 @@ export const useAdvKeyStore = defineStore("advKeyStore_rk_c61", {
                                     this.advKeySOCD.keyTable = keyTable1;
                                     this.keyTable = keyTable1;
                                 }
-                                keyTable1.keyInfo.isAdvancedKey = true;
-                                keyTable1.keyInfo.advanceKeyType = AdvKeyTypeEnum.SOCD;
+                                //keyTable1.keyInfo.isAdvancedKey = true;
+                                //keyTable1.keyInfo.advanceKeyType = AdvKeyTypeEnum.SOCD;
                                 keyTable1.keyInfo.SOCDInfo.DKS[0] = this.advKeySOCD.list[0].key;
                                 keyTable1.keyInfo.SOCDInfo.DKS[1] = this.advKeySOCD.list[1].key;
                                 keyTable1.keyInfo.SOCDInfo.DKSV[0] = this.advKeySOCD.list[2].key;
@@ -442,8 +445,8 @@ export const useAdvKeyStore = defineStore("advKeyStore_rk_c61", {
                             }
 
                             if (keyTable2 != null && keyTable2 != undefined) {
-                                keyTable2.keyInfo.isAdvancedKey = true;
-                                keyTable2.keyInfo.advanceKeyType = AdvKeyTypeEnum.SOCD;
+                                //keyTable2.keyInfo.isAdvancedKey = true;
+                                //keyTable2.keyInfo.advanceKeyType = AdvKeyTypeEnum.SOCD;
                                 keyTable2.keyInfo.SOCDInfo.DKS[0] = this.advKeySOCD.list[0].key;
                                 keyTable2.keyInfo.SOCDInfo.DKS[1] = this.advKeySOCD.list[1].key;
                                 keyTable2.keyInfo.SOCDInfo.DKSV[0] = this.advKeySOCD.list[2].key;
@@ -515,6 +518,8 @@ export const useAdvKeyStore = defineStore("advKeyStore_rk_c61", {
             }
             this.refreshAdvKey();
             ps.save();
+
+            return ret;
         },
         addMacro() {
             if (this.advanceKeys != undefined && this.advKeyMacro != null && this.isNew == true) {

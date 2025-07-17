@@ -12,8 +12,8 @@
                                         <Search />
                                     </el-icon>
                                 </span>
-                                <span> {{ $t("advKey.RK_C61.tip_1") }}</span>
-                                <span style="width: 50%;"> {{ $t("advKey.RK_C61.tip_2") }}</span>
+                                <span> {{ $t("sparklink.advKey.tip_1") }}</span>
+                                <span style="width: 50%;"> {{ $t("sparklink.advKey.tip_2") }}</span>
                             </div>
                             <div class="d-flex flex-wrap" v-else>
                                 <div v-for="item in useAdvKey.$state.advanceKeys">
@@ -91,7 +91,7 @@
             <div style="height: 30vh">
                 <el-scrollbar>
                     <div class="bg-white ml-2 mr-4 p-4">
-                        {{ $t("advKey.RK_C61.title_18") }}
+                        {{ $t("sparklink.advKey.title_18") }}
                         <div class="mt-1 br-2 p-4 pressKeyTestBox">
                             <span class="smallKey" :class="{ 'key-pressed': k.pressed }" v-for="k in keys">
                                 {{ k.name }}</span>

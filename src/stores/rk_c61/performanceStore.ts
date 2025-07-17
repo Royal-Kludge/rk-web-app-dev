@@ -44,10 +44,10 @@ export const usePerformanceStore = defineStore("Performanceinfo_rk_c61", () => {
         maxMM: 0,
         menuid: 1,
         menuList: [
-            { id: 1, title: "performance.RK_C61.meun_1", style: "" },
-            { id: 2, title: "performance.RK_C61.meun_2", style: "" },
-            { id: 3, title: "performance.RK_C61.meun_3", style: "" },
-            { id: 4, title: "performance.RK_C61.meun_4", style: "" },
+            { id: 1, title: "sparklink.performance.menu.meun_1", style: "" },
+            { id: 2, title: "sparklink.performance.menu.meun_2", style: "" },
+            { id: 3, title: "sparklink.performance.menu.meun_3", style: "" },
+            { id: 4, title: "sparklink.performance.menu.meun_4", style: "" },
         ],
         rewardList: [
             {
@@ -195,13 +195,13 @@ export const usePerformanceStore = defineStore("Performanceinfo_rk_c61", () => {
     };
 
     const keyTravelModeText = (keyInfo: KeyInfo | undefined): String => {
-        let str = 'performance.keyTip.globalTravel';
+        let str = 'sparklink.performance.keyTip.globalTravel';
 
         if (keyInfo != undefined) {
             if (keyInfo.isQuickTouch) {
-                str = 'performance.keyTip.rapidTrigger';
+                str = 'sparklink.performance.keyTip.rapidTrigger';
             } else if (keyInfo.isSingleTouch) {
-                str = 'performance.keyTip.singleKeyTravel';
+                str = 'sparklink.performance.keyTip.singleKeyTravel';
             }
         }
 

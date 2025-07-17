@@ -778,6 +778,7 @@ export class RK_C61_Usb extends RK_C61 {
         this.data.sn = sn;
         this.data.hwVersion = hwVersion;
         this.data.fwVersion = fwVersion;
+        this.data.keyInfoData.axisTypeId = event.detail.axisType;
 
         Logging.console(LOG_TYPE.SUCCESS, `\nID: ${boardId.id}\nLayout: ${boardId.kbLayout}\nAxisType: ${boardId.axisType}`);
         Logging.console(LOG_TYPE.SUCCESS, `\nRunMode: ${event.detail.runMode}\nSN：${sn}`);
@@ -967,10 +968,9 @@ export class RK_C61_Usb extends RK_C61 {
                             color: AxisList[id].color,
                         };
                         this.data.axisList.push(axis);
+                        Logging.console(LOG_TYPE.SUCCESS, `\nSupport axis: [${axis.id}] [${axis.name}] [${axis.minTravel}~${axis.maxTravel}] [${axis.color}]`);
                     }
                 }
-
-                Logging.console(LOG_TYPE.SUCCESS, `\nSupport axis: ${this.data.axisList.toString()}`);
                 break;
             case OrderTypeEnum.SetReportRate:
                 this.data.performanceData.rateOfReturn = s_arg[0];

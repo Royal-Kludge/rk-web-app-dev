@@ -10,6 +10,7 @@ export class KeyInfoData {
     protocolVersion: string = '';
     globalTouchTravel: number = 0;
     maxTouchTravel: number = 4.0;
+    axisTypeId: number = 0;
     lastKeyCode: KeyDefineEnum = KeyDefineEnum.NONE;
     lastRow: number = 0;
     lastCol: number = 0;
@@ -34,12 +35,15 @@ export class KeyInfoData {
 
     updateKeyInfo(row: number, col: number, keyInfo: KeyInfo | null) {
         this.keyInfoArray[row][col] = keyInfo;
-        if (keyInfo != null && row >= this.lastRow) {
-            if (col > this.lastCol || row != this.lastRow) {
-                this.lastCol = col;
-                this.lastKeyCode = keyInfo.keyValue;
+        if (keyInfo != null ) {
+            if (keyInfo.axisID == 0) keyInfo.axisID = this.axisTypeId;
+            if (row >= this.lastRow) {
+                if (col > this.lastCol || row != this.lastRow) {
+                    this.lastCol = col;
+                    this.lastKeyCode = keyInfo.keyValue;
+                }
+                if (row > this.lastRow) this.lastRow = row;
             }
-            if (row > this.lastRow) this.lastRow = row;
         }
     }
 
@@ -469,7 +473,7 @@ export class KeyInfoData {
             for (let j = 0; j < 21; j++) {
                 let keyInfo = this.keyInfoArray[i][j];
                 if (keyInfo != undefined && keyInfo != null && keyInfo.keyValue == keyValue) {
-                    keyInfo.axisID = axisID;
+                    keyInfo.axisID = axisID > 0 ? axisID : this.axisTypeId; 
                     return i == this.lastRow && j == this.lastCol;
                 }
             }

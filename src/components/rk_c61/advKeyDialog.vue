@@ -2,7 +2,7 @@
     <el-drawer v-model="useAdvKey.$state.isAdvKeyDialog" direction="btt" @opened="opened()" @closed="closed()"
         :with-header="false" size="40%" style="--el-drawer-padding-primary:10px;--el-drawer-bg-color: #F8F8FC">
         <div class="d-flex jc-end">
-            <div class="bg-dark p-1 br-2 px-4 c-p text-white" @click="useAdvKey.saveAdvKey()"> {{ $t("macro.but_7") }}
+            <div class="bg-dark p-1 br-2 px-4 c-p text-white" @click="saveAdvKey()"> {{ $t("macro.but_7") }}
             </div>
         </div>
         <div class="d-flex">
@@ -35,11 +35,15 @@ import advKeyEND from "./advKeyEND.vue";
 import advKeySOCD from "./advKeySOCD.vue";
 import advKeyMacro from "./advKeyMacro.vue";
 import { useAdvKeyStore } from "@/stores/rk_c61/advKeyStore";
+import { useKeyStore } from "@/stores/rk_c61/keyStore";
 import { storeToRefs } from "pinia";
 import { AdvKeyTypeEnum } from "@/keyboard/sparklink/enum";
+import type { KeyTableData } from "@/keyboard/sparklink/keyTableData";
 
 const useAdvKey = useAdvKeyStore();
+const useKey = useKeyStore();
 const { titleid } = storeToRefs(useAdvKey);
+const { state } = storeToRefs(useKey);
 
 const onKeyDown = (event: KeyboardEvent) => {
     console.log('Key pressed:', `${event.key} | ${event.code} | ${event.keyCode}`);
@@ -53,6 +57,24 @@ const opened = () => {
 const closed = () => {
     document.removeEventListener('keydown', onKeyDown);
 };
+const saveAdvKey = async () => {
+    let keyInfos = await useAdvKey.saveAdvKey();
 
+    if (keyInfos.length > 0) {
+        if (titleid.value == AdvKeyTypeEnum.SOCD) {
+            for (let i = 0; i < state.value.keyState.length; i++) {
+                let keyTable = (state.value.keyState[i] as any).keyData as KeyTableData;
+                if (keyTable != undefined && keyTable != null && keyTable.keyInfo != undefined && keyTable.keyInfo != null) {
+                    for (let j = 0; j < keyInfos.length; j++) {
+                        if (keyInfos[j].keyValue == keyTable.keyInfo.keyValue) {
+                            keyTable.keyInfo.isAdvancedKey = true;
+                            keyTable.keyInfo.advanceKeyType = AdvKeyTypeEnum.SOCD;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
 </script>
 <style scoped lang="scss"></style>

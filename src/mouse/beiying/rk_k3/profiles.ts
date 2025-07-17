@@ -4,7 +4,7 @@ import { KEY_TABLE_DATA } from './keyTable';
 import { LED_TABLE_DATA } from './ledTable';
 import { mouse } from '../mouse';
 import type { KeyTableData, LeftSideKey } from '../interface';
-import { KEY_LAYOUT } from './layout';
+
 
 export class Profile {
     name: string;

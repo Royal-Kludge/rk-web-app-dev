@@ -19,13 +19,13 @@
                         <div v-if="usePerformance.state.menuid == 1">
                             <div class="m-2">
                                 <div class="fw-b m-2">
-                                    {{ $t("performance.RK_C61.title_1") }}
+                                    {{ $t("sparklink.performance.keyTip.title_1") }}
                                 </div>
                                 <div class="d-flex fs-lg m-2">
                                     <div
                                         style="width: 5px; height: 16px; border-radius: 2px; background-color: rgb(0, 158, 0);">
                                     </div>
-                                    <div>{{ $t("performance.RK_C61.tip_1") }}</div>
+                                    <div>{{ $t("sparklink.performance.keyTip.tip_1") }}</div>
                                 </div>
                                 <div class="m-2 d-flex ml-3">
                                     <el-slider style="width: 450px" :step="travelStep"
@@ -41,10 +41,10 @@
 
                             <div class="m-2">
                                 <div class="fw-b m-2">
-                                    {{ $t("performance.RK_C61.title_2") }}
+                                    {{ $t("sparklink.performance.keyTip.title_2") }}
                                 </div>
                                 <div class="d-flex fs-lg m-2">
-                                    {{ $t("performance.RK_C61.tip_2") }}
+                                    {{ $t("sparklink.performance.keyTip.tip_2") }}
                                 </div>
                                 <div class="m-2 d-flex ml-3">
                                     <el-slider style="width: 450px" :step="travelStep"
@@ -61,13 +61,13 @@
                         <div v-else-if="usePerformance.state.menuid == 2">
                             <div class="m-2">
                                 <div class="fw-b m-2">
-                                    {{ $t("performance.RK_C61.title_3") }}
+                                    {{ $t("sparklink.performance.keyTip.title_3") }}
                                 </div>
                                 <div class="d-flex fs-lg m-2">
                                     <div
                                         style="width: 5px; height: 16px; border-radius: 2px; background-color: rgb(0, 158, 0);">
                                     </div>
-                                    <div>{{ $t("performance.RK_C61.tip_3") }}</div>
+                                    <div>{{ $t("sparklink.performance.keyTip.tip_3") }}</div>
                                 </div>
                                 <div class="m-2 d-flex ml-3">
                                     <el-slider style="width: 450px" :step="travelStep"
@@ -83,13 +83,13 @@
 
                             <div class="m-2">
                                 <div class="fw-b m-2">
-                                    {{ $t("performance.RK_C61.title_4") }}
+                                    {{ $t("sparklink.performance.keyTip.title_4") }}
                                 </div>
                                 <div class="d-flex fs-lg m-2">
                                     <div
                                         style="width: 5px; height: 16px; border-radius: 2px; background-color: rgb(0, 125, 224);">
                                     </div>
-                                    <div>{{ $t("performance.RK_C61.tip_4") }}</div>
+                                    <div>{{ $t("sparklink.performance.keyTip.tip_4") }}</div>
                                 </div>
                                 <div class="m-2 d-flex ml-3">
                                     <el-slider style="width: 450px" :step="travelStep"
@@ -104,14 +104,14 @@
                             </div>
                             <div class="m-2">
                                 <div class="fw-b m-2">
-                                    {{ $t("performance.RK_C61.title_5") }}
+                                    {{ $t("sparklink.performance.keyTip.title_5") }}
                                 </div>
                                 <div class="d-flex fs-lg m-2">
                                     <div
                                         style="width: 5px; height: 16px; border-radius: 2px; background-color: rgb(255, 115, 0);">
                                     </div>
                                     <div>
-                                        {{ $t("performance.RK_C61.tip_5") }}
+                                        {{ $t("sparklink.performance.keyTip.tip_5") }}
                                     </div>
                                 </div>
                                 <div class="m-2 d-flex ml-3">
@@ -129,13 +129,13 @@
                         <div v-else-if="usePerformance.state.menuid == 3">
                             <div style="border-bottom: 1px solid #6A6A77;">
                                 <div class="fw-b m-2">
-                                    {{ $t("performance.RK_C61.title_6") }}
+                                    {{ $t("sparklink.performance.keyTip.title_6") }}
                                 </div>
                                 <div class="d-flex fs-lg m-2">
-                                    <div>{{ $t("performance.RK_C61.tip_6") }}</div>
+                                    <div>{{ $t("sparklink.performance.keyTip.tip_6") }}</div>
                                 </div>
                                 <div class="d-flex fs-lg m-2">
-                                    <div>{{ $t("performance.RK_C61.title_7") }}</div>
+                                    <div>{{ $t("sparklink.performance.keyTip.title_7") }}</div>
                                 </div>
                                 <div class="m-2 d-flex ml-3">
                                     <el-slider style="width: 450px" :step="0.01" :max="1.00" :min="pressDeadMin"
@@ -145,7 +145,7 @@
                                         :precision="2" :disabled="isDisabel" @change="deadPressChange" class="ml-3" />
                                 </div>
                                 <div class="d-flex fs-lg m-2">
-                                    <div>{{ $t("performance.RK_C61.title_8") }}</div>
+                                    <div>{{ $t("sparklink.performance.keyTip.title_8") }}</div>
                                 </div>
                                 <div class="m-2 d-flex ml-3 mb-4">
                                     <el-slider style="width: 450px" :step="0.01" :max="1.00" :min="pressDeadMin"
@@ -159,7 +159,7 @@
 
                             <div class="m-2">
                                 <div class="fw-b m-2">
-                                    {{ $t("performance.RK_C61.title_9") }}
+                                    {{ $t("sparklink.performance.keyTip.title_9") }}
                                 </div>
                                 <div class="d-flex fs-lg m-2">
                                     <el-select v-model="performanceData.rateOfReturn" placeholder="Select"
@@ -169,9 +169,9 @@
                                     </el-select>
                                 </div>
 
-                                <el-dialog v-model="dialogReportRate" title="$t('performance.RK_C61.title_21')"
+                                <el-dialog v-model="dialogReportRate" title="$t('sparklink.performance.keyTip.title_21')"
                                     width="500">
-                                    <span>{{ $t("performance.RK_C61.tip_9") }}</span>
+                                    <span>{{ $t("sparklink.performance.keyTip.tip_9") }}</span>
                                     <template #footer>
                                         <div class="dialog-footer">
                                             <el-button @click="dialogReportRate = false">
@@ -188,20 +188,20 @@
                         <div v-else-if="usePerformance.state.menuid == 4">
                             <div class="m-2">
                                 <div class="fw-b m-2">
-                                    {{ $t("performance.RK_C61.title_10") }}
+                                    {{ $t("sparklink.performance.keyTip.title_10") }}
                                 </div>
                                 <div class="d-flex fs-lg">
-                                    <div>{{ $t("performance.RK_C61.tip_10") }}</div>
+                                    <div>{{ $t("sparklink.performance.keyTip.tip_10") }}</div>
                                     <div v-if="!isAdjusting"
                                         class="p-2 m-2 bg-warn-1 text-grey-1 text-center br-2 b-grey c-p but"
                                         @click="isAdjusting = true">
-                                        {{ isSaving ? t("performance.RK_C61.title_11") :
-                                            t("performance.RK_C61.title_12")
+                                        {{ isSaving ? t("sparklink.performance.keyTip.title_11") :
+                                            t("sparklink.performance.keyTip.title_12")
                                         }}</div>
                                     <div v-if="isAdjusting"
                                         class="p-2 m-2 bg-warn-1 text-grey-1 text-center br-2 b-grey c-p but"
                                         @click="isAdjusting = false">
-                                        {{ $t("performance.RK_C61.title_13") }}
+                                        {{ $t("sparklink.performance.keyTip.title_13") }}
                                     </div>
                                 </div>
                                 <div ref="chart" class="chart-container"></div>
@@ -215,7 +215,7 @@
                     <el-scrollbar>
                         <div class="d-flex ai-center jc-between m-2 mx-4">
                             <div class="fw-b">
-                                {{ $t("performance.RK_C61.title_14") }}
+                                {{ $t("sparklink.performance.keyTip.title_14") }}
                             </div>
                             <div>
                                 <el-switch v-model="performanceData.travelTestOn" inline-prompt size="large"
@@ -235,27 +235,27 @@
                 <div class="d-flex flex-column ai-center flex-1">
                     <div class="p-2 m-2 bg-warn-1 text-grey-1 text-center br-2 b-grey c-p but"
                         @click="useKey.selected()">
-                        {{ $t("performance.RK_C61.title_15") }}
+                        {{ $t("sparklink.performance.keyTip.title_15") }}
                     </div>
                     <div class="p-2 m-2 bg-warn-1 text-grey-1 text-center br-2 b-grey c-p but"
                         @click="useKey.selectWASD()">
-                        {{ $t("performance.RK_C61.title_16") }}
+                        {{ $t("sparklink.performance.keyTip.title_16") }}
                     </div>
                     <div class="p-2 m-2 bg-warn-1 text-grey-1 text-center br-2 b-grey c-p but"
                         @click="useKey.selectDIGIT()">
-                        {{ $t("performance.RK_C61.title_17") }}
+                        {{ $t("sparklink.performance.keyTip.title_17") }}
                     </div>
                     <div class="p-2 m-2 bg-warn-1 text-grey-1 text-center br-2 b-grey c-p but"
                         @click="useKey.selectLETTER()">
-                        {{ $t("performance.RK_C61.title_18") }}
+                        {{ $t("sparklink.performance.keyTip.title_18") }}
                     </div>
                     <div class="p-2 m-2 bg-warn-1 text-grey-1 text-center br-2 b-grey c-p but"
                         @click="useKey.unSelected()">
-                        {{ $t("performance.RK_C61.title_19") }}
+                        {{ $t("sparklink.performance.keyTip.title_19") }}
                     </div>
                     <div class="p-2 m-2 bg-warn-1 text-grey-1 text-center br-2 b-grey c-p but"
                         @click="resetToGlobalTravel()">
-                        {{ $t("performance.RK_C61.title_20") }}
+                        {{ $t("sparklink.performance.keyTip.title_20") }}
                     </div>
                 </div>
             </div>
@@ -424,7 +424,7 @@ watch(adjustingCount, async () => {
 
 const option = reactive({
     title: {
-        text: "",//t("performance.RK_C61.title_22"),
+        text: "",//t("sparklink.performance.keyTip.title_22"),
         textStyle: {
             fontSize: 16,
             fontWeight: 500,
@@ -492,7 +492,7 @@ const option = reactive({
     },
     series: [
         {
-            name: "",//t("performance.RK_C61.title_22"),
+            name: "",//t("sparklink.performance.keyTip.title_22"),
             type: 'line',
             showSymbol: false,
             data: data,
