@@ -11,6 +11,7 @@ import { KeyDefineEnum, KeyText } from "@/common/keyCode_sparklink";
 import { LOG_TYPE, Logging } from "@/common/logging";
 import { ps } from "@/keyboard/sparklink/profiles";
 import type { KeyCmdValue, KeyInfo } from "@/keyboard/sparklink/interface";
+import { useI18n } from "vue-i18n";
 
 export const useAdvKeyStore = defineStore("advKeyStore_rk_c61", {
     state: () => ({
@@ -617,6 +618,13 @@ export const useAdvKeyStore = defineStore("advKeyStore_rk_c61", {
                         break;
                 }
             }
+
+            const { t } = useI18n();
+            if ((keyCode >> 24) == 8) return t(texts[0] as string);
+            if ((keyCode >> 8) == 0x73) return t(texts[0] as string);
+            if ((keyCode >> 8) == 0xF1) return t(texts[0] as string);
+            if ((keyCode >> 8) == 0xF3) return t(texts[0] as string);
+
             if (texts.length == 4) {
                 keyStr = `<div class='d-flex'>
             <div>

@@ -13,13 +13,13 @@
     <div class="flex-1 ml-3">
         <div style="height: 30vh;">
             <el-scrollbar>
-                <div class="d-flex flex-wrap" v-if="useKey.state.funid == 3">
+                <!-- <div class="d-flex flex-wrap" v-if="useKey.state.funid == 3">
                     <div :class="['d-flex c-p ai-center jc-center p-3 m-1 bg-grey br-1', useMacro.isMacroSelected(macro)]"
                         v-for="macro in useMacro.macros?.get()" @click="clickMacro(macro)" style="min-width: 24px;">
                         {{ macro.name }}
                     </div>
-                </div>
-                <div :class="['d-flex flex-wrap', `${line.style}`,]" v-for="line in useKey.state.keyFunList" v-else>
+                </div> -->
+                <div :class="['d-flex flex-wrap', `${line.style}`,]" v-for="line in useKey.state.keyFunList">
                     <el-tooltip :class="[{ 'hidden': !isKeyShow(item.key) }]"
                         v-if="line.id == useKey.state.funid" v-for="item in line.keys" effect="light"
                         :disabled="item.tip == ''" :content="itemTipText(item)" placement="bottom"
@@ -60,27 +60,27 @@ const useMacro = useMacroStore();
 const titleOfMenu = [
     {
         titleId: AdvKeyTypeEnum.DKS,
-        menu: [1, 2, 3, 4, 5, 6, 7]
+        menu: [1, 2, 3, 4, 5, 6]
     },
     {
         titleId: AdvKeyTypeEnum.MPT,
-        menu: [1, 2, 3, 4, 5, 6, 7]
+        menu: [1, 2, 3, 4, 5, 6]
     },
     {
         titleId: AdvKeyTypeEnum.MT,
-        menu: [1, 2, 3, 4, 5, 6, 7]
+        menu: [1, 2, 3, 4, 5, 6]
     },
     {
         titleId: AdvKeyTypeEnum.TGL,
-        menu: [1, 2, 3, 4, 5, 6, 7]
+        menu: [1, 2, 3, 4, 5, 6]
     },
     {
         titleId: AdvKeyTypeEnum.END,
-        menu: [1, 2, 3, 4, 5, 6, 7]
+        menu: [1, 2, 3, 4, 5, 6]
     },
     {
         titleId: AdvKeyTypeEnum.SOCD,
-        menu: [1]
+        menu: [1, 2, 3, 4]
     }
 ]
 
@@ -153,7 +153,11 @@ const itemText = (item: any) => {
   if (item.type == MatrixTable.MAC) return item.text[0] as string;
   if (item.tip != '') return t(item.text[0] as string);
   if ((item.key >> 24) == 8) return t(item.text[0] as string);
-
+  if ((item.key >> 24) == 8) return t(item.text[0] as string);
+  if ((item.key >> 8) == 0x73) return t(item.text[0] as string);
+  if ((item.key >> 8) == 0xF1) return t(item.text[0] as string);
+  if ((item.key >> 8) == 0xF3) return t(item.text[0] as string);
+  
   let str = '';
   let i = 0;
   let texts = [];
