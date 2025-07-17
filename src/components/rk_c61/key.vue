@@ -94,16 +94,16 @@
                         :enterabl="false" :visible="useKey.isKeyHover(key.index)">
                         <template #content>
                             <div style="display: grid;">
-                                <span>{{ $t('performance.keyTip.travelMode') }}: {{
+                                <span>{{ $t('sparklink.performance.keyTip.travelMode') }}: {{
                                     $t(usePerformance.keyTravelModeText(key.keyData?.keyInfo).valueOf()) }}</span>
-                                <span>{{ $t('performance.keyTip.touchTravel') }}: {{ key.keyData?.keyInfo.touchTravel
+                                <span>{{ $t('sparklink.performance.keyTip.touchTravel') }}: {{ key.keyData?.keyInfo.touchTravel
                                     }}mm</span>
                                 <span v-show="key.keyData?.keyInfo.isQuickTouch">
-                                    {{ $t('performance.keyTip.pressTravel') }}: {{ key.keyData?.keyInfo.quickTouchPress
+                                    {{ $t('sparklink.performance.keyTip.pressTravel') }}: {{ key.keyData?.keyInfo.quickTouchPress
                                     }}mm
                                 </span>
                                 <span v-show="key.keyData?.keyInfo.isQuickTouch">
-                                    {{ $t('performance.keyTip.releaseTravel') }}: {{
+                                    {{ $t('sparklink.performance.keyTip.releaseTravel') }}: {{
                                         key.keyData?.keyInfo.quickTouchRelease }}mm
                                 </span>
                             </div>

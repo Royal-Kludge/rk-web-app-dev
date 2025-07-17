@@ -10,7 +10,7 @@
                 </div>
             </div>
         </div>
-        <div class="mt-4">{{ $t("advKey.RK_C61.tip_3") }}</div>
+        <div class="mt-4">{{ $t("sparklink.advKey.tip_3") }}</div>
         <div class="d-flex ai-center m-3">
             <div><el-slider style="width: 280px" :step="10" :max="1000" :min="10"
                     v-model="useAdvKey.$state.advKeyTGL.value" /></div>

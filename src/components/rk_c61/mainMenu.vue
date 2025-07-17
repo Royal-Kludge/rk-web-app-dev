@@ -14,7 +14,8 @@
                                         <img src="../../assets/images/dot.png" />
                                     </span>
                                     <span>
-                                        {{ item.isDefault ? $t("Profile.default") : item.name }}
+                                        <!-- {{ item.isDefault ? $t("Profile.default") : item.name }} -->
+                                          {{ $t("Profile.namePrefix") }} {{ `${item.index + 1}` }}
                                     </span>
                                 </div>
                             </div>
