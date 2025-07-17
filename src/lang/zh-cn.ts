@@ -447,7 +447,7 @@ export default {
             meun_3: "高级设置",
             meun_4: "键盘校准",
         },
-        keyTip: {
+        tips: {
             globalTravel: "全局触发",
             rapidTrigger: "快速触发",
             singleKeyTravel: "单键触发",
@@ -488,6 +488,15 @@ export default {
             tip_10: "校准时请用正常力度按下按键。注意：快速的按下并抬起按键会导致校准的结果不准确。"
         },
     },
+    keySetting: {
+        funTitle_1: "字母",
+        funTitle_2: "数字键",
+        funTitle_3: "符号键",
+        funTitle_4: "基础键",
+        funTitle_5: "功能键",
+        funTitle_6: "键盘控制",
+        funTitle_7: "鼠标键",
+    },
     advKey: {
         title_1: "单击执行",
         title_2: "点击重复执行，再次点击停止",
@@ -513,5 +522,51 @@ export default {
         tip_2:"选择一个密钥，在弹出页面上选择要设置的高级键类型，然后进入特定高级按键设置的设置页面，完成设置后，单击“保存”以应用您的设置。",
         tip_3:"长按触发延时（单位：ms）",
     },
+    keyText: {
+        mouseKey: {
+            leftKey: "鼠标左键",
+            rightKey: "鼠标右键",
+            middleKey: "鼠标滚轮点击",
+            xAxleLeft: "鼠标左移",
+            xAxleRight: "鼠标右移",
+            yAxleDown: "鼠标下移",
+            yAxleUp: "鼠标上移动",
+            wheel_forward: "滚轮+",
+            wheel_reverse: "滚轮-",
+        },
+        functionKey: {
+            brightnessI: "屏幕亮度+",
+            brightnessD: "屏幕亮度-",
+        },
+        controlKey: {
+            lockWin: "LockWin",
+            restore: "恢复",
+            win: "Win",
+            mac: "Mac",
+            calibration: "计算器",
+            profile1: "配置1",
+            profile2: "配置2",
+            profile3: "配置3",
+            switchWASD: "WASD切换",
+            profile4: "配置4",
+            ledModeI: "灯效模式+",
+            ledDirection: "灯光方向",
+            brightnessI: "主灯亮度+",
+            brightnessD: "主灯亮度-",
+            speedI: "主灯速度+",
+            speedD: "主灯速度-",
+            ledOnOff: "主灯开关",
+            ambientLedModeI: "氛围灯模式+",
+            ambientledOnOff: "氛围灯开关",
+            ambientLedDirection: "氛围灯方向",
+            ambientLedSpeedI: "氛围灯速度+",
+            ambientLedSpeedD: "氛围灯速度-",
+            ambientLedBrightnessI: "氛围灯亮度+",
+            ambientLedBrightnessD: "氛围灯亮度-",
+            ambientLedModeDec: "氛围灯模式-",
+            ledModeD: "主灯模式-",
+            ledStaticChange: "静态模式切换",
+        }
+    }
   }
 };

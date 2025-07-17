@@ -447,7 +447,7 @@ export default {
                 meun_3: "Advanced Settings",
                 meun_4: "Keyboard Calibration",
             },
-            keyTip: {
+            tips: {
                 globalTravel: "Global Trigger",
                 rapidTrigger: "Rapid Trigger",
                 singleKeyTravel: "Single Key Trigger",
@@ -512,6 +512,52 @@ export default {
             tip_1: "Advanced key not set yet",
             tip_2: "Select a key, choose the advanced key type to set on the pop-up page, then enter the setting page for specific advanced key settings. After completing the settings, click 'Save' to apply your settings.",
             tip_3: "Long press trigger delay (unit: ms)",
+        },
+        keyText: {
+            mouseKey: {
+                leftKey: "Left key",
+                rightKey: "Right key",
+                middleKey: "Middle key",
+                xAxleLeft: "Move left",
+                xAxleRight: "Move right",
+                yAxleDown: "Move up",
+                yAxleUp: "Move down",
+                wheel_forward: "Wheel+",
+                wheel_reverse: "Wheel-",
+            }
+        },
+        functionKey: {
+            brightnessI: "Brightness+",
+            brightnessD: "Brightness-",
+        },
+        controlKey: {
+            lockWin: "LockWin",
+            restore: "Restore",
+            win: "Win",
+            mac: "Mac",
+            calibration: "Calibration",
+            profile1: "Profile1",
+            profile2: "Profile2",
+            profile3: "Profile3",
+            switchWASD: "WASD Switch",
+            profile4: "Profile4",
+            ledModeI: "Led mode +",
+            ledDirection: "Led direction",
+            brightnessI: "Led brightness +",
+            brightnessD: "Led brightness -",
+            speedI: "Led speed +",
+            speedD: "Led speed -",
+            ledOnOff: "Led On/Off",
+            ambientLedModeI: "Ambient led mode +",
+            ambientledOnOff: "Ambient led On/Off",
+            ambientLedDirection: "Ambient led direction",
+            ambientLedSpeedI: "Ambient led speed +",
+            ambientLedSpeedD: "Ambient led speed -",
+            ambientLedBrightnessI: "Ambient let brightness +",
+            ambientLedBrightnessD: "Ambient let brightness -",
+            ambientLedModeDec: "Ambient led mode -",
+            ledModeD: "Led mode -",
+            ledStaticChange: "Led static change",
         }
     }
 };

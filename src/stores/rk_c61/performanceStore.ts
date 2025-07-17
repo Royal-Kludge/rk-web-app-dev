@@ -195,13 +195,13 @@ export const usePerformanceStore = defineStore("Performanceinfo_rk_c61", () => {
     };
 
     const keyTravelModeText = (keyInfo: KeyInfo | undefined): String => {
-        let str = 'sparklink.performance.keyTip.globalTravel';
+        let str = 'sparklink.performance.tips.globalTravel';
 
         if (keyInfo != undefined) {
             if (keyInfo.isQuickTouch) {
-                str = 'sparklink.performance.keyTip.rapidTrigger';
+                str = 'sparklink.performance.tips.rapidTrigger';
             } else if (keyInfo.isSingleTouch) {
-                str = 'sparklink.performance.keyTip.singleKeyTravel';
+                str = 'sparklink.performance.tips.singleKeyTravel';
             }
         }
 

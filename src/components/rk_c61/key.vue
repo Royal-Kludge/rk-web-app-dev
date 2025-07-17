@@ -83,7 +83,7 @@
                                             style="filter: drop-shadow(#ffffff 99999px 0);position: relative;left: -99999px;color:#ffffff;width: 24px;" />
                                     </div>
                                     <div class="text-white-1">
-                                        <span class="text-warn">{{ $t(item.title) }}：</span>{{ $t(item.des) }}
+                                        <span class="text-warn">{{ item.title }}：</span>{{ $t(item.des) }}
                                     </div>
                                 </div>
                             </div>
@@ -94,16 +94,16 @@
                         :enterabl="false" :visible="useKey.isKeyHover(key.index)">
                         <template #content>
                             <div style="display: grid;">
-                                <span>{{ $t('sparklink.performance.keyTip.travelMode') }}: {{
+                                <span>{{ $t('sparklink.performance.tips.travelMode') }}: {{
                                     $t(usePerformance.keyTravelModeText(key.keyData?.keyInfo).valueOf()) }}</span>
-                                <span>{{ $t('sparklink.performance.keyTip.touchTravel') }}: {{ key.keyData?.keyInfo.touchTravel
+                                <span>{{ $t('sparklink.performance.tips.touchTravel') }}: {{ key.keyData?.keyInfo.touchTravel
                                     }}mm</span>
                                 <span v-show="key.keyData?.keyInfo.isQuickTouch">
-                                    {{ $t('sparklink.performance.keyTip.pressTravel') }}: {{ key.keyData?.keyInfo.quickTouchPress
+                                    {{ $t('sparklink.performance.tips.pressTravel') }}: {{ key.keyData?.keyInfo.quickTouchPress
                                     }}mm
                                 </span>
                                 <span v-show="key.keyData?.keyInfo.isQuickTouch">
-                                    {{ $t('sparklink.performance.keyTip.releaseTravel') }}: {{
+                                    {{ $t('sparklink.performance.tips.releaseTravel') }}: {{
                                         key.keyData?.keyInfo.quickTouchRelease }}mm
                                 </span>
                             </div>
