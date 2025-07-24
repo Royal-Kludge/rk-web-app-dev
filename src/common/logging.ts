@@ -7,10 +7,12 @@ export const LOG_TYPE = {
     ERROR: 3
 }
 
+const LOG_LEVEL = LOG_TYPE.SUCCESS;
+
 export class Logging {
 
     static async console(type?: any, message?: any, ...optionalParams: any[]): Promise<void> {
-        if (LOGGING_FLAG) {
+        if (LOGGING_FLAG && type >= LOG_LEVEL) {
 
             const now = new Date();
 

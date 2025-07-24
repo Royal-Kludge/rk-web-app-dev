@@ -135,7 +135,23 @@ const advKeyIcon = (type: AdvKeyTypeEnum) => {
 };
 
 const advKeyDelete = (key: AdvKey) => {
-    useAdvKey.deleteAdvKey(key);
+    if (key.advType == AdvKeyTypeEnum.SOCD) {
+        let key1 = key as AdvKeySOCD;
+        let key2: AdvKeySOCD | null = null;
+        
+        for (let i = 0; i < useAdvKey.advanceKeys.length; i++) {
+            if (useAdvKey.advanceKeys[i].advType == AdvKeyTypeEnum.SOCD) {
+                if ((useAdvKey.advanceKeys[i] as AdvKeySOCD).keyTable?.keyCode == key1.list[1].key) {
+                    key2 = useAdvKey.advanceKeys[i] as AdvKeySOCD;
+                }
+            }
+        }
+
+        useAdvKey.deleteAdvKey(key);
+        if (key2 != null) useAdvKey.deleteAdvKey(key2);
+    } else {
+        useAdvKey.deleteAdvKey(key);
+    }
 }
 onMounted(async () => {
     if (rk_c61.value == undefined) {

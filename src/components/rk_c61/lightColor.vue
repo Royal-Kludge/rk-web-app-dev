@@ -10,37 +10,45 @@
                         <el-scrollbar>
                             <div class="d-flex flex-column jc-between" style="padding-left: 15%;">
                                 <div class="d-flex m-3">
-                                    <div class="d-flex flex-column">
-                                        <div>
+                                    <div class="d-flex ai-center">
+                                        <div style="width: 64px; text-align:right;">{{ $t('light.title_3') }}</div>
+                                        <div class="ml-5">
                                             <el-slider style="width: 360px" :step="1" :max="4" :min="0"
                                                 v-model="useLight.state.lightProps.brightness" @change="ligtChanged" />
                                         </div>
-                                        <div class="d-flex jc-center">{{ $t('light.title_3') }}</div>
                                     </div>
                                     <div class="ml-4 mt-1">{{ useLight.state.lightProps.brightness }}</div>
                                 </div>
                                 <div class="d-flex m-3">
-                                    <div class="d-flex flex-column">
-                                        <div>
+                                    <div class="d-flex ai-center">
+                                        <div style="width: 64px; text-align: right;">{{ $t('light.title_4') }}</div>
+                                        <div class="ml-5">
                                             <el-slider style="width: 360px" :step="1" :max="4" :min="0"
                                                 v-model="useLight.state.lightProps.speed" @change="ligtChanged" />
                                         </div>
-                                        <div class="d-flex jc-center">{{ $t('light.title_4') }}</div>
                                     </div>
                                     <div class="ml-4 mt-1">{{ useLight.state.lightProps.speed }}</div>
                                 </div>
                                 <div class="d-flex m-3">
-                                    <div class="d-flex flex-column">
-                                        <div>
+                                    <div class="d-flex ai-center">
+                                        <div style="width: 64px; text-align: right;">{{ $t('light.title_5') }}</div>
+                                        <div class="ml-5">
                                             <el-slider style="width: 360px" :step="1" :max="120" :min="0"
                                                 v-model="useLight.state.lightProps.sleep" @change="ligtChanged" />
                                         </div>
-                                        <div class="d-flex jc-center">{{ $t('light.title_5') }}</div>
                                     </div>
                                     <div class="ml-4 mt-1" v-if="useLight.state.lightProps.sleep > 0">
                                         {{ useLight.state.lightProps.sleep }}min
                                     </div>
                                     <div class="ml-4 mt-1" v-else>{{ $t('light.title_6') }}</div>
+                                </div>
+                                <div class="d-flex m-3">
+                                    <div class="d-flex ai-center">
+                                        <div style="width: 64px; text-align: right;">{{ $t('light.title_9') }}</div>
+                                        <div class="ml-5">
+                                            <el-switch v-model="useLight.state.lightProps.reverse" size="large" @change="ligtChanged" />
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </el-scrollbar>

@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 import { reactive, ref } from 'vue';
 import { keyboard } from '@/keyboard/sparklink/keyboard'
 import { RK_C61 } from '@/keyboard/sparklink/rk_c61/rk_c61';
-import { LightEffectEnum, LightModeEnum, LightSwitchEnum } from '@/keyboard/sparklink/enum'
+import { LightDirectionEnum, LightEffectEnum, LightModeEnum, LightSwitchEnum } from '@/keyboard/sparklink/enum'
 import { ConnectionType, ConnectionEventEnum, ConnectionStatusEnum } from '@/device/enum'
 import { type KeyInfo } from '@/keyboard/sparklink/interface';
 
@@ -44,6 +44,7 @@ export const uselightStore = defineStore('lightinfo_rk_c61', () => {
             speed: 0,
             sleep: 0,
             staticIndex: 0,
+            reverse: false,
             staticColors: Array.from<any>({ length: 7 })
         },
         layer: 0,
@@ -66,6 +67,7 @@ export const uselightStore = defineStore('lightinfo_rk_c61', () => {
             state.lightProps.light = rk_c61.value.data.lightSetting.lightMode;
             state.lightProps.mode = rk_c61.value.data.lightSetting.lightBigMode;
             state.lightProps.staticIndex = rk_c61.value.data.lightSetting.staticLightMode;
+            state.lightProps.reverse = rk_c61.value.data.lightSetting.lightDirection == LightDirectionEnum.Reverse;
 
             state.lightProps.staticColors.splice(0, state.lightProps.staticColors.length);
             for (let i = 0; i < rk_c61.value.data.lightSetting.lightColorList.length; i++) {
@@ -106,6 +108,7 @@ export const uselightStore = defineStore('lightinfo_rk_c61', () => {
             rk_c61.value.data.lightSetting.lightBrightness = state.lightProps.brightness;
             rk_c61.value.data.lightSetting.lightSpeed = state.lightProps.speed;
             rk_c61.value.data.lightSetting.lightSleepDelay = state.lightProps.sleep;
+            rk_c61.value.data.lightSetting.lightDirection = state.lightProps.reverse ? LightDirectionEnum.Reverse : LightDirectionEnum.Forward;
             await rk_c61.value.setPrgb();
             await refresh();
         }

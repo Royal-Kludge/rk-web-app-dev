@@ -87,10 +87,12 @@ import { storeToRefs } from "pinia";
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 import type { RK_C61 } from "@/keyboard/sparklink/rk_c61/rk_c61";
 import { keyboard } from "@/keyboard/sparklink/keyboard";
+import { useAdvKeyStore } from "@/stores/rk_c61/advKeyStore";
 
 const useProfile = useProfileStore();
 const useLight = uselightStore();
 const useKey = useKeyStore();
+const useAdvKey = useAdvKeyStore();
 
 const { state } = storeToRefs(useProfile);
 
@@ -106,9 +108,8 @@ onMounted(async () => {
 const clickProfile = async (obj: Profile) => {
     await useProfile.clickProfile(obj);
     useKey.updateKeyInfo();
-    await useLight.refresh()
-    //await useLight.saveBoardProfileToDevice()
-}
+    await useLight.refresh();
+    useAdvKey.loadAdvKeys();}
 
 const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
     console.log(rawFile)

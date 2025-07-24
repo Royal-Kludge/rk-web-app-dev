@@ -1159,7 +1159,7 @@ export enum KeyDefineEnum {
     KEY_Profile_4 = 0xF10C,
     KEY_LockWin = 0xF309,
 
-    KEY_LED_ModeInc = 0xF301,
+    KEY_LED_ModeInc = 0xF310,
     KEY_LED_Direction = 0xF311,
     KEY_LED_BrightnessInc = 0xF312,
     KEY_LED_BrightnessDec = 0xF313,
@@ -1384,7 +1384,7 @@ export const KeyText: Record<number, Array<String>> = {
     0xF10C: ['sparklink.keyText.controlKey.profile4'],
     0xF309: ['sparklink.keyText.controlKey.lockWin'],
 
-    0xF301: ['sparklink.keyText.controlKey.ledModeI'],
+    0xF310: ['sparklink.keyText.controlKey.ledModeI'],
     0xF311: ['sparklink.keyText.controlKey.ledDirection'],
     0xF312: ['sparklink.keyText.controlKey.brightnessI'],
     0xF313: ['sparklink.keyText.controlKey.brightnessD'],

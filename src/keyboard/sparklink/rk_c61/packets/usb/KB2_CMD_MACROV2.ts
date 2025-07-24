@@ -15,7 +15,7 @@ export class KB2_CMD_MACROV2 extends Packet {
         super(0x20, callback);
         this.len = 0x00;
 
-        this.cmdBuffer = new Uint8Array(57);
+        this.cmdBuffer = new Uint8Array(58);
 
         this.rw = RWTypeEnum.Read;
     }

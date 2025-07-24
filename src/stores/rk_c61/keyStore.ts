@@ -1,18 +1,15 @@
 import { defineStore } from "pinia";
-import { reactive, ref, watch } from "vue";
+import { reactive, ref } from "vue";
 import { keyboard } from "@/keyboard/sparklink/keyboard";
-import { RK_C61, RK_C61_EVENT_DEFINE } from "@/keyboard/sparklink/rk_c61/rk_c61";
-import { KeyCodeEnum, KeyDefineEnum, KeyText, KeyText_Mac } from "@/common/keyCode_sparklink";
+import { RK_C61 } from "@/keyboard/sparklink/rk_c61/rk_c61";
+import { KeyDefineEnum, KeyText } from "@/common/keyCode_sparklink";
 import { type KeyState, type KeyLine, type KeyInfo, type KeyCmdValue } from "@/keyboard/sparklink/interface";
 import { AdvKeyTypeEnum, KeyMatrixLayer, LayoutTypeEnum, MatrixTable, OrderTypeEnum } from "@/keyboard/sparklink/enum";
 import { Profile, ps } from "@/keyboard/sparklink/profiles";
-import { Action, Macro, Macros } from "@/keyboard/sparklink/macros";
+import { Macro, Macros } from "@/keyboard/sparklink/macros";
 import { ConnectionEventEnum, ConnectionStatusEnum } from "@/device/enum";
 import { KeyCodeMap } from "@/common/keyCode";
 import { KeyMappingType } from "@/keyboard/sparklink/enum";
-import { storage } from "@/common/storage";
-import fileSaver from "file-saver";
-import { ElMessage } from "element-plus";
 import { useI18n } from "vue-i18n";
 import type { KeyTableData } from "@/keyboard/sparklink/keyTableData";
 import { LOG_TYPE, Logging } from "@/common/logging";
@@ -162,9 +159,10 @@ export const useKeyStore = defineStore("keyinfo_rk_c61", () => {
         profileList: [],
         //MatrixLayer: keyMatrixLayer.value,
         MatrixLayers: [
-            { value: KeyMatrixLayer.FN0, label: "key.layer_1" },
-            { value: KeyMatrixLayer.FN1, label: "key.layer_2" },
-            { value: KeyMatrixLayer.FN2, label: "key.layer_3" },
+            { value: KeyMatrixLayer.FN0, label: "sparklink.keyText.layout.layer_1" },
+            { value: KeyMatrixLayer.FN1, label: "sparklink.keyText.layout.layer_2" },
+            { value: KeyMatrixLayer.FN2, label: "sparklink.keyText.layout.layer_3" },
+            { value: KeyMatrixLayer.FN3, label: "sparklink.keyText.layout.layer_4" },
         ],
         MatrixTable: [
             { value: MatrixTable.WIN, label: "win", img: "/src/assets/images/win.png" },
@@ -934,10 +932,12 @@ export const useKeyStore = defineStore("keyinfo_rk_c61", () => {
             }
         }
 
-        if ((keyCode >> 24) == 8) return t(texts[0] as string);
-        if ((keyCode >> 8) == 0x73) return t(texts[0] as string);
-        if ((keyCode >> 8) == 0xF1) return t(texts[0] as string);
-        if ((keyCode >> 8) == 0xF3) return t(texts[0] as string);
+        if (texts.length > 0) {
+            if ((keyCode >> 24) == 8) return t(texts[0] as string);
+            if ((keyCode >> 8) == 0x73) return t(texts[0] as string);
+            if ((keyCode >> 8) == 0xF1) return t(texts[0] as string);
+            if ((keyCode >> 8) == 0xF3) return t(texts[0] as string);
+        }
 
         if (texts.length == 4) {
             keyStr = `<div class='d-flex'>

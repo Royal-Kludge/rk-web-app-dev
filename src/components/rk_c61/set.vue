@@ -18,30 +18,65 @@
                 </div>
                 <div class="m-5">
                     <div class="m-4 d-flex flex-column">
+                        <div class="w-100 text-grey-1">
+                            {{ $t("set.keyboard_info") }}
+                        </div>
+                        <div class="w-100 bg-grey mt-3 mb-3" style="border-radius: 10px;">
+                            <div class="d-flex m-3">
+                                <span style="width: 132px;text-align: right;">{{ $t("set.keyboard_name") }}</span>
+                                <span class="ml-4">{{ keyboard.state.deviceName }}</span>
+                            </div>
+                            <div class="d-flex m-3">
+                                <span style="width: 132px;text-align: right;">{{ $t("set.keyboard_sn") }}</span>
+                                <span class="ml-4">{{ keyboard.state.serialNo }}</span>
+                            </div>
+                            <div class="d-flex m-3">
+                                <span style="width: 132px;text-align: right;">{{ $t("set.keyboard_version") }}</span>
+                                <span class="ml-4">{{ keyboard.state.fwVersion }}</span>
+                            </div>
+                            <div class="d-flex m-3">
+                                <span style="width: 132px;text-align: right;">{{ $t("set.keyboard_mode") }}</span>
+                                <span class="ml-4">{{ keyboard.state.runMode == 0 ? "AppMode" : "BootMode" }}</span>
+                            </div>
+                        </div>
+                        <div class="py-3 my-3 w-100 bg-warn-1 text-grey-1 text-center br-2 b-grey c-p but"
+                            @click="update = true">
+                            {{ $t("set.into_boot") }}
+                        </div>
                         <div class="py-3 my-3 w-100 bg-warn-1 text-grey-1 text-center br-2 b-grey c-p but"
                             @click="local = true">
                             {{ $t("set.but_1") }}
                         </div>
                         <div class="py-3 my-3 w-100 bg-warn-1 text-grey-1 text-center br-2 b-grey c-p but"
-                            @click="reSet = true">
+                            @click="reset = true">
                             {{ $t("set.but_2") }}
-                        </div>
-                        <div class="py-3 my-3 w-100 bg-warn-1 text-grey-1 text-center br-2 b-grey c-p but"
-                            @click="checkVer(true)"
-                            v-if="keyboard.state.connectType == ConnectionType.USB">
-                            {{ $t("set.but_4") }}(<span>{{ VerTips }}</span>)
-                        </div>
-                        <div class="w-100 text-grey-1 text-center" v-if="keyboard.state.connectType == ConnectionType.USB">
-                            Version:{{ ver }}
                         </div>
                     </div>
                     <div class="mb-1"></div>
-                    <el-dialog v-model="reSet" :title="$t('set.but_2')">
+                    <el-dialog v-model="boot" :title="$t('set.but_4')">
+                        <span>{{ $t("set.title_9") }}</span>
+                        <template #footer>
+                            <div class="d-flex jc-center">
+                                <el-button type="primary" @click="setToBoot()">{{ $t("set.but_5") }}</el-button>
+                                <el-button @click="boot = false">{{ $t("set.but_6") }}</el-button>
+                            </div>
+                        </template>
+                    </el-dialog>
+                    <el-dialog v-model="update" :title="$t('set.but_4')">
+                        <span>{{ $t("set.title_8") }}</span>
+                        <template #footer>
+                            <div class="d-flex jc-center">
+                                <el-button type="primary" @click="setToUpdate()">{{ $t("set.but_5") }}</el-button>
+                                <el-button @click="update = false">{{ $t("set.but_6") }}</el-button>
+                            </div>
+                        </template>
+                    </el-dialog>
+                    <el-dialog v-model="reset" :title="$t('set.but_2')">
                         <span>{{ $t("set.title_1") }}</span>
                         <template #footer>
                             <div class="d-flex jc-center">
-                                <el-button @click="setToFactory()">{{ $t("set.but_5") }}</el-button>
-                                <el-button type="primary" @click="reSet = false">{{ $t("set.but_6") }}</el-button>
+                                <el-button type="primary" @click="setToFactory()">{{ $t("set.but_5") }}</el-button>
+                                <el-button @click="reset = false">{{ $t("set.but_6") }}</el-button>
                             </div>
                         </template>
                     </el-dialog>
@@ -49,8 +84,8 @@
                         <span>{{ $t("set.title_7") }}</span>
                         <template #footer>
                             <div class="d-flex jc-center">
-                                <el-button @click="clearLocalData()">{{ $t("set.but_5") }}</el-button>
-                                <el-button type="primary" @click="local = false">{{ $t("set.but_6") }}</el-button>
+                                <el-button type="primary" @click="clearLocalData()">{{ $t("set.but_5") }}</el-button>
+                                <el-button @click="local = false">{{ $t("set.but_6") }}</el-button>
                             </div>
                         </template>
                     </el-dialog>
@@ -60,18 +95,17 @@
     </div>
 </template>
 <script setup lang="ts">
-import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
+import { ref } from 'vue';
 import { useLocaleStore } from "@/stores/locale";
 import { storeToRefs } from "pinia";
 import { storage } from '@/common/storage';
 import { useSetStore } from "@/stores/setStore";
 import { useKeyStore } from "@/stores/rk_c61/keyStore";
+import { useUpdateStore } from "@/stores/rk_c61/updateStore";
 import { useI18n } from 'vue-i18n';
-import axios from 'axios'
-import { ConnectionType } from '@/device/enum';
-import { keyboard } from '@/keyboard/beiying/keyboard'
-import { ElMessage, ElMessageBox } from 'element-plus'
-import type { Action } from 'element-plus'
+import axios from 'axios';
+import { keyboard } from '@/keyboard/sparklink/keyboard';
+import { BL_Controls } from '@/keyboard/sparklink/enum';
 
 // 解构出t方法
 const { t } = useI18n();
@@ -80,18 +114,14 @@ const { locale } = storeToRefs(useLocale);
 const setStore = useSetStore();
 const { langList } = storeToRefs(setStore);
 const useKey = useKeyStore();
+const useUpdate = useUpdateStore();
 
-const reSet = ref(false);
-const mode = ref(0);
-const ver = ref(keyboard.state.fwVersion);
+const reset = ref(false);
 const version = ref(keyboard.state.fwVersion)
 const url = ref()
-const isLayer = ref(false);
-const layer = ref(0);
 const local = ref(false);
-
-const modeStr = computed(() => (mode.value >= 2 ? "set.mode_work" : "set.mode_game"))
-const VerTips = computed(() => (ver.value !== version.value ? t('set.title_3') + ':' + version.value : t('set.title_2')))
+const update = ref(false);
+const boot = ref(false);
 
 const getVer = () => {
     let pid = keyboard.keyboardDefine?.productId;
@@ -128,8 +158,8 @@ const getVer = () => {
             });
         }
     }
-
 }
+
 const checkVer = (flag: boolean = false) => {
     // if (useLight.connectType !== ConnectionType.USB && flag == true) {
     //     ElMessage({
@@ -155,56 +185,28 @@ const checkVer = (flag: boolean = false) => {
     //     })
     // }
 }
-const updateVer = () => {
-    ElMessage({
-        type: 'info',
-        message: t("set.title_4"),
-    })
-    window.open(url.value, '_blank')// 新窗口打开外连接
+
+const setToBoot = async () => {
+    if (keyboard.state.serialNo != undefined) {
+        const sn_buff = [];
+        for (let i = 0; i < 16; i++) {
+            sn_buff[i] = keyboard.state.serialNo.charCodeAt(i);
+        }
+
+        await useUpdate.signFor(BL_Controls.BL_ERASE, sn_buff);
+        boot.value = false;
+    }
 }
 
-const formatModeValue = (val: number) => {
-    if (val >= 2)
-        return t("set.mode_work");
-    else
-        return t("set.mode_game");
-}
-onMounted(async () => {
-    // await useLight.init();
-    // getVer();
-    // isLayer.value = (useLight.state.layer & 0x01) > 0;
-    // layer.value = useLight.state.layer >> 1;
-    // mode.value = useLight.state.debounce;
-});
-
-onBeforeUnmount(() => {
-    //useLight.destroy();
-});
-
-const LayerChanged = () => {
-    // if (!isLayer.value) {
-        // useLight.setLayer(0)
-    // } else {
-        // useLight.setLayer(layer.value)
-    // }
-    // useKey.saveProfile();
-}
-
-const setLayer = () => {
-    // useLight.setLayer(layer.value);
-    // useKey.saveProfile();
-}
-
-const DebounceChanged = () => {
-    // useLight.DebounceChanged(mode.value);
-    // useKey.saveProfile();
+const setToUpdate = () => {
+    update.value = false;
+    boot.value = true;
 }
 
 const setToFactory = async () => {
     storage.clear();
     await useKey.setToFactory();
-    // reSet.value = false;
-    // useMacro.clearMacro();
+    window.location.reload();
 }
 
 const clearLocalData = () => {

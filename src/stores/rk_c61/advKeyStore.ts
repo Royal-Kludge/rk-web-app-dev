@@ -112,81 +112,84 @@ export const useAdvKeyStore = defineStore("advKeyStore_rk_c61", {
             }
 
             if (this.rk_c61 != undefined && !this.isInited) {
-                for (let i = 0; i < keyboard.state.keyTableData.length; i++) {
-                    let keyTable = keyboard.state.keyTableData[i];
-                    if (keyTable != undefined && keyTable != null && keyTable.keyInfo != undefined && keyTable.keyInfo != null && keyTable.keyInfo.isAdvancedKey) {
-                        switch (keyTable.keyInfo.advanceKeyType) {
-                            case AdvKeyTypeEnum.DKS:
-                                let dks = new AdvKeyDKS([new DKSType(0), new DKSType(1), new DKSType(2), new DKSType(3)]);
-                                dks.list[0].key = keyTable.keyInfo.DKSInfo.DKS[0];
-                                dks.list[0].setValue(keyTable.keyInfo.DKSInfo.TRPS[0]);
-                                dks.list[1].key = keyTable.keyInfo.DKSInfo.DKS[1];
-                                dks.list[1].setValue(keyTable.keyInfo.DKSInfo.TRPS[1]);
-                                dks.list[2].key = keyTable.keyInfo.DKSInfo.DKS[2];
-                                dks.list[2].setValue(keyTable.keyInfo.DKSInfo.TRPS[2]);
-                                dks.list[3].key = keyTable.keyInfo.DKSInfo.DKS[3];
-                                dks.list[3].setValue(keyTable.keyInfo.DKSInfo.TRPS[3]);
-                                dks.keyTable = keyTable;
-                                this.advanceKeys.push(dks);
-                                break;
-                            case AdvKeyTypeEnum.MT:
-                                let mt = new AdvKeyMT([new MTType(0, "sparklink.advKey.title_19"), new MTType(1, "sparklink.advKey.title_20")]);
-                                mt.list[0].key = keyTable.keyInfo.MTInfo.DKS[0];
-                                mt.list[1].key = keyTable.keyInfo.MTInfo.DKS[1];
-                                mt.value = keyTable.keyInfo.MTInfo.delay;
-                                mt.keyTable = keyTable;
-                                this.advanceKeys.push(mt);
-                                break;
-                            case AdvKeyTypeEnum.TGL:
-                                let tgl = new AdvKeyTGL([new TGLType(0, "sparklink.advKey.title_19")]);
-                                tgl.list[0].key = keyTable.keyInfo.TGLInfo.DKS;
-                                tgl.value = keyTable.keyInfo.TGLInfo.delay;
-                                tgl.keyTable = keyTable;
-                                this.advanceKeys.push(tgl);
-                                break;
-                            case AdvKeyTypeEnum.MPT:
-                                let mpt = new AdvKeyMPT([new MPTType(0, 0.500), new MPTType(1, 1.000), new MPTType(1, 1.500)]);
-                                mpt.list[0].key = keyTable.keyInfo.MPTInfo.DKS[0];
-                                mpt.list[0].value = keyTable.keyInfo.MPTInfo.DB[0];
-                                mpt.list[1].key = keyTable.keyInfo.MPTInfo.DKS[1];
-                                mpt.list[1].value = keyTable.keyInfo.MPTInfo.DB[1];
-                                mpt.list[2].key = keyTable.keyInfo.MPTInfo.DKS[2];
-                                mpt.list[2].value = keyTable.keyInfo.MPTInfo.DB[2];
-                                mpt.keyTable = keyTable;
-                                this.advanceKeys.push(mpt);
-                                break;
-                            case AdvKeyTypeEnum.END:
-                                let end = new AdvKeyEND([new ENDType(0)])
-                                end.list[0].key = keyTable.keyInfo.ENDInfo.DKS;
-                                end.keyTable = keyTable;
-                                this.advanceKeys.push(end);
-                                break;
-                            case AdvKeyTypeEnum.SOCD:
-                                let socd = new AdvKeySOCD([new SOCDType(0), new SOCDType(1), new SOCDType(2), new SOCDType(3),]);
-                                socd.list[0].key = keyTable.keyInfo.SOCDInfo.DKS[0];
-                                socd.list[1].key = keyTable.keyInfo.SOCDInfo.DKS[1];
-                                socd.list[2].key = keyTable.keyInfo.SOCDInfo.DKSV[0];
-                                socd.list[3].key = keyTable.keyInfo.SOCDInfo.DKSV[1];
-                                socd.mode = keyTable.keyInfo.SOCDInfo.mode;
-                                socd.value = keyTable.keyInfo.SOCDInfo.type;
-                                socd.keyTable = keyTable;
-                                this.advanceKeys.push(socd);
-                                break;
-                            case AdvKeyTypeEnum.MACRO:
-                                let advKeyMacro = new AdvKeyMacro(undefined);
-                                advKeyMacro.keyTable = keyTable;
-                                this.advanceKeys.push(advKeyMacro);
-                                if (this.rk_c61 != undefined) {
-                                    this.rk_c61.getMacroMode(keyTable.keyCode);
-                                }
-                                break;
-                        }
-                    }
-                }
-
+                this.loadAdvKeys();
                 this.maxTravel = this.rk_c61.data.performanceData.maxTouchTravel;
                 this.minTravel = this.rk_c61.data.performanceData.minTouchTravel;
                 this.isInited = true;
+            }
+        },
+        loadAdvKeys() {
+            this.advanceKeys.splice(0, this.advanceKeys.length);
+            for (let i = 0; i < keyboard.state.keyTableData.length; i++) {
+                let keyTable = keyboard.state.keyTableData[i];
+                if (keyTable != undefined && keyTable != null && keyTable.keyInfo != undefined && keyTable.keyInfo != null && keyTable.keyInfo.isAdvancedKey) {
+                    switch (keyTable.keyInfo.advanceKeyType) {
+                        case AdvKeyTypeEnum.DKS:
+                            let dks = new AdvKeyDKS([new DKSType(0), new DKSType(1), new DKSType(2), new DKSType(3)]);
+                            dks.list[0].key = keyTable.keyInfo.DKSInfo.DKS[0];
+                            dks.list[0].setValue(keyTable.keyInfo.DKSInfo.TRPS[0]);
+                            dks.list[1].key = keyTable.keyInfo.DKSInfo.DKS[1];
+                            dks.list[1].setValue(keyTable.keyInfo.DKSInfo.TRPS[1]);
+                            dks.list[2].key = keyTable.keyInfo.DKSInfo.DKS[2];
+                            dks.list[2].setValue(keyTable.keyInfo.DKSInfo.TRPS[2]);
+                            dks.list[3].key = keyTable.keyInfo.DKSInfo.DKS[3];
+                            dks.list[3].setValue(keyTable.keyInfo.DKSInfo.TRPS[3]);
+                            dks.keyTable = keyTable;
+                            this.advanceKeys.push(dks);
+                            break;
+                        case AdvKeyTypeEnum.MT:
+                            let mt = new AdvKeyMT([new MTType(0, "sparklink.advKey.title_19"), new MTType(1, "sparklink.advKey.title_20")]);
+                            mt.list[0].key = keyTable.keyInfo.MTInfo.DKS[0];
+                            mt.list[1].key = keyTable.keyInfo.MTInfo.DKS[1];
+                            mt.value = keyTable.keyInfo.MTInfo.delay;
+                            mt.keyTable = keyTable;
+                            this.advanceKeys.push(mt);
+                            break;
+                        case AdvKeyTypeEnum.TGL:
+                            let tgl = new AdvKeyTGL([new TGLType(0, "sparklink.advKey.title_19")]);
+                            tgl.list[0].key = keyTable.keyInfo.TGLInfo.DKS;
+                            tgl.value = keyTable.keyInfo.TGLInfo.delay;
+                            tgl.keyTable = keyTable;
+                            this.advanceKeys.push(tgl);
+                            break;
+                        case AdvKeyTypeEnum.MPT:
+                            let mpt = new AdvKeyMPT([new MPTType(0, 0.500), new MPTType(1, 1.000), new MPTType(1, 1.500)]);
+                            mpt.list[0].key = keyTable.keyInfo.MPTInfo.DKS[0];
+                            mpt.list[0].value = keyTable.keyInfo.MPTInfo.DB[0];
+                            mpt.list[1].key = keyTable.keyInfo.MPTInfo.DKS[1];
+                            mpt.list[1].value = keyTable.keyInfo.MPTInfo.DB[1];
+                            mpt.list[2].key = keyTable.keyInfo.MPTInfo.DKS[2];
+                            mpt.list[2].value = keyTable.keyInfo.MPTInfo.DB[2];
+                            mpt.keyTable = keyTable;
+                            this.advanceKeys.push(mpt);
+                            break;
+                        case AdvKeyTypeEnum.END:
+                            let end = new AdvKeyEND([new ENDType(0)])
+                            end.list[0].key = keyTable.keyInfo.ENDInfo.DKS;
+                            end.keyTable = keyTable;
+                            this.advanceKeys.push(end);
+                            break;
+                        case AdvKeyTypeEnum.SOCD:
+                            let socd = new AdvKeySOCD([new SOCDType(0), new SOCDType(1), new SOCDType(2), new SOCDType(3),]);
+                            socd.list[0].key = keyTable.keyInfo.SOCDInfo.DKS[0];
+                            socd.list[1].key = keyTable.keyInfo.SOCDInfo.DKS[1];
+                            socd.list[2].key = keyTable.keyInfo.SOCDInfo.DKSV[0];
+                            socd.list[3].key = keyTable.keyInfo.SOCDInfo.DKSV[1];
+                            socd.mode = keyTable.keyInfo.SOCDInfo.mode;
+                            socd.value = keyTable.keyInfo.SOCDInfo.type;
+                            socd.keyTable = keyTable;
+                            this.advanceKeys.push(socd);
+                            break;
+                        case AdvKeyTypeEnum.MACRO:
+                            let advKeyMacro = new AdvKeyMacro(undefined);
+                            advKeyMacro.keyTable = keyTable;
+                            this.advanceKeys.push(advKeyMacro);
+                            if (this.rk_c61 != undefined) {
+                                this.rk_c61.getMacroMode(keyTable.keyCode);
+                            }
+                            break;
+                    }
+                }
             }
         },
         async connectionEventCallback(event: Event) {
@@ -619,11 +622,13 @@ export const useAdvKeyStore = defineStore("advKeyStore_rk_c61", {
                 }
             }
 
-            const { t } = useI18n();
-            if ((keyCode >> 24) == 8) return t(texts[0] as string);
-            if ((keyCode >> 8) == 0x73) return t(texts[0] as string);
-            if ((keyCode >> 8) == 0xF1) return t(texts[0] as string);
-            if ((keyCode >> 8) == 0xF3) return t(texts[0] as string);
+            if (texts.length > 0) {
+                const { t } = useI18n();
+                if ((keyCode >> 24) == 8) return t(texts[0] as string);
+                if ((keyCode >> 8) == 0x73) return t(texts[0] as string);
+                if ((keyCode >> 8) == 0xF1) return t(texts[0] as string);
+                if ((keyCode >> 8) == 0xF3) return t(texts[0] as string);
+            }
 
             if (texts.length == 4) {
                 keyStr = `<div class='d-flex'>

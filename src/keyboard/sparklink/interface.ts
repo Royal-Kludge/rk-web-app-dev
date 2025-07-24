@@ -1,7 +1,7 @@
 import { KeyDefineEnum } from "@/common/keyCode_sparklink"
 import type { HidDeviceDefine } from "@/device/interface"
 import type { State } from "@/device/state"
-import type { KeyMatrixLayer, LayoutTypeEnum, LightDirectionEnum, LightEffectEnum, LightModeEnum, LightSwitchEnum, MatrixTable, SuperResponseEnum } from "./enum"
+import type { LayoutTypeEnum, LightDirectionEnum, LightEffectEnum, LightModeEnum, LightSwitchEnum, SuperResponseEnum } from "./enum"
 import type { KeyTableData } from "./keyTableData"
 
 export interface KeyState {
@@ -19,6 +19,7 @@ export interface KeyState {
 export interface KeyboardState extends State {
     fwVersion?: String,
     serialNo?: String,
+    runMode?: number,
     keyTableData: Array<KeyTableData>
 }
 
