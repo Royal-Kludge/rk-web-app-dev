@@ -2,6 +2,7 @@ export enum KeyMatrixLayer {
   FN0 = 0x00,
   FN1 = 0x01,
   FN2 = 0x02,
+  FN3 = 0x03,
 }
 
 export enum MatrixTable {
@@ -210,4 +211,19 @@ export enum KeyMappingType {
   MultiAndMix = 6,
   Mouse = 7,
   SparkLinkKbFun = 15,
+}
+
+export enum BL_Controls {
+    BL_NONE = 0x00,
+    BL_SIGN = 0x02,
+    BL_ERASE = 0x03,
+    BL_REBOOT = 0x04,
+    BL_TOBOOT = 0x05,
+    BL_WRITE = 0x06,
+}
+
+export enum UpdateTypeEnum {
+    None = 0x00,
+    Offline = 0x01,
+    Online = 0x02
 }

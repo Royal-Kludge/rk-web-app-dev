@@ -1,10 +1,11 @@
 import { type KeyInfo, type Axis, type KeyboardState, type LedColor, type KeyCmdValue } from '../interface'
-import { REPORT_HEAD, REPORT_HEAD_LENGTH, REPORT_ID_USB, REPORT_LENGTH } from './packets/packet';
+import { Packet, REPORT_HEAD, REPORT_ID_USB, REPORT_LENGTH } from './packets/packet';
 import { ConnectionStatusEnum, ConnectionType } from '@/device/enum';
 import { BoardId, COMMAND_ID, FwVersion, HwVersion, RK_C61, RK_C61_EVENT_DEFINE } from './rk_c61';
 import { KeyText, type KeyCodeEnum, type KeyDefineEnum } from '@/common/keyCode_sparklink';
-import { LayoutTypeEnum, LightDirectionEnum, LightEffectEnum, LightModeEnum, LightSwitchEnum, MatrixTable, OrderTypeEnum, RWTypeEnum, SuperResponseEnum } from '../enum';
+import { BL_Controls, LayoutTypeEnum, LightDirectionEnum, LightEffectEnum, LightModeEnum, LightSwitchEnum, MatrixTable, OrderTypeEnum, RWTypeEnum, SuperResponseEnum } from '../enum';
 import { AxisList } from '../constant';
+import tool from "../tool";
 import type { Action, Macro, MacroExecModeEnum } from '../macros';
 import { LOG_TYPE, Logging } from '@/common/logging';
 import { KB2_CMD_FAIL } from './packets/usb/KB2_CMD_FAIL';
@@ -24,6 +25,12 @@ import { KB2_CMD_END } from './packets/usb/KB2_CMD_END';
 import { KB2_CMD_SOCD } from './packets/usb/KB2_CMD_SOCD';
 import { KB2_CMD_MACROV2 } from './packets/usb/KB2_CMD_MACROV2';
 import { KB2_CMD_MACRO_MODE } from './packets/usb/KB2_CMD_MACRO_MODE';
+import { KB2_BL_SIGN } from './packets/usb/KB2_BL_SIGN';
+import { KB2_BL_ERASE } from './packets/usb/KB2_BL_ERASE';
+import { KB2_BL_REBOOT } from './packets/usb/KB2_BL_REBOOT';
+import { KB2_BL_TOAPP } from './packets/usb/KB2_BL_TOAPP';
+import { KB2_BL_WRITE } from './packets/usb/KB2_BL_WRITE';
+import { KB2_BL_RCRC } from './packets/usb/KB2_BL_RCRC';
 
 const worker = new Worker(new URL('@/common/communication.ts', import.meta.url));
 
@@ -46,6 +53,12 @@ export class RK_C61_Usb extends RK_C61 {
     KB2_CMD_SOCD: KB2_CMD_SOCD;
     KB2_CMD_MACROV2: KB2_CMD_MACROV2;
     KB2_CMD_MACRO_MODE: KB2_CMD_MACRO_MODE;
+    KB2_BL_SIGN: KB2_BL_SIGN;
+    KB2_BL_ERASE: KB2_BL_ERASE;
+    KB2_BL_REBOOT: KB2_BL_REBOOT;
+    KB2_BL_TOAPP: KB2_BL_TOAPP;
+    KB2_BL_WRITE: KB2_BL_WRITE;
+    KB2_BL_RCRC: KB2_BL_RCRC;
 
     constructor(state: KeyboardState, device: HIDDevice) {
         super(state, device);
@@ -68,6 +81,12 @@ export class RK_C61_Usb extends RK_C61 {
         this.KB2_CMD_SOCD = new KB2_CMD_SOCD(this.onCmdCallback.bind(this));
         this.KB2_CMD_MACROV2 = new KB2_CMD_MACROV2(this.onCmdCallback.bind(this));
         this.KB2_CMD_MACRO_MODE = new KB2_CMD_MACRO_MODE(this.onMacroMode.bind(this));
+        this.KB2_BL_SIGN = new KB2_BL_SIGN(this.onSigned.bind(this));
+        this.KB2_BL_ERASE = new KB2_BL_ERASE(this.onErase.bind(this));
+        this.KB2_BL_REBOOT = new KB2_BL_REBOOT(this.onCmdCallback.bind(this));
+        this.KB2_BL_TOAPP = new KB2_BL_TOAPP(this.onCmdCallback.bind(this));
+        this.KB2_BL_WRITE = new KB2_BL_WRITE(this.onWrite.bind(this));
+        this.KB2_BL_RCRC = new KB2_BL_RCRC(this.onRcrc.bind(this));
     }
 
     static async create(state: KeyboardState, device: HIDDevice) {
@@ -92,20 +111,6 @@ export class RK_C61_Usb extends RK_C61 {
         worker.postMessage('start');
 
         await this.sync();
-        await this.cmd(OrderTypeEnum.GetProtoVer, 0xff);
-        await this.cmd(OrderTypeEnum.GetKbName, 0xff);
-        await this.cmd(OrderTypeEnum.Travel, 0xff);
-        await this.cmd(OrderTypeEnum.SwitchProfile, 0x04);
-        await this.cmd(OrderTypeEnum.QuerySupportAxis, 0xff);
-        await this.cmd(OrderTypeEnum.SetReportRate, 0x07);
-        await this.cmd(OrderTypeEnum.QueryWinMode, 0xff);
-        await this.cmd(OrderTypeEnum.QueryMacMode, 0xff);
-        await this.cmd(OrderTypeEnum.SwitchDeadZone, 0x02);
-        // await this.getDbParam();
-        // await this.getPrgb();
-        // await this.getKeyDefLayout(0, 1);
-        // await this.getKeyDefLayout(2, 3);
-        // await this.getKeyDefLayout(4, 5);
     }
 
     buffer: Uint8Array | null = null;
@@ -163,6 +168,24 @@ export class RK_C61_Usb extends RK_C61 {
                         break;
                     case COMMAND_ID.KB2_CMD_MACROMODE:
                         this.KB2_CMD_MACRO_MODE.fromReportData(data);
+                        break;
+                    case COMMAND_ID.KB2_BL_SIGN:
+                        this.KB2_BL_SIGN.fromReportData(data);
+                        break;
+                    case COMMAND_ID.KB2_BL_ERASE:
+                        this.KB2_BL_ERASE.fromReportData(data);
+                        break;
+                    case COMMAND_ID.KB2_BL_REBOOT:
+                        this.KB2_BL_REBOOT.fromReportData(data);
+                        break;
+                    case COMMAND_ID.KB2_BL_TOAPP:
+                        this.KB2_BL_TOAPP.fromReportData(data);
+                        break;
+                    case COMMAND_ID.KB2_BL_WRITE:
+                        this.KB2_BL_WRITE.fromReportData(data);
+                        break;
+                    case COMMAND_ID.KB2_BL_RCRC:
+                        this.KB2_BL_RCRC.fromReportData(data);
                         break;
                 }
             } else if (this.buffer != null && this.buffer[2] - 0x80 == COMMAND_ID.KB2_CMD_RM6X21) {
@@ -370,6 +393,12 @@ export class RK_C61_Usb extends RK_C61 {
         this.KB2_CMD_MACRO_MODE.delay = 0;
         worker.postMessage(this.KB2_CMD_MACRO_MODE.command());
         Logging.console(LOG_TYPE.INFO, `Push KB2_CMD_MACRO_MODE data to queue.`);
+    }
+
+    async getCrc(size: number): Promise<void> {
+        this.KB2_BL_RCRC.size = size;
+        worker.postMessage(this.KB2_BL_RCRC.command());
+        Logging.console(LOG_TYPE.INFO, `Push KB2_BL_RCRC data to queue.`);
     }
     //#endregion
 
@@ -695,7 +724,7 @@ export class RK_C61_Usb extends RK_C61 {
                 worker.postMessage(this.KB2_CMD_MACROV2.command());
                 Logging.console(LOG_TYPE.INFO, `Push KB2_CMD_MACROV2 data to queue.`);
                 
-                for (let j = 0; j >= 9; j++) {
+                for (let j = 0; j < 9; j++) {
                     actList[j] = null;
                 }
 
@@ -723,6 +752,56 @@ export class RK_C61_Usb extends RK_C61 {
         this.KB2_CMD_MACRO_MODE.delay = delay;
         worker.postMessage(this.KB2_CMD_MACRO_MODE.command());
         Logging.console(LOG_TYPE.INFO, `Push KB2_CMD_MACRO_MODE data to queue.`);
+    }
+
+    async setSign(unlock: BL_Controls, sn: Uint8Array) : Promise<void> {
+        let data = tool.blSignature(sn, tool.blSignatureKey, tool.blSignatureParams, unlock);
+        this.KB2_BL_SIGN.unlock = unlock;
+        this.KB2_BL_SIGN.sn = sn;
+        this.KB2_BL_SIGN.data = new Uint8Array(data);
+        worker.postMessage(this.KB2_BL_SIGN.command());
+        Logging.console(LOG_TYPE.INFO, `Push KB2_BL_SIGN data to queue.`);
+    }
+
+    async setErase() : Promise<void> {
+        if (this.data.hwVersion != undefined) {
+            this.KB2_BL_ERASE.size = this.data.hwVersion?.fwSize;
+            worker.postMessage(this.KB2_BL_ERASE.command());
+            Logging.console(LOG_TYPE.INFO, `Push KB2_BL_ERASE data to queue.`);
+        }
+    }
+
+    async setReboot() : Promise<void> {
+        worker.postMessage(this.KB2_BL_REBOOT.command());
+        Logging.console(LOG_TYPE.INFO, `Push KB2_BL_REBOOT data to queue.`);
+    }
+
+    async setToApp(size: number, crc: number) : Promise<void> {
+        this.KB2_BL_TOAPP.size = size;
+        this.KB2_BL_TOAPP.crc = crc;
+        worker.postMessage(this.KB2_BL_TOAPP.command());
+        Logging.console(LOG_TYPE.INFO, `Push KB2_BL_TOAPP data to queue.`);
+    }
+
+    async writeFw(addr: number, size: number, data: Uint8Array) : Promise<void> {
+        this.KB2_BL_WRITE.addr = addr;
+        this.KB2_BL_WRITE.size = size;
+        this.KB2_BL_WRITE.data = data;
+
+        const cmdDatas = this.KB2_BL_WRITE.command();
+
+        // 逐块发送数据
+        for (let offset = 0; offset < cmdDatas.length; offset += REPORT_LENGTH) {
+            const chunk = cmdDatas.slice(offset, offset + REPORT_LENGTH);
+            try {
+                await this.setReport(REPORT_ID_USB, chunk);
+                await this.delay(5);
+            } catch (e) {
+                Logging.console(LOG_TYPE.ERROR, `Failed to send data chunk`);
+            }
+        }
+        
+        Logging.console(LOG_TYPE.INFO, `Push KB2_BL_WRITE data to queue.`);
     }
     //#endregion
 
@@ -780,9 +859,14 @@ export class RK_C61_Usb extends RK_C61 {
         this.data.fwVersion = fwVersion;
         this.data.keyInfoData.axisTypeId = event.detail.axisType;
 
+        this.state.fwVersion = this.data.fwVersion.appVersion;
+        this.state.serialNo = this.data.sn;
+        this.state.runMode = this.data.runMode;
+
         Logging.console(LOG_TYPE.SUCCESS, `\nID: ${boardId.id}\nLayout: ${boardId.kbLayout}\nAxisType: ${boardId.axisType}`);
         Logging.console(LOG_TYPE.SUCCESS, `\nRunMode: ${event.detail.runMode}\nSN：${sn}`);
         Logging.console(LOG_TYPE.SUCCESS, `\nFwSize: ${hwVersion.fwSize}\nHwVersion: ${hwVersion.version}\nFwVersion: ${fwVersion.appVersion}\nBuildDate: ${fwVersion.buildDate}`,);
+        this.dispatchEvent(new CustomEvent(RK_C61_EVENT_DEFINE.OnSynced, { detail: this.data }));
     }
 
     private onKeyCmd(event: any) {
@@ -918,10 +1002,17 @@ export class RK_C61_Usb extends RK_C61 {
         switch (order) {
             case OrderTypeEnum.GetKbName:
                 const decoder = new TextDecoder('utf-8');
-                //const filteredData = s_arg.slice(0, 31).filter(p => p !== 0x00);
+                const tmp = [];
 
+                for (let i = 0; i < s_arg.length; i++) {
+                    if (s_arg[i] != 0x00) {
+                        tmp.push(s_arg[i]);
+                    }
+                }
+                
                 // 解码过滤后的数据
-                this.data.keyboardName = decoder.decode(new Uint8Array(s_arg));
+                this.data.keyboardName = decoder.decode(new Uint8Array(tmp));
+                this.state.deviceName = this.data.keyboardName;
 
                 Logging.console(LOG_TYPE.SUCCESS, `\nKeyboard Name: ${this.data.keyboardName}`);
                 break;
@@ -935,6 +1026,7 @@ export class RK_C61_Usb extends RK_C61 {
 
                 this.data.protocolVersion = `${version1}.${version2}.${version3}`;
                 this.data.keyInfoData.protocolVersion = this.data.protocolVersion;
+
                 Logging.console(LOG_TYPE.SUCCESS, `\nPotocol ver: ${this.data.protocolVersion}`);
                 break;
             case OrderTypeEnum.Travel:
@@ -1003,7 +1095,7 @@ export class RK_C61_Usb extends RK_C61 {
             case OrderTypeEnum.SwitchDeadZone:
                 this.data.topDeadSwitch = s_arg[0] > 0;
                 Logging.console(LOG_TYPE.SUCCESS, `\nTopDeadSwitch: ${this.data.topDeadSwitch}`);
-                this.dispatchEvent(new CustomEvent(RK_C61_EVENT_DEFINE.OnSynced, { detail: this.data }));
+                this.dispatchEvent(new CustomEvent(RK_C61_EVENT_DEFINE.OnCmdFinish, { detail: this.data }));
                 break;
         }
     }
@@ -1140,6 +1232,54 @@ StaticMode: ${this.data.lightSetting.staticLightMode}`);
     private onMacroMode(event: any) {
         this.dispatchEvent(new CustomEvent(RK_C61_EVENT_DEFINE.OnKeyMacroModeGotten, { detail: event.detail }));
         Logging.console(LOG_TYPE.SUCCESS, `Key Macro Mode [key:${event.detail.key}] [index:${event.detail.index}] [mode:${event.detail.mode}] [repeatCount:${event.detail.repeatCount}] [delay:${event.detail.delay}]`);
+    }
+
+    private onSigned(event: any) {
+        let isSuccess = event.detail.isSuccess;
+        
+        if (isSuccess) {
+            Logging.console(LOG_TYPE.SUCCESS, `Signed [unlock:${event.detail.unlock}] [signture:${event.detail.signture.toString()}]`);
+        } else {
+            Logging.console(LOG_TYPE.ERROR, `Sign [unlock:${event.detail.unlock}] failed`);
+        }
+        
+        this.dispatchEvent(new CustomEvent(RK_C61_EVENT_DEFINE.OnSigned, { detail: event.detail }));
+    }
+
+    private onErase(event: any) {
+        let isSuccess = event.detail.isSuccess;
+        
+        if (isSuccess) {
+            Logging.console(LOG_TYPE.SUCCESS, `Erase [process:${event.detail.process}]`);
+        } else {
+            Logging.console(LOG_TYPE.ERROR, `Erase failed`);
+        }
+
+        this.dispatchEvent(new CustomEvent(RK_C61_EVENT_DEFINE.OnErase, { detail: event.detail }));
+    }
+
+    private onWrite(event: any) {
+        let isSuccess = event.detail.isSuccess;
+        
+        if (isSuccess) {
+            Logging.console(LOG_TYPE.SUCCESS, `Write fw [addr:${event.detail.addr}] [size:${event.detail.size}]`);
+        } else {
+            Logging.console(LOG_TYPE.ERROR, `Write fw failed`);
+        }
+
+        this.dispatchEvent(new CustomEvent(RK_C61_EVENT_DEFINE.OnWrite, { detail: event.detail }));
+    }
+
+    private onRcrc(event: any) {
+        let isSuccess = event.detail.isSuccess;
+        
+        if (isSuccess) {
+            Logging.console(LOG_TYPE.SUCCESS, `Read crc [crc:${event.detail.crc}]`);
+        } else {
+            Logging.console(LOG_TYPE.ERROR, `Read crc failed`);
+        }
+
+        this.dispatchEvent(new CustomEvent(RK_C61_EVENT_DEFINE.OnRcrc, { detail: event.detail }));
     }
     //#endregion
 }

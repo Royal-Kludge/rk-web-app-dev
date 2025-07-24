@@ -72,7 +72,7 @@ export class Storage {
      * @memberOf Cache
      */
     clear(): void {
-        this.storage.clear()
+        this.storage.clear();
     }
 
     /**

@@ -3,7 +3,7 @@ import type { Macros, Macro, MacroExecModeEnum } from '@/keyboard/sparklink/macr
 import { LOG_TYPE, Logging } from '@/common/logging';
 import type { Axis, KeyboardState, KeyCmdValue, KeyInfo, LedColor, LightSetting, PerformanceData } from '../interface';
 import type { KeyCodeEnum, KeyDefineEnum } from '@/common/keyCode_sparklink';
-import { LightDirectionEnum, LightEffectEnum, LightModeEnum, LightSwitchEnum, OrderTypeEnum, SuperResponseEnum, type LayoutTypeEnum, type MatrixTable } from '../enum';
+import { BL_Controls, LightDirectionEnum, LightEffectEnum, LightModeEnum, LightSwitchEnum, OrderTypeEnum, SuperResponseEnum, type LayoutTypeEnum, type MatrixTable } from '../enum';
 import { KeyInfoData } from '../keyInfoData';
 import type { KeyTableData } from '../keyTableData';
 
@@ -13,11 +13,16 @@ export const RK_C61_EVENT_DEFINE = {
     OnKeyValuesGotten: "OnKeyValuesGotten",
     OnKeyRgbGotten: "OnKeyRgbGotten",
     OnSynced: "OnSynced",
+    OnCmdFinish: "OnCmdFinish",
     OnAdjustingMMDataGotten: "OnAdjustingMMDataGotten",
     OnAdjustingPressDataGotten: "OnAdjustingPressDataGotten",
     OnAdjustingAdcDataGotten: "OnAdjustingAdcDataGotten",
     OnAdjustingAdcValueUpdate: "OnAdjustingAdcValueUpdate",
     OnKeyMacroModeGotten: "OnKeyMacroModeGotten",
+    OnSigned: "OnSigned",
+    OnErase: "OnErase",
+    OnWrite: "OnWrite",
+    OnRcrc: "OnRcrc",
 }
 
 export const COMMAND_ID = {
@@ -83,7 +88,7 @@ export class RK_C61_Data {
     keyboardName?: string;
     protocolVersion?: string;
     boardId?: BoardId;
-    runMode?: number;
+    runMode: number = 0xff;
     sn?: string;
     hwVersion?: HwVersion;
     fwVersion?: FwVersion;
@@ -96,6 +101,7 @@ export class RK_C61_Data {
     lightSetting: LightSetting;
     keyInfoData: KeyInfoData;
     macros?: Macros;
+    signFor: BL_Controls = BL_Controls.BL_NONE;
     //kbTableDatas?: Record<KeyDefineEnum, KeyTableData>;
 
     constructor() {
@@ -152,6 +158,7 @@ export abstract class RK_C61 extends Protocol {
     abstract getAdustingData(type: number, page: number): Promise<void>;
     abstract getMacros(): Promise<void>;
     abstract getMacroMode(keyCode: KeyDefineEnum): Promise<void>;
+    abstract getCrc(size: number): Promise<void>;
     abstract setKeyValues(keyCmdValues: Array<KeyCmdValue>): Promise<void>;
     abstract setPrgb(): Promise<void>;
     abstract setKrgb(): Promise<void>;
@@ -168,7 +175,12 @@ export abstract class RK_C61 extends Protocol {
     abstract setSocd(keyInfos: Array<KeyInfo>): Promise<void>;
     abstract setMacroV2(macro: Macro): Promise<void>;
     abstract setMacroMode(keyCode: KeyDefineEnum, mode: MacroExecModeEnum, repeatConut: number, delay: number, macro: Macro): Promise<void>;
-    
+    abstract setSign(unlock: BL_Controls, sn: Uint8Array) : Promise<void>;
+    abstract setErase() : Promise<void>;
+    abstract setReboot() : Promise<void>;
+    abstract setToApp(size: number, crc: number) : Promise<void>;
+    abstract writeFw(addr: number, size: number, data: Uint8Array) : Promise<void>;
+
     callback = (e: HIDInputReportEvent) => this.processKeyboardReport(e);
 
     async init(): Promise<void> {
@@ -195,6 +207,12 @@ export abstract class RK_C61 extends Protocol {
     async setReport(reportId: number, data: Uint8Array): Promise<void> {
         await this.device.sendReport(reportId, data);
         Logging.console(LOG_TYPE.INFO, `SetReport [${data.byteLength}] bytes -> ${data.toString()}`);
+    }
+
+    async delay(ms: number): Promise<void> {
+        return new Promise((resolve) => {
+            setTimeout(resolve, ms);
+        });
     }
 
     private async processKeyboardReport(report: HIDInputReportEvent) {

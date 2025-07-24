@@ -169,7 +169,7 @@
                                     </el-select>
                                 </div>
 
-                                <el-dialog v-model="dialogReportRate" title="$t('sparklink.performance.tips.title_21')"
+                                <el-dialog v-model="dialogReportRate" :title="$t('sparklink.performance.tips.title_21')"
                                     width="500">
                                     <span>{{ $t("sparklink.performance.tips.tip_9") }}</span>
                                     <template #footer>
