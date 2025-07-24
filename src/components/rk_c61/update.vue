@@ -29,12 +29,13 @@
             </div>
             <div class="w-100 bg-grey mt-3 mb-3" style="border-radius: 10px;">
                 <el-upload ref="upload" v-model:file-list="fileList" class="m-3" :limit="1" :on-exceed="handleExceed"
-                    :on-change="StartReadFile" :auto-upload="false" :disabled="updateType != UpdateTypeEnum.None">
+                    :on-change="StartReadFile" :auto-upload="false" :disabled="updateType != UpdateTypeEnum.None"
+                    :on-remove="handleRemove">
                     <template #trigger>
                         <el-button class="m-3" type="primary" :disabled="updateType != UpdateTypeEnum.None">{{ $t('set.but_10') }}</el-button>
                     </template>
                     <div style="display: inline-flex; justify-content: flex-start; align-items: center; margin-left: 10px">
-                        <el-button @click="useUpdate.offlineUpdateStart()" :disabled="updateType != UpdateTypeEnum.None">{{ $t('set.but_11') }}</el-button>
+                        <el-button @click="useUpdate.offlineUpdateStart()" :disabled="updateType != UpdateTypeEnum.None || fwSize <= 0">{{ $t('set.but_11') }}</el-button>
                         <el-progress v-if="updateType  == UpdateTypeEnum.Offline" color="blue" class="ml-3"
                             style="width: 160px; margin-left: 10px; border-radius: 3px" :percentage="upgradeProgress"
                             :height="6"></el-progress>
@@ -60,7 +61,7 @@
 </template>
 
 <script setup lang="ts">
-import { genFileId } from 'element-plus';
+import { genFileId, type UploadProps } from 'element-plus';
 import { ref,computed } from 'vue';
 import { LOG_TYPE, Logging } from '@/common/logging';
 import { UpdateTypeEnum } from '@/keyboard/sparklink/enum';
@@ -110,4 +111,8 @@ const StartReadFile = (file: any) => {
     };
     reader.readAsArrayBuffer(file.raw);
 };
+
+const handleRemove: UploadProps['onRemove'] = (file, uploadFiles) => {
+    fwSize.value = 0;
+}
 </script>
